@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { Button } from '../atoms/button';
 interface Props {
 	showContactModal?: boolean;
-	setShowContactModal?: boolean;
+	setShowContactModal?: any;
 	label?: string;
 }
 function ContactModal({ showContactModal, setShowContactModal, label }: Props) {
@@ -80,7 +81,10 @@ function ContactModal({ showContactModal, setShowContactModal, label }: Props) {
 										<line x1="6" y1="6" x2="18" y2="18" />
 									</svg>
 								</button>
-                                
+								<Button
+									label="Add"
+									style="inline-block px-6 py-2.5 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out"
+								/>
 							</form>
 						</div>
 					</div>

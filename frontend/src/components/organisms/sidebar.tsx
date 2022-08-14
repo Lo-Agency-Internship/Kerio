@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Button } from '../atoms/button';
+import ContactModal from '../molecules/contactModal';
 
 const Sidebar = () => {
-	const [showModal, setshowModal] = useState(false);
+	const [showContactModal, setshowContactModal] = useState(false);
 	return (
 		<>
+			{showContactModal && <ContactModal setShowContactModal={setshowContactModal} />}
 			<div className="w-60 h-full shadow-md bg-black px-1 absolute" id="sidenavExample">
 				<ul className="relative">
 					<li className="relative">
@@ -12,7 +14,7 @@ const Sidebar = () => {
 							style="border-black  hover:text-gray-500 font-bold text-center text-white mx-3 my-5"
 							label={'Add contact'}
 							onClick={() => {
-								setshowModal(true);
+								setshowContactModal(true);
 							}}
 						/>
 						<hr />
