@@ -1,17 +1,15 @@
-interface Props {
-    label: string
-    onClick: () => void
+export interface Props {
+	style: string;
+	label: string;
+	onClick?: () => void;
 }
 
-export function Button({ label, onClick }: Props) {
-    return (
-        <>
-            <button
-                className="border border-3 border-black p-2 hover:bg-gray-500 rounded hover:text-white"
-                onClick={onClick}
-            >
-                {label}
-            </button>
-        </>
-    )
+export function Button({ label, onClick, style }: Props) {
+	return (
+		<>
+			<button className={style} onClick={onClick}>
+				{label}
+			</button>
+		</>
+	);
 }
