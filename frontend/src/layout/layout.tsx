@@ -1,24 +1,24 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 interface ILayout {
-    children: any
+	children: any;
 }
 
 export default function Layout({ children }: ILayout) {
-    return (
-        <>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/">Header</Link>
-                    </li>
-                </ul>
-            </nav>
+	return (
+		<>
+			<nav>
+				<ul>
+					<li>
+						<Link to="/">Header</Link>
+					</li>
+				</ul>
+			</nav>
 
-            {children}
+			{children}
 
-            <footer>
-                <p>this is a test</p>
-            </footer>
-        </>
-    )
+			<footer>
+				<p>this is a test</p>
+			</footer>
+		</>
+	);
 }

@@ -1,3 +1,12 @@
+import ContactModal from '../components/molecules/contactModal';
+import { useState } from 'react';
+
 export default function Dashboard() {
-    return <h1>Dashboard page </h1>
+	const [showContactModal, setShowContactModal] = useState(false);
+	return (
+		<>
+			<ContactModal showContactModal={showContactModal} />
+			<h1>Dashboard page </h1>;
+		</>
+	);
 }
