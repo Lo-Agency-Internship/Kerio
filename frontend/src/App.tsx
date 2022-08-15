@@ -19,7 +19,7 @@ function App() {
 						</Layout>
 					}>
 					<Route index element={<Dashboard />} />
-					<Route path="contact" element={<Contact />} />
+					<Route path="contacts/:id" element={<Contact />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

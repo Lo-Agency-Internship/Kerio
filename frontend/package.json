@@ -26,6 +26,7 @@
         "eject": "react-scripts eject",
         "format": "prettier --write \"**/*.{ts,tsx,js}\"",
         "lint": "eslint .",
+        "lint && fromat": "eslint . prettier --write \"**/*.{ts,tsx,js}\"",
         "lint:fix": "eslint . --fix"
     },
     "browserslist": {
