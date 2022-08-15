@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+import Header from '../components/molecules/header';
+import Sidebar from '../components/molecules/sidebar';
+
 interface ILayout {
 	children: any;
 }
@@ -6,19 +8,10 @@ interface ILayout {
 export default function Layout({ children }: ILayout) {
 	return (
 		<>
-			<nav>
-				<ul>
-					<li>
-						<Link to="/">Header</Link>
-					</li>
-				</ul>
-			</nav>
+			<Header />
+			<Sidebar />
 
 			{children}
-
-			<footer>
-				<p>this is a test</p>
-			</footer>
 		</>
 	);
 }
