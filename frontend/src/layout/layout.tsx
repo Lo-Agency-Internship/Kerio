@@ -1,6 +1,7 @@
+import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 interface ILayout {
-	children: any;
+	children: ReactNode;
 }
 
 export default function Layout({ children }: ILayout) {
