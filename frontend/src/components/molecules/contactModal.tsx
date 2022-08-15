@@ -1,18 +1,15 @@
-import { useState } from 'react';
 import { Button } from '../atoms/button';
-interface Props {
-	showContactModal?: boolean;
-	setShowContactModal?: any;
-	label?: string;
-}
-function ContactModal({ showContactModal, setShowContactModal, label }: Props) {
+
+function ContactModal() {
 	return (
+		// // modal starts here
 		<div className="py-12 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
 			<div role="alert" className="container mx-auto w-11/12 md:w-2/3 max-w-lg">
 				<div className="relative inline-block text-left w-full">
 					<div>
 						<div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
 							<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Contact Modal</h1>
+							{/* // form starts here */}
 							<form>
 								<label htmlFor="title" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
 									Name
@@ -25,7 +22,7 @@ function ContactModal({ showContactModal, setShowContactModal, label }: Props) {
 									placeholder="Farzaneh"
 								/>
 								<label htmlFor="phone" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
-									Phone
+									Phone Number
 								</label>
 								<input
 									id="number"
@@ -44,21 +41,26 @@ function ContactModal({ showContactModal, setShowContactModal, label }: Props) {
                          text-sm border-gray-300 rounded border"
 									placeholder="X@gmail.com"
 								/>
-								<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">customer</label>
+								<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Customer Status</label>
 								<div className="mb-5 mt-2">
+									{/* // dropDown starts here */}
 									<select
 										name="status"
 										id="customerStatus"
 										className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-										<option value="customer">lead</option>
-										<option value="customer">lost-loyal</option>
-										<option value="customer">potentialCustomer</option>
-										<option value="customer">lostPotentialCustomer</option>
-										<option value="customer">lostLoyalCustomer</option>
-										<option value="customer">loyalCustomer</option>
+										<option value="lead">lead</option>
+										<option value="lost-loyal">lost-loyal</option>
+										<option value="potentialCustomer">potentialCustomer</option>
+										<option value="lostPotentialCustomer">lostPotentialCustomer</option>
+										<option value="lostLoyalCustomer">lostLoyalCustomer</option>
+										<option value="loyalCustomer">loyalCustomer</option>
 									</select>
 								</div>
-
+								{/* button of add */}
+								<Button
+									label="Add"
+									style="inline-block px-6 py-2.5 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out"
+								/>
 								<button
 									className="cursor-pointer absolute top-0 right-0 mt-4 mr-5
                          text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out 
@@ -81,10 +83,6 @@ function ContactModal({ showContactModal, setShowContactModal, label }: Props) {
 										<line x1="6" y1="6" x2="18" y2="18" />
 									</svg>
 								</button>
-								<Button
-									label="Add"
-									style="inline-block px-6 py-2.5 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out"
-								/>
 							</form>
 						</div>
 					</div>

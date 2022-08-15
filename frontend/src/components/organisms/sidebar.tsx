@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../atoms/button';
 import ContactModal from '../molecules/contactModal';
 
@@ -6,7 +6,7 @@ const Sidebar = () => {
 	const [showContactModal, setshowContactModal] = useState(false);
 	return (
 		<>
-			{showContactModal && <ContactModal setShowContactModal={setshowContactModal} />}
+			{showContactModal && <ContactModal />}
 			<div className="w-60 h-full shadow-md bg-black px-1 absolute" id="sidenavExample">
 				<ul className="relative">
 					<li className="relative">
