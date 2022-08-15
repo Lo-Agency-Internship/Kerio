@@ -1,8 +1,9 @@
-import Header from '../components/molecules/header';
-import Sidebar from '../components/molecules/sidebar';
+import { ReactNode } from 'react';
+import Header from '../components/organisms/header';
+import Sidebar from '../components/organisms/sidebar';
 
 interface ILayout {
-	children: any;
+	children: ReactNode;
 }
 
 export default function Layout({ children }: ILayout) {

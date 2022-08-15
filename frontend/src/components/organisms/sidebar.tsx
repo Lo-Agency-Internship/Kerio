@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../atoms/button';
+import ContactModal from '../molecules/contactModal';
 import Images from '../../assets/images/logo.png';
 const Sidebar = () => {
-	const [showModal, setshowModal] = useState(false);
+	const [showContactModal, setshowContactModal] = useState(false);
 	return (
 		<>
+			{showContactModal && <ContactModal />}
 			<div className="w-1/6 h-full shadow-md bg-[#212121] px-1 absolute" id="sidenavExample">
 				<img className="h-8 w-auto my-4 sm:h-20" src={Images} alt="Img" />
 				<ul className="relative top-6">
@@ -13,7 +15,7 @@ const Sidebar = () => {
 							style="border-black hover:text-gray-500 font-bold text-center text-white mx-3 my-5"
 							label={'Add contact'}
 							onClick={() => {
-								setshowModal(true);
+								setshowContactModal(true);
 							}}
 						/>
 						<hr />
