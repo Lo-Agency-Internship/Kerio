@@ -6,11 +6,12 @@ import { AppService } from './app.service';
 import { Contact } from './entities/contact.entity';
 import { ContactController } from './controllers/contact.controller';
 import { ContactService } from './services/contact.service';
+import { Organization } from './entities/organization.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forFeature([Contact]),
+    TypeOrmModule.forFeature([Contact, Organization]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -20,7 +21,7 @@ import { ContactService } from './services/contact.service';
         ssl: { rejectUnauthorized: false },
         synchronize: true,
         logging: true,
-        entities: [Contact],
+        entities: [Contact, Organization],
       }),
     }),
   ],
