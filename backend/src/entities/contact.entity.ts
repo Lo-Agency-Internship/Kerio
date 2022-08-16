@@ -1,31 +1,35 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
-export class Contact{
+export class Contact {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  name: string;
 
-    @Column()
-    name: string;
+  @Column()
+  email: string;
 
-    @Column()
-    email: string;
+  @Column({ length: 14 })
+  phone: string;
 
-    @Column({length: 14})
-    phone: string;
+  @Column()
+  status: string;
 
-    @Column()
-    status: string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
-
-    @DeleteDateColumn()
-    deletedAt: Date;
-
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

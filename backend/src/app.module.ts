@@ -9,24 +9,20 @@ import { ContactService } from './services/contact.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal: true}),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forFeature([Contact]),
-    TypeOrmModule.forRootAsync(
-      {
-        imports:[ConfigModule],
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService)=>(
-          {
-            type: 'postgres',
-            url: configService.get('DB_URL'),
-            ssl:{rejectUnauthorized: false},
-            synchronize: true,
-            logging: true,
-            entities:[Contact],
-            }
-        )
-      }
-    )
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        url: configService.get('DB_URL'),
+        ssl: { rejectUnauthorized: false },
+        synchronize: true,
+        logging: true,
+        entities: [Contact],
+      }),
+    }),
   ],
 
   controllers: [AppController, ContactController],
