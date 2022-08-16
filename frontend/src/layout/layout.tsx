@@ -1,24 +1,18 @@
-import { Link } from 'react-router-dom';
+import { ReactNode } from 'react';
+import Header from '../components/organisms/header';
+import Sidebar from '../components/organisms/sidebar';
+
 interface ILayout {
-	children: any;
+	children: ReactNode;
 }
 
 export default function Layout({ children }: ILayout) {
 	return (
 		<>
-			<nav>
-				<ul>
-					<li>
-						<Link to="/">Header</Link>
-					</li>
-				</ul>
-			</nav>
+			<Header />
+			<Sidebar />
 
 			{children}
-
-			<footer>
-				<p>this is a test</p>
-			</footer>
 		</>
 	);
 }

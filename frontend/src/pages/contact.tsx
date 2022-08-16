@@ -38,5 +38,5 @@ export default function Contact(props: any) {
 				<Note />
 			</div>
 		</>
-	);
+	)
 }
