@@ -11,7 +11,6 @@ export default function Layout({ children }: ILayout) {
 		<>
 			<Header />
 			<Sidebar />
-
 			{children}
 		</>
 	);
