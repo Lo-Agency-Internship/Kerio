@@ -2,9 +2,6 @@ import { useState } from 'react';
 import { Button } from '../atoms/button';
 
 export default function Profile({ user, setUser }: any) {
-	const onChangeHandler = (e: Event) => {
-		e.preventDefault();
-	};
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
 

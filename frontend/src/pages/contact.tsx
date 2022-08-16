@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { IUser } from '../utils/interfaces/user/index';
-import { Button } from '../components/atoms/button';
-import axios from 'axios';
 import Profile from '../components/molecules/profile';
 import Timeline from '../components/molecules/timeline';
 import Note from '../components/molecules/note';
 
-export default function Contact(props: any) {
+export default function Contact() {
 	const receivedUser: IUser = {
 		id: 1,
 		name: 'khashayar',
@@ -16,7 +14,7 @@ export default function Contact(props: any) {
 		status: 'lead',
 	};
 
-	const { id } = useParams();
+	// const { id } = useParams();
 	const [user, setUser] = useState<IUser>();
 
 	useEffect(() => {
@@ -38,5 +36,5 @@ export default function Contact(props: any) {
 				<Note />
 			</div>
 		</>
-	)
+	);
 }

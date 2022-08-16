@@ -9,15 +9,13 @@ interface ILayout {
 export default function Layout({ children }: ILayout) {
 	return (
 		<>
-			<div className='flex'>
+			<div className="flex">
 				<Sidebar />
-				<div className='w-5/6'>
+				<div className="w-5/6">
 					<Header />
 					{children}
 				</div>
 			</div>
-			
-
 		</>
 	);
 }
