@@ -5,9 +5,7 @@ const Header = () => {
 			{/* header start here */}
 			<nav
 				className="
-  fixed
   right-0
-  w-5/6
   flex flex-wrap
   items-center
   justify-between

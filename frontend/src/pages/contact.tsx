@@ -30,7 +30,7 @@ export default function Contact(props: any) {
 	return (
 		<>
 			<div>
-				<div className="border flex flex-row justify-between align-baseline">
+				<div className="border flex flex-row justify-between align-baseline mt-32 ml-32">
 					<h1 className="p-2">{user?.name} Informations</h1>
 				</div>
 				<Profile user={user} setUser={setUser} />
