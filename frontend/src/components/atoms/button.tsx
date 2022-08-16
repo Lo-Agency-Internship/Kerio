@@ -2,12 +2,13 @@ export interface Props {
 	style: string;
 	label: string;
 	onClick?: () => void;
+	type?: 'button' | 'submit' | 'reset';
 }
 
-export function Button({ label, onClick, style }: Props) {
+export function Button({ label, onClick, style, type }: Props) {
 	return (
 		<>
-			<button className={style} onClick={onClick}>
+			<button type={type} className={style} onClick={onClick}>
 				{label}
 			</button>
 		</>
