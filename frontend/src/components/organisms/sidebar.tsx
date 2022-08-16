@@ -7,7 +7,7 @@ const Sidebar = () => {
 	return (
 		<>
 			{showContactModal && <ContactModal />}
-			<div className="w-1/6 h-full shadow-md bg-[#212121] px-1 absolute" id="sidenavExample">
+			<div className="w-1/6 h-full shadow-md bg-[#212121] px-1 relative h-screen" id="sidenavExample">
 				<img className="h-8 w-auto my-4 sm:h-20" src={Images} alt="Img" />
 				<ul className="relative top-6">
 					<li className="relative">
