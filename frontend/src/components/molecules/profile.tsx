@@ -6,7 +6,6 @@ export default function Profile({ user, setUser }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 
 	const editHandler = () => {
-		console.log('edit clicked');
 		setInputDisabled(false);
 		setInputsShow(true);
 	};
@@ -25,8 +24,6 @@ export default function Profile({ user, setUser }: any) {
 		const status = formData.get('status');
 		const updatedUser = { name, email, phone, status };
 		setUser(updatedUser);
-
-		console.log(name, email, phone, status);
 		setInputDisabled(true);
 		setInputsShow(false);
 	};
