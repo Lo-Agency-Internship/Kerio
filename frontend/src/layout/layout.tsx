@@ -16,7 +16,6 @@ export default function Layout({ children }: ILayout) {
 					{children}
 				</div>
 			</div>
-
 		</>
 	);
 }
