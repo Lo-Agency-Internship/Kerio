@@ -3,10 +3,10 @@ import { Button } from '../atoms/button';
 import ContactModal from '../molecules/contactModal';
 import Images from '../../assets/images/logo.png';
 const Sidebar = () => {
-	const [showContactModal, setShowContactModal] = useState(false);
+	const [showContactModal, setShowContactModal] = useState<boolean>(false);
 	return (
 		<>
-			{showContactModal && <ContactModal />}
+			{showContactModal && <ContactModal setOpen={setShowContactModal} />}
 			<div className="w-1/6 shadow-md bg-[#212121] px-1 relative h-screen" id="sidenavExample">
 				<img className="h-8 w-auto my-4 sm:h-20" src={Images} alt="Img" />
 				<ul className="relative top-6">

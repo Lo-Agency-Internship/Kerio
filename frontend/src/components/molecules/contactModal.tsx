@@ -1,6 +1,45 @@
 import { Button } from '../atoms/button';
+import { modalContactValidation } from '../../validation/addContactValidaion';
+import axios from 'axios';
+import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { backend } from '../../utils';
+interface IContactModal {
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const ContactModal: FC<IContactModal> = ({ setOpen }) => {
+	const navigate = useNavigate();
+	const [error, setError] = useState<string | null>(null);
+	const handleSubmit = async (event: any) => {
+		event.preventDefault();
 
-function ContactModal() {
+		const formData = new FormData(event.currentTarget);
+		const name = formData.get('name')?.toString().toLowerCase();
+		const phone = formData.get('phone');
+		const email = formData.get('email')?.toString().toLowerCase();
+		const status = formData.get('status');
+		const body = {
+			name,
+			phone,
+			email,
+			status,
+		};
+		const isValid = await modalContactValidation.isValid(body);
+		if (isValid) {
+			await axios.post(backend('contact'), body).then((response) => {
+				const msg = response.statusText;
+
+				const user = response.data;
+
+				setOpen(false);
+				navigate(`/dashboard/contacts/${user.id}`);
+			});
+		} else {
+			modalContactValidation.validate(body).catch((e) => {
+				setError(e.message);
+			});
+		}
+	};
 	return (
 		// // modal starts here
 		<div className="py-12 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
@@ -10,11 +49,13 @@ function ContactModal() {
 						<div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
 							<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Contact Form</h1>
 							{/* // form starts here */}
-							<form>
+							{error && <p>{error}</p>}
+							<form onSubmit={handleSubmit}>
 								<label htmlFor="title" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
 									Name
 								</label>
 								<input
+									name="name"
 									id="title"
 									className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border
                          focus:border-indigo-700 font-normal w-full h-10 flex items-center 
@@ -25,6 +66,7 @@ function ContactModal() {
 									Phone Number
 								</label>
 								<input
+									name="phone"
 									id="number"
 									className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border
                          focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 
@@ -35,6 +77,7 @@ function ContactModal() {
 									Email
 								</label>
 								<input
+									name="email"
 									id="email"
 									className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border
                          focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 
@@ -57,15 +100,17 @@ function ContactModal() {
 									</select>
 								</div>
 								{/* button of add */}
-								<Button
-									label="Add"
-									style="inline-block px-6 py-2.5 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out"
-								/>
+								<button
+									type="submit"
+									className="inline-block px-6 py-2.5 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
+									Add
+								</button>
 								<button
 									className="cursor-pointer absolute top-0 right-0 mt-4 mr-5
                          text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out 
                          rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
 									aria-label="close modal"
+									onClick={() => setOpen(false)}
 									role="button">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -90,5 +135,6 @@ function ContactModal() {
 			</div>
 		</div>
 	);
-}
+};
+
 export default ContactModal;
