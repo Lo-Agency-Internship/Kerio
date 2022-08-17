@@ -1,22 +1,21 @@
 import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-  } from 'typeorm';
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-  @Entity()
+@Entity()
 export class User {
-
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -31,7 +30,3 @@ export class User {
   @DeleteDateColumn()
   deletedAt: Date;
 }
-  
-// @OneToOne(() => orgUser)
-//     @JoinColumn()
-//     orgUser: orgUser
