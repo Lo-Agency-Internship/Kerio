@@ -4,15 +4,17 @@ import { Input } from '../atoms/input';
 export default function Profile({ user, setUser }: any) {
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
-
+	const [background, setBackground] = useState('bg-transparent');
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
+		setBackground('bg-gray-300');
 	};
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
 		setUser(user);
+		setBackground('bg-transparent');
 	};
 
 	const submitHandler = (e: any) => {
@@ -26,15 +28,16 @@ export default function Profile({ user, setUser }: any) {
 		setUser(updatedUser);
 		setInputDisabled(true);
 		setInputsShow(false);
+		setBackground('bg-transparent');
 	};
 
 	return (
 		<>
 			<div className="flex justify-start my-24  w-full p-10">
-				<div className="flex w-full mx-8  p-4 bg-gray-500 rounded-lg hover:shadow-xl ">
+				<div className="flex w-full mx-8  p-4 bg-gray-200 rounded-lg hover:shadow-xl ">
 					<form onSubmit={submitHandler}>
 						<div className="flex justify-start  flex-row flex-wrap">
-							<div className="m-3 pt-0 hover:shadow-md rounded-lg hover:bg-gray-400">
+							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
 								<label className="mx-2" htmlFor="name">
 									Name:
 								</label>
@@ -44,11 +47,10 @@ export default function Profile({ user, setUser }: any) {
 									id={'name'}
 									defaultValue={user?.name}
 									name="name"
-									className={'bg-transparent'}
+									className={background}
 								/>
 							</div>
-
-							<div className="m-3 pt-0 hover:shadow-md rounded-lg hover:bg-gray-400">
+							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
 								<label className="mx-2" htmlFor="email">
 									Email:
 								</label>
@@ -58,13 +60,11 @@ export default function Profile({ user, setUser }: any) {
 									id={'email'}
 									defaultValue={user?.email}
 									name="email"
-									className={
-										'px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline'
-									}
+									className={background}
 								/>
 							</div>
 
-							<div className="m-3 pt-0 hover:shadow-md rounded-lg hover:bg-gray-400">
+							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
 								<label className="mx-2" htmlFor="phone">
 									Phone:
 								</label>
@@ -74,20 +74,18 @@ export default function Profile({ user, setUser }: any) {
 									id={'phone'}
 									defaultValue={user?.phone}
 									name="phone"
-									className={
-										'px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline'
-									}
+									className={background}
 								/>
 							</div>
 
-							<div className="m-3 pt-0 hover:shadow-md rounded-lg hover:bg-gray-400">
+							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
 								<label className="mx-2" htmlFor="status">
 									Status :
 								</label>
 								<select
 									disabled={inputDisabled}
 									name="status"
-									className="status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline"
+									className={`${background} status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline`}
 									defaultValue={user?.status}
 									id="customerStatus">
 									<option value="lead">Lead</option>
@@ -104,7 +102,7 @@ export default function Profile({ user, setUser }: any) {
 								<>
 									<Button
 										label="No"
-										style="focus:outline-none mx-3 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+										style="focus:outline-none mx-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
 										onClick={cancelHandler}
 										type="reset"
 									/>
