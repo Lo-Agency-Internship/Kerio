@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../atoms/button';
-import Images from '../../assets/images/user.jpg';
+import { Input } from '../atoms/input';
 export default function Profile({ user, setUser }: any) {
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
@@ -33,60 +33,64 @@ export default function Profile({ user, setUser }: any) {
 
 	return (
 		<>
-			<div className="flex justify-start my-24 border w-full p-10">
-				<div className="flex w-9/12 mx-8  p-4 bg-gray-500 rounded-lg hover:shadow-xl ">
+			<div className="flex justify-start my-24  w-full p-10">
+				<div className="flex w-full mx-8  p-4 bg-gray-500 rounded-lg hover:shadow-xl ">
 					<form onSubmit={submitHandler}>
 						<div className="flex justify-start  flex-row flex-wrap">
-							<div className="m-3 pt-0 ">
+							<div className="m-3 pt-0 hover:shadow-md rounded-lg hover:bg-gray-400">
 								<label className="mx-2" htmlFor="name">
 									Name:
 								</label>
-								<input
+								<Input
 									disabled={inputDisabled}
-									type="text"
-									id="name"
+									type={'text'}
+									id={'name'}
 									defaultValue={user?.name}
 									name="name"
-									className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
+									className={'bg-transparent'}
 								/>
 							</div>
 
-							<div className="m-3 pt-0">
+							<div className="m-3 pt-0 hover:shadow-md rounded-lg hover:bg-gray-400">
 								<label className="mx-2" htmlFor="email">
 									Email:
 								</label>
-								<input
+								<Input
 									disabled={inputDisabled}
-									type="text"
-									id="email"
-									name="email"
+									type={'text'}
+									id={'email'}
 									defaultValue={user?.email}
-									className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
+									name="email"
+									className={
+										'px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline'
+									}
 								/>
 							</div>
 
-							<div className="m-3 pt-0">
+							<div className="m-3 pt-0 hover:shadow-md rounded-lg hover:bg-gray-400">
 								<label className="mx-2" htmlFor="phone">
 									Phone:
 								</label>
-								<input
+								<Input
 									disabled={inputDisabled}
-									type="text"
-									id="phone"
+									type={'text'}
+									id={'phone'}
 									defaultValue={user?.phone}
 									name="phone"
-									className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
+									className={
+										'px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline'
+									}
 								/>
 							</div>
 
-							<div className="m-3 pt-0">
+							<div className="m-3 pt-0 hover:shadow-md rounded-lg hover:bg-gray-400">
 								<label className="mx-2" htmlFor="status">
 									Status :
 								</label>
 								<select
 									disabled={inputDisabled}
 									name="status"
-									className="status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
+									className="status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline"
 									defaultValue={user?.status}
 									id="customerStatus">
 									<option value="lead">Lead</option>
@@ -123,9 +127,6 @@ export default function Profile({ user, setUser }: any) {
 							)}
 						</div>
 					</form>
-				</div>
-				<div className="w-3/12  mx-8 hover:shadow-xl">
-					<img src={Images} alt="sd" className="rounded-lg w-full" />
 				</div>
 			</div>
 		</>
