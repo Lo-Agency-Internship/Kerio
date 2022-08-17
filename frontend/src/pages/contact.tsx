@@ -1,39 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 // import { useParams } from 'react-router-dom';
-import { IUser } from '../utils/interfaces/user/index';
 import Profile from '../components/molecules/profile';
 import Timeline from '../components/molecules/timeline';
 import Note from '../components/molecules/note';
+import { useApiContext } from '../context/api';
 
 export default function Contact() {
-	const receivedUser: IUser = {
-		id: 1,
-		name: 'khashayar',
-		phone: '09123456789',
-		email: 'khashayar@gmail.com',
-		status: 'lead',
-	};
+	const { user, setUser } = useApiContext();
 
 	// const { id } = useParams();
-	const [user, setUser] = useState<IUser>();
 
 	useEffect(() => {
 		// async ()=>{
 		// 	const {data} = await axios.get(`http://localhost:3001/contacts/${id}`)
 		// 	setUser(data)
 		// }
-		setUser(receivedUser);
 	}, []);
 
 	return (
 		<>
 			<div>
-				<div className="border flex flex-row justify-between align-baseline mt-32 ml-32">
+				<div className="border flex justify-center mt-16 w-12/12">
 					<h1 className="p-2">{user?.name} Informations</h1>
 				</div>
+
 				<Profile user={user} setUser={setUser} />
-				<Timeline />
-				<Note />
+
+				<div className="flex justify-center w-12/12 border">
+					<Timeline />
+					<Note />
+				</div>
 			</div>
 		</>
 	);
