@@ -1,6 +1,9 @@
 import { Button } from '../atoms/button';
 
 function SignInModal({ setOpen }: any) {
+	const handleSubmit = async (event: any) => {
+		event.preventDefault();
+	};
 	return (
 		<div className="flex flex-col z-50 absolute items-start justify-center w-full px-10 pt-5 pb-20 lg:pt-20 lg:flex-row">
 			<div className="relative z-10 w-full max-w-2xl mt-20 lg:mt-0 lg:w-5/12">
@@ -29,7 +32,7 @@ function SignInModal({ setOpen }: any) {
 						</svg>
 					</button>
 					<h4 className="w-full text-4xl font-medium leading-snug">LogIn Form</h4>
-					<form className="relative w-full mt-6 space-y-8">
+					<form onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Email Address</label>
 							<input
@@ -48,6 +51,7 @@ function SignInModal({ setOpen }: any) {
 						</div>
 						<div className="relative">
 							<Button
+								type="submit"
 								label="Submit"
 								style="inline-block w-full px-5 py-4 text-xl font-medium text-center text-white transition duration-200 bg-gray-700 rounded-lg hover:bg-gray-900 ease"
 							/>

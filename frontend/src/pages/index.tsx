@@ -1,4 +1,4 @@
-import SignInModal from '../components/molecules/logInModal';
+import SignInModal from '../components/molecules/signInModal';
 
 import { useState } from 'react';
 import SignUpModal from '../components/molecules/signUpModal';
