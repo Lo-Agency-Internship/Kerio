@@ -6,7 +6,6 @@ export default function Profile({ user, setUser }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 
 	const editHandler = () => {
-		console.log('edit clicked');
 		setInputDisabled(false);
 		setInputsShow(true);
 	};
@@ -25,8 +24,6 @@ export default function Profile({ user, setUser }: any) {
 		const status = formData.get('status');
 		const updatedUser = { name, email, phone, status };
 		setUser(updatedUser);
-
-		console.log(name, email, phone, status);
 		setInputDisabled(true);
 		setInputsShow(false);
 	};
@@ -44,7 +41,7 @@ export default function Profile({ user, setUser }: any) {
 						id="name"
 						defaultValue={user?.name}
 						name="name"
-						className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
+						className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
 					/>
 				</div>
 				<div className="mb-3 pt-0">
@@ -57,7 +54,7 @@ export default function Profile({ user, setUser }: any) {
 						id="email"
 						name="email"
 						defaultValue={user?.email}
-						className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
+						className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
 					/>
 				</div>
 				<div className="mb-3 pt-0">
@@ -70,7 +67,7 @@ export default function Profile({ user, setUser }: any) {
 						id="phone"
 						defaultValue={user?.phone}
 						name="phone"
-						className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
+						className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
 					/>
 				</div>
 				<div className="mb-3 pt-0">
@@ -80,7 +77,7 @@ export default function Profile({ user, setUser }: any) {
 					<select
 						disabled={inputDisabled}
 						name="status"
-						className="status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
+						className="status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline"
 						defaultValue={user?.status}
 						id="customerStatus">
 						<option value="lead">Lead</option>
