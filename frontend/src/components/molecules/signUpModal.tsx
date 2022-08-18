@@ -15,13 +15,15 @@ function SignUpModal({ setOpen }: any) {
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
 		const password = formData.get('password')?.toString().toLowerCase();
+		const rePassword = formData.get('password')?.toString().toLowerCase();
+
 		const body = {
 			name,
 			email,
 			password,
+			rePassword,
 		};
 		console.log(formData);
-		console.log('eyDaaaaaaad');
 		console.log(body);
 
 		const isValid = await modalUserValidation.isValid(body);
@@ -75,7 +77,7 @@ function SignUpModal({ setOpen }: any) {
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Name</label>
 							<input
-								type="text"
+								name="name"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="Aien Saeedi"
 							/>
@@ -83,7 +85,7 @@ function SignUpModal({ setOpen }: any) {
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Email Address</label>
 							<input
-								type="text"
+								name="email"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="XxX@email.com"
 							/>
@@ -91,6 +93,7 @@ function SignUpModal({ setOpen }: any) {
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Password</label>
 							<input
+								name="password"
 								type="password"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="pa@ssword"
@@ -99,6 +102,7 @@ function SignUpModal({ setOpen }: any) {
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">re-Password</label>
 							<input
+								name="rePassword"
 								type="password"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="pa@ssword"
@@ -106,6 +110,7 @@ function SignUpModal({ setOpen }: any) {
 						</div>
 						<div className="relative">
 							<Button
+								type="submit"
 								label="submit"
 								style="inline-block w-full px-4 py-3 text-xl font-medium text-center text-white transition duration-200 bg-gray-500 rounded-lg hover:bg-gray-900 ease"
 							/>

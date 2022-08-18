@@ -10,7 +10,7 @@ import {
 import { Contact } from '../entities/contact.entity';
 import { ContactService } from '../services/contact.service';
 
-@Controller('contact')
+@Controller('contacts')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 

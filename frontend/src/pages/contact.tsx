@@ -4,26 +4,21 @@ import { IUser } from '../utils/interfaces/user/index';
 import Profile from '../components/molecules/profile';
 import Timeline from '../components/molecules/timeline';
 import Note from '../components/molecules/note';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { backend } from '../utils';
 
 export default function Contact() {
-	const receivedUser: IUser = {
-		id: 1,
-		name: 'khashayar',
-		phone: '09123456789',
-		email: 'khashayar@gmail.com',
-		status: 'lead',
-	};
-
-	// const { id } = useParams();
+	// getting the id from url and setting the state via the id
+	const { id } = useParams();
 	const [user, setUser] = useState<IUser>();
-
+	const getData = async () => {
+		const { data } = await axios.get(backend(`contacts/${id}`));
+		setUser(data);
+	};
 	useEffect(() => {
-		// async ()=>{
-		// 	const {data} = await axios.get(`http://localhost:3001/contacts/${id}`)
-		// 	setUser(data)
-		// }
-		setUser(receivedUser);
-	}, []);
+		getData();
+	}, [user]);
 
 	return (
 		<>
