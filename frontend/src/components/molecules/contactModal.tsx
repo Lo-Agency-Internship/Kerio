@@ -1,4 +1,3 @@
-import { Button } from '../atoms/button';
 import { modalContactValidation } from '../../validation/addContactValidaion';
 import axios from 'axios';
 import { FC, useState } from 'react';
@@ -26,9 +25,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 		};
 		const isValid = await modalContactValidation.isValid(body);
 		if (isValid) {
-			await axios.post(backend('contact'), body).then((response) => {
-				const msg = response.statusText;
-
+			await axios.post(backend('contacts'), body).then((response) => {
 				const user = response.data;
 
 				setOpen(false);

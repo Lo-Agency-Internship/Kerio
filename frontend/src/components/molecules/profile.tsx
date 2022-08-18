@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { backend } from '../../utils';
 import { Button } from '../atoms/button';
 
 export default function Profile({ user, setUser }: any) {
+	useEffect(() => {
+		setUser(user);
+	}, [user]);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
 
@@ -15,7 +20,7 @@ export default function Profile({ user, setUser }: any) {
 		setUser(user);
 	};
 
-	const submitHandler = (e: any) => {
+	const submitHandler = async (e: any) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 		const name = formData.get('name');
@@ -23,6 +28,9 @@ export default function Profile({ user, setUser }: any) {
 		const phone = formData.get('phone');
 		const status = formData.get('status');
 		const updatedUser = { name, email, phone, status };
+		await axios.put(backend(`contacts/${user.id}`), updatedUser).then((response) => {
+			console.log(response);
+		});
 		setUser(updatedUser);
 		setInputDisabled(true);
 		setInputsShow(false);
