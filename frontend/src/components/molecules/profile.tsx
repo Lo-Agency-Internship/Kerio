@@ -5,11 +5,15 @@ export default function Profile({ user, setUser }: any) {
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [background, setBackground] = useState('bg-transparent');
+
+	// after ckick it we can see 2 new buttons ( yes & no)
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
 		setBackground('bg-gray-300');
 	};
+
+	// i have bug in this part we will fix it
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
@@ -17,6 +21,7 @@ export default function Profile({ user, setUser }: any) {
 		setBackground('bg-transparent');
 	};
 
+	// set a nwe data in inputs
 	const submitHandler = (e: any) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
@@ -97,6 +102,8 @@ export default function Profile({ user, setUser }: any) {
 								</select>
 							</div>
 						</div>
+
+						{/* show and hide buttons */}
 						<div className="mt-16">
 							{inputsShow ? (
 								<>

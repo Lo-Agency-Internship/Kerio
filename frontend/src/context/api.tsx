@@ -11,9 +11,11 @@ interface IApiContext {
 }
 
 const ApiContext = createContext<IApiContext>({});
+
 export const useApiContext = () => useContext(ApiContext);
 
 export const ApiProvider = ({ children }: IApiProvider) => {
+	// mac data
 	const receivedUser: IUser = {
 		id: 1,
 		name: 'khashayar',
