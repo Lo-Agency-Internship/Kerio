@@ -8,6 +8,7 @@ import { ContactController } from './controllers/contact.controller';
 import { ContactService } from './services/contact.service';
 import { Organization } from './entities/organization.entity';
 import { User } from './entities/user.entity';
+import { organizationUser } from './entities/organizationUser.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { User } from './entities/user.entity';
         ssl: { rejectUnauthorized: false },
         synchronize: true,
         logging: true,
-        entities: [Contact, Organization, User],
+        entities: [Contact, Organization, organizationUser],
       }),
     }),
   ],
