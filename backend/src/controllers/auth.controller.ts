@@ -54,6 +54,7 @@ export class AuthController {
   async register(
     @Body() { password, name, email, organizationSlug }: UserRegisterDto,
   ): Promise<SecureUserWithOrganization> {
+    const pipedOrgSlug = kebab(organizationSlug)
     const userExists = await this.userService.exists(email);
 
     if (userExists)
@@ -74,7 +75,7 @@ export class AuthController {
     });
 
     const [orgExists, organization] = await this.orgService.existsAndFindBySlug(
-      organizationSlug,
+      pipedOrgSlug,
     );
 
     let orgIdToAssign = null;
@@ -85,7 +86,7 @@ export class AuthController {
       const newOrg = await this.orgService.addOrganization({
         name: `${name}'s Organization`,
         address: '',
-        slug: kebab(`${name}'s Organization`),
+        slug: pipedOrgSlug,
       });
 
       orgIdToAssign = newOrg.id;
