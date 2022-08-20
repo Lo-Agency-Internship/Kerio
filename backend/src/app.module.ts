@@ -8,6 +8,7 @@ import { ContactController } from './controllers/contact.controller';
 import { ContactService } from './services/contact.service';
 import { Organization } from './entities/organization.entity';
 import { User } from './entities/user.entity';
+import { OrganizationUser } from './entities/organizationUser.entity';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './utils/local.strategy';
 import { AuthService } from './services/auth.service';
@@ -32,7 +33,7 @@ import { JwtStrategy } from './utils/jwt.strategy';
         ssl: { rejectUnauthorized: false },
         synchronize: true,
         logging: true,
-        entities: [Contact, Organization, User],
+        entities: [Contact, Organization, OrganizationUser, User],
       }),
     }),
     PassportModule,
