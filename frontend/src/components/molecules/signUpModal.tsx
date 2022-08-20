@@ -24,11 +24,8 @@ function SignUpModal({ setOpen }: any) {
 			password,
 			rePassword,
 		};
-		console.log(formData);
-		console.log(body);
 
 		const isValid = await modalUserValidation.isValid(body);
-		console.log(isValid);
 		if (isValid) {
 			await axios.post(backend('users'), body).then((response) => {
 				console.log(isValid);
