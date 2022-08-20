@@ -19,11 +19,14 @@ import { AuthController } from './controllers/auth.controller';
 import { UserController } from './controllers/user.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './utils/jwt.strategy';
+import { OrganizationService } from './services/organization.service';
+import { OrganizationController } from './controllers/organization.controller';
+import { OrganizationUserService } from './services/organizationUser.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forFeature([Contact, Organization, User]),
+    TypeOrmModule.forFeature([Contact, Organization, OrganizationUser, User]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -51,10 +54,13 @@ import { JwtStrategy } from './utils/jwt.strategy';
     ContactController,
     AuthController,
     UserController,
+    OrganizationController,
   ],
   providers: [
     AppService,
     ContactService,
+    OrganizationUserService,
+    OrganizationService,
     UserService,
     AuthService,
     LocalStrategy,

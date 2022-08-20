@@ -1,51 +1,66 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Organization } from 'src/entities/organization.entity';
 import { Repository } from 'typeorm';
+import { User } from '../entities/user.entity';
+import { OrganizationUser } from '../entities/organizationUser.entity';
+import { Organization } from '../entities/organization.entity';
+import { SecureUserWithOrganization } from '../utils/types';
 
 @Injectable()
-export class OrganizationService {
+export class OrganizationUserService {
   constructor(
     @InjectRepository(Organization)
-    private readonly organizationRepository: Repository<Organization>,
+    private readonly orgRepository: Repository<Organization>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+
+    @InjectRepository(OrganizationUser)
+    private readonly orgUserRepository: Repository<OrganizationUser>,
   ) {}
 
-  async addOrganization(organization: Organization): Promise<Organization> {
-    return await this.organizationRepository.save(organization);
-  }
-
-  async updateOrganization(
-    id: number,
-    organization: Organization,
-  ): Promise<any> {
-    return await this.organizationRepository.update(id, organization);
-  }
-
-  async findOneOrganizationById(id: number): Promise<Organization> {
-    return await this.organizationRepository.findOneBy({ id });
-  }
-
-  async findOneOrganizationByName(name: string): Promise<Organization> {
-    return await this.organizationRepository.findOneBy({ name });
-  }
-
-  async findAll(): Promise<Organization[]> {
-    return await this.organizationRepository.find();
-  }
-
-  async exists(id: number): Promise<boolean> {
-    const count = await this.organizationRepository.count({
-      where: {
-        id,
-      },
+  async assignUserToOrganization(
+    userId: number,
+    orgId: number,
+    roleId = 0,
+  ): Promise<OrganizationUser> {
+    const orgUser = await this.orgUserRepository.save({
+      orgId,
+      userId,
+      roleId,
     });
 
-    return count > 0;
+    await this.userRepository.update(
+      {
+        id: userId,
+      },
+      {
+        organization: orgUser,
+      },
+    );
+
+    return orgUser;
   }
 
-  async existsAndFindById(id: number): Promise<[boolean, Organization]> {
-    const org = await this.findOneOrganizationById(id);
+  async findUserWithOrganizationByUserEmail(
+    email: string,
+  ): Promise<SecureUserWithOrganization> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+      relations: ['organization'],
+      loadEagerRelations: true,
+      relationLoadStrategy: 'join',
+    });
 
-    return [org !== null, org];
+    const org = await this.orgRepository.findOneBy({
+      id: user.organization.orgId,
+    });
+
+    return {
+      ...user,
+      organization: org,
+    };
   }
 }

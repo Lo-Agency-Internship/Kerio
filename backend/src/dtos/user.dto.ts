@@ -12,4 +12,7 @@ export class UserLoginDto {
 export class UserRegisterDto extends UserLoginDto {
   @IsNotEmpty()
   name: string;
+
+  @IsNotEmpty()
+  organizationSlug: string;
 }

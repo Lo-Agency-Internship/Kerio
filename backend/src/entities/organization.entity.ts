@@ -18,6 +18,9 @@ export class Organization {
   @Column()
   address: string;
 
+  @Column()
+  slug: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

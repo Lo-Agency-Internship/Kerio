@@ -1,15 +1,15 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { UserService } from '../services/user.service';
-import { SecureUser } from '../utils/types';
 import { JwtGuard } from '../utils/jwt.guard';
+import { OrganizationService } from '../services/organization.service';
+import { Organization } from '../entities/organization.entity';
 
-@Controller('users')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+@Controller('organizations')
+export class OrganizationController {
+  constructor(private readonly orgService: OrganizationService) {}
 
-  @UseGuards(JwtGuard)
+  //@UseGuards(JwtGuard)
   @Get()
-  index(): Promise<SecureUser[]> {
-    return this.userService.findAll();
+  index(): Promise<Organization[]> {
+    return this.orgService.findAll();
   }
 }
