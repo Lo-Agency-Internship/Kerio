@@ -1,26 +1,16 @@
-import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-  } from 'typeorm';
-  
-  @Entity()
-  export class organizationUser {
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    @Column()
-    userId: number;
-  
-    @Column()
-    orgId: number;
-  
-    @Column()
-    roleId: number;
-  
-    
-  }
-  
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
+export class OrganizationUser {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  userId: number;
+
+  @Column()
+  orgId: number;
+
+  @Column()
+  roleId: number;
+}

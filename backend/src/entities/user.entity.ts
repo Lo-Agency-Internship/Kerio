@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Organization } from './organization.entity';
-import { organizationUser } from './organizationUser.entity';
+import { OrganizationUser } from './organizationUser.entity';
 
 @Entity()
 export class User {
@@ -34,7 +34,11 @@ export class User {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToOne(() => organizationUser)
-    @JoinColumn()
-    organizationUser: organizationUser
+  @OneToOne(() => OrganizationUser)
+  @JoinColumn()
+  organizationUser: OrganizationUser;
+
+  @OneToOne(() => Organization)
+  @JoinColumn()
+  organization: Organization;
 }
