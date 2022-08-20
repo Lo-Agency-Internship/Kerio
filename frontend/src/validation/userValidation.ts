@@ -9,4 +9,5 @@ export const modalUserValidation = yup.object().shape({
 		.max(12)
 		.required('Please enter at least 8 character')
 		.typeError('Password is not valid'),
+	rePassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
 });

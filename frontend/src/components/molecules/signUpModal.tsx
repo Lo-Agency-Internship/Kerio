@@ -10,12 +10,13 @@ function SignUpModal({ setOpen }: any) {
 	const [error, setError] = useState<string | null>(null);
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
+		setError(null);
 
 		const formData = new FormData(event.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
 		const password = formData.get('password')?.toString().toLowerCase();
-		const rePassword = formData.get('password')?.toString().toLowerCase();
+		const rePassword = formData.get('rePassword')?.toString().toLowerCase();
 
 		const body = {
 			name,
@@ -27,7 +28,7 @@ function SignUpModal({ setOpen }: any) {
 		console.log(body);
 
 		const isValid = await modalUserValidation.isValid(body);
-
+		console.log(isValid);
 		if (isValid) {
 			await axios.post(backend('users'), body).then((response) => {
 				console.log(isValid);
