@@ -10,7 +10,7 @@ const Header = () => {
   items-center
   justify-between
   py-6
-  bg-[#000000]
+  bg-[#212121]
   text-gray-500
   hover:text-gray-700
   focus:text-gray-700
