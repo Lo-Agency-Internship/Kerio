@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { Contact } from '../entities/contact.entity';
 import { ContactService } from '../services/contact.service';
+import { FindOneContactByIdDto } from '../dtos/contact.dto';
 
 @Controller('contacts')
 export class ContactController {
@@ -20,7 +21,7 @@ export class ContactController {
   }
 
   @Get(':id')
-  findOneContact(@Param() param): Promise<Contact> {
+  findOneContact(@Param() param: FindOneContactByIdDto): Promise<Contact> {
     return this.contactService.findOneContact(param.id);
   }
 
