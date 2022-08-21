@@ -4,6 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { backend } from '../../utils';
+import { kebab } from 'case';
 
 function SignUpModal({ setOpen }: any) {
 	const navigate = useNavigate();
@@ -16,25 +17,37 @@ function SignUpModal({ setOpen }: any) {
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
 		const password = formData.get('password')?.toString().toLowerCase();
-		const rePassword = formData.get('rePassword')?.toString().toLowerCase();
-
+		const organizationName = formData.get('organizationName');
+		let organizationSlug;
+		if (organizationName === '') {
+			organizationSlug = kebab(`${name}'s Organization`);
+		} else {
+			organizationSlug = kebab(organizationName as string);
+		}
 		const body = {
 			name,
 			email,
 			password,
-			rePassword,
+			organizationSlug,
 		};
 
 		const isValid = await modalUserValidation.isValid(body);
 		if (isValid) {
-			await axios.post(backend('users'), body).then((response) => {
-				console.log(isValid);
-
-				const user = response.data;
-
-				setOpen(false);
-				navigate(`/dashboard/${user.id}`);
-			});
+			try {
+				await axios.post(backend('auth/register'), body).then((response) => {
+					if (response.status === 201) {
+						alert('Successful signUp! Please signIn');
+						navigate('/');
+						setOpen(false);
+					}
+				});
+			} catch (err) {
+				if (err) {
+					setError('This email has been chosen before!');
+				} else {
+					setError('Something went wrong!');
+				}
+			}
 		} else {
 			modalUserValidation.validate(body).catch((e) => {
 				setError(e.message);
@@ -78,6 +91,14 @@ function SignUpModal({ setOpen }: any) {
 								name="name"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="Aien Saeedi"
+							/>
+						</div>
+						<div className="relative">
+							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Organization Name</label>
+							<input
+								name="organizationName"
+								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
+								placeholder="Lo Agency"
 							/>
 						</div>
 						<div className="relative">
