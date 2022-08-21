@@ -22,6 +22,7 @@ import { JwtStrategy } from './utils/jwt.strategy';
 import { OrganizationService } from './services/organization.service';
 import { OrganizationController } from './controllers/organization.controller';
 import { OrganizationUserService } from './services/organizationUser.service';
+import { Invite } from './entities/invite.entity';
 
 @Module({
   imports: [
@@ -36,7 +37,7 @@ import { OrganizationUserService } from './services/organizationUser.service';
         ssl: { rejectUnauthorized: false },
         synchronize: true,
         logging: true,
-        entities: [Contact, Organization, OrganizationUser, User],
+        entities: [Contact, Organization, OrganizationUser, User, Invite],
       }),
     }),
     PassportModule,
