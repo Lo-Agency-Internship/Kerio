@@ -26,12 +26,12 @@ const SignInModal: FC<ISignInModal> = ({ setOpen }) => {
 
 		const isValid = await signInValidation.isValid({ email });
 		if (isValid) {
-			await axios.post(backend('users'), body).then((response) => {
+			await axios.post(backend('auth/login'), body).then((response) => {
 				const user = response.data;
-				localStorage.setItem('userToken', user.Token);
-
+				console.log(user);
+				localStorage.setItem('access_token', user.access_token);
 				setOpen(false);
-				navigate(`/dashboard/${user.id}`);
+				navigate(`/dashboard`);
 			});
 		} else {
 			signInValidation.validate({ email }).catch((e) => {
