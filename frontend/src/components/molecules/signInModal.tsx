@@ -1,8 +1,43 @@
 import { Button } from '../atoms/button';
+import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { backend } from '../../utils';
+import { signInValidation } from '../../validation/userValidation';
+interface ISignInModal {
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-function SignInModal({ setOpen }: any) {
+const SignInModal: FC<ISignInModal> = ({ setOpen }) => {
+	const navigate = useNavigate();
+	const [error, setError] = useState<string | null>(null);
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
+		setError(null);
+		const formData = new FormData(event.currentTarget);
+
+		const email = formData.get('email')?.toString().toLowerCase();
+		const password = formData.get('password')?.toString().toLowerCase();
+
+		const body = {
+			email,
+			password,
+		};
+
+		const isValid = await signInValidation.isValid({ email });
+		if (isValid) {
+			await axios.post(backend('users'), body).then((response) => {
+				const user = response.data;
+				localStorage.setItem('userToken', user.Token);
+
+				setOpen(false);
+				navigate(`/dashboard/${user.id}`);
+			});
+		} else {
+			signInValidation.validate({ email }).catch((e) => {
+				setError(e.message);
+			});
+		}
 	};
 	return (
 		<div className="flex flex-col z-50 absolute items-start justify-center w-full px-10 pt-5 pb-20 lg:pt-20 lg:flex-row">
@@ -32,10 +67,12 @@ function SignInModal({ setOpen }: any) {
 						</svg>
 					</button>
 					<h4 className="w-full text-4xl font-medium leading-snug">LogIn Form</h4>
+					{error && <p>{error}</p>}
 					<form onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Email Address</label>
 							<input
+								name="email"
 								type="text"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="XxX@email.com"
@@ -44,6 +81,7 @@ function SignInModal({ setOpen }: any) {
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Password</label>
 							<input
+								name="password"
 								type="password"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="pa@ssword"
@@ -61,6 +99,6 @@ function SignInModal({ setOpen }: any) {
 			</div>
 		</div>
 	);
-}
+};
 
 export default SignInModal;
