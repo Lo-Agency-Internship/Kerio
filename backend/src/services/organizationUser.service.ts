@@ -17,7 +17,7 @@ export class OrganizationUserService {
 
     @InjectRepository(OrganizationUser)
     private readonly orgUserRepository: Repository<OrganizationUser>,
-  ) {}
+  ) { }
 
   async assignUserToOrganization(
     userId: number,
@@ -57,6 +57,8 @@ export class OrganizationUserService {
     const org = await this.orgRepository.findOneBy({
       id: user.organization.orgId,
     });
+
+    user.organization.roleId;
 
     return {
       ...user,

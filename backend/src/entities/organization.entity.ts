@@ -18,7 +18,7 @@ export class Organization {
   @Column()
   address: string;
 
-  @Column({unique: true})
+  @Column({ unique: true })
   slug: string;
 
   @CreateDateColumn()
