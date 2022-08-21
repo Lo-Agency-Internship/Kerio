@@ -8,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Organization } from './organization.entity';
 import { OrganizationUser } from './organizationUser.entity';
 
 @Entity()
@@ -25,6 +24,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  salt: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -36,9 +38,5 @@ export class User {
 
   @OneToOne(() => OrganizationUser)
   @JoinColumn()
-  organizationUser: OrganizationUser;
-
-  @OneToOne(() => Organization)
-  @JoinColumn()
-  organization: Organization;
+  organization: OrganizationUser;
 }
