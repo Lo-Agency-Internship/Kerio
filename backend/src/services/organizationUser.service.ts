@@ -23,7 +23,7 @@ export class OrganizationUserService {
 
     @InjectRepository(OrganizationUser)
     private readonly orgUserRepository: Repository<OrganizationUser>,
-  ) { }
+  ) {}
 
   async assignUserToOrganization(
     userId: number,
