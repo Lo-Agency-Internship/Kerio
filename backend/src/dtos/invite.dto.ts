@@ -1,5 +1,12 @@
 import { Type } from 'class-transformer';
-import { ArrayNotEmpty, IsArray, IsEmail, IsNotEmpty, IsNotEmptyObject, ValidateNested } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsEmail,
+  IsNotEmpty,
+  IsNotEmptyObject,
+  ValidateNested,
+} from 'class-validator';
 
 export class BasicInviteDto {
   @IsNotEmpty()
