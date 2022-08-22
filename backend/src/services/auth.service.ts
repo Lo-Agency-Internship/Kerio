@@ -52,6 +52,7 @@ export class AuthService {
     name,
     password,
     organizationSlug,
+    userRole
   }: UserRegisterDto): Promise<SecureUserWithOrganization> {
     const [orgExists, organization] = await this.orgService.existsAndFindBySlug(
       organizationSlug,
@@ -73,6 +74,7 @@ export class AuthService {
     await this.orgUserService.assignUserToOrganization(
       createdUser.id,
       organization.id,
+      userRole
     );
 
     // TODO: send the user an email to activate the account

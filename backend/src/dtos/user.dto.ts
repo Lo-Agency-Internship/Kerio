@@ -15,4 +15,7 @@ export class UserRegisterDto extends UserLoginDto {
 
   @IsNotEmpty()
   organizationSlug: string;
+
+  @IsNotEmpty()
+  userRole: number
 }
