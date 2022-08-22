@@ -1,0 +1,1 @@
+GET http://localhost:3001/contacts HTTP/1.1

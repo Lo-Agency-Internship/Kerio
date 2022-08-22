@@ -10,11 +10,11 @@ export class ContactService {
     private readonly contactRepository: Repository<Contact>,
   ) {}
 
-  findAllContact(): Promise<Contact[]> {
+  getAllContact(): Promise<Contact[]> {
     return this.contactRepository.find();
   }
 
-  findOneContact(id: number): Promise<Contact> {
+  findOneContactById(id: number): Promise<Contact> {
     return this.contactRepository.findOneBy({ id });
   }
 
