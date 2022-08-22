@@ -8,7 +8,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
-import { CreateInviteDto, CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
+import {
+  CreateInviteDto,
+  CreateInvitesDto,
+  RegisterUserByInviteDto,
+} from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
 
 @Controller('invites')
@@ -16,7 +20,7 @@ export class InviteController {
   constructor(
     private readonly inviteService: InviteService,
     private readonly authService: AuthService,
-  ) { }
+  ) {}
 
   @Get()
   async index() {
