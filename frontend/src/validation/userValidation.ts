@@ -11,3 +11,7 @@ export const modalUserValidation = yup.object().shape({
 		.typeError('Password is not valid'),
 	rePassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
+
+export const signInValidation = yup.object().shape({
+	email: yup.string().email('Please enter a valid email').required('Email is required').typeError('Email is not valid'),
+});
