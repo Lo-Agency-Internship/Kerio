@@ -8,11 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
-import {
-  CreateInviteDto,
-  CreateInvitesDto,
-  RegisterUserByInviteDto,
-} from 'src/dtos/invite.dto';
+import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
 import { roleEnum } from 'src/utils/types';
 
@@ -55,15 +51,14 @@ export class InviteController {
       throw new HttpException(`token is not valid`, HttpStatus.BAD_REQUEST);
 
     const invite = await this.inviteService.getInviteByToken(token);
-    //my change
-    const userRole = roleEnum.Employee
 
+    const roleId = roleEnum.Employee;
     const resultUser = await this.authService.registerUser({
       email: invite.email,
       name: body.name,
       organizationSlug: invite.invitedOrganization.slug,
       password: body.password,
-      userRole
+      roleId,
     });
 
     // TODO: send email to user to activate the account

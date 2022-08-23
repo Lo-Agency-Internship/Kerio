@@ -6,7 +6,7 @@ import { Role } from 'src/entities/role.entity';
 export type SecureUser = Omit<User, 'password' | 'salt'>;
 export type SecureUserWithOrganization = Omit<SecureUser, 'organization'> & {
   organization: Organization;
-  role:Role
+  role: Role | null;
 };
 export type NewUser = Omit<
   User,
@@ -29,9 +29,8 @@ export type JwtResponse = {
 };
 
 export type SecureInvite = Omit<Invite, 'token'>;
-
+//ERole
 export enum roleEnum {
-  Owner=1,
-  Employee=2
-
+  Owner = 1,
+  Employee = 2,
 }

@@ -7,9 +7,12 @@ import {
 } from '@nestjs/common';
 import { UserLoginDto, UserRegisterDto } from '../dtos/user.dto';
 import { UserService } from '../services/user.service';
-import { genSaltSync, hashSync } from 'bcrypt';
-import { User } from '../entities/user.entity';
-import { roleEnum, SecureUser, SecureUserWithOrganization } from '../utils/types';
+import { hashSync } from 'bcrypt';
+import {
+  roleEnum,
+  SecureUser,
+  SecureUserWithOrganization,
+} from '../utils/types';
 import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
 import { OrganizationUserService } from '../services/organizationUser.service';
@@ -76,15 +79,14 @@ export class AuthController {
       address: '',
       slug: pipedOrgSlug,
     });
-    //my change
-    const userRole = roleEnum.Owner
+
+    const roleId = roleEnum.Owner;
     const resultUser = await this.authService.registerUser({
       email,
       name,
       organizationSlug: newOrg.slug,
       password,
-      userRole,
-      
+      roleId,
     });
 
     return resultUser;

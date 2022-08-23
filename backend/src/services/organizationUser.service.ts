@@ -6,8 +6,7 @@ import { OrganizationUser } from '../entities/organizationUser.entity';
 import { Organization } from '../entities/organization.entity';
 import { SecureUserWithOrganization } from '../utils/types';
 import { Role } from 'src/entities/role.entity';
-import { roleEnum } from '../utils/types'
-
+import { roleEnum } from '../utils/types';
 
 @Injectable()
 export class OrganizationUserService {
@@ -28,12 +27,12 @@ export class OrganizationUserService {
   async assignUserToOrganization(
     userId: number,
     orgId: number,
-    userRole
+    roleId: roleEnum,
   ): Promise<OrganizationUser> {
     const orgUser = await this.orgUserRepository.save({
       orgId,
       userId,
-      userRole //todo change to userID
+      roleId,
     });
 
     await this.userRepository.update(
@@ -65,12 +64,14 @@ export class OrganizationUserService {
     });
 
     //user.organization.roleId;
-    const role = await this.roleRepository.findOneBy({id:user.organization.roleId})
+    const role = await this.roleRepository.findOneBy({
+      id: user.organization.roleId,
+    });
 
     return {
       ...user,
       organization: org,
-      role:role
+      role,
     };
   }
 }
