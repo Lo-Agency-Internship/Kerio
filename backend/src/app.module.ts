@@ -26,7 +26,7 @@ import { Invite } from './entities/invite.entity';
 import { InviteController } from './controllers/invite.controller';
 import { InviteService } from './services/invite.service';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { MailgunService } from './services/mail.service'
+import { MailgunService } from './services/mail.service';
 
 const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
 
@@ -47,19 +47,14 @@ const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
       }),
     }),
     MailerModule.forRootAsync({
-      useFactory: ()=> ({
-        transport:{
-          host: process.env.MAILGUN_HOST,
+      useFactory: () => ({
+        transport: {
+          host: `smtps://${process.env.SENDGRID_USER}:${process.env.SENDGRID_PASSWORD}@${process.env.SENDGRID_HOST}`,
           ignoreTLS: true,
           secure: false,
-          auth: {
-            user: process.env.MAILGUN_USER,
-            pass: process.env.MAILGUN_PASSWORD,
-          },
-        }
-      })
-    })
-    ,
+        },
+      }),
+    }),
     PassportModule,
     TerminusModule,
     HttpModule,
@@ -88,7 +83,7 @@ const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
     LocalStrategy,
     JwtStrategy,
     InviteService,
-    MailgunService
+    MailgunService,
   ],
   exports: [AuthService],
 })

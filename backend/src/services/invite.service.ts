@@ -12,8 +12,6 @@ import { UserService } from './user.service';
 import { randomBytes } from 'crypto';
 import { MailgunService } from './mail.service';
 
-
-
 @Injectable()
 export class InviteService {
   constructor(
@@ -63,8 +61,11 @@ export class InviteService {
     });
 
     // TODO: implement the email sending
-   const response = await this.mailgunService.send('alinaghihootan@gmail.com','thohuti@gmail.com','Invitation Email',`http://localhost:3001/register?token=${inviteData.token}`)
-   
+    const response = await this.mailgunService.send(
+      'alinaghihootan@gmail.com',
+      'Invitation Email',
+      `http://localhost:3001/register?token=${inviteData.token}`,
+    );
   }
 
   async isInviteValid({ token }: InviteTokenDto): Promise<boolean> {

@@ -5,15 +5,17 @@ import { MailerService } from '@nestjs-modules/mailer';
 export class MailgunService {
   constructor(private readonly mailerService: MailerService) {}
 
-  public send(mailTo,mailFrom,mailSubject,mailText): void {
+  public send(mailTo, mailSubject, mailText): void {
     this.mailerService
       .sendMail({
-        to: `${mailTo}`, 
-        from: `Email from  <${mailFrom}>`, 
-        subject: `${mailSubject}`, 
-        html: `<p> ${mailText} </p>`,
+        to: `${mailTo}`,
+        from: `Lo Services <service@lo.agency>`,
+        subject: `${mailSubject}`,
+        text: `${mailText}`,
+        html: ``
+        
       })
-      .then((res) => console.log({"Result" : res}))
-      .catch((err) => console.log({"Error": err}));
+      .then((res) => console.log({ Result: res }))
+      .catch((err) => console.log({ Error: err }));
   }
 }

@@ -1,14 +1,15 @@
 import {
   Body,
   Controller,
+  Get,
   HttpException,
   HttpStatus,
   Post,
+  Query,
 } from '@nestjs/common';
 import { UserLoginDto, UserRegisterDto } from '../dtos/user.dto';
 import { UserService } from '../services/user.service';
-import { genSaltSync, hashSync } from 'bcrypt';
-import { User } from '../entities/user.entity';
+import { hashSync } from 'bcrypt';
 import { SecureUser, SecureUserWithOrganization } from '../utils/types';
 import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
@@ -34,7 +35,12 @@ export class AuthController {
         `user with email ${email} does not exist`,
         HttpStatus.BAD_REQUEST,
       );
-
+    if (!user.enabled) {
+      throw new HttpException(
+        `user with email ${email} is not activated`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const hashedPassword = hashSync(password, user.salt);
 
     const areEqual = user.password === hashedPassword;
@@ -85,5 +91,11 @@ export class AuthController {
     });
 
     return resultUser;
+  }
+
+  @Get('enable')
+  async activeAccount(@Query() { email }) {
+    console.log(email);
+    return this.authService.activeAccount(email);
   }
 }
