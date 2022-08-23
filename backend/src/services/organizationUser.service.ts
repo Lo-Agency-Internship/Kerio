@@ -33,7 +33,7 @@ export class OrganizationUserService {
     const orgUser = await this.orgUserRepository.save({
       orgId,
       userId,
-      userRole
+      userRole //todo change to userID
     });
 
     await this.userRepository.update(
