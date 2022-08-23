@@ -58,6 +58,8 @@ export class OrganizationUserService {
       id: user.organization.orgId,
     });
 
+    user.organization.roleId;
+
     return {
       ...user,
       organization: org,

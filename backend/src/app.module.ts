@@ -23,11 +23,15 @@ import { OrganizationService } from './services/organization.service';
 import { OrganizationController } from './controllers/organization.controller';
 import { OrganizationUserService } from './services/organizationUser.service';
 import { Invite } from './entities/invite.entity';
+import { InviteController } from './controllers/invite.controller';
+import { InviteService } from './services/invite.service';
+
+const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forFeature([Contact, Organization, OrganizationUser, User]),
+    TypeOrmModule.forFeature(entitiesToAdd),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -37,7 +41,7 @@ import { Invite } from './entities/invite.entity';
         ssl: { rejectUnauthorized: false },
         synchronize: true,
         logging: true,
-        entities: [Contact, Organization, OrganizationUser, User, Invite],
+        entities: entitiesToAdd,
       }),
     }),
     PassportModule,
@@ -56,6 +60,7 @@ import { Invite } from './entities/invite.entity';
     AuthController,
     UserController,
     OrganizationController,
+    InviteController,
   ],
   providers: [
     AppService,
@@ -66,6 +71,7 @@ import { Invite } from './entities/invite.entity';
     AuthService,
     LocalStrategy,
     JwtStrategy,
+    InviteService,
   ],
   exports: [AuthService],
 })

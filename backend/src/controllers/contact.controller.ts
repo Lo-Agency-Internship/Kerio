@@ -16,13 +16,13 @@ export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 
   @Get()
-  findAllContancts(): Promise<Contact[]> {
-    return this.contactService.findAllContact();
+  getAllContancts(): Promise<Contact[]> {
+    return this.contactService.getAllContact();
   }
 
   @Get(':id')
-  findOneContact(@Param() param: FindOneContactByIdDto): Promise<Contact> {
-    return this.contactService.findOneContact(param.id);
+  findOneContactById(@Param() param: FindOneContactByIdDto): Promise<Contact> {
+    return this.contactService.findOneContactById(param.id);
   }
 
   @Post()

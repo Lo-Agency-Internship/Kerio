@@ -54,7 +54,7 @@ export class AuthController {
   async register(
     @Body() { password, name, email, organizationSlug }: UserRegisterDto,
   ): Promise<SecureUserWithOrganization> {
-    const pipedOrgSlug = kebab(organizationSlug)
+    const pipedOrgSlug = kebab(organizationSlug);
     const userExists = await this.userService.exists(email);
 
     if (userExists)
@@ -63,51 +63,27 @@ export class AuthController {
         HttpStatus.BAD_REQUEST,
       );
 
-    const salt = genSaltSync(10);
+    const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
 
-    const hashedPass = hashSync(password, salt);
+    if (orgExists)
+      throw new HttpException(
+        `organization already exists`,
+        HttpStatus.BAD_REQUEST,
+      );
 
-    const createdUser: User = await this.userService.addUser({
-      salt,
-      password: hashedPass,
-      email,
-      name,
+    const newOrg = await this.orgService.addOrganization({
+      name: `${name}'s Organization`,
+      address: '',
+      slug: pipedOrgSlug,
     });
 
-    const [orgExists, organization] = await this.orgService.existsAndFindBySlug(
-      pipedOrgSlug,
-    );
+    const resultUser = await this.authService.registerUser({
+      email,
+      name,
+      organizationSlug: newOrg.slug,
+      password,
+    });
 
-    let orgIdToAssign = null;
-
-    if (orgExists) {
-      orgIdToAssign = organization.id;
-    } else {
-      const newOrg = await this.orgService.addOrganization({
-        name: `${name}'s Organization`,
-        address: '',
-        slug: pipedOrgSlug,
-      });
-
-      orgIdToAssign = newOrg.id;
-    }
-
-    await this.orgUserService.assignUserToOrganization(
-      createdUser.id,
-      orgIdToAssign,
-    );
-
-    const resultUser =
-      await this.orgUserService.findUserWithOrganizationByUserEmail(email);
-
-    return {
-      id: resultUser.id,
-      name: resultUser.name,
-      email: resultUser.email,
-      updatedAt: resultUser.updatedAt,
-      deletedAt: resultUser.deletedAt,
-      createdAt: resultUser.createdAt,
-      organization: resultUser.organization,
-    };
+    return resultUser;
   }
 }

@@ -1,5 +1,6 @@
 import { User } from '../entities/user.entity';
 import { Organization } from '../entities/organization.entity';
+import { Invite } from 'src/entities/invite.entity';
 
 export type SecureUser = Omit<User, 'password' | 'salt'>;
 export type SecureUserWithOrganization = Omit<SecureUser, 'organization'> & {
@@ -24,3 +25,5 @@ export type JwtPayload = {
 export type JwtResponse = {
   access_token: string;
 };
+
+export type SecureInvite = Omit<Invite, 'token'>;
