@@ -10,13 +10,16 @@ import { DeleteResult, Repository } from 'typeorm';
 import { OrganizationService } from './organization.service';
 import { UserService } from './user.service';
 import { randomBytes } from 'crypto';
+import { MailgunService } from './mail.service';
+
+
 
 @Injectable()
 export class InviteService {
   constructor(
     @InjectRepository(Invite)
     private readonly inviteRepository: Repository<Invite>,
-
+    private readonly mailgunService: MailgunService,
     private readonly userService: UserService,
     private readonly orgService: OrganizationService,
   ) {}
@@ -60,6 +63,8 @@ export class InviteService {
     });
 
     // TODO: implement the email sending
+   const response = await this.mailgunService.send('alinaghihootan@gmail.com','thohuti@gmail.com','Invitation Email',`http://localhost:3001/register?token=${inviteData.token}`)
+   
   }
 
   async isInviteValid({ token }: InviteTokenDto): Promise<boolean> {

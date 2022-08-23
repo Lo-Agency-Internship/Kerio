@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
 import {
@@ -35,7 +36,7 @@ export class InviteController {
   @Post()
   async createNewInvite(@Body() { invites }: CreateInvitesDto) {
     console.log(this.inviteService);
-    return false;
+    return false; 
   }
 
   @Get('/:token')
@@ -43,10 +44,16 @@ export class InviteController {
     return await this.inviteService.isInviteValid({ token });
   }
 
+  @Post('/mail')
+  async hutanInvite(@Query() {mailTo})
+  {
+    await this.inviteService.sendEmailToInvite(mailTo)
+  }
+
   @Post('/:token')
   async registerUserByToken(
     @Param() { token }: any,
-    @Body() body: RegisterUserByInviteDto,
+    @Body() body: any,
   ) {
     const isTokenValid = await this.inviteService.isInviteValid({ token });
 
