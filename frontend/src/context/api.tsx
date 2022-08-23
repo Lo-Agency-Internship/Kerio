@@ -10,6 +10,7 @@ interface IApiContext {
 	user?: IUser;
 	setUser?: (value: IUser) => void;
 	getContactInfo?: any;
+	getContacts?: any;
 }
 
 const ApiContext = createContext<IApiContext>({});
@@ -25,5 +26,10 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 	console.log(typeof getContactInfo);
 
-	return <ApiContext.Provider value={{ getContactInfo }}>{children}</ApiContext.Provider>;
+	const getContacts = async () => {
+		const { data } = await axios.get(backend(`contacts`));
+		return data;
+	};
+
+	return <ApiContext.Provider value={{ getContactInfo, getContacts }}>{children}</ApiContext.Provider>;
 };
