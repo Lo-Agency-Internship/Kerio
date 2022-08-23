@@ -17,7 +17,7 @@ export class InviteController {
   constructor(
     private readonly inviteService: InviteService,
     private readonly authService: AuthService,
-  ) {}
+  ) { }
 
   @Get()
   async index() {
@@ -42,7 +42,12 @@ export class InviteController {
 
   @Post('/mail')
   async sendEmailToInvite(@Query() { mailTo }) {
-    await this.inviteService.sendEmailToInvite(mailTo);
+    try {
+      await this.inviteService.sendEmailToInvite(mailTo);
+      return;
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Post('/:token')

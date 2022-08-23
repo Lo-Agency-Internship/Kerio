@@ -3,7 +3,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class MailgunService {
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(private readonly mailerService: MailerService) { }
 
   public send(mailTo, mailSubject, mailText): void {
     this.mailerService
@@ -12,8 +12,7 @@ export class MailgunService {
         from: `Lo Services <service@lo.agency>`,
         subject: `${mailSubject}`,
         text: `${mailText}`,
-        html: ``
-        
+        html: ``,
       })
       .then((res) => console.log({ Result: res }))
       .catch((err) => console.log({ Error: err }));

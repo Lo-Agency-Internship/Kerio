@@ -49,9 +49,16 @@ const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
     MailerModule.forRootAsync({
       useFactory: () => ({
         transport: {
-          host: `smtps://${process.env.SENDGRID_USER}:${process.env.SENDGRID_PASSWORD}@${process.env.SENDGRID_HOST}`,
-          ignoreTLS: true,
+          host: process.env.SENDGRID_HOST,
+          port: parseInt(process.env.SENDGRID_PORT || "587"),
+          auth: {
+            user: process.env.SENDGRID_USER,
+            pass: process.env.SENDGRID_KEY
+          },
+          ignoreTLS: false,
           secure: false,
+          requireTLS: false,
+          authMethod: "PLAIN",
         },
       }),
     }),
@@ -87,4 +94,4 @@ const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
   ],
   exports: [AuthService],
 })
-export class AppModule {}
+export class AppModule { }
