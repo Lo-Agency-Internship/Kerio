@@ -7,6 +7,4 @@ export class Role {
 
   @Column()
   name: string;
-
-  //relation
 }

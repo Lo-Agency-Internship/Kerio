@@ -22,14 +22,3 @@ export class RoleService {
     });
   }
 }
-//         //.exec()
-//         .then(role=>{
-//             if(role){
-//                 return
-
-//             }
-//             return this.roleRepository.save(role)
-//         })
-
-//     }
-// }

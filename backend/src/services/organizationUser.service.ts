@@ -63,7 +63,6 @@ export class OrganizationUserService {
       id: user.organization.orgId,
     });
 
-    //user.organization.roleId;
     const role = await this.roleRepository.findOneBy({
       id: user.organization.roleId,
     });
