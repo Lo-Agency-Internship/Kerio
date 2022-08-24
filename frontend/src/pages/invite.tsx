@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Button } from '../components/atoms/button';
 
 export default function Invite() {
@@ -12,7 +11,7 @@ export default function Invite() {
 						<p className="text-sm opacity-75  md:text-gray-100">All Rights Reserved to Lo Agency</p>
 
 						<h4 className=" text-gray-600 md:text-gray-400 font-bold mt-16 top-2">
-							You are invited by your manager. Please fill up the form and put accept to create your account.
+							You are invited by your manager. Please fill up the form and click submit.
 						</h4>
 					</div>
 				</div>
@@ -25,6 +24,7 @@ export default function Invite() {
 								name="name"
 								className="block w-11/12 px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="Mark"
+								disabled={true}
 							/>
 						</div>
 						<div className="relative">
@@ -34,6 +34,7 @@ export default function Invite() {
 								type="email"
 								className="block w-11/12 px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="Mark@email.com"
+								disabled={true}
 							/>
 						</div>
 						<div className="relative">
