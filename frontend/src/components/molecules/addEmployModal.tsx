@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { addEmployeModalValidation } from '../../validation/addEmployModalValidation';
 import axios from 'axios';
 import { backend } from '../../utils';
-import { useNavigate } from 'react-router-dom';
+import { Button } from '../atoms/button';
 
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,10 +18,6 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 		const formData = new FormData(event.currentTarget);
 		const name = formData.getAll('name')?.toString().toLowerCase();
 		const email = formData.getAll('email')?.toString().toLowerCase();
-		// const body = {
-		// 	name: name as string,
-		// 	email: email as string,
-		// };
 		const names = name.split(',');
 		const emails = email.split(',');
 		const data = names.map((item, index) => {
@@ -30,24 +26,22 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 				email: emails[index],
 			};
 		});
-		console.log(data);
 
-		// await axios.post(backend(''), body).then((response) => {
-		// 	const user = response.data;
-		// 	setOpen(false);
-		// 	// navigator(`/''/''/${user.id}`);
-		// });
+		await axios.post(backend(''), data).then((response) => {
+			const user = response.data;
+			setOpen(false);
+			console.log(data);
+		});
 	};
 	const handleRemoveClick = (index: number) => {
 		const list = [...employees];
 		list.splice(index, 1);
-		console.log(list, 'list');
+
 		setEmployees(list);
-		console.log(employees);
 	};
 	const handleAddClick = async (event: any) => {
 		event.preventDefault();
-		// setEmployees([...employees, { name: nameValue, email: emailValue }]);
+
 		const body = {
 			name: nameValue,
 			email: emailValue,
@@ -56,7 +50,7 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 		const exists = employees.find((employee: { email: string }) => employee.email === body.email);
 		if (isValid && !exists) {
 			setEmployees([...employees, body]);
-			console.log(employees);
+
 			setNameValue('');
 			setEmailValue('');
 		} else {
@@ -78,7 +72,7 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 								<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">
 									Invite employee form
 								</h1>
-								{/* // form starts here */}
+
 								{error && <p>{error}</p>}
 								<div className="flex gap-1">
 									<div>
@@ -157,22 +151,22 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 														/>
 													</div>
 
-													<button
+													<Button
 														type="button"
 														onClick={() => handleRemoveClick(index)}
-														className="inline-block mb-5 mt-8 p-1 py-2 h-10 bg-red-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-900 hover:shadow-lg focus:bg-red-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-900 active:shadow-lg transition duration-150 ease-in-out">
-														Remove
-													</button>
+														style="inline-block mb-5 mt-8 p-1 py-2 h-10 bg-red-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-900 hover:shadow-lg focus:bg-red-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-900 active:shadow-lg transition duration-150 ease-in-out"
+														label="Remove"
+													/>
 												</div>
 											</React.Fragment>
 										);
 									})}
 
-									<button
+									<Button
 										type="submit"
-										className="inline-block mb-5 mt-8 p-4 h-10 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
-										Submit
-									</button>
+										style="inline-block mb-5 mt-8 p-4 h-10 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out"
+										label="invite"
+									/>
 									<button
 										type="button"
 										className="cursor-pointer absolute top-0 right-0 mt-4 mr-5
