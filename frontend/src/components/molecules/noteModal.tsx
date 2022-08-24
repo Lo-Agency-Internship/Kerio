@@ -3,7 +3,7 @@ export default function NoteModal({ setOpen }: any) {
 		<>
 			<div className="pb-9 z-10 ">
 				<form>
-					<div className="absolute flex top-16 right-16 mt-8 mr-16 my-5">
+					<div className="absolute flex top-96 right-16 mt-8 mr-16 my-5">
 						<div className=" bg-white rounded-md px-6 py-10 max-w-2xl mx-auto">
 							<button
 								className="cursor-pointer absolute top-0 right-0 mt-4 mr-4
@@ -52,7 +52,7 @@ export default function NoteModal({ setOpen }: any) {
 								</div>
 								<div className="flex items-center justify-around pt-8">
 									<button
-										className="bg-indigo-600 hover:bg-blue-500 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
+										className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
 										type="button">
 										save
 									</button>
