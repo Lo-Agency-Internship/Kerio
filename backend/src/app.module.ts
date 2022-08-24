@@ -25,8 +25,17 @@ import { OrganizationUserService } from './services/organizationUser.service';
 import { Invite } from './entities/invite.entity';
 import { InviteController } from './controllers/invite.controller';
 import { InviteService } from './services/invite.service';
+import { Role } from './entities/role.entity';
+import { RoleService } from './services/role.service';
 
-const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
+const entitiesToAdd = [
+  Contact,
+  Organization,
+  OrganizationUser,
+  User,
+  Invite,
+  Role,
+];
 
 @Module({
   imports: [
@@ -72,7 +81,8 @@ const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
     LocalStrategy,
     JwtStrategy,
     InviteService,
+    RoleService,
   ],
-  exports: [AuthService],
+  exports: [AuthService, RoleService],
 })
 export class AppModule {}
