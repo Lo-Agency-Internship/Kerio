@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
 import { backend } from '../utils';
@@ -11,6 +11,9 @@ interface IApiContext {
 	user?: IUser;
 	setUser?: (value: IUser) => void;
 	getContactInfo?: any;
+	getContacts?: any;
+	change?: any;
+	setChange?: any;
 	checkToken?: any;
 }
 
@@ -19,11 +22,21 @@ export const useApiContext = () => useContext(ApiContext);
 export const ApiProvider = ({ children }: IApiProvider) => {
 	// const [isLoading, setIsLoading] = useState(false);
 	// useEffect(() => {}, []);
+	const [change, setChange] = useState(false);
 	// const [isToken, setIsToken] = useState(null);
 	const getContactInfo = async (id: string) => {
 		const { data } = await axios.get(backend(`contacts/${id}`));
 		return data;
 	};
+
+	const getContacts = async () => {
+		const { data } = await axios.get(backend(`contacts`));
+		return data;
+	};
+	useEffect(() => {
+		const f = async () => getContacts();
+		f();
+	}, []);
 
 	const checkToken = (token: any) => {
 		let isExpired = false;
@@ -44,5 +57,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return isExpired;
 	};
 
-	return <ApiContext.Provider value={{ getContactInfo, checkToken }}>{children}</ApiContext.Provider>;
+	return <ApiContext.Provider value={{ getContactInfo, getContacts, change, setChange, checkToken }}>{children}</ApiContext.Provider>;
+
 };
