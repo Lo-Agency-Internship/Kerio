@@ -1,5 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { JwtGuard } from '../utils/jwt.guard';
+import { Controller, Get } from '@nestjs/common';
 import { OrganizationService } from '../services/organization.service';
 import { Organization } from '../entities/organization.entity';
 
