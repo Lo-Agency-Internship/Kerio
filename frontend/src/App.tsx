@@ -6,8 +6,9 @@ import Layout from './layout/layout';
 import Dashboard from './pages/dashboard';
 import Index from './pages';
 import { ApiProvider } from './context/api';
-import PriveteRoutes from './components/routes/priveteRoutes';
+import PrivateRoutes from './components/routes/privateRoutes';
 import PublicRoutes from './components/routes/publicRoutes';
+import Invite from './pages/invite';
 
 function App() {
 	return (
@@ -17,8 +18,10 @@ function App() {
 					<Route element={<PublicRoutes />}>
 						<Route path="/" element={<Index />} />
 					</Route>
-
-					<Route element={<PriveteRoutes />}>
+					<Route element={<PrivateRoutes />}>
+						<Route path="/invite" element={<Invite />} />
+					</Route>
+					<Route element={<PrivateRoutes />}>
 						<Route
 							path="/dashboard"
 							element={
