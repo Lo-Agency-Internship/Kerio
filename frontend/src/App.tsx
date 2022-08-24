@@ -6,7 +6,7 @@ import Layout from './layout/layout';
 import Dashboard from './pages/dashboard';
 import Index from './pages';
 import { ApiProvider } from './context/api';
-import PriveteRoutes from './components/routes/priveteRoutes';
+import PrivateRoutes from './components/routes/privateRoutes';
 import PublicRoutes from './components/routes/publicRoutes';
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
 						<Route path="/" element={<Index />} />
 					</Route>
 
-					<Route element={<PriveteRoutes />}>
+					<Route element={<PrivateRoutes />}>
 						<Route
 							path="/dashboard"
 							element={
