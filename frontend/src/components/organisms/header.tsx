@@ -5,6 +5,10 @@ const Header = () => {
 			{/* header start here */}
 			<nav
 				className="
+				fixed
+				w-5/6
+				h-24
+				z-40
   right-0
   flex flex-wrap
   items-center

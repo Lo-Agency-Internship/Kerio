@@ -10,7 +10,7 @@ const Sidebar = () => {
 		<>
 			{showAddEmployModal && <AddEmployModal setOpen={setAddEmployModal} />}
 			{showContactModal && <ContactModal setOpen={setShowContactModal} />}
-			<div className="w-1/6 shadow-md bg-[#212121] px-1 relative h-screen" id="sidenavExample">
+			<div className="w-64 shadow-md bg-[#212121] px-1 h-screen fixed" id="sidenavExample">
 				<img className="h-8 w-auto my-4 sm:h-20" src={Images} alt="Img" />
 				<ul className="relative top-6">
 					<li className="relative">
