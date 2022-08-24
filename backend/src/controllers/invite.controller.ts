@@ -8,12 +8,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
-import {
-  CreateInviteDto,
-  CreateInvitesDto,
-  RegisterUserByInviteDto,
-} from 'src/dtos/invite.dto';
+import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
+import { roleEnum } from 'src/utils/types';
 
 @Controller('invites')
 export class InviteController {
@@ -55,11 +52,13 @@ export class InviteController {
 
     const invite = await this.inviteService.getInviteByToken(token);
 
+    const roleId = roleEnum.Employee;
     const resultUser = await this.authService.registerUser({
       email: invite.email,
       name: body.name,
       organizationSlug: invite.invitedOrganization.slug,
       password: body.password,
+      roleId,
     });
 
     // TODO: send email to user to activate the account
