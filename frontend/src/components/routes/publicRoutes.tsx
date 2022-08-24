@@ -1,11 +1,12 @@
 import { Outlet, Navigate } from 'react-router-dom';
+import { useApiContext } from '../../context/api';
 
 const PublicRoutes = () => {
-	let expired = true;
+	const { checkToken } = useApiContext();
+
 	const token = localStorage.getItem('access_token');
-	if (token) {
-		expired = false;
-	}
-	return expired ? <Outlet /> : <Navigate to="/dashboard" />;
+	const isValidToken = checkToken(token);
+
+	return isValidToken ? <Outlet /> : <Navigate to="/dashboard" />;
 };
 export default PublicRoutes;
