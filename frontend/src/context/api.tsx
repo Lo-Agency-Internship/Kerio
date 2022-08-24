@@ -57,6 +57,9 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return isExpired;
 	};
 
-	return <ApiContext.Provider value={{ getContactInfo, getContacts, change, setChange, checkToken }}>{children}</ApiContext.Provider>;
-
+	return (
+		<ApiContext.Provider value={{ getContactInfo, getContacts, change, setChange, checkToken }}>
+			{children}
+		</ApiContext.Provider>
+	);
 };
