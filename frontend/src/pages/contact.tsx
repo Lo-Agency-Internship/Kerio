@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Profile from '../components/molecules/profile';
 import Timeline from '../components/molecules/timeline';
 import Note from '../components/molecules/note';
+import NoteModal from '../components/molecules/noteModal';
 import { useApiContext } from '../context/api';
 import Images from '../assets/images/user.png';
 import { useParams } from 'react-router-dom';
@@ -9,6 +10,7 @@ import { IUser } from '../utils/interfaces/user';
 
 export default function Contact() {
 	const [contact, setContact] = useState<IUser>();
+	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
 	const { getContactInfo } = useApiContext();
 	const { id } = useParams();
 	useEffect(() => {
@@ -25,12 +27,12 @@ export default function Contact() {
 						<h1 className="pt-2 pl-4 font-bold">{contact?.name} Informations</h1>
 					</div>
 				</div>
-
+				<div className="flex justify-center">{showNoteModal && <NoteModal setOpen={setShowNoteModal} />}</div>
 				<Profile user={contact} setUser={setContact} />
 
 				<div className="flex justify-center w-12/12 border">
 					<Timeline />
-					<Note />
+					<Note setShowNoteModal={setShowNoteModal} />
 				</div>
 			</div>
 		</>
