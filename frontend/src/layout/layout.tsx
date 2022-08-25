@@ -9,11 +9,11 @@ interface ILayout {
 export default function Layout({ children }: ILayout) {
 	return (
 		<>
-			<div className="flex">
+			<div className="flex relative h-full w-full">
 				<Sidebar />
-				<div className="w-5/6">
+				<div className="w-5/6 ml-64 m-auto relative ">
 					<Header />
-					{children}
+					<div className="mt-24 flex flex-col items-center justify-center">{children}</div>
 				</div>
 			</div>
 		</>
