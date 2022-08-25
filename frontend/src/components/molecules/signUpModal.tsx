@@ -89,7 +89,7 @@ function SignUpModal({ setOpen }: any) {
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Name</label>
 							<input
 								name="name"
-								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
+								className="block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="Aien Saeedi"
 							/>
 						</div>
@@ -97,7 +97,7 @@ function SignUpModal({ setOpen }: any) {
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Organization Name</label>
 							<input
 								name="organizationName"
-								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
+								className="block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="Lo Agency"
 							/>
 						</div>
@@ -106,7 +106,7 @@ function SignUpModal({ setOpen }: any) {
 							<input
 								name="email"
 								type="email"
-								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
+								className="block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="XxX@email.com"
 							/>
 						</div>
@@ -115,7 +115,7 @@ function SignUpModal({ setOpen }: any) {
 							<input
 								name="password"
 								type="password"
-								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
+								className="block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="pa@ssword"
 							/>
 						</div>
@@ -124,7 +124,7 @@ function SignUpModal({ setOpen }: any) {
 							<input
 								name="rePassword"
 								type="password"
-								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
+								className="block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="pa@ssword"
 							/>
 						</div>
