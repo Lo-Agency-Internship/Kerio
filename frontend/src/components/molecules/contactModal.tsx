@@ -42,9 +42,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 	};
 	return (
 		// // modal starts here
-		<div
-			className="py-12 transition duration-150 ease-in-out z-50 absolute left-0 right-0 top-0 bottom-0"
-			id="modal">
+		<div className="py-12 transition duration-150 ease-in-out z-50 fixed left-0 right-0 top-0 bottom-0" id="modal">
 			<div role="alert" className="container mx-auto w-11/12 md:w-2/3 max-w-lg">
 				<div className="relative inline-block text-left w-full">
 					<div>
