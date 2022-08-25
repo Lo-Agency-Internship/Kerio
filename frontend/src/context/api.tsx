@@ -15,6 +15,7 @@ interface IApiContext {
 	change?: any;
 	setChange?: any;
 	checkToken?: any;
+	setUserToken?: any;
 }
 
 const ApiContext = createContext<IApiContext>({});
@@ -23,6 +24,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	// const [isLoading, setIsLoading] = useState(false);
 	// useEffect(() => {}, []);
 	const [change, setChange] = useState(false);
+	const [userToken, setUserToken] = useState<any>(null);
 	// const [isToken, setIsToken] = useState(null);
 	const getContactInfo = async (id: string) => {
 		const { data } = await axios.get(backend(`contacts/${id}`));
@@ -38,11 +40,11 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		f();
 	}, []);
 
-	const checkToken = (token: any) => {
+	const checkToken = () => {
 		let isExpired = false;
 		try {
-			const decoded: any = jwt(token);
-			if (token) {
+			const decoded: any = jwt(userToken);
+			if (userToken) {
 				const dateNow = new Date();
 				const timee = decoded.exp * 1000;
 				if (timee < dateNow.getTime()) {
@@ -58,7 +60,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	return (
-		<ApiContext.Provider value={{ getContactInfo, getContacts, change, setChange, checkToken }}>
+		<ApiContext.Provider value={{ getContactInfo, getContacts, change, setChange, checkToken, setUserToken }}>
 			{children}
 		</ApiContext.Provider>
 	);
