@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { backend } from '../../utils';
+import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
 export default function Profile({ user, setUser }: any) {
@@ -34,7 +34,7 @@ export default function Profile({ user, setUser }: any) {
 		const phone = formData.get('phone');
 		const status = formData.get('status');
 		const updatedUser = { name, email, phone, status };
-		await axios.put(backend(`contacts/${user.id}`), updatedUser).then((response) => {
+		await axios.put(uri(`contacts/${user.id}`), updatedUser).then((response) => {
 			console.log(response);
 		});
 		setUser(updatedUser);

@@ -6,13 +6,9 @@
         "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.3.0",
         "@testing-library/user-event": "^13.5.0",
-        "@types/jest": "^27.5.2",
-        "@types/node": "^16.11.47",
-        "@types/react": "^18.0.17",
-        "@types/react-dom": "^18.0.6",
-        "@types/yup": "^0.29.14",
         "axios": "^0.27.2",
         "case": "^1.6.3",
+        "eslint-plugin-promise": "^6.0.1",
         "formik": "^2.2.9",
         "jwt-decode": "^3.1.2",
         "react": "^18.2.0",
@@ -30,7 +26,6 @@
         "eject": "react-scripts eject",
         "format": "prettier --write \"**/*.{ts,tsx,js}\"",
         "lint": "eslint .",
-        "lint && fromat": "eslint . prettier --write \"**/*.{ts,tsx,js}\"",
         "lint:fix": "eslint . --fix"
     },
     "browserslist": {
@@ -46,6 +41,11 @@
         ]
     },
     "devDependencies": {
+        "@types/jest": "^27.5.2",
+        "@types/node": "^16.11.47",
+        "@types/react": "^18.0.17",
+        "@types/react-dom": "^18.0.6",
+        "@types/yup": "^0.29.14",
         "@typescript-eslint/eslint-plugin": "^5.33.0",
         "@typescript-eslint/parser": "^5.33.0",
         "autoprefixer": "^10.4.8",

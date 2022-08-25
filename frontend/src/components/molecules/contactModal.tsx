@@ -2,7 +2,7 @@ import { modalContactValidation } from '../../validation/addContactValidaion';
 import axios from 'axios';
 import { FC, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { backend } from '../../utils';
+import { uri } from '../../utils';
 import { useApiContext } from '../../context/api';
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,7 +27,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 		};
 		const isValid = await modalContactValidation.isValid(body);
 		if (isValid) {
-			await axios.post(backend('contacts'), body).then((response) => {
+			await axios.post(uri('contacts'), body).then((response) => {
 				const user = response.data;
 
 				setOpen(false);
