@@ -12,7 +12,7 @@ import { genSaltSync, hashSync } from 'bcrypt';
 import { User } from 'src/entities/user.entity';
 import { OrganizationUserService } from './organizationUser.service';
 import { OrganizationService } from './organization.service';
-import { MailgunService } from './mail.service';
+import { MailerService } from './mail.service';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +21,7 @@ export class AuthService {
     private readonly orgService: OrganizationService,
     private readonly orgUserService: OrganizationUserService,
     private readonly jwtService: JwtService,
-    private readonly mailgunService: MailgunService,
+    private readonly mailgunService: MailerService,
   ) {}
 
   async validateUser(
@@ -78,11 +78,12 @@ export class AuthService {
     );
 
     // TODO: send the user an email to activate the account
-    await this.mailgunService.send(
-     'alinaghihootan@gmail.com',
-      'Invitation Email',
-      `http://localhost:3001/enable?email=${createdUser.email}`,
-    );
+    await this.mailgunService.send({
+      to: 'alinaghihootan@gmail.com',
+      subject: 'Invitation Email',
+      html: `http://localhost:3001/enable?email=${createdUser.email}`,
+      text: `http://localhost:3001/enable?email=${createdUser.email}`,
+    });
 
     return await this.orgUserService.findUserWithOrganizationByUserEmail(email);
   }

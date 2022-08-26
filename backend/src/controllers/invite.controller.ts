@@ -11,13 +11,15 @@ import {
 import { InviteService } from 'src/services/invite.service';
 import { CreateInvitesDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
+import { TemplateEngineService } from 'src/services/templateEngine.service';
 
 @Controller('invites')
 export class InviteController {
   constructor(
     private readonly inviteService: InviteService,
     private readonly authService: AuthService,
-  ) { }
+    private readonly templateService: TemplateEngineService,
+  ) {}
 
   @Get()
   async index() {
@@ -38,16 +40,6 @@ export class InviteController {
   @Get('/:token')
   async checkTokenValidation(@Param() { token }: any) {
     return await this.inviteService.isInviteValid({ token });
-  }
-
-  @Post('/mail')
-  async sendEmailToInvite(@Query() { mailTo }) {
-    try {
-      await this.inviteService.sendEmailToInvite(mailTo);
-      return;
-    } catch (e) {
-      throw new HttpException(e, HttpStatus.BAD_REQUEST);
-    }
   }
 
   @Post('/:token')

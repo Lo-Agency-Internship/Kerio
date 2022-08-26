@@ -26,7 +26,8 @@ import { Invite } from './entities/invite.entity';
 import { InviteController } from './controllers/invite.controller';
 import { InviteService } from './services/invite.service';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { MailgunService } from './services/mail.service';
+import { MailerService } from './services/mail.service';
+import { TemplateEngineService } from './services/templateEngine.service';
 
 const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
 
@@ -49,16 +50,19 @@ const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
     MailerModule.forRootAsync({
       useFactory: () => ({
         transport: {
-          host: process.env.SENDGRID_HOST,
-          port: parseInt(process.env.SENDGRID_PORT || "587"),
+          host: process.env.MAILER_HOST,
+          port: parseInt(process.env.MAILER_PORT || '587'),
           auth: {
-            user: process.env.SENDGRID_USER,
-            pass: process.env.SENDGRID_KEY
+            user: process.env.MAILER_USER,
+            pass: process.env.MAILER_PASS,
+            credentials: {
+              user: process.env.MAILER_USER,
+              pass: process.env.MAILER_PASS,
+            },
           },
-          ignoreTLS: false,
+          ignoreTLS: true,
           secure: false,
           requireTLS: false,
-          authMethod: "PLAIN",
         },
       }),
     }),
@@ -90,8 +94,9 @@ const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
     LocalStrategy,
     JwtStrategy,
     InviteService,
-    MailgunService,
+    MailerService,
+    TemplateEngineService,
   ],
   exports: [AuthService],
 })
-export class AppModule { }
+export class AppModule {}

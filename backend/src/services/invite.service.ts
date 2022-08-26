@@ -10,16 +10,18 @@ import { DeleteResult, Repository } from 'typeorm';
 import { OrganizationService } from './organization.service';
 import { UserService } from './user.service';
 import { randomBytes } from 'crypto';
-import { MailgunService } from './mail.service';
+import { MailerService } from './mail.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class InviteService {
   constructor(
     @InjectRepository(Invite)
     private readonly inviteRepository: Repository<Invite>,
-    private readonly mailgunService: MailgunService,
+    private readonly mailerService: MailerService,
     private readonly userService: UserService,
     private readonly orgService: OrganizationService,
+    private readonly configService: ConfigService,
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {
@@ -60,12 +62,22 @@ export class InviteService {
       email: invite.email,
     });
 
-    // TODO: implement the email sending
-    const response = await this.mailgunService.send(
-      'alinaghihootan@gmail.com',
-      'Invitation Email',
-      `http://localhost:3001/register?token=${inviteData.token}`,
-    );
+    if (!inviteData)
+      throw new Error(`no invitation could be found for the email`);
+
+    // TODO: implement the rendering via template engine
+    const response = await this.mailerService.send({
+      to: inviteData.email,
+      subject: 'Invitation Email',
+      html: `${this.configService.get('FRONTEND_URL')}/invite?token=${
+        inviteData.token
+      }`,
+      text: `${this.configService.get('FRONTEND_URL')}/invite?token=${
+        inviteData.token
+      }`,
+    });
+
+    console.log(response);
   }
 
   async isInviteValid({ token }: InviteTokenDto): Promise<boolean> {

@@ -1,20 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { MailerService } from '@nestjs-modules/mailer';
+import {
+  ISendMailOptions,
+  MailerService as NestMailer,
+} from '@nestjs-modules/mailer';
+import { SentMessageInfo } from 'nodemailer';
 
 @Injectable()
-export class MailgunService {
-  constructor(private readonly mailerService: MailerService) { }
+export class MailerService {
+  constructor(private readonly mailerService: NestMailer) {}
 
-  public send(mailTo, mailSubject, mailText): void {
-    this.mailerService
-      .sendMail({
-        to: `${mailTo}`,
-        from: `Lo Services <service@lo.agency>`,
-        subject: `${mailSubject}`,
-        text: `${mailText}`,
-        html: ``,
-      })
-      .then((res) => console.log({ Result: res }))
-      .catch((err) => console.log({ Error: err }));
+  async send(
+    data: Pick<ISendMailOptions, 'to' | 'subject' | 'text' | 'html'>,
+  ): Promise<SentMessageInfo> {
+    const res = await this.mailerService.sendMail({
+      to: data.to,
+      from: `Lo Services <service@loagency.de>`,
+      subject: data.subject,
+      text: data.text,
+      html: data.html,
+    });
+
+    return res;
   }
 }
