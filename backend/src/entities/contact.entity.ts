@@ -3,9 +3,15 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { ContactStatus } from './contactStatus';
+import { Note } from './note.entity';
+import { Organization } from './organization.entity';
 
 @Entity()
 export class Contact {
@@ -32,4 +38,13 @@ export class Contact {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @ManyToOne(() => Organization)
+  organization: Organization;
+
+  @OneToMany(() => Note, (note) => note.contact)
+  notes: Note[];
+
+  @OneToMany(() => ContactStatus, (contactStatus) => contactStatus.contact)
+  contactStatus: ContactStatus;
 }

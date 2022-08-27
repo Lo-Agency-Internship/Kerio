@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpException,
@@ -90,5 +91,14 @@ export class AuthController {
     });
 
     return resultUser;
+  }
+
+  @Post('checkDuplicateEmail')
+  async emailExist(@Body() { emial }) {
+    const isExist = await this.userService.exists(emial);
+    if (isExist) {
+      throw new HttpException('email  already exists', HttpStatus.BAD_REQUEST);
+    }
+    return HttpStatus.ACCEPTED;
   }
 }
