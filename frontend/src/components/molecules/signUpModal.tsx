@@ -1,6 +1,6 @@
 import { Button } from '../atoms/button';
 import { modalUserValidation } from '../../validation/userValidation';
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { backend } from '../../utils';
@@ -17,6 +17,7 @@ function SignUpModal({ setOpen }: any) {
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
 		const password = formData.get('password')?.toString().toLowerCase();
+		const rePassword = formData.get('rePassword')?.toString().toLowerCase();
 		const organizationName = formData.get('organizationName');
 		let organizationSlug;
 		if (organizationName === '') {
@@ -30,7 +31,6 @@ function SignUpModal({ setOpen }: any) {
 			password,
 			organizationSlug,
 		};
-
 		const isValid = await modalUserValidation.isValid(body);
 		if (isValid) {
 			try {
@@ -41,12 +41,8 @@ function SignUpModal({ setOpen }: any) {
 						setOpen(false);
 					}
 				});
-			} catch (err) {
-				if (err) {
-					setError('This email has been chosen before!');
-				} else {
-					setError('Something went wrong!');
-				}
+			} catch (err: SetStateAction<any>) {
+				setError(err.response.data.message);
 			}
 		} else {
 			modalUserValidation.validate(body).catch((e) => {
