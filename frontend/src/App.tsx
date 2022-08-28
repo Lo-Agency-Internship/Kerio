@@ -6,22 +6,32 @@ import Layout from './layout/layout';
 import Dashboard from './pages/dashboard';
 import Index from './pages';
 import { ApiProvider } from './context/api';
+import PrivateRoutes from './components/routes/privateRoutes';
+import PublicRoutes from './components/routes/publicRoutes';
+import Invite from './pages/invite';
 
 function App() {
 	return (
 		<BrowserRouter>
 			<ApiProvider>
 				<Routes>
-					<Route path="/" element={<Index />} />
-					<Route
-						path="/dashboard"
-						element={
-							<Layout>
-								<Outlet />
-							</Layout>
-						}>
-						<Route index element={<Dashboard />} />
-						<Route path="contacts/:id" element={<Contact />} />
+					<Route element={<PublicRoutes />}>
+						<Route path="/" element={<Index />} />
+					</Route>
+					<Route element={<PrivateRoutes />}>
+						<Route path="/invite" element={<Invite />} />
+					</Route>
+					<Route element={<PrivateRoutes />}>
+						<Route
+							path="/dashboard"
+							element={
+								<Layout>
+									<Outlet />
+								</Layout>
+							}>
+							<Route index element={<Dashboard />} />
+							<Route path="contacts/:id" element={<Contact />} />
+						</Route>
 					</Route>
 				</Routes>
 			</ApiProvider>
