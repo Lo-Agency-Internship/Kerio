@@ -1,9 +1,9 @@
 import { Button } from '../atoms/button';
 import { modalUserValidation } from '../../validation/userValidation';
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { backend } from '../../utils';
+import { uri } from '../../utils';
 import { kebab } from 'case';
 
 function SignUpModal({ setOpen }: any) {
@@ -16,7 +16,8 @@ function SignUpModal({ setOpen }: any) {
 		const formData = new FormData(event.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
-		const password = formData.get('password')?.toString().toLowerCase();
+		const password = formData.get('password')?.toString();
+		const rePassword = formData.get('rePassword')?.toString();
 		const organizationName = formData.get('organizationName');
 		let organizationSlug;
 		if (organizationName === '') {
@@ -30,23 +31,23 @@ function SignUpModal({ setOpen }: any) {
 			password,
 			organizationSlug,
 		};
+		let isValid = await modalUserValidation.isValid(body);
 
-		const isValid = await modalUserValidation.isValid(body);
+		if (password !== rePassword) {
+			isValid = false;
+			setError('password not matched');
+		}
 		if (isValid) {
 			try {
-				await axios.post(backend('auth/register'), body).then((response) => {
+				await axios.post(uri('auth/register'), body).then((response) => {
 					if (response.status === 201) {
 						alert('Successful signUp! Please signIn');
 						navigate('/');
 						setOpen(false);
 					}
 				});
-			} catch (err) {
-				if (err) {
-					setError('This email has been chosen before!');
-				} else {
-					setError('Something went wrong!');
-				}
+			} catch (err: SetStateAction<any>) {
+				setError(err.response.data.message);
 			}
 		} else {
 			modalUserValidation.validate(body).catch((e) => {
@@ -83,7 +84,7 @@ function SignUpModal({ setOpen }: any) {
 						</svg>
 					</button>
 					<h4 className="w-full text-4xl font-medium leading-snug">SignUp Form</h4>
-					{error && <p>{error}</p>}
+					{error && <p className="text-red-500 font-bold">{error}</p>}
 					<form onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Name</label>
