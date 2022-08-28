@@ -16,8 +16,8 @@ function SignUpModal({ setOpen }: any) {
 		const formData = new FormData(event.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
-		const password = formData.get('password')?.toString().toLowerCase();
-		const rePassword = formData.get('rePassword')?.toString().toLowerCase();
+		const password = formData.get('password')?.toString();
+		const rePassword = formData.get('rePassword')?.toString();
 		const organizationName = formData.get('organizationName');
 		let organizationSlug;
 		if (organizationName === '') {
@@ -31,7 +31,12 @@ function SignUpModal({ setOpen }: any) {
 			password,
 			organizationSlug,
 		};
-		const isValid = await modalUserValidation.isValid(body);
+		let isValid = await modalUserValidation.isValid(body);
+
+		if (password !== rePassword) {
+			isValid = false;
+			setError('password not matched');
+		}
 		if (isValid) {
 			try {
 				await axios.post(backend('auth/register'), body).then((response) => {
@@ -79,7 +84,7 @@ function SignUpModal({ setOpen }: any) {
 						</svg>
 					</button>
 					<h4 className="w-full text-4xl font-medium leading-snug">SignUp Form</h4>
-					{error && <p>{error}</p>}
+					{error && <p className="text-red-500 font-bold">{error}</p>}
 					<form onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Name</label>
