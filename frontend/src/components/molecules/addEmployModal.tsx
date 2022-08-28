@@ -30,7 +30,6 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 		await axios.post(backend(''), data).then((response) => {
 			const user = response.data;
 			setOpen(false);
-			console.log(data);
 		});
 	};
 	const handleRemoveClick = (index: number) => {

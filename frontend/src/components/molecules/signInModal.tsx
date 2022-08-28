@@ -28,7 +28,7 @@ const SignInModal: FC<ISignInModal> = ({ setOpen }) => {
 		if (isValid) {
 			await axios.post(backend('auth/login'), body).then((response) => {
 				const user = response.data;
-				console.log(user);
+
 				localStorage.setItem('access_token', user.access_token);
 				setOpen(false);
 				navigate(`/dashboard`);
