@@ -17,15 +17,7 @@ export class Status {
   @Column()
   title: string;
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
-
+ 
   @OneToMany(() => ContactStatus, (contactStatus) => contactStatus.status)
   contactStatus: ContactStatus;
 }

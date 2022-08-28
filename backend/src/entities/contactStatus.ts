@@ -16,6 +16,13 @@ import { Status } from './status.entity';
 export class ContactStatus {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  contactId:Number;
+
+  @Column()
+  statusId:Number;
+
   @CreateDateColumn()
   createdAt: Date;
 

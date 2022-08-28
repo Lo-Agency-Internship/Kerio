@@ -29,6 +29,11 @@ import { Role } from './entities/role.entity';
 import { RoleService } from './services/role.service';
 import { RequestContextService } from './services/requestContext.service';
 import { RequestContextModule } from 'nestjs-request-context';
+import { Status } from './entities/status.entity';
+import { Note } from './entities/note.entity';
+import { Log } from './entities/log.entity';
+import { ContactStatus } from './entities/contactStatus';
+import { StatusService } from './services/status.service';
 
 const entitiesToAdd = [
   Contact,
@@ -37,6 +42,10 @@ const entitiesToAdd = [
   User,
   Invite,
   Role,
+  Status,
+  Note,
+  Log,
+  ContactStatus
 ];
 
 @Module({
@@ -86,8 +95,9 @@ const entitiesToAdd = [
     InviteService,
     RoleService,
     RequestContextService,
+    StatusService
   ],
-  exports: [AuthService, RoleService],
+  exports: [AuthService, RoleService,StatusService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {

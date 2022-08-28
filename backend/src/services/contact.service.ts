@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Contact } from '../entities/contact.entity';
 import { Repository } from 'typeorm';
+import { ContactStatus } from 'src/entities/contactStatus';
 
 @Injectable()
 export class ContactService {
   constructor(
     @InjectRepository(Contact)
     private readonly contactRepository: Repository<Contact>,
+
+    @InjectRepository(ContactStatus)
+    private readonly contactStatusRepository:Repository<ContactStatus>
   ) {}
 
   getAllContact(): Promise<Contact[]> {
@@ -19,7 +23,10 @@ export class ContactService {
   }
 
   addContact(contact: Contact): Promise<Contact> {
+    //TODO find status id
+     //this.contactStatusRepository.save(contactId,statusid)
     return this.contactRepository.save(contact);
+    //cascade true save relation automatically
   }
 
   updateContact(id: number, contact: Contact): Promise<any> {
