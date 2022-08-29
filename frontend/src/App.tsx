@@ -8,12 +8,12 @@ import Index from './pages';
 import PrivateRoute from './utils/auth/privateRoute';
 import PublicRoute from './utils/auth/publicRoute';
 import Invite from './pages/invite';
-import {useAuthContext} from "./context/auth";
+import { useAuthContext } from './context/auth';
 
 function App() {
-	const {userMetadata} = useAuthContext()
+	const { userMetadata } = useAuthContext();
 
-	const meta = userMetadata()
+	const meta = userMetadata();
 
 	return (
 		<Routes>
@@ -24,9 +24,7 @@ function App() {
 				<Route path="/invite" element={<Invite />} />
 			</Route>
 			<Route element={<PrivateRoute />}>
-				{
-					meta && <p>{meta.email}</p>
-				}
+				{meta && <p>{meta.email}</p>}
 				<Route
 					path="/dashboard"
 					element={

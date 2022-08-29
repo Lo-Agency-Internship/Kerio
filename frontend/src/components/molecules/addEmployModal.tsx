@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { addEmployeModalValidation } from '../../validation/addEmployModalValidation';
 import axios from 'axios';
-import { uri } from '../../utils';
+import { uri } from '../../utils/index';
 import { Button } from '../atoms/button';
 
 interface IContactModal {

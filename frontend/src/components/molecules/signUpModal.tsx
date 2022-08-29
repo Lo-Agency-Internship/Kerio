@@ -3,7 +3,7 @@ import { modalUserValidation } from '../../validation/userValidation';
 import { SetStateAction, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { uri } from '../../utils';
+import { uri } from '../../utils/index';
 import { kebab } from 'case';
 
 function SignUpModal({ setOpen }: any) {

@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
-import { uri } from '../utils';
+import { uri } from '../utils/index';
 interface IApiProvider {
 	children: ReactNode;
 }

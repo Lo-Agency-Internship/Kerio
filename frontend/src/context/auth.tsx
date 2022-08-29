@@ -1,11 +1,11 @@
 import jwt from 'jwt-decode';
-import {createContext, FC, PropsWithChildren, useContext, useState} from 'react';
-import {IAccessToken} from "../utils/interfaces/user/accessToken.interface";
+import { createContext, FC, PropsWithChildren, useContext, useState } from 'react';
+import { IAccessToken } from '../utils/interfaces/user/accessToken.interface';
 
 interface IAuthContextProvider {
 	getToken: () => string | null;
 	isTokenValid: () => boolean;
-	userMetadata: () => IAccessToken | null
+	userMetadata: () => IAccessToken | null;
 }
 
 const AuthContext = createContext<IAuthContextProvider>({} as IAuthContextProvider);
@@ -17,9 +17,9 @@ export const AuthProvider: FC<any> = (props: any) => {
 
 	const isTokenValid = (): boolean => {
 		try {
-			const token = userMetadata()
+			const token = userMetadata();
 
-			if (!token) return false
+			if (!token) return false;
 
 			const dateNow = new Date();
 			const time = token.exp * 1000;
@@ -40,8 +40,8 @@ export const AuthProvider: FC<any> = (props: any) => {
 
 		if (!token) return null;
 
-		return jwt(token) as IAccessToken
-	}
+		return jwt(token) as IAccessToken;
+	};
 
 	return <AuthContext.Provider value={{ getToken, isTokenValid, userMetadata }}>{props.children}</AuthContext.Provider>;
 };
