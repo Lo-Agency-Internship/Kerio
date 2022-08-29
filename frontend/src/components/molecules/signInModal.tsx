@@ -2,7 +2,7 @@ import { Button } from '../atoms/button';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { backend } from '../../utils';
+import { uri } from '../../utils';
 import { signInValidation } from '../../validation/userValidation';
 interface ISignInModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,7 +26,7 @@ const SignInModal: FC<ISignInModal> = ({ setOpen }) => {
 
 		const isValid = await signInValidation.isValid({ email });
 		if (isValid) {
-			await axios.post(backend('auth/login'), body).then((response) => {
+			await axios.post(uri('auth/login'), body).then((response) => {
 				const user = response.data;
 
 				localStorage.setItem('access_token', user.access_token);

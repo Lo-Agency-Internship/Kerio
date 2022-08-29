@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HealthController } from './controllers/health.controller';
@@ -27,6 +27,8 @@ import { InviteController } from './controllers/invite.controller';
 import { InviteService } from './services/invite.service';
 import { Role } from './entities/role.entity';
 import { RoleService } from './services/role.service';
+import { RequestContextService } from './services/requestContext.service';
+import { RequestContextModule } from 'nestjs-request-context';
 
 const entitiesToAdd = [
   Contact,
@@ -40,6 +42,7 @@ const entitiesToAdd = [
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    RequestContextModule,
     TypeOrmModule.forFeature(entitiesToAdd),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -82,7 +85,12 @@ const entitiesToAdd = [
     JwtStrategy,
     InviteService,
     RoleService,
+    RequestContextService,
   ],
   exports: [AuthService, RoleService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): any {
+    // FOR LATER
+  }
+}

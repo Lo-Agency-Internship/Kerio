@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { addEmployeModalValidation } from '../../validation/addEmployModalValidation';
 import axios from 'axios';
-import { backend } from '../../utils';
+import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 
 interface IContactModal {
@@ -27,7 +27,7 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 			};
 		});
 
-		await axios.post(backend(''), data).then((response) => {
+		await axios.post(uri(''), data).then((response) => {
 			const user = response.data;
 			setOpen(false);
 		});

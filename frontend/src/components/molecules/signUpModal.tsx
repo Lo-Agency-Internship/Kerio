@@ -3,7 +3,7 @@ import { modalUserValidation } from '../../validation/userValidation';
 import { SetStateAction, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { backend } from '../../utils';
+import { uri } from '../../utils';
 import { kebab } from 'case';
 
 function SignUpModal({ setOpen }: any) {
@@ -39,7 +39,7 @@ function SignUpModal({ setOpen }: any) {
 		}
 		if (isValid) {
 			try {
-				await axios.post(backend('auth/register'), body).then((response) => {
+				await axios.post(uri('auth/register'), body).then((response) => {
 					if (response.status === 201) {
 						alert('Successful signUp! Please signIn');
 						navigate('/');
