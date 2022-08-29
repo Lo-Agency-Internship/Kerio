@@ -1,13 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { useApiContext } from '../../context/api';
 import { Button } from '../atoms/button';
 const Header = () => {
-	const { setUserToken } = useApiContext();
 	const navigate = useNavigate();
 
 	function handleSignOut() {
 		localStorage.removeItem('access_token');
-		setUserToken(null);
 		navigate('/');
 	}
 	return (

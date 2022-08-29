@@ -23,17 +23,22 @@ export const useApiContext = () => useContext(ApiContext);
 
 export const ApiProvider = ({ children }: IApiProvider) => {
 	// const [isLoading, setIsLoading] = useState(false);
-	// useEffect(() => {}, []);
 	const [change, setChange] = useState(false);
-
-	// const [isToken, setIsToken] = useState(null);
 	const getContactInfo = async (id: string) => {
-		const { data } = await axios.get(uri(`contacts/${id}`));
+		const { data } = await axios.get(uri(`contacts/${id}`), {
+			headers: {
+				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+			},
+		});
 		return data;
 	};
 
 	const getContacts = async () => {
-		const { data } = await axios.get(uri(`contacts`));
+		const { data } = await axios.get(uri(`contacts`), {
+			headers: {
+				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+			},
+		});
 		return data;
 	};
 	useEffect(() => {
