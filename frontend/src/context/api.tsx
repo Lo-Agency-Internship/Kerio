@@ -58,6 +58,8 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	}, []);
 
 	return (
-		<ApiContext.Provider value={{ getContactInfo, getContacts, change, setChange }}>{children}</ApiContext.Provider>
+		<ApiContext.Provider value={{ getContactInfo, getContacts, change, setChange, checkToken }}>
+			{children}
+		</ApiContext.Provider>
 	);
 };

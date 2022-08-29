@@ -17,7 +17,7 @@ const ContactCards: React.FC<IContactCards> = ({ contact }) => {
 					<div className="font-mono text-base">{contact.email}</div>
 					<div className="font-mono text-base">{contact.status}</div>
 				</div>
-				<div className="relative left-96 bottom-20">
+				<div className="relative left-2/3 bottom-20">
 					<Button
 						type="submit"
 						label="Profile"
