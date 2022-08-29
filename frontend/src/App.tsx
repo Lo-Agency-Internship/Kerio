@@ -1,5 +1,4 @@
 // import React from 'react'
-import './App.css';
 import { Route, Routes, Outlet } from 'react-router-dom';
 import Contact from './pages/contact';
 import Layout from './layout/layout';
@@ -9,9 +8,10 @@ import PrivateRoute from './utils/auth/privateRoute';
 import PublicRoute from './utils/auth/publicRoute';
 import Invite from './pages/invite';
 import { useState } from 'react';
+import Employees from './pages/employees';
 
 function App() {
-	const [role] = useState<string>('employee');
+	const [role] = useState<string>('owner');
 	return (
 		<Routes>
 			<Route
@@ -35,7 +35,7 @@ function App() {
 				}>
 				<Route index element={<Dashboard />} />
 				<Route path="contacts/:id" element={<Contact />} />
-				{/* {role === 'owner' && <Route path="employees" element={<Employees />} />} */}
+				{role === 'owner' && <Route path="employees" element={<Employees />} />}
 			</Route>
 			<Route path="*" element={<Contact />} />
 		</Routes>
