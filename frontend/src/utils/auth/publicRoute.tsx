@@ -1,11 +1,12 @@
-import { Outlet, Navigate } from 'react-router-dom';
-import { useApiContext } from '../../context/api';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuthContext } from '../../context/auth';
 
-const PublicRoute = () => {
-	const { checkToken, setUserToken } = useApiContext();
-	const token = localStorage.getItem('access_token');
-	setUserToken(token);
-	const isValidToken = checkToken();
-	return isValidToken ? <Outlet /> : <Navigate to="/dashboard" />;
+const PublicRoute = ({ children }: { children: JSX.Element }) => {
+	const { isTokenValid } = useAuthContext();
+	const location = useLocation();
+	if (!isTokenValid()) {
+		return <Navigate to="/dashboard" state={{ from: location }} />;
+	}
+	return children;
 };
 export default PublicRoute;

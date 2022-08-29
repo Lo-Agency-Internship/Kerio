@@ -8,36 +8,36 @@ import Index from './pages';
 import PrivateRoute from './utils/auth/privateRoute';
 import PublicRoute from './utils/auth/publicRoute';
 import Invite from './pages/invite';
-import {useAuthContext} from "./context/auth";
+import { useState } from 'react';
 
 function App() {
-	const {userMetadata} = useAuthContext()
-
-	const meta = userMetadata()
-
+	const [role] = useState<string>('employee');
 	return (
 		<Routes>
-			<Route element={<PublicRoute />}>
-				<Route path="/" element={<Index />} />
-			</Route>
-			<Route element={<PrivateRoute />}>
-				<Route path="/invite" element={<Invite />} />
-			</Route>
-			<Route element={<PrivateRoute />}>
-				{
-					meta && <p>{meta.email}</p>
+			<Route
+				path="/"
+				element={
+					<PublicRoute>
+						<Index />
+					</PublicRoute>
 				}
-				<Route
-					path="/dashboard"
-					element={
+			/>
+			<Route path="/invite" element={<Invite />} />
+
+			<Route
+				path="/dashboard"
+				element={
+					<PrivateRoute role={role}>
 						<Layout>
 							<Outlet />
 						</Layout>
-					}>
-					<Route index element={<Dashboard />} />
-					<Route path="contacts/:id" element={<Contact />} />
-				</Route>
+					</PrivateRoute>
+				}>
+				<Route index element={<Dashboard />} />
+				<Route path="contacts/:id" element={<Contact />} />
+				{/* {role === 'owner' && <Route path="employees" element={<Employees />} />} */}
 			</Route>
+			<Route path="*" element={<Contact />} />
 		</Routes>
 	);
 }
