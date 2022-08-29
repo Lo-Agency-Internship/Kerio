@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { roleEnum } from 'src/utils/types';
 
 export class UserLoginDto {
   @IsNotEmpty()
@@ -15,4 +16,6 @@ export class UserRegisterDto extends UserLoginDto {
 
   @IsNotEmpty()
   organizationSlug: string;
+
+  roleId?: roleEnum | null;
 }

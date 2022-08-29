@@ -6,17 +6,32 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { Contact } from '../entities/contact.entity';
 import { ContactService } from '../services/contact.service';
 import { FindOneContactByIdDto } from '../dtos/contact.dto';
+import { RequestContextService } from '../services/requestContext.service';
+import { SecureUserWithOrganization } from '../utils/types';
+import { JwtGuard } from '../utils/jwt.guard';
+import {Organization} from "../entities/organization.entity";
 
 @Controller('contacts')
 export class ContactController {
-  constructor(private readonly contactService: ContactService) {}
+  constructor(
+    private readonly contactService: ContactService,
+    private readonly contextService: RequestContextService,
+  ) {}
 
   @Get()
-  getAllContancts(): Promise<Contact[]> {
+  @UseGuards(JwtGuard)
+  getAllContacts(): Promise<Contact[]> {
+    const user = this.contextService.get(
+      'userData',
+    ) as SecureUserWithOrganization;
+
+    console.log({user})
+
     return this.contactService.getAllContact();
   }
 

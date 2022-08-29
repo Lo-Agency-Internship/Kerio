@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HealthController } from './controllers/health.controller';
@@ -25,15 +25,30 @@ import { OrganizationUserService } from './services/organizationUser.service';
 import { Invite } from './entities/invite.entity';
 import { InviteController } from './controllers/invite.controller';
 import { InviteService } from './services/invite.service';
+
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailerService } from './services/mail.service';
 import { TemplateEngineService } from './services/templateEngine.service';
 
-const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
+import { Role } from './entities/role.entity';
+import { RoleService } from './services/role.service';
+import { RequestContextService } from './services/requestContext.service';
+import { RequestContextModule } from 'nestjs-request-context';
+
+
+const entitiesToAdd = [
+  Contact,
+  Organization,
+  OrganizationUser,
+  User,
+  Invite,
+  Role,
+];
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    RequestContextModule,
     TypeOrmModule.forFeature(entitiesToAdd),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -94,9 +109,18 @@ const entitiesToAdd = [Contact, Organization, OrganizationUser, User, Invite];
     LocalStrategy,
     JwtStrategy,
     InviteService,
+
     MailerService,
     TemplateEngineService,
+
+    RoleService,
+    RequestContextService,
+
   ],
-  exports: [AuthService],
+  exports: [AuthService, RoleService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): any {
+    // FOR LATER
+  }
+}
