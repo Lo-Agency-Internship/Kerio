@@ -11,13 +11,10 @@ import {
 import { InviteService } from 'src/services/invite.service';
 
 import { CreateInvitesDto } from 'src/dtos/invite.dto';
-import { AuthService } from 'src/services/auth.service';
-import { TemplateEngineService } from 'src/services/templateEngine.service';
 
 import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
 import { roleEnum } from 'src/utils/types';
-
 
 @Controller('invites')
 export class InviteController {

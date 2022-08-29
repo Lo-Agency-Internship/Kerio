@@ -35,7 +35,6 @@ import { RoleService } from './services/role.service';
 import { RequestContextService } from './services/requestContext.service';
 import { RequestContextModule } from 'nestjs-request-context';
 
-
 const entitiesToAdd = [
   Contact,
   Organization,
@@ -115,7 +114,6 @@ const entitiesToAdd = [
 
     RoleService,
     RequestContextService,
-
   ],
   exports: [AuthService, RoleService],
 })
