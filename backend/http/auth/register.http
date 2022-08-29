@@ -2,8 +2,8 @@ POST http://localhost:3001/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-	"email": "john@doe.com",
+	"email": "hossein@doe.com",
     "password": "0000",
-    "name": "John Doe",
-    "organizationSlug": "John Doe's Company"
+    "name": "Hossein Doe",
+    "organizationSlug": "Hossein Doe's Company"
 }

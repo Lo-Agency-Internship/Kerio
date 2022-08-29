@@ -42,7 +42,10 @@ export class ContactController {
 
   @Post()
   addContact(@Body() contact): Promise<Contact> {
-    return this.contactService.addContact(contact);
+    const organization = this.contextService.get('organization')
+    //const organizationId = organization.id
+    console.log('XXXXXXXXXXXXXXXXXXXXXXXXX',organization)
+    return this.contactService.addContact(contact,333);
   }
 
   @Put(':id')

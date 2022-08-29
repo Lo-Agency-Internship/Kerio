@@ -15,7 +15,7 @@ export type NewUser = Omit<
 
 export type NewOrganization = Omit<
   Organization,
-  'id' | 'createdAt' | 'deletedAt' | 'updatedAt'
+  'id' | 'createdAt' | 'deletedAt' | 'updatedAt'| 'OrganizationId'
 >;
 
 export type JwtPayload = {

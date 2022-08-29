@@ -30,6 +30,10 @@ export class Contact {
   @Column()
   status: string;
 
+  @Column({nullable:true})
+  organizationId:number;
+
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -39,7 +43,7 @@ export class Contact {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne(() => Organization)
+  @ManyToOne(() => Organization, (organization) => organization.contacts)
   organization: Organization;
 
   @OneToMany(() => Note, (note) => note.contact)

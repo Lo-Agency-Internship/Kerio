@@ -29,6 +29,9 @@ export class ContactService {
      const { status} = contact;
      //check if it is correct way to get the value from enum
      const statusId = EStatus[status]
+     console.log('estatsssss',statusId);
+     console.log('orgIDDDDDDDDDDDDDDDD',organizationId)
+     //contact = {...contact,organizationId}
      const newContact = await this.contactRepository.save(contact);
      const contactId = newContact.id
      const contactStatus = await this.contactStatusRepository.save({contactId,statusId});

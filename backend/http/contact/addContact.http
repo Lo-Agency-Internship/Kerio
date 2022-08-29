@@ -1,9 +1,10 @@
 POST http://localhost:3001/contacts HTTP/1.1
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imhvc3NlaW5AZG9lLmNvbSIsInN1YiI6OTAsIm5hbWUiOiJIb3NzZWluIERvZSIsImlhdCI6MTY2MTc1ODczNSwiZXhwIjoxNjY0MzUwNzM1fQ.c1q65Wfge2_o1m7Xmj8mYpGMlnRylv0DzttwiXGCwwo
 
 {
-	"email": "john@doe.com",
-    "name": "John Doe",
+	"email": "xaniar@doe.com",
+    "name": "xaniar Doe",
     "phone": "00989121212345",
     "status": "lead"
 }
