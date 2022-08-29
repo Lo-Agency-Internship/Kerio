@@ -91,4 +91,12 @@ export class AuthController {
 
     return resultUser;
   }
+  @Post('duplicateEmail')
+  async emailExist(@Body() body) {
+    const isExist = await this.userService.exists(body.email);
+    if (isExist) {
+      throw new HttpException('email already exists', HttpStatus.BAD_REQUEST);
+    }
+    return {message:"ok",status: HttpStatus.ACCEPTED};
+}
 }
