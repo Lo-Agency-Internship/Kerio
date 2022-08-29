@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Contact } from '../entities/contact.entity';
 import { Repository } from 'typeorm';
 import { ContactStatus } from 'src/entities/contactStatus';
+import { EStatus } from 'src/utils/types';
 
 @Injectable()
 export class ContactService {
@@ -22,10 +23,16 @@ export class ContactService {
     return this.contactRepository.findOneBy({ id });
   }
 
-  addContact(contact: Contact): Promise<Contact> {
+  async addContact(contact: Contact,organizationId:number): Promise<Contact> {
     //TODO find status id
      //this.contactStatusRepository.save(contactId,statusid)
-    return this.contactRepository.save(contact);
+     const { status} = contact;
+     //check if it is correct way to get the value from enum
+     const statusId = EStatus[status]
+     const newContact = await this.contactRepository.save(contact);
+     const contactId = newContact.id
+     const contactStatus = await this.contactStatusRepository.save({contactId,statusId});
+     return newContact
     //cascade true save relation automatically
   }
 

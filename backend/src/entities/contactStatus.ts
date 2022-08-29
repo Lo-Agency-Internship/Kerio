@@ -18,10 +18,10 @@ export class ContactStatus {
   id: number;
 
   @Column()
-  contactId:Number;
+  contactId?:number;
 
   @Column()
-  statusId:Number;
+  statusId?:number;
 
   @CreateDateColumn()
   createdAt: Date;
