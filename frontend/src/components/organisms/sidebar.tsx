@@ -12,56 +12,30 @@ const Sidebar = () => {
 				<ul className="relative top-6">
 					<li className="relative">
 						<Button
-							style="border-black hover:text-gray-500 font-bold text-center text-white px-2 mx-2 my-3"
+							style="border-black hover:text-gray-500 font-bold text-center text-white mx-3 my-5"
 							label={'Add contact'}
 							onClick={() => {
 								setShowContactModal(true);
 							}}
 						/>
-					</li>
-
-					{/* this button show only for leader */}
-					<li className="relative">
-						<Button
-							style="border-black hover:text-gray-500 font-bold text-center text-white px-2 mx-2 mb-3"
-							label={'Add Employee'}
-						/>
 						<hr />
 					</li>
 					<li className="relative">
 						<Button
-							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 mx-2 mt-6"
+							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 mx-5 my-2"
 							label={'Leads'}
 						/>
 					</li>
 					<li className="relative">
 						<Button
-							style=" border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
-							label={'Lost Loyal'}
+							style="  border-black  hover:text-gray-500 font-bold text-center text-white px-2 mx-5 my-1"
+							label={'Customers'}
 						/>
 					</li>
 					<li className="relative">
 						<Button
-							style="  border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
-							label={'Potential Customer'}
-						/>
-					</li>
-					<li className="relative">
-						<Button
-							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
-							label={'Lost Potential Customer'}
-						/>
-					</li>
-					<li className="relative">
-						<Button
-							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
-							label={'Loyal Customer'}
-						/>
-					</li>
-					<li className="relative">
-						<Button
-							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
-							label={'Lost Loyal Customer'}
+							style="  border-black  hover:text-gray-500 font-bold text-center text-white px-2 mx-5 my-1"
+							label={'VIP'}
 						/>
 					</li>
 				</ul>
