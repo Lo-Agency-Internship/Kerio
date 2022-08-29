@@ -16,6 +16,7 @@ import { SecureUserWithOrganization } from '../utils/types';
 import { JwtGuard } from '../utils/jwt.guard';
 import {Organization} from "../entities/organization.entity";
 
+@UseGuards(JwtGuard)
 @Controller('contacts')
 export class ContactController {
   constructor(
@@ -26,13 +27,12 @@ export class ContactController {
   @Get()
   @UseGuards(JwtGuard)
   getAllContacts(): Promise<Contact[]> {
-    const user = this.contextService.get(
-      'userData',
-    ) as SecureUserWithOrganization;
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
 
-    console.log({user})
-
-    return this.contactService.getAllContact();
+    const organizationId = organization.id
+    return this.contactService.getAllContact(organizationId);
   }
 
   @Get(':id')
@@ -42,10 +42,10 @@ export class ContactController {
 
   @Post()
   addContact(@Body() contact): Promise<Contact> {
-    const organization = this.contextService.get('organization')
-    //const organizationId = organization.id
-    console.log('XXXXXXXXXXXXXXXXXXXXXXXXX',organization)
-    return this.contactService.addContact(contact,333);
+    const organization = this.contextService.get('organization') as Organization
+    const organizationId = organization.id
+    contact = {...contact,organizationId}
+    return this.contactService.addContact(contact);
   }
 
   @Put(':id')

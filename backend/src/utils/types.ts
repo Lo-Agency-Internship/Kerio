@@ -15,7 +15,7 @@ export type NewUser = Omit<
 
 export type NewOrganization = Omit<
   Organization,
-  'id' | 'createdAt' | 'deletedAt' | 'updatedAt'| 'OrganizationId'
+  'id' | 'createdAt' | 'deletedAt' | 'updatedAt'| 'contacts'
 >;
 
 export type JwtPayload = {
@@ -40,7 +40,7 @@ export enum EStatus {
   LostLoyal = 2,
   LostPotentialCustomer = 3,
   LoyalCustomer = 4,
-  Lead = 5,
+  lead = 5,
   LostLoyalCustomer = 6
 
 

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ContactStatus } from 'src/entities/contactStatus';
 import { EStatus } from 'src/utils/types';
 
+
 @Injectable()
 export class ContactService {
   constructor(
@@ -15,33 +16,45 @@ export class ContactService {
     private readonly contactStatusRepository:Repository<ContactStatus>
   ) {}
 
-  getAllContact(): Promise<Contact[]> {
-    return this.contactRepository.find();
+  getAllContact(organizationId): Promise<Contact[]> {
+    return this.contactRepository.find({where:{organizationId}});
   }
 
   findOneContactById(id: number): Promise<Contact> {
     return this.contactRepository.findOneBy({ id });
   }
 
-  async addContact(contact: Contact,organizationId:number): Promise<Contact> {
-    //TODO find status id
-     //this.contactStatusRepository.save(contactId,statusid)
+  async addContact(contact: Contact): Promise<Contact> {
      const { status} = contact;
-     //check if it is correct way to get the value from enum
-     const statusId = EStatus[status]
-     console.log('estatsssss',statusId);
-     console.log('orgIDDDDDDDDDDDDDDDD',organizationId)
-     //contact = {...contact,organizationId}
+     const statusId = EStatus[`${status}`];
      const newContact = await this.contactRepository.save(contact);
-     const contactId = newContact.id
+     const contactId = newContact.id;
      const contactStatus = await this.contactStatusRepository.save({contactId,statusId});
      return newContact
     //cascade true save relation automatically
   }
 
-  updateContact(id: number, contact: Contact): Promise<any> {
-    return this.contactRepository.update(id, contact);
-  }
+  async updateContact(id: number, contact: Contact): Promise<any> {
+    const {status} = contact;
+    const userState = await this.contactStatusRepository.findOne({
+      where: {
+        contactId:id,
+      },
+      relations: ['status'],
+      loadEagerRelations: true,
+      relationLoadStrategy: 'join',
+    });
+
+    console.log('zzzzzzzzzzzzzzzzzz',userState)
+    //if(status!== currentStatus){
+      // find status ID 
+      // save a row in contactStatus table
+ // }
+
+      return this.contactRepository.update(id, contact);
+    };
+  
+
 
   async deleteContact(id: string): Promise<any> {
     return await this.contactRepository.softDelete(id);
