@@ -11,31 +11,28 @@ function SignUpModal({ setOpen }: any) {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 	const [emailValue, setemailValue] = useState('');
-	const fakeApi = () => console.log('Api is called')
-  const [inputValue, setInputValue] = useState('')
-  const [timer, setTimer] = useState(null)
- 
-  const inputChanged = (e : any)=>{
-	setemailValue(e.target.value)
-  }
- const checkEmail =  async (emailValue : any )=>{
-	try {
-		await axios.post(backend('auth/duplicateEmail'), {email:emailValue}).then((response) => {
-			setError(response.data.message)
-			}
-		);
-	} catch (err: any) {
-		setError(err.response.data.message)
-	}
-  }
-  useEffect(() => {
-    if(emailValue!==''){
-		const timeoutId = setTimeout(() =>checkEmail(emailValue) , 3000);
-    return () => clearTimeout(timeoutId);
-	}
-}, [emailValue]);
+	const fakeApi = () => console.log('Api is called');
+	const [inputValue, setInputValue] = useState('');
+	const [timer, setTimer] = useState(null);
 
-
+	const inputChanged = (e: any) => {
+		setemailValue(e.target.value);
+	};
+	const checkEmail = async (emailValue: any) => {
+		try {
+			await axios.post(uri('auth/duplicateEmail'), { email: emailValue }).then((response) => {
+				setError(response.data.message);
+			});
+		} catch (err: any) {
+			setError(err.response.data.message);
+		}
+	};
+	useEffect(() => {
+		if (emailValue !== '') {
+			const timeoutId = setTimeout(() => checkEmail(emailValue), 3000);
+			return () => clearTimeout(timeoutId);
+		}
+	}, [emailValue]);
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
@@ -83,7 +80,7 @@ function SignUpModal({ setOpen }: any) {
 			});
 		}
 	};
-	
+
 	return (
 		// <!--  // modal starts here component -->
 		<div className="absolute flex flex-col z-50 items-center justify-center w-full px-20 pt-5 pb-30 lg:pt-18 lg:flex-row top-0 right-0 bottom-0 left-0">

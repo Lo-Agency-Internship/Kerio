@@ -25,6 +25,11 @@ import { OrganizationUserService } from './services/organizationUser.service';
 import { Invite } from './entities/invite.entity';
 import { InviteController } from './controllers/invite.controller';
 import { InviteService } from './services/invite.service';
+
+import { MailerModule } from '@nestjs-modules/mailer';
+import { MailerService } from './services/mail.service';
+import { TemplateEngineService } from './services/templateEngine.service';
+
 import { Role } from './entities/role.entity';
 import { RoleService } from './services/role.service';
 import { RequestContextService } from './services/requestContext.service';
@@ -56,6 +61,25 @@ const entitiesToAdd = [
         entities: entitiesToAdd,
       }),
     }),
+    MailerModule.forRootAsync({
+      useFactory: () => ({
+        transport: {
+          host: process.env.MAILER_HOST,
+          port: parseInt(process.env.MAILER_PORT || '587'),
+          auth: {
+            user: process.env.MAILER_USER,
+            pass: process.env.MAILER_PASS,
+            credentials: {
+              user: process.env.MAILER_USER,
+              pass: process.env.MAILER_PASS,
+            },
+          },
+          ignoreTLS: true,
+          secure: false,
+          requireTLS: false,
+        },
+      }),
+    }),
     PassportModule,
     TerminusModule,
     HttpModule,
@@ -84,6 +108,10 @@ const entitiesToAdd = [
     LocalStrategy,
     JwtStrategy,
     InviteService,
+
+    MailerService,
+    TemplateEngineService,
+
     RoleService,
     RequestContextService,
   ],

@@ -15,8 +15,12 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async updateUser(id: number, user: User): Promise<UpdateResult> {
+  async updateUserById(id: number, user: User): Promise<UpdateResult> {
     return await this.userRepository.update(id, user);
+  }
+
+  async updateUserByEmail(email: string, user: User): Promise<UpdateResult> {
+    return await this.userRepository.update(email, user);
   }
 
   async findOneUserById(id: number): Promise<User> {
