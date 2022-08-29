@@ -14,7 +14,7 @@ import { FindOneContactByIdDto } from '../dtos/contact.dto';
 import { RequestContextService } from '../services/requestContext.service';
 import { SecureUserWithOrganization } from '../utils/types';
 import { JwtGuard } from '../utils/jwt.guard';
-import {Organization} from "../entities/organization.entity";
+import { Organization } from '../entities/organization.entity';
 
 @UseGuards(JwtGuard)
 @Controller('contacts')

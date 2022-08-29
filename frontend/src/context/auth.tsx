@@ -1,25 +1,35 @@
 import jwt from 'jwt-decode';
-import { createContext, FC, PropsWithChildren, useContext, useState } from 'react';
+import { createContext, FC, useContext } from 'react';
 import { IAccessToken } from '../utils/interfaces/user/accessToken.interface';
 
 interface IAuthContextProvider {
 	getToken: () => string | null;
 	isTokenValid: () => boolean;
-	userMetadata: () => IAccessToken | null;
+	userMetadata: any;
 }
 
 const AuthContext = createContext<IAuthContextProvider>({} as IAuthContextProvider);
-
 export const useAuthContext = () => useContext(AuthContext);
-
 export const AuthProvider: FC<any> = (props: any) => {
-	const getToken = () => localStorage.getItem('access_token');
+	function getToken() {
+		return localStorage.getItem('access_token');
+	}
+
+	const userMetadata = (): IAccessToken | null => {
+		try {
+			const token = getToken();
+			if (!token) return null;
+			return jwt(token) as IAccessToken;
+		} catch (err) {
+			return null;
+		}
+	};
 
 	const isTokenValid = (): boolean => {
 		try {
 			const token = userMetadata();
 
-			if (!token) return false;
+			if (!token) return true;
 
 			const dateNow = new Date();
 			const time = token.exp * 1000;
@@ -31,16 +41,8 @@ export const AuthProvider: FC<any> = (props: any) => {
 
 			return isExpired;
 		} catch (err) {
-			return false;
+			return true;
 		}
-	};
-
-	const userMetadata = (): IAccessToken | null => {
-		const token = getToken();
-
-		if (!token) return null;
-
-		return jwt(token) as IAccessToken;
 	};
 
 	return <AuthContext.Provider value={{ getToken, isTokenValid, userMetadata }}>{props.children}</AuthContext.Provider>;
