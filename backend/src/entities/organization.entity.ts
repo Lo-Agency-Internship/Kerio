@@ -18,9 +18,6 @@ export class Organization {
   @Column()
   address: string;
 
-  @Column({ unique: true })
-  slug: string;
-
   @CreateDateColumn()
   createdAt: Date;
 

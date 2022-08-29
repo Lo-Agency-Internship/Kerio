@@ -9,20 +9,19 @@ import {
 } from '@nestjs/common';
 import { Contact } from '../entities/contact.entity';
 import { ContactService } from '../services/contact.service';
-import { FindOneContactByIdDto } from '../dtos/contact.dto';
 
 @Controller('contacts')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 
   @Get()
-  getAllContancts(): Promise<Contact[]> {
-    return this.contactService.getAllContact();
+  findAllContancts(): Promise<Contact[]> {
+    return this.contactService.findAllContact();
   }
 
   @Get(':id')
-  findOneContactById(@Param() param: FindOneContactByIdDto): Promise<Contact> {
-    return this.contactService.findOneContactById(param.id);
+  findOneContact(@Param() param): Promise<Contact> {
+    return this.contactService.findOneContact(param.id);
   }
 
   @Post()
