@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { backend } from '../../utils';
+import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
 export default function Profile({ user, setUser }: any) {
@@ -34,7 +34,7 @@ export default function Profile({ user, setUser }: any) {
 		const phone = formData.get('phone');
 		const status = formData.get('status');
 		const updatedUser = { name, email, phone, status };
-		await axios.put(backend(`contacts/${user.id}`), updatedUser).then((response) => {
+		await axios.put(uri(`contacts/${user.id}`), updatedUser).then((response) => {
 			console.log(response);
 		});
 		setUser(updatedUser);
@@ -45,7 +45,7 @@ export default function Profile({ user, setUser }: any) {
 
 	return (
 		<>
-			<div className="flex justify-start my-24  w-full p-10">
+			<div className="flex justify-center justify-items-center my-4  w-full p-10">
 				<div className="flex w-full mx-8  p-4 bg-gray-200 rounded-lg hover:shadow-xl ">
 					<form onSubmit={submitHandler}>
 						<div className="flex justify-start  flex-row flex-wrap">

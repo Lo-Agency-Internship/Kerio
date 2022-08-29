@@ -2,7 +2,7 @@ import { modalContactValidation } from '../../validation/addContactValidaion';
 import axios from 'axios';
 import { FC, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { backend } from '../../utils';
+import { uri } from '../../utils';
 import { useApiContext } from '../../context/api';
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,7 +27,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 		};
 		const isValid = await modalContactValidation.isValid(body);
 		if (isValid) {
-			await axios.post(backend('contacts'), body).then((response) => {
+			await axios.post(uri('contacts'), body).then((response) => {
 				const user = response.data;
 
 				setOpen(false);
@@ -42,7 +42,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 	};
 	return (
 		// // modal starts here
-		<div className="py-12 transition duration-150 ease-in-out z-10 absolute top-0 right-0 bottom-0 left-0" id="modal">
+		<div className="py-12 transition duration-150 ease-in-out z-50 fixed left-0 right-0 top-0 bottom-0" id="modal">
 			<div role="alert" className="container mx-auto w-11/12 md:w-2/3 max-w-lg">
 				<div className="relative inline-block text-left w-full">
 					<div>
