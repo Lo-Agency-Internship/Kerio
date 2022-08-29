@@ -1,8 +1,58 @@
 import { Button } from '../atoms/button';
+import { modalUserValidation } from '../../validation/userValidation';
+import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { backend } from '../../utils';
+import { kebab } from 'case';
 
 function SignUpModal({ setOpen }: any) {
+	const navigate = useNavigate();
+	const [error, setError] = useState<string | null>(null);
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
+		setError(null);
+
+		const formData = new FormData(event.currentTarget);
+		const name = formData.get('name')?.toString().toLowerCase();
+		const email = formData.get('email')?.toString().toLowerCase();
+		const password = formData.get('password')?.toString().toLowerCase();
+		const organizationName = formData.get('organizationName');
+		let organizationSlug;
+		if (organizationName === '') {
+			organizationSlug = kebab(`${name}'s Organization`);
+		} else {
+			organizationSlug = kebab(organizationName as string);
+		}
+		const body = {
+			name,
+			email,
+			password,
+			organizationSlug,
+		};
+
+		const isValid = await modalUserValidation.isValid(body);
+		if (isValid) {
+			try {
+				await axios.post(backend('auth/register'), body).then((response) => {
+					if (response.status === 201) {
+						alert('Successful signUp! Please signIn');
+						navigate('/');
+						setOpen(false);
+					}
+				});
+			} catch (err) {
+				if (err) {
+					setError('This email has been chosen before!');
+				} else {
+					setError('Something went wrong!');
+				}
+			}
+		} else {
+			modalUserValidation.validate(body).catch((e) => {
+				setError(e.message);
+			});
+		}
 	};
 	return (
 		// <!--  // modal starts here component -->
@@ -33,19 +83,29 @@ function SignUpModal({ setOpen }: any) {
 						</svg>
 					</button>
 					<h4 className="w-full text-4xl font-medium leading-snug">SignUp Form</h4>
+					{error && <p>{error}</p>}
 					<form onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Name</label>
 							<input
-								type="text"
+								name="name"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="Aien Saeedi"
 							/>
 						</div>
 						<div className="relative">
+							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Organization Name</label>
+							<input
+								name="organizationName"
+								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
+								placeholder="Lo Agency"
+							/>
+						</div>
+						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Email Address</label>
 							<input
-								type="text"
+								name="email"
+								type="email"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="XxX@email.com"
 							/>
@@ -53,6 +113,7 @@ function SignUpModal({ setOpen }: any) {
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Password</label>
 							<input
+								name="password"
 								type="password"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="pa@ssword"
@@ -61,6 +122,7 @@ function SignUpModal({ setOpen }: any) {
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">re-Password</label>
 							<input
+								name="rePassword"
 								type="password"
 								className="block w-full px-4 py-3 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
 								placeholder="pa@ssword"

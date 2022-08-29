@@ -3,14 +3,22 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { OrganizationUser } from './organizationUser.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({
+    default: false,
+  })
+  enabled?: boolean;
 
   @Column()
   name: string;
@@ -21,6 +29,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  salt: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -29,4 +40,8 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToOne(() => OrganizationUser)
+  @JoinColumn()
+  organization: OrganizationUser;
 }
