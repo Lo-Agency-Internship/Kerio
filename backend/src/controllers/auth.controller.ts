@@ -10,9 +10,6 @@ import {
 import { UserLoginDto, UserRegisterDto } from '../dtos/user.dto';
 import { UserService } from '../services/user.service';
 import { hashSync } from 'bcrypt';
-
-import { SecureUser, SecureUserWithOrganization } from '../utils/types';
-
 import {
   roleEnum,
   SecureUser,
@@ -101,6 +98,14 @@ export class AuthController {
     });
 
     return resultUser;
+  }
+  @Post('duplicateEmail')
+  async emailExist(@Body() body) {
+    const isExist = await this.userService.exists(body.email);
+    if (isExist) {
+      throw new HttpException('email already exists', HttpStatus.BAD_REQUEST);
+    }
+    return { message: 'ok', status: HttpStatus.ACCEPTED };
   }
 
   @Get('enable')

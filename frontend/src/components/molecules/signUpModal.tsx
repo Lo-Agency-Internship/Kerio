@@ -1,6 +1,7 @@
+/* eslint-disable */
 import { Button } from '../atoms/button';
 import { modalUserValidation } from '../../validation/userValidation';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { uri } from '../../utils';
@@ -9,6 +10,30 @@ import { kebab } from 'case';
 function SignUpModal({ setOpen }: any) {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
+	const [emailValue, setemailValue] = useState('');
+	const fakeApi = () => console.log('Api is called');
+	const [inputValue, setInputValue] = useState('');
+	const [timer, setTimer] = useState(null);
+
+	const inputChanged = (e: any) => {
+		setemailValue(e.target.value);
+	};
+	const checkEmail = async (emailValue: any) => {
+		try {
+			await axios.post(uri('auth/duplicateEmail'), { email: emailValue }).then((response) => {
+				setError(response.data.message);
+			});
+		} catch (err: any) {
+			setError(err.response.data.message);
+		}
+	};
+	useEffect(() => {
+		if (emailValue !== '') {
+			const timeoutId = setTimeout(() => checkEmail(emailValue), 3000);
+			return () => clearTimeout(timeoutId);
+		}
+	}, [emailValue]);
+
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 		setError(null);
@@ -55,6 +80,7 @@ function SignUpModal({ setOpen }: any) {
 			});
 		}
 	};
+
 	return (
 		// <!--  // modal starts here component -->
 		<div className="absolute flex flex-col z-50 items-center justify-center w-full px-20 pt-5 pb-30 lg:pt-18 lg:flex-row top-0 right-0 bottom-0 left-0">
@@ -105,6 +131,8 @@ function SignUpModal({ setOpen }: any) {
 						<div className="relative">
 							<label className="absolute px-2 ml-2 -mt-3 font-medium text-gray-600 bg-white">Email Address</label>
 							<input
+								value={emailValue}
+								onChange={inputChanged}
 								name="email"
 								type="email"
 								className="block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
