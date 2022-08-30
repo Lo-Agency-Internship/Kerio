@@ -1,4 +1,5 @@
 // import React from 'react'
+import './App.css';
 import { Route, Routes, Outlet } from 'react-router-dom';
 import Contact from './pages/contact';
 import Layout from './layout/layout';
