@@ -6,8 +6,12 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
+
+import { CreateInvitesDto } from 'src/dtos/invite.dto';
+
 import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
 import { roleEnum } from 'src/utils/types';
@@ -17,6 +21,7 @@ export class InviteController {
   constructor(
     private readonly inviteService: InviteService,
     private readonly authService: AuthService,
+    private readonly templateService: TemplateEngineService,
   ) {}
 
   @Get()
@@ -41,10 +46,7 @@ export class InviteController {
   }
 
   @Post('/:token')
-  async registerUserByToken(
-    @Param() { token }: any,
-    @Body() body: RegisterUserByInviteDto,
-  ) {
+  async registerUserByToken(@Param() { token }: any, @Body() body: any) {
     const isTokenValid = await this.inviteService.isInviteValid({ token });
 
     if (!isTokenValid)

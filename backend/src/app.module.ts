@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HealthController } from './controllers/health.controller';
@@ -25,8 +25,15 @@ import { OrganizationUserService } from './services/organizationUser.service';
 import { Invite } from './entities/invite.entity';
 import { InviteController } from './controllers/invite.controller';
 import { InviteService } from './services/invite.service';
+
+import { MailerModule } from '@nestjs-modules/mailer';
+import { MailerService } from './services/mail.service';
+import { TemplateEngineService } from './services/templateEngine.service';
+
 import { Role } from './entities/role.entity';
 import { RoleService } from './services/role.service';
+import { RequestContextService } from './services/requestContext.service';
+import { RequestContextModule } from 'nestjs-request-context';
 
 const entitiesToAdd = [
   Contact,
@@ -40,6 +47,7 @@ const entitiesToAdd = [
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    RequestContextModule,
     TypeOrmModule.forFeature(entitiesToAdd),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -51,6 +59,25 @@ const entitiesToAdd = [
         synchronize: true,
         logging: true,
         entities: entitiesToAdd,
+      }),
+    }),
+    MailerModule.forRootAsync({
+      useFactory: () => ({
+        transport: {
+          host: process.env.MAILER_HOST,
+          port: parseInt(process.env.MAILER_PORT || '587'),
+          auth: {
+            user: process.env.MAILER_USER,
+            pass: process.env.MAILER_PASS,
+            credentials: {
+              user: process.env.MAILER_USER,
+              pass: process.env.MAILER_PASS,
+            },
+          },
+          ignoreTLS: true,
+          secure: false,
+          requireTLS: false,
+        },
       }),
     }),
     PassportModule,
@@ -81,8 +108,17 @@ const entitiesToAdd = [
     LocalStrategy,
     JwtStrategy,
     InviteService,
+
+    MailerService,
+    TemplateEngineService,
+
     RoleService,
+    RequestContextService,
   ],
   exports: [AuthService, RoleService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): any {
+    // FOR LATER
+  }
+}

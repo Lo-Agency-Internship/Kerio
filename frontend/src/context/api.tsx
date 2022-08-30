@@ -1,8 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
-import { backend } from '../utils';
-import jwt from 'jwt-decode';
+import { uri } from '../utils';
 interface IApiProvider {
 	children: ReactNode;
 }
@@ -19,20 +18,27 @@ interface IApiContext {
 }
 
 const ApiContext = createContext<IApiContext>({});
+
 export const useApiContext = () => useContext(ApiContext);
+
 export const ApiProvider = ({ children }: IApiProvider) => {
 	// const [isLoading, setIsLoading] = useState(false);
-	// useEffect(() => {}, []);
 	const [change, setChange] = useState(false);
-	const [userToken, setUserToken] = useState<any>(null);
-	// const [isToken, setIsToken] = useState(null);
 	const getContactInfo = async (id: string) => {
-		const { data } = await axios.get(backend(`contacts/${id}`));
+		const { data } = await axios.get(uri(`contacts/${id}`), {
+			headers: {
+				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+			},
+		});
 		return data;
 	};
 
 	const getContacts = async () => {
-		const { data } = await axios.get(backend(`contacts`));
+		const { data } = await axios.get(uri(`contacts`), {
+			headers: {
+				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+			},
+		});
 		return data;
 	};
 	useEffect(() => {
@@ -40,28 +46,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		f();
 	}, []);
 
-	const checkToken = () => {
-		let isExpired = false;
-		try {
-			const decoded: any = jwt(userToken);
-			if (userToken) {
-				const dateNow = new Date();
-				const timee = decoded.exp * 1000;
-				if (timee < dateNow.getTime()) {
-					isExpired = true;
-				}
-			} else {
-				isExpired = true;
-			}
-		} catch (err) {
-			isExpired = true;
-		}
-		return isExpired;
-	};
-
 	return (
-		<ApiContext.Provider value={{ getContactInfo, getContacts, change, setChange, checkToken, setUserToken }}>
-			{children}
-		</ApiContext.Provider>
+		<ApiContext.Provider value={{ getContactInfo, getContacts, change, setChange }}>{children}</ApiContext.Provider>
 	);
 };
