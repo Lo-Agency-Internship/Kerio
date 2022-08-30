@@ -1,12 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ContactStatus } from './contactStatus';
 
 @Entity()
@@ -17,7 +9,6 @@ export class Status {
   @Column()
   title: string;
 
- 
   @OneToMany(() => ContactStatus, (contactStatus) => contactStatus.status)
   contactStatus: ContactStatus;
 }

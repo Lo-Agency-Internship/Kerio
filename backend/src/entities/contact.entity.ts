@@ -30,9 +30,8 @@ export class Contact {
   @Column()
   status: string;
 
-  @Column({nullable:true})
-  organizationId:number;
-
+  @Column({ nullable: true })
+  organizationId: number;
 
   @CreateDateColumn()
   createdAt: Date;

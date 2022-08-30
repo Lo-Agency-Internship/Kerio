@@ -1,36 +1,32 @@
-import { Body, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Note } from "src/entities/note.entity";
-import { Repository } from "typeorm";
+import { Body, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Note } from 'src/entities/note.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class Noteservice{
-    constructor(
-        @InjectRepository(Note)
-        private readonly noteRepository:Repository<Note>
-    ){}
+export class Noteservice {
+  constructor(
+    @InjectRepository(Note)
+    private readonly noteRepository: Repository<Note>,
+  ) {}
 
-   async addNote(@Body() body ,contactId:number){
-
+  async addNote(@Body() body) {
     //add contactId from url
-     //await this.noteRepository.save(body,contactId)
+    return await this.noteRepository.save(body);
+  }
 
-    }
+  async updateNote(@Body() body, id) {
+    return await this.noteRepository.update(body, id);
+  }
 
-    async updateNote(@Body()body,id){
-        await this.noteRepository.update(body,id)
+  async deleteNote(id) {
+    return await this.noteRepository.softDelete(id);
+  }
 
-    }
-
-    async deleteNote(id){
-        await this.noteRepository.softDelete(id)
-    }
-
-    async findOneNoteById(noteId){
-        await this.findOneNoteById(noteId)
-
-    }
-    async findNotesByContactId(contactId){
-        await this.noteRepository.find({where:{id:contactId}})
-    }
-    }
+  async findOneNoteById(noteId) {
+    return await this.findOneNoteById(noteId);
+  }
+  async findNotesByContactId(contactId) {
+    return await this.noteRepository.find({ where: { id: contactId } });
+  }
+}

@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -20,13 +19,13 @@ export class Log {
   description: string;
 
   @Column()
-  entityType: String;
+  entityType: string;
 
   @Column()
-  entityId: Number;
+  entityId: number;
 
   @Column()
-  event: String;
+  event: string;
 
   @CreateDateColumn()
   createdAt: Date;

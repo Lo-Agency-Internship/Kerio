@@ -50,7 +50,7 @@ const entitiesToAdd = [
   Status,
   Note,
   Log,
-  ContactStatus
+  ContactStatus,
 ];
 
 @Module({
@@ -123,9 +123,9 @@ const entitiesToAdd = [
 
     RoleService,
     RequestContextService,
-    StatusService
+    StatusService,
   ],
-  exports: [AuthService, RoleService,StatusService],
+  exports: [AuthService, RoleService, StatusService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {

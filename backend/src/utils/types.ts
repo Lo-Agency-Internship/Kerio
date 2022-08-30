@@ -15,7 +15,7 @@ export type NewUser = Omit<
 
 export type NewOrganization = Omit<
   Organization,
-  'id' | 'createdAt' | 'deletedAt' | 'updatedAt'| 'contacts'
+  'id' | 'createdAt' | 'deletedAt' | 'updatedAt' | 'contacts'
 >;
 
 export type JwtPayload = {
@@ -33,15 +33,13 @@ export type SecureInvite = Omit<Invite, 'token'>;
 export enum roleEnum {
   Owner = 1,
   Employee = 2,
-};
+}
 
 export enum EStatus {
   PotentialCustomer = 1,
   LostLoyal = 2,
   LostPotentialCustomer = 3,
   LoyalCustomer = 4,
-  lead = 5,
-  LostLoyalCustomer = 6
-
-
+  Lead = 5,
+  LostLoyalCustomer = 6,
 }

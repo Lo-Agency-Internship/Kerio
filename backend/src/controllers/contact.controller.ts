@@ -12,7 +12,6 @@ import { Contact } from '../entities/contact.entity';
 import { ContactService } from '../services/contact.service';
 import { FindOneContactByIdDto } from '../dtos/contact.dto';
 import { RequestContextService } from '../services/requestContext.service';
-import { SecureUserWithOrganization } from '../utils/types';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
 
@@ -31,7 +30,7 @@ export class ContactController {
       'organization',
     ) as Organization;
 
-    const organizationId = organization.id
+    const organizationId = organization.id;
     return this.contactService.getAllContact(organizationId);
   }
 
@@ -42,9 +41,11 @@ export class ContactController {
 
   @Post()
   addContact(@Body() contact): Promise<Contact> {
-    const organization = this.contextService.get('organization') as Organization
-    const organizationId = organization.id
-    contact = {...contact,organizationId}
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
+    const organizationId = organization.id;
+    contact = { ...contact, organizationId };
     return this.contactService.addContact(contact);
   }
 
