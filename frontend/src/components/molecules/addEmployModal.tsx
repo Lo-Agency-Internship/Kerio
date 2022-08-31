@@ -27,10 +27,16 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 			};
 		});
 
-		await axios.post(uri(''), data).then((response) => {
-			const user = response.data;
-			setOpen(false);
-		});
+		await axios
+			.post(uri(''), data, {
+				headers: {
+					Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+				},
+			})
+			.then((response) => {
+				const user = response.data;
+				setOpen(false);
+			});
 	};
 	const handleRemoveClick = (index: number) => {
 		const list = [...employees];
