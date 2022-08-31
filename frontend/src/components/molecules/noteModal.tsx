@@ -7,6 +7,7 @@ export default function NoteModal({ setOpen }: any) {
 				<div role="alert" className="container mx-auto w-96 md:w-2/3 max-w-lg">
 					<div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
 						<div className="w-full flex justify-start text-gray-600 mb-3"></div>
+						<form>
 						<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Add your notes</h1>
 						<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
 						<input
@@ -65,6 +66,7 @@ export default function NoteModal({ setOpen }: any) {
 								<line x1="6" y1="6" x2="18" y2="18" />
 							</svg>
 						</button>
+						</form>
 					</div>
 				</div>
 			</div>
