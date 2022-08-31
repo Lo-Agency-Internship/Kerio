@@ -9,10 +9,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
-import { TemplateEngineService } from 'src/services/templateEngine.service';
 import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
 import { roleEnum } from 'src/utils/types';
+import { TemplateEngineService } from 'src/services/templateEngine.service';
 
 @Controller('invites')
 export class InviteController {

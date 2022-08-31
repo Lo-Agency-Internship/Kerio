@@ -3,25 +3,23 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 import { Contact } from './contact.entity';
 
 @Entity()
-export class Organization {
+export class Note {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
+  title: string;
 
   @Column()
-  address: string;
-
-  @Column({ unique: true })
-  slug: string;
+  description: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -32,6 +30,6 @@ export class Organization {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() => Contact, (contact) => contact.organization)
-  contacts: Contact[];
+  @ManyToOne(() => Contact, (contact) => contact.notes)
+  contact: Contact;
 }

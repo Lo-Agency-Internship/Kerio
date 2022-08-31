@@ -2,7 +2,7 @@ import { modalContactValidation } from '../../validation/addContactValidaion';
 import axios from 'axios';
 import { FC, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { uri } from '../../utils';
+import { uri } from '../../utils/index';
 import { useApiContext } from '../../context/api';
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,13 +27,19 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 		};
 		const isValid = await modalContactValidation.isValid(body);
 		if (isValid) {
-			await axios.post(uri('contacts'), body).then((response) => {
-				const user = response.data;
+			await axios
+				.post(uri('contacts'), body, {
+					headers: {
+						Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+					},
+				})
+				.then((response) => {
+					const user = response.data;
 
-				setOpen(false);
-				setChange(!change);
-				// navigate(`/dashboard/contacts/${user.id}`);
-			});
+					setOpen(false);
+					setChange(!change);
+					// navigate(`/dashboard/contacts/${user.id}`);
+				});
 		} else {
 			modalContactValidation.validate(body).catch((e) => {
 				setError(e.message);
@@ -91,12 +97,11 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 										name="status"
 										id="customerStatus"
 										className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-										<option value="Lead">Lead</option>
-										<option value="Lost-loyal">Lost-loyal</option>
-										<option value="PotentialCustomer">PotentialCustomer</option>
-										<option value="LostPotentialCustomer">LostPotentialCustomer</option>
-										<option value="LostLoyalCustomer">LostLoyalCustomer</option>
-										<option value="LoyalCustomer">LoyalCustomer</option>
+										<option value="Lead">lead</option>
+										<option value="PotentialCustomer">potentialCustomer</option>
+										<option value="LostPotentialCustomer">lostPotentialCustomer</option>
+										<option value="LostLoyalCustomer">lostLoyalCustomer</option>
+										<option value="LSoyalCustomer">loyalCustomer</option>
 									</select>
 								</div>
 								{/* button of add */}

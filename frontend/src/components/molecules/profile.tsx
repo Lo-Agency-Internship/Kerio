@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { uri } from '../../utils';
+import { uri } from '../../utils/index';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
 export default function Profile({ user, setUser }: any) {
