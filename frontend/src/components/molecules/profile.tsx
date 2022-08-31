@@ -34,9 +34,15 @@ export default function Profile({ user, setUser }: any) {
 		const phone = formData.get('phone');
 		const status = formData.get('status');
 		const updatedUser = { name, email, phone, status };
-		await axios.put(uri(`contacts/${user.id}`), updatedUser).then((response) => {
-			console.log(response);
-		});
+		await axios
+			.put(uri(`contacts/${user.id}`), updatedUser, {
+				headers: {
+					Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+				},
+			})
+			.then((response) => {
+				console.log(response);
+			});
 		setUser(updatedUser);
 		setInputDisabled(true);
 		setInputsShow(false);
@@ -100,12 +106,11 @@ export default function Profile({ user, setUser }: any) {
 									className={`${background} status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline`}
 									defaultValue={user?.status}
 									id="customerStatus">
-									<option value="lead">Lead</option>
-									<option value="lostLoyal">Lost Loyal</option>
-									<option value="potenial">Potential Customer</option>
-									<option value="lostPotenial">Lost Potential Customer</option>
-									<option value="lostLoyal">Lost Loyal Customer</option>
-									<option value="loyal">Loyal Customer</option>
+									<option value="Lead">Lead</option>
+									<option value="PotenialCustomer">Potential Customer</option>
+									<option value="LostPotenialCustomer">Lost Potential Customer</option>
+									<option value="LostLoyalCustomer">Lost Loyal Customer</option>
+									<option value="LoyalCustomer">Loyal Customer</option>
 								</select>
 							</div>
 						</div>
