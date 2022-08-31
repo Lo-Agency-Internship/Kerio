@@ -2,7 +2,7 @@ import { Button } from '../atoms/button';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { uri } from '../../utils';
+import { uri } from '../../utils/index';
 import { signInValidation } from '../../validation/userValidation';
 interface ISignInModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
