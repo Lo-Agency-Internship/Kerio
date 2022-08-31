@@ -3,14 +3,19 @@ import { useEffect, useState } from 'react';
 import { uri } from '../../utils/index';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
+import Loading from './loading';
 export default function Profile({ user, setUser }: any) {
-	useEffect(() => {
-		setUser(user);
-	}, [user]);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
+	const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
 	const [background, setBackground] = useState('bg-transparent');
 
+	useEffect(() => {
+		setUser(user);
+		if (user) {
+			setSelectBoxValue(user.status);
+		}
+	}, [user]);
 	// after ckick it we can see 2 new buttons ( yes & no)
 	const editHandler = () => {
 		setInputDisabled(false);
@@ -28,22 +33,20 @@ export default function Profile({ user, setUser }: any) {
 
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
+		setSelectBoxValue(null);
 		const formData = new FormData(e.currentTarget);
 		const name = formData.get('name');
 		const email = formData.get('email');
 		const phone = formData.get('phone');
 		const status = formData.get('status');
-		const updatedUser = { name, email, phone, status };
-		await axios
-			.put(uri(`contacts/${user.id}`), updatedUser, {
-				headers: {
-					Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-				},
-			})
-			.then((response) => {
-				console.log(response);
-			});
-		setUser(updatedUser);
+		const body = { name, email, phone, status };
+		await axios.put(uri(`contacts/${user.id}`), body, {
+			headers: {
+				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+			},
+		});
+		setSelectBoxValue(status as string);
+		setUser({ ...body, id: user.id });
 		setInputDisabled(true);
 		setInputsShow(false);
 		setBackground('bg-transparent');
@@ -51,98 +54,112 @@ export default function Profile({ user, setUser }: any) {
 
 	return (
 		<>
-			<div className="flex justify-center justify-items-center my-4  w-full p-10">
-				<div className="flex w-full mx-8  p-4 bg-gray-200 rounded-lg hover:shadow-xl ">
-					<form onSubmit={submitHandler}>
-						<div className="flex justify-start  flex-row flex-wrap">
-							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
-								<label className="mx-2" htmlFor="name">
-									Name:
-								</label>
-								<Input
-									disabled={inputDisabled}
-									type={'text'}
-									id={'name'}
-									defaultValue={user?.name}
-									name="name"
-									className={background}
-								/>
-							</div>
-							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
-								<label className="mx-2" htmlFor="email">
-									Email:
-								</label>
-								<Input
-									disabled={inputDisabled}
-									type={'text'}
-									id={'email'}
-									defaultValue={user?.email}
-									name="email"
-									className={background}
-								/>
-							</div>
-
-							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
-								<label className="mx-2" htmlFor="phone">
-									Phone:
-								</label>
-								<Input
-									disabled={inputDisabled}
-									type={'text'}
-									id={'phone'}
-									defaultValue={user?.phone}
-									name="phone"
-									className={background}
-								/>
-							</div>
-
-							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
-								<label className="mx-2" htmlFor="status">
-									Status :
-								</label>
-								<select
-									disabled={inputDisabled}
-									name="status"
-									className={`${background} status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline`}
-									defaultValue={user?.status}
-									id="customerStatus">
-									<option value="Lead">Lead</option>
-									<option value="PotenialCustomer">Potential Customer</option>
-									<option value="LostPotenialCustomer">Lost Potential Customer</option>
-									<option value="LostLoyalCustomer">Lost Loyal Customer</option>
-									<option value="LoyalCustomer">Loyal Customer</option>
-								</select>
-							</div>
-						</div>
-
-						{/* show and hide buttons */}
-						<div className="mt-16">
-							{inputsShow ? (
-								<>
-									<Button
-										label="No"
-										style="focus:outline-none mx-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-										onClick={cancelHandler}
-										type="reset"
+			{user && selectBoxValue ? (
+				<div className="flex justify-center justify-items-center my-4  w-full p-10">
+					<div className="flex w-full mx-8  p-4 bg-gray-200 rounded-lg hover:shadow-xl ">
+						<form onSubmit={submitHandler}>
+							<div className="flex justify-start  flex-row flex-wrap">
+								<div className="m-3 pt-0 hover:shadow-md rounded-lg">
+									<label className="mx-2" htmlFor="name">
+										Name:
+									</label>
+									<Input
+										disabled={inputDisabled}
+										type={'text'}
+										id={'name'}
+										defaultValue={user?.name}
+										name="name"
+										className={background}
 									/>
-									<Button
-										label="Yes"
-										style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-										type="submit"
+								</div>
+								<div className="m-3 pt-0 hover:shadow-md rounded-lg">
+									<label className="mx-2" htmlFor="email">
+										Email:
+									</label>
+									<Input
+										disabled={inputDisabled}
+										type={'text'}
+										id={'email'}
+										defaultValue={user?.email}
+										name="email"
+										className={background}
 									/>
-								</>
-							) : (
-								<Button
-									label="Edit"
-									style="focus:outline-none mx-3 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
-									onClick={editHandler}
-									type="button"
-								/>
-							)}
-						</div>
-					</form>
+								</div>
+
+								<div className="m-3 pt-0 hover:shadow-md rounded-lg">
+									<label className="mx-2" htmlFor="phone">
+										Phone:
+									</label>
+									<Input
+										disabled={inputDisabled}
+										type={'text'}
+										id={'phone'}
+										defaultValue={user?.phone}
+										name="phone"
+										className={background}
+									/>
+								</div>
+
+								<div className="m-3 pt-0 hover:shadow-md rounded-lg">
+									<label className="mx-2" htmlFor="status">
+										Status :
+									</label>
+									<select
+										disabled={inputDisabled}
+										name="status"
+										className={`${background} status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline`}
+										defaultValue={selectBoxValue}
+										id="customerStatus">
+										<option value="PotentialCustomer" selected={selectBoxValue === 'PotentialCustomer' && true}>
+											Potential Customer
+										</option>
+										<option value="LostPotentialCustomer" selected={selectBoxValue === 'LostPotentialCustomer' && true}>
+											Lost Potential Customer
+										</option>
+										<option value="Lead" selected={selectBoxValue === 'Lead' && true}>
+											Lead
+										</option>
+										<option value="LostLoyalCustomer" selected={selectBoxValue === 'LostLoyalCustomer' && true}>
+											Lost Loyal Customer
+										</option>
+										<option value="LoyalCustomer" selected={selectBoxValue === 'LoyalCustomer' && true}>
+											Loyal Customer
+										</option>
+									</select>
+								</div>
+							</div>
+
+							{/* show and hide buttons */}
+							<div className="mt-16">
+								{inputsShow ? (
+									<>
+										<Button
+											label="No"
+											style="focus:outline-none mx-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+											onClick={cancelHandler}
+											type="reset"
+										/>
+										<Button
+											label="Yes"
+											style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+											type="submit"
+										/>
+									</>
+								) : (
+									<Button
+										label="Edit"
+										style="focus:outline-none mx-3 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+										onClick={editHandler}
+										type="button"
+									/>
+								)}
+							</div>
+						</form>
+					</div>
 				</div>
-			</div>
+			) : (
+				<Loading />
+			)}
 		</>
 	);
 }
