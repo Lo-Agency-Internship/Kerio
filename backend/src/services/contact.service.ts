@@ -19,7 +19,7 @@ export class ContactService {
     return this.contactRepository.find({ where: { organizationId } });
   }
 
-  findOneContactById(id: number): Promise<Contact> {
+  findOneContactById(id: any): Promise<Contact> {
     return this.contactRepository.findOneBy({ id });
   }
 

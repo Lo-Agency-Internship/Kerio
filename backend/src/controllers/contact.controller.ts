@@ -36,7 +36,7 @@ export class ContactController {
 
   @Get(':id')
   findOneContactById(@Param() param: FindOneContactByIdDto): Promise<Contact> {
-    return this.contactService.findOneContactById(param.id);
+    return this.contactService.findOneContactById(param.id.toString());
   }
 
   @Post()
