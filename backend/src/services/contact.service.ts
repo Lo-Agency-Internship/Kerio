@@ -20,7 +20,6 @@ export class ContactService {
   }
 
   findOneContactById(id: any): Promise<Contact> {
-    
     return this.contactRepository.findOneBy({ id });
   }
 
