@@ -18,7 +18,6 @@ export class RequestContextService {
         return val as SecureUserWithOrganization;
 
       case 'organization':
-        console.log('hellooooo');
         return val as Organization;
 
       case 'role':
