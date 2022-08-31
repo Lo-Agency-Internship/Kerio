@@ -91,12 +91,12 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 										name="status"
 										id="customerStatus"
 										className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
-										<option value="lead">lead</option>
-										<option value="lost-loyal">lost-loyal</option>
-										<option value="potentialCustomer">potentialCustomer</option>
-										<option value="lostPotentialCustomer">lostPotentialCustomer</option>
-										<option value="lostLoyalCustomer">lostLoyalCustomer</option>
-										<option value="loyalCustomer">loyalCustomer</option>
+										<option value="Lead">Lead</option>
+										<option value="Lost-loyal">Lost-loyal</option>
+										<option value="PotentialCustomer">PotentialCustomer</option>
+										<option value="LostPotentialCustomer">LostPotentialCustomer</option>
+										<option value="LostLoyalCustomer">LostLoyalCustomer</option>
+										<option value="LoyalCustomer">LoyalCustomer</option>
 									</select>
 								</div>
 								{/* button of add */}
