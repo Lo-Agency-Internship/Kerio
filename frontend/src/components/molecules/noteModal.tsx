@@ -1,66 +1,74 @@
 export default function NoteModal({ setOpen }: any) {
 	return (
 		<>
-			<div className="pb-9 z-10 ">
-				<form>
-					<div className="absolute flex top-96 right-16 mt-8 mr-16 my-5">
-						<div className=" bg-white rounded-md px-6 py-10 max-w-2xl mx-auto">
-							<button
-								className="cursor-pointer absolute top-0 right-0 mt-4 mr-4
-                         text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out 
-                         rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
-								onClick={() => setOpen(false)}
-								aria-label="close modal"
-								role="button">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									className="icon icon-tabler icon-tabler-x"
-									width="20"
-									height="20"
-									viewBox="0 0 24 24"
-									strokeWidth="2.5"
-									stroke="currentColor"
-									fill="none"
-									strokeLinecap="round"
-									strokeLinejoin="round">
-									<path stroke="none" d="M0 0h24v24H0z" />
-									<line x1="18" y1="6" x2="6" y2="18" />
-									<line x1="6" y1="6" x2="18" y2="18" />
-								</svg>
-							</button>
-							<h1 className="text-center text-2xl font-bold text-gray-500 mb-10">The Form of Notes</h1>
-							<div className="space-y-4">
-								<div>
-									<label className="text-lx font-normal">Date:</label>
-									<input type="date" id="date" className="ml-2 outline-none py-1 px-2 text-md border-2 rounded-md" />
-								</div>
-								<div>
-									<label className="text-lx font-normal">Title:</label>
-									<input
-										type="text"
-										placeholder="title"
-										id="title"
-										className="ml-2 outline-none py-1 px-2 text-md border-2 rounded-md"
-									/>
-								</div>
-								<div>
-									<label className="block mb-2 text-lg font-normal">Description:</label>
-									<textarea
-										id="description"
-										placeholder="write here..."
-										className="w-full font-serif  p-4 text-gray-600 bg-indigo-50 outline-none rounded-md"></textarea>
-								</div>
-								<div className="flex items-center justify-around pt-8">
-									<button
-										className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
-										type="button">
-										save
-									</button>
-								</div>
-							</div>
+			<div
+				className="py-12 transition duration-150 ease-in-out z-10 absolute top-14 right-0 bottom-0 left-0"
+				id="modal">
+				<div role="alert" className="container mx-auto w-96 md:w-2/3 max-w-lg">
+					<div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
+						<div className="w-full flex justify-start text-gray-600 mb-3"></div>
+						<form>
+						<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Add your notes</h1>
+						<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
+						<input
+							id="date"
+							type="date"
+							className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
+							placeholder=""
+						/>
+						<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Title</label>
+						<div className="relative mb-5 mt-2">
+							<input
+								id="date"
+								type="text"
+								className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
+								placeholder="title"
+							/>
 						</div>
+						<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
+						<div className="relative mb-5 mt-2">
+							<div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
+							<textarea
+								className="text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-24 flex items-center pl-3 text-sm border-gray-300 rounded border"
+								placeholder="Description"></textarea>
+						</div>
+						<div className="flex items-center justify-start w-full">
+							<button
+								type="submit"
+								className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm">
+								Submit
+							</button>
+							<button
+								className="focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
+								type="button"
+								onClick={() => setOpen(false)}>
+								Cancel
+							</button>
+						</div>
+						<button
+							className="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
+							onClick={() => setOpen(false)}
+							aria-label="close modal"
+							type="button">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="icon icon-tabler icon-tabler-x"
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								strokeWidth="2.5"
+								stroke="currentColor"
+								fill="none"
+								strokeLinecap="round"
+								strokeLinejoin="round">
+								<path stroke="none" d="M0 0h24v24H0z" />
+								<line x1="18" y1="6" x2="6" y2="18" />
+								<line x1="6" y1="6" x2="18" y2="18" />
+							</svg>
+						</button>
+						</form>
 					</div>
-				</form>
+				</div>
 			</div>
 		</>
 	);
