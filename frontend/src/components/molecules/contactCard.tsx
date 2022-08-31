@@ -8,16 +8,16 @@ const ContactCards: React.FC<IContactCards> = ({ contact }) => {
 	const navigate = useNavigate();
 	return (
 		<>
-			<div className="h-24 w-3/4 my-4 mx-20 bg-gradient-to-r from-amber-100 to-zinc-300 inline-block p-3 rounded-xl border-2 border-slate-100 shadow-lg transition-all transform-all hover:scale-105 cursor-pointer relative">
-				<div className="relative top-4">
+			<div className="flex items-center justify-around h-24 w-3/4 my-4 mx-20 bg-gradient-to-r from-amber-100 to-zinc-300 p-3 rounded-xl border-2 border-slate-100 shadow-lg transition-all transform-all hover:scale-105 cursor-pointer relative">
+				<div>
 					<div className="font-mono text-base">{contact.name}</div>
 					<div className="font-mono text-base">{contact.phone}</div>
 				</div>
-				<div className="relative left-48 bottom-8">
+				<div>
 					<div className="font-mono text-base">{contact.email}</div>
 					<div className="font-mono text-base">{contact.status}</div>
 				</div>
-				<div className="relative left-2/3 bottom-20">
+				<div>
 					<Button
 						type="submit"
 						label="Profile"
