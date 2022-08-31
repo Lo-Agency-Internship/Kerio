@@ -10,6 +10,7 @@ import PublicRoute from './utils/auth/publicRoute';
 import Invite from './pages/invite';
 import { useState } from 'react';
 import Employees from './pages/employees';
+import NotFoundPage from './pages/notFoundPage';
 
 function App() {
 	const [role] = useState<string>('owner');
@@ -38,7 +39,7 @@ function App() {
 				<Route path="contacts/:id" element={<Contact />} />
 				{role === 'owner' && <Route path="employees" element={<Employees />} />}
 			</Route>
-			<Route path="*" element={<Contact />} />
+			<Route path="*" element={<NotFoundPage />} />
 		</Routes>
 	);
 }
