@@ -1,12 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../atoms/button';
 const Header = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	function handleSignOut() {
 		localStorage.removeItem('access_token');
 		navigate('/');
 	}
+
 	return (
 		<>
 			{/* header start here */}
@@ -34,6 +36,13 @@ const Header = () => {
 					<div className="flex items-center relative">
 						<div className="dropdown relative"></div>
 						<div className="dropdown relative">
+							{location.pathname !== '/dashboard' && (
+								<Button
+									style="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+									label={'home'}
+									onClick={() => navigate(`/dashboard`)}
+								/>
+							)}
 							{/* sign out button  */}
 							<Button
 								style="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
