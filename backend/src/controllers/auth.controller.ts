@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -40,12 +41,12 @@ export class AuthController {
         `user with email ${email} does not exist`,
         HttpStatus.BAD_REQUEST,
       );
-    if (!user.enabled) {
-      throw new HttpException(
-        `user with email ${email} is not activated`,
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    // if (!user.enabled) {
+    //   throw new HttpException(
+    //     `user with email ${email} is not activated`,
+    //     HttpStatus.BAD_REQUEST,
+    //   );
+    // }
     const hashedPassword = hashSync(password, user.salt);
 
     const areEqual = user.password === hashedPassword;

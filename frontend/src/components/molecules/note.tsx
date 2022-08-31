@@ -1,7 +1,7 @@
 export default function Note({ setShowNoteModal }: any) {
 	return (
 		<>
-			<div className="flex justify-center align-item item-center w-11/12 ">
+			<div className="flex justify-start align-item item-center w-11/12 ">
 				<div className="m-8 py-1 px-1">
 					<button
 						onClick={() => setShowNoteModal(true)}

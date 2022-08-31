@@ -3,25 +3,24 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 import { Contact } from './contact.entity';
+import { Status } from './status.entity';
 
 @Entity()
-export class Organization {
+export class ContactStatus {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
+  contactId?: number;
 
   @Column()
-  address: string;
-
-  @Column({ unique: true })
-  slug: string;
+  statusId?: number;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -32,6 +31,9 @@ export class Organization {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() => Contact, (contact) => contact.organization)
-  contacts: Contact[];
+  @ManyToOne(() => Contact, (contact) => contact.contactStatus)
+  contact: Contact;
+
+  @ManyToOne(() => Status, (status) => status.contactStatus)
+  status: Status;
 }

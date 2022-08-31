@@ -12,10 +12,10 @@ import { Contact } from '../entities/contact.entity';
 import { ContactService } from '../services/contact.service';
 import { FindOneContactByIdDto } from '../dtos/contact.dto';
 import { RequestContextService } from '../services/requestContext.service';
-import { SecureUserWithOrganization } from '../utils/types';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
 
+@UseGuards(JwtGuard)
 @Controller('contacts')
 export class ContactController {
   constructor(
@@ -26,13 +26,12 @@ export class ContactController {
   @Get()
   @UseGuards(JwtGuard)
   getAllContacts(): Promise<Contact[]> {
-    const user = this.contextService.get(
-      'userData',
-    ) as SecureUserWithOrganization;
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
 
-    console.log({ user });
-
-    return this.contactService.getAllContact();
+    const organizationId = organization.id;
+    return this.contactService.getAllContact(organizationId);
   }
 
   @Get(':id')
@@ -42,6 +41,11 @@ export class ContactController {
 
   @Post()
   addContact(@Body() contact): Promise<Contact> {
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
+    const organizationId = organization.id;
+    contact = { ...contact, organizationId };
     return this.contactService.addContact(contact);
   }
 
