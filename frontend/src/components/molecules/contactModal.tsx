@@ -101,7 +101,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 										<option value="PotentialCustomer">potentialCustomer</option>
 										<option value="LostPotentialCustomer">lostPotentialCustomer</option>
 										<option value="LostLoyalCustomer">lostLoyalCustomer</option>
-										<option value="LSoyalCustomer">loyalCustomer</option>
+										<option value="LoyalCustomer">loyalCustomer</option>
 									</select>
 								</div>
 								{/* button of add */}
