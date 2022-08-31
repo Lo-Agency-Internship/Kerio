@@ -9,7 +9,6 @@
         "axios": "^0.27.2",
         "case": "^1.6.3",
         "eslint-plugin-promise": "^6.0.1",
-        "formik": "^2.2.9",
         "jwt-decode": "^3.1.2",
         "lodash.debounce": "^4.0.8",
         "prop-types": "^15.8.1",

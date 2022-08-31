@@ -42,8 +42,8 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 	useEffect(() => {
-		const f = async () => getContacts();
-		f();
+		const getDataContacts = async () => getContacts();
+		getDataContacts();
 	}, []);
 
 	return (

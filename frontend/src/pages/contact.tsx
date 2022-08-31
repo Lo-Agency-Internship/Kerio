@@ -28,7 +28,7 @@ export default function Contact() {
 					</div>
 				</div>
 				<div className="flex justify-center">{showNoteModal && <NoteModal setOpen={setShowNoteModal} />}</div>
-				<Profile user={contact} setUser={setContact} />
+				<Profile setUser={setContact} user={contact} />
 
 				<div className="flex justify-center w-12/12 border">
 					<Timeline />
