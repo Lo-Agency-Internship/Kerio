@@ -1,7 +1,5 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useApiContext } from '../../context/api';
-import { uri } from '../../utils/index';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
 export default function Profile({ user, setUser }: any) {
@@ -41,7 +39,7 @@ export default function Profile({ user, setUser }: any) {
 		const phone = formData.get('phone');
 		const status = formData.get('status');
 		const body = { name, email, phone, status };
-		await updateContactInfo(user.id,body)
+		await updateContactInfo(user.id, body);
 		setSelectBoxValue(status as string);
 		setUser({ ...body, id: user.id });
 		setInputDisabled(true);

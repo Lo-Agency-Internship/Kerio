@@ -1,7 +1,5 @@
 import React, { FC, useState } from 'react';
 import { addEmployeModalValidation } from '../../validation/addEmployModalValidation';
-import axios from 'axios';
-import { uri } from '../../utils/index';
 import { Button } from '../atoms/button';
 import { useApiContext } from '../../context/api';
 
@@ -29,10 +27,9 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 			};
 		});
 
-		await postUserInfo(data)
-			.then(() => {
-				setOpen(false);
-			});
+		await postUserInfo(data).then(() => {
+			setOpen(false);
+		});
 	};
 	const handleRemoveClick = (index: number) => {
 		const list = [...employees];

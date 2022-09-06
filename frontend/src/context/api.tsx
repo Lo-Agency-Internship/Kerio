@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
 import { uri } from '../utils/index';
@@ -14,7 +14,8 @@ interface IApiContext {
 	checkToken?: any;
 	setUserToken?: any;
 	isLoading?: boolean;
-
+	contacts?: any;
+	setContacts?: any;
 	getAllContacts?: any;
 	getAllUsers?: any;
 	getContactsInfoById?: any;
@@ -23,6 +24,7 @@ interface IApiContext {
 	postUserInfo?: any;
 	updateContactInfo?: any;
 	postLogin?: any;
+	postSignUp?: any;
 }
 
 const ApiContext = createContext<IApiContext>({});
@@ -37,18 +39,19 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 		},
 	};
+	const [contacts, setContacts] = useState([]);
+	/// //////////////// GET
 
-	/////////////////// GET
-
-	//get contacts
+	// get contacts
 	const getAllContacts = async () => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri('contacts'), headerAuth);
+		console.log(data);
 		setIsLoading(false);
 		return data;
 	};
 
-	//get users(employees)
+	// get users(employees)
 	const getAllUsers = async () => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri('users'), headerAuth);
@@ -56,7 +59,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
-	//get contacts info by ID
+	// get contacts info by ID
 	const getContactsInfoById = async (id: string) => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri(`contacts/${id}`), headerAuth);
@@ -64,7 +67,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
-	//get Users info by ID
+	// get Users info by ID
 	const getUsersInfoById = async (id: string) => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri(`employees/${id}`), headerAuth);
@@ -72,32 +75,55 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
-	
+	/// //////////////// POST
 
-	/////////////////// POST
-
-	const postLogin = async (body: object) => {
-		await axios.post(uri('auth/login'), body, headerAuth);
+	// post info for signup
+	const postSignUp = async (body: any) => {
+		await axios.post(uri('auth/register'), body);
 	};
 
-	//post data for add a new contact
+	// post info for Login
+	const postLogin = async (body: any) => {
+		await axios.post(uri('auth/login'), body).then((response: any) => {
+			localStorage.setItem('access_token', response.data.access_token);
+		});
+	};
+
+	// post data for add a new contact
 	const postContactInfo = async (body: object) => {
 		await axios.post(uri('contacts'), body, headerAuth);
 	};
 
-	//post data for add a new user
+	// post data for add a new user
 	const postUserInfo = async (body: object) => {
 		await axios.post(uri('user'), body, headerAuth);
 	};
 
-	/////////////////// PUT
+	/// //////////////// PUT
+
 	// update contact info
-	const updateContactInfo= async (id:string, body: object) => {
-		axios.put(uri(`contacts/${id}`), body, headerAuth)
+	const updateContactInfo = async (id: string, body: object) => {
+		axios.put(uri(`contacts/${id}`), body, headerAuth);
 	};
 
 	return (
-		<ApiContext.Provider value={{ change, setChange, isLoading, getAllUsers, getAllContacts, getContactsInfoById, getUsersInfoById, postContactInfo, postUserInfo, postLogin, updateContactInfo }}>
+		<ApiContext.Provider
+			value={{
+				change,
+				setChange,
+				isLoading,
+				contacts,
+				setContacts,
+				getAllUsers,
+				getAllContacts,
+				getContactsInfoById,
+				getUsersInfoById,
+				postContactInfo,
+				postUserInfo,
+				postLogin,
+				postSignUp,
+				updateContactInfo,
+			}}>
 			{children}
 		</ApiContext.Provider>
 	);

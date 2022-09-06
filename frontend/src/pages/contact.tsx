@@ -14,8 +14,9 @@ export default function Contact() {
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
 	const { getContactsInfoById, isLoading } = useApiContext();
 	const { id } = useParams();
+
 	useEffect(() => {
-		getContactsInfoById('contacts', id as string).then((res: any) => setContact(res));
+		getContactsInfoById(id as string).then((res: any) => setContact(res));
 	}, []);
 	return (
 		<>

@@ -1,14 +1,10 @@
 import { modalContactValidation } from '../../validation/addContactValidaion';
-import axios from 'axios';
 import { FC, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { uri } from '../../utils/index';
 import { useApiContext } from '../../context/api';
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ContactModal: FC<IContactModal> = ({ setOpen }) => {
-	// const navigate = useNavigate();
 	const { change, setChange, postContactInfo } = useApiContext();
 	const [error, setError] = useState<string | null>(null);
 	const handleSubmit = async (event: any) => {
