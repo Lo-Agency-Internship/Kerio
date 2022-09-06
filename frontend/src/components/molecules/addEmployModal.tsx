@@ -3,12 +3,14 @@ import { addEmployeModalValidation } from '../../validation/addEmployModalValida
 import axios from 'axios';
 import { uri } from '../../utils/index';
 import { Button } from '../atoms/button';
+import { useApiContext } from '../../context/api';
 
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
+	const { postUserInfo } = useApiContext();
 	const [error, setError] = useState<string | null>(null);
 	const [employees, setEmployees] = useState<any>([]);
 	const [nameValue, setNameValue] = useState<string>('');
@@ -27,14 +29,8 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 			};
 		});
 
-		await axios
-			.post(uri(''), data, {
-				headers: {
-					Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-				},
-			})
-			.then((response) => {
-				const user = response.data;
+		await postUserInfo(data)
+			.then(() => {
 				setOpen(false);
 			});
 	};

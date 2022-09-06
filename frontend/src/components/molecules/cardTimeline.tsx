@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 export interface Card {
 	title: string;
 	index: number;
