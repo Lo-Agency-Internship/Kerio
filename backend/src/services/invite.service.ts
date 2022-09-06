@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 import { randomBytes } from 'crypto';
 import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
+import { MaliciousUserRequestException } from '../utils/exceptions';
 
 @Injectable()
 export class InviteService {
@@ -30,10 +31,7 @@ export class InviteService {
     );
 
     if (!userExists)
-      throw new HttpException(
-        `malicious invited by user`,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new MaliciousUserRequestException(`malicious invited by user`)
 
     const [orgExists, invitedOrganization] =
       await this.orgService.existsAndFindBySlug(invite.orgSlug);

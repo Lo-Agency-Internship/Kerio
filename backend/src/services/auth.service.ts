@@ -13,6 +13,7 @@ import { User } from 'src/entities/user.entity';
 import { OrganizationUserService } from './organizationUser.service';
 import { OrganizationService } from './organization.service';
 import { MailerService } from './mail.service';
+import { NotExistException } from '../utils/exceptions';
 
 @Injectable()
 export class AuthService {
@@ -60,7 +61,7 @@ export class AuthService {
       organizationSlug,
     );
 
-    if (!orgExists) throw new Error(`organization doesn't exist`);
+    if (!orgExists) throw new NotExistException(`organization doesn't exist`);
 
     const salt = genSaltSync(10);
 
