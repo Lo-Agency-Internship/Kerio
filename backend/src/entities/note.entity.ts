@@ -21,6 +21,12 @@ export class Note {
   @Column()
   description: string;
 
+  @Column()
+  contactId:number;
+
+  @Column({nullable:true})
+  date:Date
+
   @CreateDateColumn()
   createdAt: Date;
 

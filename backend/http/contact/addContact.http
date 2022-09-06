@@ -3,8 +3,8 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjk4LCJuYW1lIjoiZ29saSBEb2UiLCJpYXQiOjE2NjE3NzM4MjQsImV4cCI6MTY2NDM2NTgyNH0.bEn6ufpOcy3Zjtc6Ul3qn0aNDM8Ibn5xI1ot3cntWB8
 
 {
-	"email": "mango@doe.com",
-    "name": "mango Doe",
-    "phone": "00989121212345",
-    "status": "lead"
+	"email": "peach@doe.com",
+    "name": "peach Doe",
+    "phone": "092145678",
+    "status": "Lead"
 }

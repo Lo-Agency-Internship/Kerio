@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Contact } from '../entities/contact.entity';
 import { ContactService } from '../services/contact.service';
-import { FindOneContactByIdDto } from '../dtos/contact.dto';
+import { AddContactDto, FindOneContactByIdDto } from '../dtos/contact.dto';
 import { RequestContextService } from '../services/requestContext.service';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
@@ -40,13 +40,13 @@ export class ContactController {
   }
 
   @Post()
-  addContact(@Body() contact): Promise<Contact> {
+  addContact(@Body() body:AddContactDto): Promise<Contact> {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
     const organizationId = organization.id;
-    contact = { ...contact, organizationId };
-    return this.contactService.addContact(contact);
+    body = { ...body, organizationId };
+    return this.contactService.addContact(body);
   }
 
   @Put(':id')

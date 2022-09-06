@@ -23,10 +23,10 @@ export class ContactService {
     return this.contactRepository.findOneBy({ id });
   }
 
-  async addContact(contact: Contact): Promise<Contact> {
-    const { status } = contact;
+  async addContact(body): Promise<Contact> {
+    const { status } = body;
     const statusId = EStatus[`${status}`];
-    const newContact = await this.contactRepository.save(contact);
+    const newContact = await this.contactRepository.save(body);
     const contactId = newContact.id;
     await this.contactStatusRepository.save({
       contactId,
@@ -37,7 +37,7 @@ export class ContactService {
 
   async updateContact(id: number, contact: Contact): Promise<any> {
     const { status } = contact;
-    const allOfUserStatus = await this.contactStatusRepository.find({
+    const allOfContactStatus = await this.contactStatusRepository.find({
       where: {
         contactId: id,
       },
@@ -46,8 +46,8 @@ export class ContactService {
       relationLoadStrategy: 'join',
     });
 
-    const recentUserStatus = allOfUserStatus[allOfUserStatus.length - 1];
-    const recentStatus = recentUserStatus.status.title;
+    const recentContactStatus = allOfContactStatus[allOfContactStatus.length - 1];
+    const recentStatus = recentContactStatus.status.title;
     const contactId = id;
     if (status !== recentStatus) {
       const statusId = EStatus[`${status}`];

@@ -1,0 +1,10 @@
+POST http://localhost:3001/notes/139 HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjk4LCJuYW1lIjoiZ29saSBEb2UiLCJpYXQiOjE2NjIzNjgxMTUsImV4cCI6MTY2NDk2MDExNX0.zcbCKjs4xhCU_d-W3jsXY-xzv27pesyH1E3Q0E3jQtM
+
+{
+	"title": "here i am ",
+    "description": "perfect moon",
+    "date": "2022-09-27"
+}
+    
