@@ -24,7 +24,7 @@ export default function Contact() {
 						<div className="flex -space-x-1 overflow-hidden">
 							<img className="h-10 w-10 rounded-full ring-1 ring-white" src={Images} alt="" />
 						</div>
-						<h1 className="pt-2 pl-4 font-bold">{contact?.name} Informations</h1>
+						<h1 className="pt-2 pl-4 font-bold">{contact?.name} Information</h1>
 					</div>
 				</div>
 				<div className="flex justify-center">{showNoteModal && <NoteModal setOpen={setShowNoteModal} />}</div>
