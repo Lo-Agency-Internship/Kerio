@@ -25,7 +25,7 @@ export class NoteController{
         const notes =  this.noteService.getAllNotesByContactId(contactId)
         return notes
     }
-
+    
     @Post(':contactId')
     addNote(@Param('contactId') contactId ,@Body() body:AddNotetDto):Promise<Note>{
         console.log('checkcontroller')

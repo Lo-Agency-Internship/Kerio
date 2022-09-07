@@ -10,7 +10,7 @@ export class NoteService {
     private readonly noteRepository: Repository<Note>,
   ) {}
 
-  async addNote(@Body() body) {
+  async addNote(@Body() body):Promise<Note> {
     
     return await this.noteRepository.save(body);
   }
@@ -27,6 +27,6 @@ export class NoteService {
     return await this.findOneNoteById(noteId);
   }
   async getAllNotesByContactId(contactId):Promise<Note[]> {
-    return await this.noteRepository.find({ where: { contactId } });
+    return await this.noteRepository.find({ where:contactId})
   }
 }

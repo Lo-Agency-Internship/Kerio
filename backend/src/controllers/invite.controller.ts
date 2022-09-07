@@ -11,7 +11,7 @@ import {
 import { InviteService } from 'src/services/invite.service';
 import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
-import { roleEnum } from 'src/utils/types';
+import { ERole } from 'src/utils/types';
 import { TemplateEngineService } from 'src/services/templateEngine.service';
 
 @Controller('invites')
@@ -52,7 +52,7 @@ export class InviteController {
 
     const invite = await this.inviteService.getInviteByToken(token);
 
-    const roleId = roleEnum.Employee;
+    const roleId = ERole.Employee;
     const resultUser = await this.authService.registerUser({
       email: invite.email,
       name: body.name,

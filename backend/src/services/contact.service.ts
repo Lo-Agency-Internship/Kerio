@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { ContactStatus } from 'src/entities/contactStatus';
 import { EStatus } from 'src/utils/types';
 
+
+
 @Injectable()
 export class ContactService {
   constructor(
@@ -22,7 +24,6 @@ export class ContactService {
   findOneContactById(id: any): Promise<Contact> {
     return this.contactRepository.findOneBy({ id });
   }
-
   async addContact(body): Promise<Contact> {
     const { status } = body;
     const statusId = EStatus[`${status}`];

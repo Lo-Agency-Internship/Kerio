@@ -23,7 +23,7 @@ export class Note {
 
   @Column()
   contactId:number;
-
+  
   @Column({nullable:true})
   date:Date
 
