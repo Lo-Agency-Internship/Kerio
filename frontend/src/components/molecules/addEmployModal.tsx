@@ -1,14 +1,14 @@
 import React, { FC, useState } from 'react';
 import { addEmployeModalValidation } from '../../validation/addEmployModalValidation';
-import axios from 'axios';
-import { uri } from '../../utils/index';
 import { Button } from '../atoms/button';
+import { useApiContext } from '../../context/api';
 
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
+	const { postUserInfo } = useApiContext();
 	const [error, setError] = useState<string | null>(null);
 	const [employees, setEmployees] = useState<any>([]);
 	const [nameValue, setNameValue] = useState<string>('');
@@ -27,16 +27,9 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 			};
 		});
 
-		await axios
-			.post(uri(''), data, {
-				headers: {
-					Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-				},
-			})
-			.then((response) => {
-				const user = response.data;
-				setOpen(false);
-			});
+		await postUserInfo(data).then(() => {
+			setOpen(false);
+		});
 	};
 	const handleRemoveClick = (index: number) => {
 		const list = [...employees];
@@ -69,7 +62,9 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 	};
 	return (
 		<>
-			<div className="py-12 transition duration-150 ease-in-out z-50 fixed top-0 right-0 bottom-0 left-0" id="modal">
+			<div
+				className="py-12 backdrop-blur-sm transition duration-150 ease-in-out z-50 fixed top-0 right-0 bottom-0 left-0"
+				id="modal">
 				<div role="alert" className="container mx-auto w-11/12 md:w-2/3 max-w-xl">
 					<div className="relative inline-block text-left w-full">
 						<div>

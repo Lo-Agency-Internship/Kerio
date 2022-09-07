@@ -1,15 +1,11 @@
 import { modalContactValidation } from '../../validation/addContactValidaion';
-import axios from 'axios';
 import { FC, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { uri } from '../../utils/index';
 import { useApiContext } from '../../context/api';
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ContactModal: FC<IContactModal> = ({ setOpen }) => {
-	// const navigate = useNavigate();
-	const { change, setChange } = useApiContext();
+	const { change, setChange, postContactInfo } = useApiContext();
 	const [error, setError] = useState<string | null>(null);
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
@@ -27,19 +23,10 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 		};
 		const isValid = await modalContactValidation.isValid(body);
 		if (isValid) {
-			await axios
-				.post(uri('contacts'), body, {
-					headers: {
-						Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-					},
-				})
-				.then((response) => {
-					const user = response.data;
-
-					setOpen(false);
-					setChange(!change);
-					// navigate(`/dashboard/contacts/${user.id}`);
-				});
+			postContactInfo(body).then(() => {
+				setOpen(false);
+				setChange(!change);
+			});
 		} else {
 			modalContactValidation.validate(body).catch((e) => {
 				setError(e.message);
@@ -48,7 +35,9 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 	};
 	return (
 		// // modal starts here
-		<div className="py-12 transition duration-150 ease-in-out z-50 fixed left-0 right-0 top-0 bottom-0" id="modal">
+		<div
+			className="py-12 backdrop-blur-sm transition duration-150 ease-in-out z-50 fixed left-0 right-0 top-0 bottom-0"
+			id="modal">
 			<div role="alert" className="container mx-auto w-11/12 md:w-2/3 max-w-lg">
 				<div className="relative inline-block text-left w-full">
 					<div>

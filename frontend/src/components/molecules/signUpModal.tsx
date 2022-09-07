@@ -6,12 +6,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { uri } from '../../utils/index';
 import { kebab } from 'case';
+import { useApiContext } from '../../context/api';
 
 function SignUpModal({ setOpen }: any) {
+	const { postSignUp } = useApiContext();
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 	const [emailValue, setemailValue] = useState('');
-	const fakeApi = () => console.log('Api is called');
 	const [inputValue, setInputValue] = useState('');
 	const [timer, setTimer] = useState(null);
 
@@ -64,7 +65,7 @@ function SignUpModal({ setOpen }: any) {
 		}
 		if (isValid) {
 			try {
-				await axios.post(uri('auth/register'), body).then((response) => {
+				await postSignUp(body).then((response: any) => {
 					if (response.status === 201) {
 						alert('Successful signUp! Please signIn');
 						navigate('/');
