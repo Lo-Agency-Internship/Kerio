@@ -27,14 +27,17 @@ export default function Contact() {
 						<h1 className="pt-2 pl-4 font-bold">{contact?.name} Informations</h1>
 					</div>
 				</div>
-				<div className="flex justify-center">{showNoteModal && <NoteModal setOpen={setShowNoteModal} />}</div>
+				<div className="flex justify-center">
+					{showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />}
+				</div>
 				<Profile setUser={setContact} user={contact} />
 
 				<div className="flex justify-center w-12/12 border">
 					<Timeline />
-					<Note setShowNoteModal={setShowNoteModal} />
+					<Note setShowNoteModal={setShowNoteModal} user={contact} setUser={setContact} />
 				</div>
 			</div>
+		
 		</>
 	);
 }
