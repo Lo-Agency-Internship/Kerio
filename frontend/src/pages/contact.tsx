@@ -37,7 +37,6 @@ export default function Contact() {
 					<Note setShowNoteModal={setShowNoteModal} user={contact} setUser={setContact} />
 				</div>
 			</div>
-		
 		</>
 	);
 }
