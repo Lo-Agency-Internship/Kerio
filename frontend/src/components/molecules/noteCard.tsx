@@ -6,7 +6,7 @@ interface INoteCards {
 }
 const NoteCard: React.FC<INoteCards> = ({ note }) => {
 	const [showNoteModal, setShowNoteModal] = useState(false);
-
+  
 	return (
 		<>
 			{showNoteModal && <ShowNoteModal setOpen={setShowNoteModal} />}
@@ -23,7 +23,6 @@ const NoteCard: React.FC<INoteCards> = ({ note }) => {
 							<h1 className="text-xs">Date</h1>
 							<h4 className="text-md">{note.date}</h4>
 						</div>
-
 						<div className="flex flex-col">
 							<h1 className="text-xs">Description</h1>
 							<h4 className="text-md font-thin">{note.description}</h4>
