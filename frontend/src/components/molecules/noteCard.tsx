@@ -6,7 +6,7 @@ interface INoteCards {
 }
 const NoteCard: React.FC<INoteCards> = ({ note }) => {
 	const [showNoteModal, setShowNoteModal] = useState(false);
-  
+
 	return (
 		<>
 			{showNoteModal && <ShowNoteModal setOpen={setShowNoteModal} />}
