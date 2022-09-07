@@ -40,7 +40,7 @@ export class ContactController {
   }
 
   @Post()
-  addContact(@Body() body:AddContactDto): Promise<Contact> {
+  addContact(@Body() body: AddContactDto): Promise<Contact> {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;

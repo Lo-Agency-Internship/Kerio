@@ -22,10 +22,10 @@ export class Note {
   description: string;
 
   @Column()
-  contactId:number;
-  
-  @Column({nullable:true})
-  date:Date
+  contactId: number;
+
+  @Column({ nullable: true })
+  date: Date;
 
   @CreateDateColumn()
   createdAt: Date;

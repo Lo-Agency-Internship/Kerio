@@ -127,7 +127,7 @@ const entitiesToAdd = [
     RoleService,
     RequestContextService,
     StatusService,
-    NoteService
+    NoteService,
   ],
   exports: [AuthService, RoleService, StatusService],
 })

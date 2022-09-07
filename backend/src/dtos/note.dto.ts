@@ -1,23 +1,18 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-
-
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class AddNotetDto {
   @IsNotEmpty()
   @IsString()
-  title:string;
+  title: string;
 
   @IsNotEmpty()
   @IsString()
-  description:string;
+  description: string;
 
   @IsNotEmpty()
   @IsString()
-  date:string;
+  date: string;
 
   @IsOptional()
-  contactId:number
-
-
-
+  contactId: number;
 }

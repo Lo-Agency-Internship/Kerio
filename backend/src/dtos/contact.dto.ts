@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class FindOneContactByIdDto {
   @IsNotEmpty()
@@ -9,22 +9,19 @@ export class FindOneContactByIdDto {
 export class AddContactDto {
   @IsNotEmpty()
   @IsString()
-  name:string;
+  name: string;
 
   @IsNotEmpty()
   @IsEmail()
-  email:string;
+  email: string;
 
   @IsNotEmpty()
-  phone:number;
+  phone: number;
 
   @IsNotEmpty()
   @IsString()
-  status:string;
+  status: string;
 
   @IsOptional()
-  organizationId:number
-
-
-
+  organizationId: number;
 }

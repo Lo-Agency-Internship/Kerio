@@ -31,7 +31,7 @@ export class InviteService {
     );
 
     if (!userExists)
-      throw new MaliciousUserRequestException(`malicious invited by user`)
+      throw new MaliciousUserRequestException(`malicious invited by user`);
 
     const [orgExists, invitedOrganization] =
       await this.orgService.existsAndFindBySlug(invite.orgSlug);

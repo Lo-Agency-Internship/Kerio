@@ -10,13 +10,12 @@ export class NoteService {
     private readonly noteRepository: Repository<Note>,
   ) {}
 
-  async addNote(@Body() body):Promise<Note> {
-    
+  async addNote(@Body() body): Promise<Note> {
     return await this.noteRepository.save(body);
   }
 
-  async updateNote(id,body) {
-    return await this.noteRepository.update(id,body);
+  async updateNote(id, body) {
+    return await this.noteRepository.update(id, body);
   }
 
   async deleteNote(id) {
@@ -26,7 +25,7 @@ export class NoteService {
   async findOneNoteById(noteId) {
     return await this.findOneNoteById(noteId);
   }
-  async getAllNotesByContactId(contactId):Promise<Note[]> {
-    return await this.noteRepository.find({ where:contactId})
+  async getAllNotesByContactId(contactId): Promise<Note[]> {
+    return await this.noteRepository.find({ where: contactId });
   }
 }

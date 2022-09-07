@@ -7,7 +7,6 @@ import { JwtGuard } from 'src/utils/jwt.guard';
 export class OrganizationController {
   constructor(private readonly orgService: OrganizationService) {}
 
-  
   @UseGuards(JwtGuard)
   @Get()
   index(): Promise<Organization[]> {

@@ -5,8 +5,6 @@ import { Repository } from 'typeorm';
 import { ContactStatus } from 'src/entities/contactStatus';
 import { EStatus } from 'src/utils/types';
 
-
-
 @Injectable()
 export class ContactService {
   constructor(
@@ -47,7 +45,8 @@ export class ContactService {
       relationLoadStrategy: 'join',
     });
 
-    const recentContactStatus = allOfContactStatus[allOfContactStatus.length - 1];
+    const recentContactStatus =
+      allOfContactStatus[allOfContactStatus.length - 1];
     const recentStatus = recentContactStatus.status.title;
     const contactId = id;
     if (status !== recentStatus) {
