@@ -31,6 +31,7 @@ export default function Contact() {
 							</div>
 							<h1 className="pt-2 pl-4 font-bold">{contact?.name} Informations</h1>
 						</div>
+						<h1 className="pt-2 pl-4 font-bold">{contact?.name} Information</h1>
 					</div>
 				</div>
 				<div className="flex justify-center">
