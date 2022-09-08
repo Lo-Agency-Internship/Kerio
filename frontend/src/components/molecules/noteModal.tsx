@@ -1,4 +1,39 @@
-export default function NoteModal({ setOpen }: any) {
+import axios from 'axios';
+import { useState } from 'react';
+import { uri } from '../../utils';
+import { addNoteModalValidation } from '../../validation/addNoteModalValidation';
+
+export default function NoteModal({ user, setOpen }: any) {
+	const [error, setError] = useState<string | null>(null);
+	const handleSubmit = async (event: any) => {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
+		const title = formData.get('title')?.toString().toLowerCase();
+		const description = formData.get('description');
+		const date = formData.get('date')?.toString();
+		const body = {
+			title,
+			description,
+			date,
+		};
+
+		const isValid = await addNoteModalValidation.isValid(body);
+		if (isValid) {
+			await axios
+				.post(uri(`notes/${user.id}`), body, {
+					headers: {
+						Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+					},
+				})
+				.then((_response) => {
+					setOpen(false);
+				});
+		} else {
+			addNoteModalValidation.validate(body).catch((e) => {
+				setError(e.message);
+			});
+		}
+	};
 	return (
 		<>
 			<div
@@ -7,11 +42,12 @@ export default function NoteModal({ setOpen }: any) {
 				<div role="alert" className="container mx-auto w-96 md:w-2/3 max-w-lg">
 					<div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
 						<div className="w-full flex justify-start text-gray-600 mb-3"></div>
-						<form>
+						{error && <p className="text-red-600">{error}</p>}
+						<form onSubmit={handleSubmit}>
 							<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Add your notes</h1>
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
 							<input
-								id="date"
+								name="date"
 								type="date"
 								className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
 								placeholder=""
@@ -19,7 +55,7 @@ export default function NoteModal({ setOpen }: any) {
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Title</label>
 							<div className="relative mb-5 mt-2">
 								<input
-									id="date"
+									name="title"
 									type="text"
 									className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
 									placeholder="title"
@@ -28,9 +64,11 @@ export default function NoteModal({ setOpen }: any) {
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
 							<div className="relative mb-5 mt-2">
 								<div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-								<textarea
+								<input
+									type="text-area"
+									name="description"
 									className="text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-24 flex items-center pl-3 text-sm border-gray-300 rounded border"
-									placeholder="Description"></textarea>
+									placeholder="Description"></input>
 							</div>
 							<div className="flex items-center justify-start w-full">
 								<button
