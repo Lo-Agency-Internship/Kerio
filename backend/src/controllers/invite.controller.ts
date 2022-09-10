@@ -11,7 +11,7 @@ import {
 import { InviteService } from 'src/services/invite.service';
 import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
-import { roleEnum } from 'src/utils/types';
+import { ERole } from 'src/utils/types';
 import { TemplateEngineService } from 'src/services/templateEngine.service';
 import { MaliciousUserRequestException } from '../utils/exceptions';
 
@@ -39,16 +39,16 @@ export class InviteController {
 
     for await (const invite of invites) {
       try {
-        await this.inviteService.createInvite(invite)
+        await this.inviteService.createInvite(invite);
       } catch (error: MaliciousUserRequestException) {
-        errors.push(error.message)
+        errors.push(error.message);
       }
     }
 
     if (errors.length > 0)
-      throw new HttpException(errors.join(", "), HttpException.BAD_REQUEST)
+      throw new HttpException(errors.join(', '), HttpException.BAD_REQUEST);
 
-    return
+    return;
   }
 
   @Get('/:token')
@@ -65,7 +65,7 @@ export class InviteController {
 
     const invite = await this.inviteService.getInviteByToken(token);
 
-    const roleId = roleEnum.Employee;
+    const roleId = ERole.Employee;
     const resultUser = await this.authService.registerUser({
       email: invite.email,
       name: body.name,

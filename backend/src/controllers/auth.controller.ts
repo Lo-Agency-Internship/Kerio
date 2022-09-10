@@ -11,11 +11,7 @@ import {
 import { UserLoginDto, UserRegisterDto } from '../dtos/user.dto';
 import { UserService } from '../services/user.service';
 import { hashSync } from 'bcrypt';
-import {
-  roleEnum,
-  SecureUser,
-  SecureUserWithOrganization,
-} from '../utils/types';
+import { ERole, SecureUser, SecureUserWithOrganization } from '../utils/types';
 
 import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
@@ -89,7 +85,7 @@ export class AuthController {
       slug: pipedOrgSlug,
     });
 
-    const roleId = roleEnum.Owner;
+    const roleId = ERole.Owner;
     const resultUser = await this.authService.registerUser({
       email,
       name,

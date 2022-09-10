@@ -1,0 +1,10 @@
+PUT  http://localhost:3001/notes/4 HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWlAZ21haWwuY29tIiwic3ViIjozMiwibmFtZSI6InNhbSIsImlhdCI6MTY2MjU3NTU3OCwiZXhwIjoxNjY1MTY3NTc4fQ.41cx_hrPwsHd8ldtTywjj4NQdoFJosemSbj5pVUIp9k
+
+{
+	"title": "update moon time",
+    "description": "talk about product",
+    "date": "2022-09-05"
+}
+    
