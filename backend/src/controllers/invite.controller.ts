@@ -11,8 +11,9 @@ import {
 import { InviteService } from 'src/services/invite.service';
 import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
-import { roleEnum } from 'src/utils/types';
+import { ERole } from 'src/utils/types';
 import { TemplateEngineService } from 'src/services/templateEngine.service';
+import { MaliciousUserRequestException } from '../utils/exceptions';
 
 @Controller('invites')
 export class InviteController {
@@ -26,12 +27,29 @@ export class InviteController {
 
   @Post()
   async createNewInvite(@Body() { invites }: CreateInvitesDto) {
+<<<<<<< HEAD
     //define array  if get error in for push this array . handle status code error message
    for await (const invite of invites) {
     //try catch if have catch break----
      this.inviteService.createInvite(invite);
    }
 
+=======
+    const errors: any[] = [];
+
+    for await (const invite of invites) {
+      try {
+        await this.inviteService.createInvite(invite);
+      } catch (error: MaliciousUserRequestException) {
+        errors.push(error.message);
+      }
+    }
+
+    if (errors.length > 0)
+      throw new HttpException(errors.join(', '), HttpException.BAD_REQUEST);
+
+    return;
+>>>>>>> 9b0ed20afcfd57b0c2e326b1199fc794a551228a
   }
 
   @Get('/:token')
@@ -48,7 +66,7 @@ export class InviteController {
 
     const invite = await this.inviteService.getInviteByToken(token);
 
-    const roleId = roleEnum.Employee;
+    const roleId = ERole.Employee;
     const resultUser = await this.authService.registerUser({
       email: invite.email,
       name: body.name,

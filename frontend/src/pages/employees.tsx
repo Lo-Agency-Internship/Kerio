@@ -1,4 +1,3 @@
-import { useApiContext } from '../context/api';
 import { useEffect, useState } from 'react';
 import EmployeeCard from '../components/molecules/employeeCard';
 interface IEmployee {

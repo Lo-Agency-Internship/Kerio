@@ -1,18 +1,20 @@
 import { useApiContext } from '../context/api';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import ContactCards from '../components/molecules/contactCard';
+import Loading from '../components/molecules/loading';
 
 export default function Dashboard() {
-	const { getContacts, change } = useApiContext();
-	const [contacts, setContacts] = useState([]);
+	const { getAllContacts, change, isLoading, contacts, setContacts } = useApiContext();
 	useEffect(() => {
-		getContacts().then(setContacts);
+		getAllContacts().then(setContacts);
 	}, [change]);
 	return (
 		<>
-			{contacts.map((element, index) => (
-				<ContactCards contact={element} key={index} />
-			))}
+			{isLoading ? (
+				<Loading />
+			) : (
+				contacts.map((element: any, index: any) => <ContactCards contact={element} key={index} />)
+			)}
 		</>
 	);
 }

@@ -39,7 +39,12 @@ import { Note } from './entities/note.entity';
 import { Log } from './entities/log.entity';
 import { ContactStatus } from './entities/contactStatus';
 import { StatusService } from './services/status.service';
+<<<<<<< HEAD
 import { LogService } from './services/log.service';
+=======
+import { NoteController } from './controllers/note.controller';
+import { NoteService } from './services/note.service';
+>>>>>>> 9b0ed20afcfd57b0c2e326b1199fc794a551228a
 
 const entitiesToAdd = [
   Contact,
@@ -107,6 +112,7 @@ const entitiesToAdd = [
     UserController,
     OrganizationController,
     InviteController,
+    NoteController,
   ],
   providers: [
     AppService,
@@ -125,7 +131,11 @@ const entitiesToAdd = [
     RoleService,
     RequestContextService,
     StatusService,
+<<<<<<< HEAD
     LogService,
+=======
+    NoteService,
+>>>>>>> 9b0ed20afcfd57b0c2e326b1199fc794a551228a
   ],
   exports: [AuthService, RoleService, StatusService],
 })

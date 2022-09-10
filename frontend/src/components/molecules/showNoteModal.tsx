@@ -1,39 +1,22 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { uri } from '../../utils';
-import { addNoteModalValidation } from '../../validation/addNoteModalValidation';
+import { Button } from '../atoms/button';
+export default function ShowNoteModal({ note, setNote, setOpen }: any) {
+	const [inputDisabled, setInputDisabled] = useState(true);
+	const [inputsShow, setInputsShow] = useState(false);
+	const [background, setBackground] = useState('bg-transparent');
+	const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
 
-export default function NoteModal({ user, setOpen }: any) {
-	const [error, setError] = useState<string | null>(null);
-	const handleSubmit = async (event: any) => {
-		event.preventDefault();
-		const formData = new FormData(event.currentTarget);
-		const title = formData.get('title')?.toString().toLowerCase();
+	const submitHandler = async (e: any) => {
+		e.preventDefault();
+		setSelectBoxValue(null);
+		const formData = new FormData(e.currentTarget);
+		const date = formData.get('date');
+		const title = formData.get('title');
 		const description = formData.get('description');
-		const date = formData.get('date')?.toString();
-		const body = {
-			title,
-			description,
-			date,
-		};
-
-		const isValid = await addNoteModalValidation.isValid(body);
-		if (isValid) {
-			await axios
-				.post(uri(`notes/${user.id}`), body, {
-					headers: {
-						Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-					},
-				})
-				.then((_response) => {
-					setOpen(false);
-				});
-		} else {
-			addNoteModalValidation.validate(body).catch((e) => {
-				setError(e.message);
-			});
-		}
+		const body = { date, title, description };
 	};
+
 	return (
 		<>
 			<div
@@ -42,39 +25,30 @@ export default function NoteModal({ user, setOpen }: any) {
 				<div role="alert" className="container mx-auto w-96 md:w-2/3 max-w-lg">
 					<div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
 						<div className="w-full flex justify-start text-gray-600 mb-3"></div>
-						{error && <p className="text-red-600">{error}</p>}
-						<form onSubmit={handleSubmit}>
-							<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Add your notes</h1>
+						<form onSubmit={submitHandler}>
+							<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4"> Your Note</h1>
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
-							<input
-								name="date"
-								type="date"
-								className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
-								placeholder=""
-							/>
+							<div>
+								<input className={background} disabled={inputDisabled} id="date" type="date" />
+							</div>
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Title</label>
 							<div className="relative mb-5 mt-2">
-								<input
-									name="title"
-									type="text"
-									className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
-									placeholder="title"
-								/>
+								<input className={background} disabled={inputDisabled} id="date" type="text" />
 							</div>
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
 							<div className="relative mb-5 mt-2">
-								<div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-								<input
-									type="text-area"
-									name="description"
-									className="text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-24 flex items-center pl-3 text-sm border-gray-300 rounded border"
-									placeholder="Description"></input>
+								<input className={background} disabled={inputDisabled} id="date" type="text" />
 							</div>
 							<div className="flex items-center justify-start w-full">
 								<button
 									type="submit"
 									className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm">
-									Submit
+									Delete
+								</button>
+								<button
+									type="submit"
+									className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm">
+									Edit
 								</button>
 								<button
 									className="focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"

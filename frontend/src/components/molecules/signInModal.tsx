@@ -1,9 +1,8 @@
 import { Button } from '../atoms/button';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { uri } from '../../utils/index';
 import { signInValidation } from '../../validation/userValidation';
+import { useApiContext } from '../../context/api';
 interface ISignInModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -11,6 +10,8 @@ interface ISignInModal {
 const SignInModal: FC<ISignInModal> = ({ setOpen }) => {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
+	const { postLogin, getAllContacts, setContacts } = useApiContext();
+
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 		setError(null);
@@ -26,11 +27,9 @@ const SignInModal: FC<ISignInModal> = ({ setOpen }) => {
 
 		const isValid = await signInValidation.isValid({ email });
 		if (isValid) {
-			await axios.post(uri('auth/login'), body).then((response) => {
-				const user = response.data;
-
-				localStorage.setItem('access_token', user.access_token);
+			postLogin(body).then(() => {
 				setOpen(false);
+				getAllContacts().then(setContacts);
 				navigate(`/dashboard`);
 			});
 		} else {

@@ -6,7 +6,7 @@ import { OrganizationUser } from '../entities/organizationUser.entity';
 import { Organization } from '../entities/organization.entity';
 import { SecureUserWithOrganization } from '../utils/types';
 import { Role } from 'src/entities/role.entity';
-import { roleEnum } from '../utils/types';
+import { ERole } from '../utils/types';
 
 @Injectable()
 export class OrganizationUserService {
@@ -27,7 +27,7 @@ export class OrganizationUserService {
   async assignUserToOrganization(
     userId: number,
     orgId: number,
-    roleId: roleEnum,
+    roleId: ERole,
   ): Promise<OrganizationUser> {
     const orgUser = await this.orgUserRepository.save({
       orgId,
