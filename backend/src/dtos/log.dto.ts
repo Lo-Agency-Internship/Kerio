@@ -1,19 +1,18 @@
-import {IsNotEmpty } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
-export class LogDto{
+export class LogDto {
+  @IsNotEmpty()
+  title: string;
 
-    @IsNotEmpty()
-    title: string;
+  @IsNotEmpty()
+  description: string;
 
-    @IsNotEmpty()
-    description: string;
+  @IsNotEmpty()
+  entityType: string;
 
-    @IsNotEmpty()
-    entityType:string;
+  @IsNotEmpty()
+  entityId: number;
 
-    @IsNotEmpty()
-    entityId: number;
-
-    @IsNotEmpty()
-    event: string;
+  @IsNotEmpty()
+  event: string;
 }

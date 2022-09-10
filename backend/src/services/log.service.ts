@@ -6,14 +6,24 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class LogService {
+  constructor(
+    @InjectRepository(Log)
+    private readonly logRepositoty: Repository<Log>,
+  ) {}
 
-    constructor(
-        @InjectRepository(Log)
-        private readonly logRepositoty: Repository<Log>
-    ){}
-
-    async addLog({ title,description,entityType,entityId,event}:LogDto): Promise<Log>
-    {
-      return await  this.logRepositoty.save({title,description,entityId,entityType,event});
-    }
+  async addLog({
+    title,
+    description,
+    entityType,
+    entityId,
+    event,
+  }: LogDto): Promise<Log> {
+    return await this.logRepositoty.save({
+      title,
+      description,
+      entityId,
+      entityType,
+      event,
+    });
+  }
 }

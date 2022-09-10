@@ -23,33 +23,22 @@ export class InviteController {
     private readonly templateService: TemplateEngineService,
   ) {}
 
-
-
   @Post()
   async createNewInvite(@Body() { invites }: CreateInvitesDto) {
-<<<<<<< HEAD
-    //define array  if get error in for push this array . handle status code error message
-   for await (const invite of invites) {
-    //try catch if have catch break----
-     this.inviteService.createInvite(invite);
-   }
-
-=======
     const errors: any[] = [];
 
     for await (const invite of invites) {
       try {
         await this.inviteService.createInvite(invite);
-      } catch (error: MaliciousUserRequestException) {
+      } catch (error: any) {
         errors.push(error.message);
       }
     }
 
     if (errors.length > 0)
-      throw new HttpException(errors.join(', '), HttpException.BAD_REQUEST);
+      throw new HttpException(errors.join(', '),HttpStatus.BAD_REQUEST);
 
     return;
->>>>>>> 9b0ed20afcfd57b0c2e326b1199fc794a551228a
   }
 
   @Get('/:token')
