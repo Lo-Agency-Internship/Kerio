@@ -3,9 +3,10 @@ import { uri } from '../../utils';
 import NoteCard from './noteCard';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { INote } from '../../utils/interfaces/user/note.interface';
 
 export default function Note({ setShowNoteModal, user, setUser }: any) {
-	const [notes, setNote] = useState([]);
+	const [notes, setNote] = useState<INote[] | null>();
 	const { id } = useParams();
 	const getAllNotes = async () => {
 		const res = await axios.get(uri(`notes/${id}`), {
@@ -29,9 +30,7 @@ export default function Note({ setShowNoteModal, user, setUser }: any) {
 						className="w-32 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 hover:border-gray-600 hover:bg-gray-800 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
 						<span className="mx-auto">Add Note</span>
 					</button>
-					{notes.map((element, index) => (
-						<NoteCard note={element} key={index} />
-					))}
+					{notes && notes.map((element, index) => <NoteCard data={element} key={index} />)}
 				</div>
 			</div>
 		</>
