@@ -46,4 +46,9 @@ export class NoteController {
   deleteNote(@Param('noteId', ParseIntPipe) id: number) {
     return this.noteService.deleteNote(id);
   }
+  @Get('timeline/:contactId')
+  getContactTimeLine(@Param('contactId',ParseIntPipe) id:number){
+    return this.noteService.getContactTimeLine(id)
+  }
+
 }
