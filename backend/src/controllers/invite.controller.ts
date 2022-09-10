@@ -22,20 +22,16 @@ export class InviteController {
     private readonly templateService: TemplateEngineService,
   ) {}
 
-  @Get()
-  async index() {
-    return this.inviteService.createInvite({
-      email: '',
-      invitedByUserEmail: '',
-      name: '',
-      orgSlug: '',
-    });
-  }
+
 
   @Post()
   async createNewInvite(@Body() { invites }: CreateInvitesDto) {
-    console.log(this.inviteService);
-    return false;
+    //define array  if get error in for push this array . handle status code error message
+   for await (const invite of invites) {
+    //try catch if have catch break----
+     this.inviteService.createInvite(invite);
+   }
+
   }
 
   @Get('/:token')

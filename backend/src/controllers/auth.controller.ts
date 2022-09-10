@@ -21,6 +21,9 @@ import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
 import { OrganizationUserService } from '../services/organizationUser.service';
 import { kebab } from 'case';
+import { LogService } from 'src/services/log.service';
+import { Any } from 'typeorm';
+import { LogDto } from 'src/dtos/log.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -29,6 +32,7 @@ export class AuthController {
     private readonly orgService: OrganizationService,
     private readonly orgUserService: OrganizationUserService,
     private readonly authService: AuthService,
+    private readonly logService: LogService,
   ) {}
 
   //@UseGuards(AuthGuard('local'))
@@ -41,6 +45,8 @@ export class AuthController {
         `user with email ${email} does not exist`,
         HttpStatus.BAD_REQUEST,
       );
+
+    
     // if (!user.enabled) {
     //   throw new HttpException(
     //     `user with email ${email} is not activated`,
@@ -52,13 +58,15 @@ export class AuthController {
     const areEqual = user.password === hashedPassword;
 
     if (!areEqual)
+// =========== Block,Must be Ask Question ============
+    // this.logService.addLog({title:'Login Failed',description:`${user} Login Failed`,entityType: 'Login Failed: either user or password is incorrect',entityId: 1,event: 'Login Failed'})
       throw new HttpException(
         `either user or password is incorrect`,
-        HttpStatus.BAD_REQUEST,
-      );
-
+        HttpStatus.BAD_REQUEST
+      )
+      
     const jwt = await this.authService.createJwt(user as SecureUser);
-
+    this.logService.addLog({title:'Login Successfully',description:`${user} Logged in Successfully and Created token for save to localstorage on Browser`,entityType: 'Login',entityId: 1,event: 'Login'});
     return jwt;
   }
 
@@ -82,7 +90,7 @@ export class AuthController {
         `organization already exists`,
         HttpStatus.BAD_REQUEST,
       );
-
+    
     const newOrg = await this.orgService.addOrganization({
       name: `${name}'s Organization`,
       address: '',
@@ -97,6 +105,7 @@ export class AuthController {
       password,
       roleId,
     });
+    this.logService.addLog({title:'Register Successfully',description:`${resultUser} Registered Successfully `,entityType: 'Register',entityId: 2,event: 'Register'});
 
     return resultUser;
   }

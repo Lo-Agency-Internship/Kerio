@@ -14,6 +14,7 @@ import { FindOneContactByIdDto } from '../dtos/contact.dto';
 import { RequestContextService } from '../services/requestContext.service';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
+import { LogService } from 'src/services/log.service';
 
 @UseGuards(JwtGuard)
 @Controller('contacts')
@@ -21,6 +22,7 @@ export class ContactController {
   constructor(
     private readonly contactService: ContactService,
     private readonly contextService: RequestContextService,
+    private readonly logService: LogService,
   ) {}
 
   @Get()
@@ -46,6 +48,7 @@ export class ContactController {
     ) as Organization;
     const organizationId = organization.id;
     contact = { ...contact, organizationId };
+    this.logService.addLog({title:'Add Contact Succssfully',description:`${contact} Contact , Registered Successfully `,entityType: 'Contact',entityId: 3,event: 'Add Contact'});
     return this.contactService.addContact(contact);
   }
 
