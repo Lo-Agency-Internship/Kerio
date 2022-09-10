@@ -10,7 +10,7 @@ export default function NoteModal({ user, setOpen }: any) {
 		const formData = new FormData(event.currentTarget);
 		const title = formData.get('title')?.toString().toLowerCase();
 		const description = formData.get('description');
-		const date = formData.get('date')?.toString();
+		const date = formData.get('date');
 		const body = {
 			title,
 			description,
