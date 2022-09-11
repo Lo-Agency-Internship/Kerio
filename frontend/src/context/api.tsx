@@ -20,6 +20,8 @@ interface IApiContext {
 	getAllUsers?: any;
 	getContactsInfoById?: any;
 	getUsersInfoById?: any;
+	getEmployeesInfoById?: any;
+	getAllEmployees?: any;
 	postContactInfo?: any;
 	postUserInfo?: any;
 	updateContactInfo?: any;
@@ -50,6 +52,14 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		setIsLoading(false);
 		return data;
 	};
+	// get employees
+	// const getAllEmployees = async () => {
+	// 	setIsLoading(true);
+	// 	const { data } = await axios.get(uri('???'), headerAuth);
+	// 	console.log(data);
+	// 	setIsLoading(false);
+	// 	return data;
+	// };
 
 	// get users(employees)
 	const getAllUsers = async () => {
@@ -66,6 +76,13 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		setIsLoading(false);
 		return data;
 	};
+	// get employees info by ID
+	// const getEmployeesInfoById = async (id: string) => {
+	// 	setIsLoading(true);
+	// 	const { data } = await axios.get(uri(`???/${id}`), headerAuth);
+	// 	setIsLoading(false);
+	// 	return data;
+	// };
 
 	// get Users info by ID
 	const getUsersInfoById = async (id: string) => {
