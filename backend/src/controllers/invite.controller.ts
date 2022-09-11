@@ -33,23 +33,23 @@ export class InviteController {
     });
   }
 
-  @Post()
-  async createNewInvite(@Body() { invites }: CreateInvitesDto) {
-    const errors: any[] = [];
+  // @Post()
+  // async createNewInvite(@Body() { invites }: CreateInvitesDto) {
+  //   const errors: any[] = [];
 
-    for await (const invite of invites) {
-      try {
-        await this.inviteService.createInvite(invite);
-      } catch (error: MaliciousUserRequestException) {
-        errors.push(error.message);
-      }
-    }
+  //   for await (const invite of invites) {
+  //     try {
+  //       await this.inviteService.createInvite(invite);
+  //     } catch (error: MaliciousUserRequestException) {
+  //       errors.push(error.message);
+  //     }
+  //   }
 
-    if (errors.length > 0)
-      throw new HttpException(errors.join(', '), HttpException.BAD_REQUEST);
+  //   if (errors.length > 0)
+  //     throw new HttpException(errors.join(', '), HttpException.BAD_REQUEST);
 
-    return;
-  }
+  //   return;
+  // }
 
   @Get('/:token')
   async checkTokenValidation(@Param() { token }: any) {

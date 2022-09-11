@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { Contact } from '../entities/contact.entity';
@@ -57,5 +58,15 @@ export class ContactController {
   @Delete(':id')
   deleteContact(@Param() param): Promise<Contact> {
     return this.contactService.deleteContact(param.id);
+  }
+
+  @Get('filtered')
+  getContactsFilteredByStatus(@Query() query:{name:string}){
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
+
+    const organizationId = organization.id;
+    return this.getContactsFilteredByStatus(query.name,organizationId)
   }
 }

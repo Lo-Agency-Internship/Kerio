@@ -60,4 +60,18 @@ export class ContactService {
   async deleteContact(id: string): Promise<any> {
     return await this.contactRepository.softDelete(id);
   }
+
+  async getContactsFilteredByStatus(query,organizationId){
+
+    const contacts = this.contactRepository.find({where:{
+      status:query,
+      organizationId
+    }})
+
+    // const contacts = await this.getAllContact(organizationId);
+    // const filteredContacts = contacts.filter(contact =>{
+    //   return contact.status === query;
+    // })
+    // return filteredContacts
+  }
 }
