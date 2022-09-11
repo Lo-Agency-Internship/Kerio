@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -11,12 +10,18 @@ import {
 import { UserLoginDto, UserRegisterDto } from '../dtos/user.dto';
 import { UserService } from '../services/user.service';
 import { hashSync } from 'bcrypt';
-import { ERole, SecureUser, SecureUserWithOrganization } from '../utils/types';
+import {
+  EEntityTypeLog,
+  ERole,
+  SecureUser,
+  SecureUserWithOrganization,
+} from '../utils/types';
 
 import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
 import { OrganizationUserService } from '../services/organizationUser.service';
 import { kebab } from 'case';
+import { LogService } from 'src/services/log.service';
 
 @Controller('auth')
 export class AuthController {
@@ -25,6 +30,7 @@ export class AuthController {
     private readonly orgService: OrganizationService,
     private readonly orgUserService: OrganizationUserService,
     private readonly authService: AuthService,
+    private readonly logService: LogService,
   ) {}
 
   //@UseGuards(AuthGuard('local'))
@@ -37,6 +43,7 @@ export class AuthController {
         `user with email ${email} does not exist`,
         HttpStatus.BAD_REQUEST,
       );
+
     // if (!user.enabled) {
     //   throw new HttpException(
     //     `user with email ${email} is not activated`,
@@ -55,6 +62,13 @@ export class AuthController {
 
     const jwt = await this.authService.createJwt(user as SecureUser);
 
+    this.logService.addLog({
+      title: 'Login Successfully',
+      description: `${user.email} Logged in Successfully and Created token for save to localstorage on Browser`,
+      entityType: 'Login',
+      entityId: EEntityTypeLog.Login,
+      event: 'Login',
+    });
     return jwt;
   }
 
@@ -92,6 +106,14 @@ export class AuthController {
       organizationSlug: newOrg.slug,
       password,
       roleId,
+    });
+
+    this.logService.addLog({
+      title: 'Register Successfully',
+      description: `${resultUser} Registered Successfully `,
+      entityType: 'Register',
+      entityId: EEntityTypeLog.Register,
+      event: 'Register',
     });
 
     return resultUser;

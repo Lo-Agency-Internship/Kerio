@@ -15,7 +15,6 @@ async function bootstrap() {
 
   const statusService = app.get(StatusService);
   await statusService.seedStatus();
-
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(PORT);

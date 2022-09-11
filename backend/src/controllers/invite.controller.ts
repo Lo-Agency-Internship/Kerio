@@ -6,32 +6,22 @@ import {
   HttpStatus,
   Param,
   Post,
-  Query,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
-import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
+import { CreateInvitesDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
-import { ERole } from 'src/utils/types';
+import { EEntityTypeLog, ERole } from 'src/utils/types';
 import { TemplateEngineService } from 'src/services/templateEngine.service';
-import { MaliciousUserRequestException } from '../utils/exceptions';
+import { LogService } from 'src/services/log.service';
 
 @Controller('invites')
 export class InviteController {
   constructor(
     private readonly inviteService: InviteService,
     private readonly authService: AuthService,
+    private readonly logService: LogService,
     private readonly templateService: TemplateEngineService,
   ) {}
-
-  @Get()
-  async index() {
-    return this.inviteService.createInvite({
-      email: '',
-      invitedByUserEmail: '',
-      name: '',
-      orgSlug: '',
-    });
-  }
 
   @Post()
   async createNewInvite(@Body() { invites }: CreateInvitesDto) {
@@ -40,13 +30,21 @@ export class InviteController {
     for await (const invite of invites) {
       try {
         await this.inviteService.createInvite(invite);
-      } catch (error: MaliciousUserRequestException) {
+
+        this.logService.addLog({
+          title: 'Send Invite Successfully',
+          description: `Send Invite to ${invite.email}  Successfully`,
+          entityType: 'Send Invite',
+          entityId: EEntityTypeLog.Invite,
+          event: 'Invite',
+        });
+      } catch (error: any) {
         errors.push(error.message);
       }
     }
 
     if (errors.length > 0)
-      throw new HttpException(errors.join(', '), HttpException.BAD_REQUEST);
+      throw new HttpException(errors.join(', '), HttpStatus.BAD_REQUEST);
 
     return;
   }

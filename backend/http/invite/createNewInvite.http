@@ -5,9 +5,9 @@ Content-Type: application/json
 	"invites": [
 		{
 			"name": false,
-			"orgSlug": "test",
+			"orgSlug": "hutt",
 			"invitedByUserEmail": "aien.saidi@gmail.com",
-			"email": "asd@asd.com"
+			"email": "ttt@tttt.com"
 		}
 	]
 }
