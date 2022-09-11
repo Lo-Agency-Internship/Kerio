@@ -1,21 +1,54 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { uri } from '../../utils';
 import { Button } from '../atoms/button';
+import { Input } from '../atoms/input';
 export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
-	const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
+	// const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
+	// useEffect(() => {
+	//     setNote(note);
+	//     if (note) {
+	//         setSelectBoxValue(note.status);
+	//     }
+	// }, [note]);
+	console.log(note);
+	const editHandler = () => {
+		setInputDisabled(false);
+		setInputsShow(true);
+		setBackground('bg-gray-300');
+	};
+
+	const cancelHandler = () => {
+		setInputDisabled(true);
+		setInputsShow(false);
+		setNote(note);
+		setBackground('bg-transparent');
+	};
 
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
-		setSelectBoxValue(null);
+
 		const formData = new FormData(e.currentTarget);
 		const date = formData.get('date');
 		const title = formData.get('title');
 		const description = formData.get('description');
 		const body = { date, title, description };
+		console.log(body);
+		await axios.put(uri(`notes/${note.id}`), body, {
+			headers: {
+				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+			},
+		});
+
+		setNote({ ...body, id: note.id });
+		setInputDisabled(true);
+		setInputsShow(false);
+		setBackground('bg-transparent');
 	};
+	console.log(note.date, note);
 
 	return (
 		<>
@@ -28,27 +61,44 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 						<form onSubmit={submitHandler}>
 							<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4"> Your Note</h1>
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
+							<Input
+								disabled={inputDisabled}
+								type={'date'}
+								id={'date'}
+								defaultValue={note?.date}
+								name="date"
+								className={background}
+							/>
 							<div>
-								<input className={background} disabled={inputDisabled} id="date" type="date" />
-							</div>
-							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Title</label>
-							<div className="relative mb-5 mt-2">
-								<input className={background} disabled={inputDisabled} id="date" type="text" />
+								<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Title</label>
+								<div className="relative mb-5 mt-2">
+									{/* <input name="title" value={note.title} className={background} id="date" type="text" /> */}
+									<Input
+										disabled={inputDisabled}
+										type={'text'}
+										id={'title'}
+										defaultValue={note?.title}
+										name="title"
+										className={background}
+									/>
+								</div>
 							</div>
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
 							<div className="relative mb-5 mt-2">
-								<input className={background} disabled={inputDisabled} id="date" type="text" />
+								<Input
+									disabled={inputDisabled}
+									type={'text'}
+									id={'description'}
+									defaultValue={note?.description}
+									name="description"
+									className={background}
+								/>
 							</div>
 							<div className="flex items-center justify-start w-full">
 								<button
 									type="submit"
 									className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm">
 									Delete
-								</button>
-								<button
-									type="submit"
-									className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm">
-									Edit
 								</button>
 								<button
 									className="focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
@@ -78,6 +128,32 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 									<line x1="6" y1="6" x2="18" y2="18" />
 								</svg>
 							</button>
+
+							{/* show and hide buttons */}
+							<div className="mt-16">
+								{inputsShow ? (
+									<>
+										<Button
+											label="No"
+											style="focus:outline-none mx-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+											onClick={cancelHandler}
+											type="reset"
+										/>
+										<Button
+											label="Yes"
+											style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+											type="submit"
+										/>
+									</>
+								) : (
+									<Button
+										label="Edit"
+										style="focus:outline-none mx-3 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+										onClick={editHandler}
+										type="button"
+									/>
+								)}
+							</div>
 						</form>
 					</div>
 				</div>
