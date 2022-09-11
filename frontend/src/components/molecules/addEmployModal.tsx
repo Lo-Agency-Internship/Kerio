@@ -2,15 +2,13 @@ import React, { FC, useState } from 'react';
 import { addEmployeModalValidation } from '../../validation/addEmployModalValidation';
 import { Button } from '../atoms/button';
 import { useApiContext } from '../../context/api';
-import axios from 'axios';
-import { uri } from '../../utils';
 
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
-	const { postUserInfo } = useApiContext();
+	const { postInviteEmployee } = useApiContext();
 	const [error, setError] = useState<string | null>(null);
 	const [employees, setEmployees] = useState<any>([]);
 	const [nameValue, setNameValue] = useState<string>('');
@@ -28,8 +26,12 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 				email: emails[index],
 			};
 		});
-
-		await postUserInfo(data).then(() => {
+		// const data = { name: `${name}`, email: `${email}` };
+		// await axios.post(uri('invites'), data).then((response) => {
+		// 	const employee = response.data;
+		// 	return employee;
+		// });
+		await postInviteEmployee(data).then(() => {
 			setOpen(false);
 		});
 	};
@@ -50,12 +52,8 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 		const exists = employees.find((employee: { email: string }) => employee.email === body.email);
 		if (isValid && !exists) {
 			setEmployees([...employees, body]);
-
 			setNameValue('');
 			setEmailValue('');
-			await axios.post(uri('invites'), body).then((response) => {
-				const employee = response.data;
-			});
 		} else {
 			if (exists) {
 				setError('This email is already exists');
@@ -78,7 +76,7 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 									Invite employee form
 								</h1>
 
-								{error && <p>{error}</p>}
+								{error && <p className="text-red-700">{error}</p>}
 								<div className="flex gap-1">
 									<div>
 										<label htmlFor="title" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
