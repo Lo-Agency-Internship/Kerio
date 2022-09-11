@@ -7,12 +7,11 @@ import Employee from '../components/molecules/employee';
 
 export default function EmployeeProfile() {
 	const [employee, setEmployee] = useState<IEmployee>();
-	const { getEmployeesInfoById, isLoading } = useApiContext();
+	// const { getEmployeesInfoById, isLoading } = useApiContext();
 	const { id } = useParams();
 
 	useEffect(() => {
 		// 	getEmployeesInfoById(id as string).then((res: any) => setEmployee(res));
-		console.log('ddddddddd');
 	}, []);
 	return (
 		<>
