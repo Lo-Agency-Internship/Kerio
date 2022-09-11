@@ -26,7 +26,7 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 				email: emails[index],
 			};
 		});
-		
+
 		await postInviteEmployee(data).then(() => {
 			setOpen(false);
 		});
