@@ -43,3 +43,16 @@ export enum EStatus {
   Lead = 5,
   LostLoyalCustomer = 6,
 }
+
+export enum EEntityTypeLog {
+  Login = 1,
+  Register = 2,
+  AddContact = 3,
+  UpdateContact = 4,
+  DeleteContact = 5,
+  AddNote = 6,
+  UpdateNote = 7,
+  DeleteNote = 8,
+  Invite = 9,
+  ActiveAccount = 10,
+}

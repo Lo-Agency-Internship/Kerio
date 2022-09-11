@@ -39,6 +39,7 @@ import { Note } from './entities/note.entity';
 import { Log } from './entities/log.entity';
 import { ContactStatus } from './entities/contactStatus';
 import { StatusService } from './services/status.service';
+import { LogService } from './services/log.service';
 import { NoteController } from './controllers/note.controller';
 import { NoteService } from './services/note.service';
 
@@ -127,6 +128,7 @@ const entitiesToAdd = [
     RoleService,
     RequestContextService,
     StatusService,
+    LogService,
     NoteService,
   ],
   exports: [AuthService, RoleService, StatusService],
