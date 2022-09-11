@@ -36,7 +36,7 @@ export class InviteController {
     }
 
     if (errors.length > 0)
-      throw new HttpException(errors.join(', '),HttpStatus.BAD_REQUEST);
+      throw new HttpException(errors.join(', '), HttpStatus.BAD_REQUEST);
 
     return;
   }
