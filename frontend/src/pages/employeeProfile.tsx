@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useApiContext } from '../context/api';
+// import { useApiContext } from '../context/api';
 import Images from '../assets/images/user.png';
 import { useParams } from 'react-router-dom';
 import { IEmployee } from '../utils/interfaces/user/employee.interface';
@@ -8,7 +8,7 @@ import Employee from '../components/molecules/employee';
 export default function EmployeeProfile() {
 	const [employee, setEmployee] = useState<IEmployee>();
 	// const { getEmployeesInfoById, isLoading } = useApiContext();
-	const { id } = useParams();
+	// const { id } = useParams();
 
 	useEffect(() => {
 		// 	getEmployeesInfoById(id as string).then((res: any) => setEmployee(res));

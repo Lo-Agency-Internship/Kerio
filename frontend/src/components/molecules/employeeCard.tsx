@@ -1,11 +1,11 @@
 import { Button } from '../atoms/button';
 import { useNavigate } from 'react-router-dom';
-interface IEmployee {
-	name: string;
-	phone: string;
-	email: string;
-	role: string;
-}
+// interface IEmployee {
+// 	name: string;
+// 	phone: string;
+// 	email: string;
+// 	role: string;
+// }
 const EmployeeCard: React.FC<any> = ({ employee }: any) => {
 	const navigate = useNavigate();
 	return (
