@@ -29,13 +29,13 @@ export class NoteService {
     return await this.findOneNoteById(noteId);
   }
   async getAllNotesByContactId(contactId): Promise<Note[]> {
-    return await this.noteRepository.find({ where: contactId });
+    return await this.noteRepository.find({ where: { contactId } });
   }
 
   async getContactTimeLine(id) {
     const notes = await this.noteRepository.find({ where: { contactId: id } });
     const newNotes = notes.map((note) => {
-      const { description, createdAt, deletedAt, contactId, ...rest } = note;
+      const { ...rest } = note;
       return rest;
     });
 
@@ -47,7 +47,7 @@ export class NoteService {
     });
     const newStatus = status.map((item) => {
       const { title } = item.status;
-      const { id, createdAt, ...rest } = item;
+      const { id, createdAt } = item;
       return { id, createdAt, title };
     });
 
