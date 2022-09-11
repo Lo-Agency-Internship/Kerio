@@ -2,6 +2,8 @@ import React, { FC, useState } from 'react';
 import { addEmployeModalValidation } from '../../validation/addEmployModalValidation';
 import { Button } from '../atoms/button';
 import { useApiContext } from '../../context/api';
+import axios from 'axios';
+import { uri } from '../../utils';
 
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,6 +53,9 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 
 			setNameValue('');
 			setEmailValue('');
+			await axios.post(uri('invites'), body).then((response) => {
+				const employee = response.data;
+			});
 		} else {
 			if (exists) {
 				setError('This email is already exists');
