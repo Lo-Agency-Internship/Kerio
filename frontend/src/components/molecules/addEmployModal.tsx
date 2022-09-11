@@ -26,11 +26,7 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 				email: emails[index],
 			};
 		});
-		// const data = { name: `${name}`, email: `${email}` };
-		// await axios.post(uri('invites'), data).then((response) => {
-		// 	const employee = response.data;
-		// 	return employee;
-		// });
+		
 		await postInviteEmployee(data).then(() => {
 			setOpen(false);
 		});
