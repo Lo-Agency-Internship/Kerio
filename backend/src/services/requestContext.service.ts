@@ -1,4 +1,4 @@
-import { Injectable, Req } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RequestContext } from 'nestjs-request-context';
 import { SecureUserWithOrganization } from '../utils/types';
 import { Organization } from '../entities/organization.entity';

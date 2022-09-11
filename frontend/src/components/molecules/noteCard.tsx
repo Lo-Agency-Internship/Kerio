@@ -2,14 +2,15 @@ import { useState } from 'react';
 import ShowNoteModal from '../molecules/showNoteModal';
 import { INote } from '../../utils/interfaces/user/note.interface';
 interface INoteCards {
-	note: INote;
+	data: INote;
 }
-const NoteCard: React.FC<INoteCards> = ({ note }) => {
+const NoteCard: React.FC<INoteCards> = ({ data }) => {
 	const [showNoteModal, setShowNoteModal] = useState(false);
+	const [note, setNote] = useState<INote>(data);
 
 	return (
 		<>
-			{showNoteModal && <ShowNoteModal setOpen={setShowNoteModal} />}
+			{showNoteModal && <ShowNoteModal setOpen={setShowNoteModal} note={note} setNote={setNote} />}
 			<div onClick={() => setShowNoteModal(true)}>
 				<div className="m-auto h-32 w-96 my-5 bg-white shadow p-2 border-t-8 border-gray-700 rounded-xl">
 					<header className="p-2 border-b flex">

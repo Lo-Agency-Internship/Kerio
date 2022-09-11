@@ -1,5 +1,6 @@
 import { Body, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ContactStatus } from 'src/entities/contactStatus';
 import { Note } from 'src/entities/note.entity';
 import { Repository } from 'typeorm';
 
@@ -8,6 +9,8 @@ export class NoteService {
   constructor(
     @InjectRepository(Note)
     private readonly noteRepository: Repository<Note>,
+    @InjectRepository(ContactStatus)
+    private readonly contactStatusRepository: Repository<ContactStatus>,
   ) {}
 
   async addNote(@Body() body): Promise<Note> {
@@ -26,6 +29,31 @@ export class NoteService {
     return await this.findOneNoteById(noteId);
   }
   async getAllNotesByContactId(contactId): Promise<Note[]> {
-    return await this.noteRepository.find({ where: contactId });
+    return await this.noteRepository.find({ where: { contactId } });
+  }
+
+  async getContactTimeLine(id) {
+    const notes = await this.noteRepository.find({ where: { contactId: id } });
+    const newNotes = notes.map((note) => {
+      const { ...rest } = note;
+      return rest;
+    });
+
+    const status = await this.contactStatusRepository.find({
+      where: { contactId: id },
+      relations: ['status'],
+      loadEagerRelations: true,
+      relationLoadStrategy: 'join',
+    });
+    const newStatus = status.map((item) => {
+      const { title } = item.status;
+      const { id, createdAt } = item;
+      return { id, createdAt, title };
+    });
+
+    return {
+      newNotes,
+      newStatus,
+    };
   }
 }

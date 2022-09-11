@@ -80,14 +80,6 @@ export class AuthService {
       roleId,
     );
 
-    // TODO: send the user an email to activate the account
-    await this.mailgunService.send({
-      to: 'alinaghihootan@gmail.com',
-      subject: 'Invitation Email',
-      html: `http://localhost:3001/enable?email=${createdUser.email}`,
-      text: `http://localhost:3001/enable?email=${createdUser.email}`,
-    });
-
     return await this.orgUserService.findUserWithOrganizationByUserEmail(email);
   }
 
