@@ -8,7 +8,7 @@ interface IContactModal {
 }
 
 const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
-	const { postUserInfo } = useApiContext();
+	const { postInviteEmployee } = useApiContext();
 	const [error, setError] = useState<string | null>(null);
 	const [employees, setEmployees] = useState<any>([]);
 	const [nameValue, setNameValue] = useState<string>('');
@@ -27,7 +27,7 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 			};
 		});
 
-		await postUserInfo(data).then(() => {
+		await postInviteEmployee(data).then(() => {
 			setOpen(false);
 		});
 	};
@@ -48,7 +48,6 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 		const exists = employees.find((employee: { email: string }) => employee.email === body.email);
 		if (isValid && !exists) {
 			setEmployees([...employees, body]);
-
 			setNameValue('');
 			setEmailValue('');
 		} else {
@@ -73,7 +72,7 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 									Invite employee form
 								</h1>
 
-								{error && <p>{error}</p>}
+								{error && <p className="text-red-700">{error}</p>}
 								<div className="flex gap-1">
 									<div>
 										<label htmlFor="title" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
