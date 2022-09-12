@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { Contact } from '../entities/contact.entity';
@@ -28,13 +29,20 @@ export class ContactController {
 
   @Get()
   @UseGuards(JwtGuard)
-  getAllContacts(): Promise<Contact[]> {
+  getAllContacts(@Query() query: { status: string }): Promise<Contact[]> {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
 
     const organizationId = organization.id;
-    return this.contactService.getAllContact(organizationId);
+    if (!query.status) {
+      return this.contactService.getAllContact(organizationId);
+    }
+
+    return this.contactService.getContactsFilteredByStatus(
+      query.status,
+      organizationId,
+    );
   }
 
   @Get(':id')
@@ -83,4 +91,15 @@ export class ContactController {
     });
     return this.contactService.deleteContact(param.id);
   }
+
+  // @Get('lo')
+  // getContactsFilteredByStatus(@Query() query:{name:string}){
+  //   const organization = this.contextService.get(
+  //     'organization',
+  //   ) as Organization;
+
+  //   const organizationId = organization.id;
+
+  //   console.log("==========================",query)
+  // }
 }
