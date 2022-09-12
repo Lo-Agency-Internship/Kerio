@@ -18,8 +18,6 @@ export class MailerService {
       subject: data.subject,
       text: data.text,
       html: data.html,
-    });
-
-    return res;
+    })
   }
 }
