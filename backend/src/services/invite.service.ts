@@ -24,7 +24,7 @@ export class InviteService {
     private readonly userService: UserService,
     private readonly orgService: OrganizationService,
     private readonly configService: ConfigService,
-    private readonly templateService:TemplateEngineService
+    private readonly templateService: TemplateEngineService,
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {
@@ -65,17 +65,16 @@ export class InviteService {
     if (!inviteData)
       throw new Error(`no invitation could be found for the email`);
 
-    const mailTemplate =  await this.templateService.render('maiilTemplate',{
-      link:`${this.configService.get('FRONTEND_URL')}/invite?token=${
+    const mailTemplate = await this.templateService.render('maiilTemplate', {
+      link: `${this.configService.get('FRONTEND_URL')}/invite?token=${
         inviteData.token
       }`,
-      email:inviteData.email,
-    })
+      email: inviteData.email,
+    });
     const response = await this.mailerService.send({
-
       to: inviteData.email,
       subject: 'Invitation Email',
-      html: mailTemplate ,
+      html: mailTemplate,
       text: `${this.configService.get('FRONTEND_URL')}/invite?token=${
         inviteData.token
       }`,
