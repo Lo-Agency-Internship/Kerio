@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 // import { useApiContext } from '../context/api';
 import Images from '../assets/images/user.png';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { IEmployee } from '../utils/interfaces/user/employee.interface';
 import Employee from '../components/molecules/employee';
 
