@@ -44,7 +44,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 						<div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
 							<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Contact Form</h1>
 							{/* // form starts here */}
-							{error && <p>{error}</p>}
+							{error && <p className="text-red-700">{error}</p>}
 							<form onSubmit={handleSubmit}>
 								<label htmlFor="title" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
 									Name
