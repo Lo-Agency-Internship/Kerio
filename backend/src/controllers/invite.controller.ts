@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
 import { CreateInvitesDto } from 'src/dtos/invite.dto';
@@ -13,7 +14,9 @@ import { AuthService } from 'src/services/auth.service';
 import { EEntityTypeLog, ERole } from 'src/utils/types';
 import { TemplateEngineService } from 'src/services/templateEngine.service';
 import { LogService } from 'src/services/log.service';
+import { JwtGuard } from 'src/utils/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Controller('invites')
 export class InviteController {
   constructor(
