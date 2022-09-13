@@ -29,10 +29,9 @@ export class UserService {
   }
 
   async findOneUserByEmail(email: string): Promise<User | null> {
-    const user = await this.userRepository.findBy({email:Equal(email)});
-    if(!user)
-    {
-      throw new MaliciousUserRequestException("User Not Found")
+    const user = await this.userRepository.findBy({ email: Equal(email) });
+    if (!user) {
+      throw new MaliciousUserRequestException('User Not Found');
     }
     return user.pop();
   }

@@ -6,7 +6,6 @@ import {
   HttpStatus,
   Param,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
@@ -28,9 +27,8 @@ export class InviteController {
   ) {}
 
   @Post()
-  async createNewInvite( @Body()  {invites} : CreateInvitesDto) {
+  async createNewInvite(@Body() { invites }: CreateInvitesDto) {
     const errors: any[] = [];
-
 
     for await (const invite of invites) {
       try {

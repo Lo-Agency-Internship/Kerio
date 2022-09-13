@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   BasicInviteDto,
@@ -27,21 +27,19 @@ export class InviteService {
     private readonly configService: ConfigService,
     private readonly templateService: TemplateEngineService,
     private readonly requestContextService: RequestContextService,
-    
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {
-
     const user = this.requestContextService.get('userData');
-    const organization  = this.requestContextService.get('organization');
+    const organization = this.requestContextService.get('organization');
 
     const token = randomBytes(48).toString('hex');
 
     const newInvite = await this.inviteRepository.save({
       email: invite.email,
-      invitedBy:user,
+      invitedBy: user,
       name: invite.name,
-      invitedOrganization:organization,
+      invitedOrganization: organization,
       token,
     });
 
