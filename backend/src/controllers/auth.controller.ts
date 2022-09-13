@@ -110,7 +110,7 @@ export class AuthController {
 
     this.logService.addLog({
       title: 'Register Successfully',
-      description: `${resultUser} Registered Successfully `,
+      description: `${resultUser.email} Registered Successfully `,
       entityType: 'Register',
       entityId: EEntityTypeLog.Register,
       event: 'Register',
