@@ -32,6 +32,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     this.requestContextService.set('userData', bareUser);
     this.requestContextService.set('organization', user.organization);
     this.requestContextService.set('role', user.role);
-    return payload;
+    return bareUser;
   }
 }

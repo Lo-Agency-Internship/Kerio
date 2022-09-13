@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, UpdateResult } from 'typeorm';
+import { Equal, Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
 import { NewUser, SecureUser } from '../utils/types';
+import { MaliciousUserRequestException } from 'src/utils/exceptions';
 
 @Injectable()
 export class UserService {
@@ -28,7 +29,12 @@ export class UserService {
   }
 
   async findOneUserByEmail(email: string): Promise<User | null> {
-    return await this.userRepository.findOneBy({ email });
+    const user = await this.userRepository.findBy({email:Equal(email)});
+    if(!user)
+    {
+      throw new MaliciousUserRequestException("User Not Found")
+    }
+    return user.pop();
   }
 
   async findAll(): Promise<SecureUser[]> {
@@ -53,7 +59,6 @@ export class UserService {
 
   async existsAndFindByEmail(email: string): Promise<[boolean, User]> {
     const user = await this.findOneUserByEmail(email);
-
-    return [user !== null, user];
+    return [!!user, user];
   }
 }

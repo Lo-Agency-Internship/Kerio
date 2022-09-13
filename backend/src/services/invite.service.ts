@@ -14,6 +14,7 @@ import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
 import { MaliciousUserRequestException } from '../utils/exceptions';
 import { TemplateEngineService } from './templateEngine.service';
+import { RequestContextService } from './requestContext.service';
 
 @Injectable()
 export class InviteService {
@@ -25,32 +26,22 @@ export class InviteService {
     private readonly orgService: OrganizationService,
     private readonly configService: ConfigService,
     private readonly templateService: TemplateEngineService,
+    private readonly requestContextService: RequestContextService,
+    
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {
-    const [userExists, invitedBy] = await this.userService.existsAndFindByEmail(
-      invite.invitedByUserEmail,
-    );
 
-    if (!userExists)
-      throw new MaliciousUserRequestException(`malicious invited by user`);
-
-    const [orgExists, invitedOrganization] =
-      await this.orgService.existsAndFindBySlug(invite.orgSlug);
-
-    if (!orgExists)
-      throw new HttpException(
-        `organization does not exist`,
-        HttpStatus.BAD_REQUEST,
-      );
+    const user = this.requestContextService.get('userData');
+    const organization  = this.requestContextService.get('organization');
 
     const token = randomBytes(48).toString('hex');
 
     const newInvite = await this.inviteRepository.save({
       email: invite.email,
-      invitedBy,
+      invitedBy:user,
       name: invite.name,
-      invitedOrganization,
+      invitedOrganization:organization,
       token,
     });
 
