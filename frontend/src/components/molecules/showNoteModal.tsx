@@ -3,22 +3,28 @@ import { useEffect, useState } from 'react';
 import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
+	const [deleteInput, setDeleteInput] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
-	// const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
-	// useEffect(() => {
-	//     setNote(note);
-	//     if (note) {
-	//         setSelectBoxValue(note.status);
-	//     }
-	// }, [note]);
-	console.log(note);
+
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
 		setBackground('bg-gray-300');
+	};
+
+	const deleteHandler = async (e: any) => {
+		e.preventDefault();
+		await axios.delete(uri(`notes/${note.id}`), {
+			headers: {
+				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+			},
+		});
 	};
 
 	const cancelHandler = () => {
@@ -36,7 +42,6 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 		const title = formData.get('title');
 		const description = formData.get('description');
 		const body = { date, title, description };
-		console.log(body);
 		await axios.put(uri(`notes/${note.id}`), body, {
 			headers: {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
@@ -49,7 +54,22 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 		setBackground('bg-transparent');
 	};
 	console.log(note.date, note);
-
+	const submit = () => {
+		confirmAlert({
+			title: 'Delete this Note',
+			message: 'Are you sure to do this?',
+			buttons: [
+				{
+					label: 'Yes',
+					onClick: () => deleteHandler,
+				},
+				{
+					label: 'No',
+					// onClick: () => alert('Click No'),
+				},
+			],
+		});
+	};
 	return (
 		<>
 			<div
@@ -95,11 +115,13 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 								/>
 							</div>
 							<div className="flex items-center justify-start w-full">
-								<button
-									type="submit"
-									className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm">
-									Delete
-								</button>
+								<Button
+									label="Delete"
+									style="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm"
+									onClick={submit}
+									type="button"
+								/>
+
 								<button
 									className="focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
 									type="button"
