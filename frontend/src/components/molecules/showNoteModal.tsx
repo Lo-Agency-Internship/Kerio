@@ -5,11 +5,11 @@ import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import SubmitDelete from './submitDelete';
 
 export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
-	const [deleteInput, setDeleteInput] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
 
 	const editHandler = () => {
@@ -18,15 +18,16 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 		setBackground('bg-gray-300');
 	};
 
-	const deleteHandler = async (e: any) => {
-		e.preventDefault();
-		await axios.delete(uri(`notes/${note.id}`), {
-			headers: {
-				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-			},
-		});
-	};
-
+	// const deleteHandler = async (e: any) => {
+	// 	e.preventDefault();
+	// 	await axios.delete(uri(`notes/${note.id}`), {
+	// 		headers: {
+	// 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+	// 		},
+	// 		// setChange(!change)
+	// 	});
+	// };
+	const [showsubmitDelete, setShowsubmitDelete] = useState(false);
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
@@ -54,24 +55,10 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 		setBackground('bg-transparent');
 	};
 	console.log(note.date, note);
-	const submit = () => {
-		confirmAlert({
-			title: 'Delete this Note',
-			message: 'Are you sure to do this?',
-			buttons: [
-				{
-					label: 'Yes',
-					onClick: () => deleteHandler,
-				},
-				{
-					label: 'No',
-					// onClick: () => alert('Click No'),
-				},
-			],
-		});
-	};
+
 	return (
 		<>
+			{showsubmitDelete && <SubmitDelete setOpen={setShowsubmitDelete} note={undefined} />}
 			<div
 				className="py-12  backdrop-blur-sm transition duration-150 ease-in-out z-10 fixed top-14 right-0 bottom-0 left-0"
 				id="modal">
@@ -118,8 +105,8 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 								<Button
 									label="Delete"
 									style="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm"
-									onClick={submit}
 									type="button"
+									onClick={() => setShowsubmitDelete(true)}
 								/>
 
 								<button
