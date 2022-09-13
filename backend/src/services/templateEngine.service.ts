@@ -4,7 +4,7 @@ import { join } from 'path';
 
 @Injectable()
 export class TemplateEngineService {
-  async render(filename: string, data: any) {
+  async render(filename: string, data: any): Promise<string> {
     return new Promise((resolve, reject) => {
       const path = join(__dirname, '..', '..', 'templates', `${filename}.twig`);
 
