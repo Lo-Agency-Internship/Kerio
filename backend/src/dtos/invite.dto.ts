@@ -3,6 +3,7 @@ import {
   ArrayNotEmpty,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   ValidateNested,
 } from 'class-validator';
 
@@ -21,9 +22,12 @@ export class CreateInviteDto extends BasicInviteDto {
   @IsNotEmpty()
   name: string;
 
-  @IsNotEmpty()
+  @IsOptional()
+  orgSlug: string;
+
+  @IsOptional()
   @IsEmail()
-  email: string;
+  invitedByUserEmail: string;
 }
 
 export class CreateInvitesDto {

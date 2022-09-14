@@ -22,7 +22,6 @@ import { RequestContextService } from 'src/services/requestContext.service';
 import { Organization } from 'src/entities/organization.entity';
 import { JwtGuard } from 'src/utils/jwt.guard';
 
-
 @UseGuards(JwtGuard)
 @Controller('invites')
 export class InviteController {
@@ -35,8 +34,7 @@ export class InviteController {
   ) {}
 
   @Post()
-  async createNewInvite(@Body() {invites}: CreateInvitesDto) {
-    const errors: any[] = [];
+  async createNewInvite(@Body() { invites }: CreateInvitesDto) {
     const user = this.contextService.get(
       'userData',
     ) as SecureUserWithOrganization;
@@ -47,25 +45,19 @@ export class InviteController {
     const orgSlug = organization.slug;
 
     for await (let invite of invites) {
-      try {
-        invite = { ...invite, invitedByUserEmail, orgSlug };
-        await this.inviteService.createInvite(invite);
-        //await this.inviteService.sendEmailToInvite(invite.email)
+      invite = { ...invite, invitedByUserEmail, orgSlug };
 
-        this.logService.addLog({
-          title: 'Send Invite Successfully',
-          description: `Send Invite to ${invite.email}  Successfully`,
-          entityType: 'Send Invite',
-          entityId: EEntityTypeLog.Invite,
-          event: 'Invite',
-        });
-      } catch (error: any) {
-        errors.push(error.message);
-      }
+      await this.inviteService.createInvite(invite);
+      // await this.inviteService.sendEmailToInvite(invite.email)
+
+      this.logService.addLog({
+        title: 'Send Invite Successfully',
+        description: `Send Invite to ${invite.email}  Successfully`,
+        entityType: 'Send Invite',
+        entityId: EEntityTypeLog.Invite,
+        event: 'Invite',
+      });
     }
-
-    if (errors.length > 0)
-      throw new HttpException(errors.join(', '), HttpStatus.BAD_REQUEST);
 
     return;
   }

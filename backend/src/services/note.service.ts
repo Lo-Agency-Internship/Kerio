@@ -35,16 +35,8 @@ export class NoteService {
   async getContactTimeLine(id) {
     const notes = await this.noteRepository.find({ where: { contactId: id } });
     const newNotes = notes.map((note) => {
-      // please do not delete these unused variables
-      const {
-        deletedAt,
-        updatedAt,
-        contactId,
-        description,
-        createdAt,
-        ...rest
-      } = note;
-      return rest;
+      const { title, date, id } = note;
+      return { title, date, id };
     });
 
     const status = await this.contactStatusRepository.find({
