@@ -29,22 +29,36 @@ export class InviteService {
     private readonly requestContextService: RequestContextService,
   ) {}
 
-  async createInvite(invite: CreateInviteDto): Promise<Invite> {
-    const user = this.requestContextService.get('userData');
-    const organization = this.requestContextService.get('organization');
-
-    const token = randomBytes(48).toString('hex');
-
-    const newInvite = await this.inviteRepository.save({
-      email: invite.email,
-      invitedBy: user,
-      name: invite.name,
-      invitedOrganization: organization,
-      token,
-    });
-
-    return newInvite;
-  }
+  // async createInvite(invite: CreateInviteDto): Promise<Invite> {
+    async createInvite(invite:any): Promise<Invite> {
+      const [userExists, invitedBy] = await this.userService.existsAndFindByEmail(
+        invite.invitedByUserEmail,
+      );
+  
+      if (!userExists)
+        throw new MaliciousUserRequestException(`malicious invited by user`);
+  
+      const [orgExists, invitedOrganization] =
+        await this.orgService.existsAndFindBySlug(invite.orgSlug);
+  
+      // if (!orgExists)
+      //   throw new HttpException(
+      //     `organization does not exist`,
+      //     HttpStatus.BAD_REQUEST,
+      //   );
+  
+      const token = randomBytes(48).toString('hex');
+  
+      const newInvite = await this.inviteRepository.save({
+        email: invite.email,
+        invitedBy,
+        name: invite.name,
+        invitedOrganization,
+        token,
+      });
+  
+      return newInvite;
+    }
 
   async sendEmailToInvite(invite: BasicInviteDto): Promise<void> {
     const inviteData = await this.inviteRepository.findOneBy({

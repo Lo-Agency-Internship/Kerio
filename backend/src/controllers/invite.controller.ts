@@ -11,10 +11,17 @@ import {
 import { InviteService } from 'src/services/invite.service';
 import { CreateInvitesDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
-import { EEntityTypeLog, ERole } from 'src/utils/types';
+import {
+  EEntityTypeLog,
+  ERole,
+  SecureUserWithOrganization,
+} from 'src/utils/types';
 import { TemplateEngineService } from 'src/services/templateEngine.service';
 import { LogService } from 'src/services/log.service';
+import { RequestContextService } from 'src/services/requestContext.service';
+import { Organization } from 'src/entities/organization.entity';
 import { JwtGuard } from 'src/utils/jwt.guard';
+
 
 @UseGuards(JwtGuard)
 @Controller('invites')
@@ -24,15 +31,26 @@ export class InviteController {
     private readonly authService: AuthService,
     private readonly logService: LogService,
     private readonly templateService: TemplateEngineService,
+    private readonly contextService: RequestContextService,
   ) {}
 
   @Post()
-  async createNewInvite(@Body() { invites }: CreateInvitesDto) {
+  async createNewInvite(@Body() {invites}: CreateInvitesDto) {
     const errors: any[] = [];
+    const user = this.contextService.get(
+      'userData',
+    ) as SecureUserWithOrganization;
+    const invitedByUserEmail = user.email;
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
+    const orgSlug = organization.slug;
 
-    for await (const invite of invites) {
+    for await (let invite of invites) {
       try {
+        invite = { ...invite, invitedByUserEmail, orgSlug };
         await this.inviteService.createInvite(invite);
+        //await this.inviteService.sendEmailToInvite(invite.email)
 
         this.logService.addLog({
           title: 'Send Invite Successfully',
