@@ -22,11 +22,8 @@ export class CreateInviteDto extends BasicInviteDto {
   name: string;
 
   @IsNotEmpty()
-  orgSlug: string;
-
-  @IsNotEmpty()
   @IsEmail()
-  invitedByUserEmail: string;
+  email: string;
 }
 
 export class CreateInvitesDto {

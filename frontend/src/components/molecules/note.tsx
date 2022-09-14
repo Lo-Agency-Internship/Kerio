@@ -4,9 +4,11 @@ import NoteCard from './noteCard';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { INote } from '../../utils/interfaces/user/note.interface';
+import { useApiContext } from '../../context/api';
 
 export default function Note({ setShowNoteModal, user, setUser }: any) {
 	const [notes, setNote] = useState<INote[] | null>();
+	const { change } = useApiContext();
 	const { id } = useParams();
 	const getAllNotes = async () => {
 		const res = await axios.get(uri(`notes/${id}`), {
@@ -19,7 +21,7 @@ export default function Note({ setShowNoteModal, user, setUser }: any) {
 	};
 	useEffect(() => {
 		getAllNotes();
-	}, []);
+	}, [change]);
 
 	return (
 		<>
