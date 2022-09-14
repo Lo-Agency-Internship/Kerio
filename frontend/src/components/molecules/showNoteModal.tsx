@@ -6,6 +6,7 @@ import { Input } from '../atoms/input';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import SubmitDelete from './submitDelete';
+import { any } from 'prop-types';
 
 export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
@@ -58,7 +59,7 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 
 	return (
 		<>
-			{showsubmitDelete && <SubmitDelete setOpen={setShowsubmitDelete} note={undefined} />}
+			{showsubmitDelete && <SubmitDelete setOpen={setShowsubmitDelete} note={note} />}
 			<div
 				className="py-12  backdrop-blur-sm transition duration-150 ease-in-out z-10 fixed top-14 right-0 bottom-0 left-0"
 				id="modal">

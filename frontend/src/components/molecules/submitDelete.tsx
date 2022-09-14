@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 
@@ -9,14 +9,14 @@ interface ISubmitDelete {
 }
 
 const SubmitDelete: FC<ISubmitDelete> = ({ setOpen, note }) => {
-	const deleteHandler = async (e: any) => {
-		e.preventDefault();
+	const [change, setChange] = useState(false);
+	const deleteHandler = async () => {
 		await axios.delete(uri(`notes/${note.id}`), {
 			headers: {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 			},
-			// setChange(!change)
 		});
+		setChange(!change);
 	};
 	return (
 		<div
@@ -37,7 +37,7 @@ const SubmitDelete: FC<ISubmitDelete> = ({ setOpen, note }) => {
 							label="Yes"
 							style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
 							type="button"
-							onClick={() => deleteHandler}
+							onClick={deleteHandler}
 						/>
 					</form>
 				</div>
