@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useApiContext } from '../../context/api';
 import { uri } from '../../utils';
 import { addNoteModalValidation } from '../../validation/addNoteModalValidation';
 
 export default function NoteModal({ user, setOpen }: any) {
 	const [error, setError] = useState<string | null>(null);
+	const { change, setChange } = useApiContext();
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
@@ -27,6 +29,7 @@ export default function NoteModal({ user, setOpen }: any) {
 				})
 				.then((_response) => {
 					setOpen(false);
+					setChange(!change);
 				});
 		} else {
 			addNoteModalValidation.validate(body).catch((e) => {
