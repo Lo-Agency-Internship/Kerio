@@ -8,7 +8,7 @@ interface INoteCards {
 const NoteCard: React.FC<INoteCards> = ({ data }) => {
 	const [showNoteModal, setShowNoteModal] = useState(false);
 	const [note, setNote] = useState<INote>(data);
-	const truncate = (input: string) => (input?.length > 8 ? `${input.substring(0, 8)}...` : input);
+	const truncate = (input: string) => (input.length > 10 ? `${input.substring(0, 10)}...` : input);
 
 	return (
 		<>
@@ -24,12 +24,12 @@ const NoteCard: React.FC<INoteCards> = ({ data }) => {
 					<div className="flex p-2 w-full gap-9 space-x-20">
 						<div className="flex">
 							<h1 className="text-xs text-gray-800 font-bold leading-tight tracking-normal">Date: </h1>
-							<h4 className="text-sm">{note.date && format(new Date(note.date), ' dd/mm/yyyy')}</h4>
+							<h4 className="text-sm">{note.date && format(new Date(note.date), ' dd/MM/yyyy')}</h4>
 						</div>
 						<div className="flex flex-col">
 							<h1 className="text-xs text-gray-800 font-bold leading-tight tracking-normal">Description: </h1>
-							{/* {truncate(this.state.banners.overview)}							 */}
-							<h4 className="text-xs font-thin">{note.description}</h4>
+
+							<h4 className="text-xs font-thin">{truncate(note.description ? note.description : '')}</h4>
 						</div>
 					</div>
 				</div>
