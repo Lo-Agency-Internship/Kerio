@@ -168,7 +168,10 @@ export default function Profile({ user, setUser }: any) {
 							{deleteBtn ? (
 								<>
 									<div
-										className="fixed top-44 backdrop-blur-sm right-0 bottom-0 left-0 z-50 py-12 transition duration-150 ease-in-out"
+										className="fixed backdrop-blur-sm
+										top-0
+										h-full
+										w-full right-0 bottom-0 left-0 z-50 py-12 transition duration-150 ease-in-out"
 										id="modal">
 										<div role="alert" className="container mx-auto w-11/12 max-w-lg md:w-2/3">
 											<div className="relative rounded border border-gray-400 bg-white py-8 px-5 shadow-md md:px-10">
@@ -189,11 +192,11 @@ export default function Profile({ user, setUser }: any) {
 													<button
 														onClick={submitDelete}
 														type="button"
-														className="rounded bg-gray-700 px-8 py-2 text-sm text-white transition duration-150 ease-in-out hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2">
+														className="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
 														Yes
 													</button>
 													<button
-														className="ml-3 rounded border bg-gray-100 px-8 py-2 text-sm text-gray-600 transition duration-150 ease-in-out hover:border-gray-400 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+														className="focus:outline-none mx-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
 														onClick={cancelDelete}
 														type="button">
 														No
