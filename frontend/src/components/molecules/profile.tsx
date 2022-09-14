@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
 export default function Profile({ user, setUser }: any) {
+	const [deleteBtn, setDeleteBtn] = useState(false);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
 	const [background, setBackground] = useState('bg-transparent');
-	const { updateContactInfo } = useApiContext();
+	const { updateContactInfo, deleteContact } = useApiContext();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setUser(user);
@@ -45,6 +48,20 @@ export default function Profile({ user, setUser }: any) {
 		setInputDisabled(true);
 		setInputsShow(false);
 		setBackground('bg-transparent');
+	};
+	const deleteHandler = () => {
+		setDeleteBtn(true);
+	};
+
+	// i have bug in this part we will fix it
+	const cancelDelete = () => {
+		setDeleteBtn(false);
+	};
+	const submitDelete = async () => {
+		await deleteContact(user.id);
+		setDeleteBtn(false);
+		setInputsShow(false);
+		navigate('/dashboard');
 	};
 
 	return (
@@ -146,6 +163,74 @@ export default function Profile({ user, setUser }: any) {
 									style="focus:outline-none mx-3 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
 									onClick={editHandler}
 									type="button"
+								/>
+							)}
+							{deleteBtn ? (
+								<>
+									<div
+										className="fixed top-44 backdrop-blur-sm right-0 bottom-0 left-0 z-50 py-12 transition duration-150 ease-in-out"
+										id="modal">
+										<div role="alert" className="container mx-auto w-11/12 max-w-lg md:w-2/3">
+											<div className="relative rounded border border-gray-400 bg-white py-8 px-5 shadow-md md:px-10">
+												<div className="mb-3 flex w-full justify-start text-gray-600"></div>
+
+												<div className="relative mb-5 mt-2">
+													<div className="absolute flex h-full items-center border-r px-4 text-gray-600"></div>
+												</div>
+
+												<div className="relative mb-5 mt-2">
+													<div className="absolute right-0 flex h-full cursor-pointer items-center pr-3 text-gray-600"></div>
+												</div>
+												<p>Do you want to delete this contact?</p>
+												<div className="relative mb-5 mt-2">
+													<div className="absolute right-0 flex h-full cursor-pointer items-center pr-3 text-gray-600"></div>
+												</div>
+												<div className="flex w-full items-center justify-start">
+													<button
+														onClick={submitDelete}
+														type="button"
+														className="rounded bg-gray-700 px-8 py-2 text-sm text-white transition duration-150 ease-in-out hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2">
+														Yes
+													</button>
+													<button
+														className="ml-3 rounded border bg-gray-100 px-8 py-2 text-sm text-gray-600 transition duration-150 ease-in-out hover:border-gray-400 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+														onClick={cancelDelete}
+														type="button">
+														No
+													</button>
+												</div>
+												<button
+													className="absolute top-0 right-0 mt-4 mr-5 cursor-pointer rounded text-gray-400 transition duration-150 ease-in-out hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-600"
+													type="button"
+													aria-label="close modal"
+													role="button"
+													onClick={cancelDelete}>
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														className="icon icon-tabler icon-tabler-x"
+														width="20"
+														height="20"
+														viewBox="0 0 24 24"
+														strokeWidth="2.5"
+														stroke="currentColor"
+														fill="none"
+														strokeLinecap="round"
+														strokeLinejoin="round">
+														<path stroke="none" d="M0 0h24v24H0z" />
+														<line x1="18" y1="6" x2="6" y2="18" />
+														<line x1="6" y1="6" x2="18" y2="18" />
+													</svg>
+												</button>
+											</div>
+										</div>
+									</div>
+								</>
+							) : (
+								<Button
+									label="Delete"
+									style="focus:outline-none mx-3 text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
+									type="button"
+									onClick={deleteHandler}
 								/>
 							)}
 						</div>
