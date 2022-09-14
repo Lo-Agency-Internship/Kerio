@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useApiContext } from '../../context/api';
 import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 
@@ -9,7 +10,7 @@ interface ISubmitDelete {
 }
 
 const SubmitDelete: FC<ISubmitDelete> = ({ setOpen, note }) => {
-	const [change, setChange] = useState(false);
+	const { change, setChange } = useApiContext();
 	const deleteHandler = async () => {
 		await axios.delete(uri(`notes/${note.id}`), {
 			headers: {
