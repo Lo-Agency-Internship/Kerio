@@ -67,11 +67,10 @@ export default function NoteModal({ user, setOpen }: any) {
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
 							<div className="relative mb-5 mt-2">
 								<div className="absolute right-0 text-gray-600 flex items-center pr-3 h-full cursor-pointer"></div>
-								<input
-									type="text-area"
+								<textarea
 									name="description"
 									className="text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-24 flex items-center pl-3 text-sm border-gray-300 rounded border"
-									placeholder="Description"></input>
+									placeholder="Description"></textarea>
 							</div>
 							<div className="flex items-center justify-start w-full">
 								<button
