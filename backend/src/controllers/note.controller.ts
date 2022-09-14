@@ -66,8 +66,6 @@ export class NoteController {
 
   @Delete(':noteId')
   deleteNote(@Param('noteId', ParseIntPipe) id: number) {
-    console.log("YYYYYYYYYYYYYYYYYYYYYYYYYYEEEEEESSSSSSSSSSSSSSS");
-    
     this.logService.addLog({
       title: 'Deleted Note Successfully',
       description: `Deleted Note with id=${id}  Successfully`,
