@@ -3,24 +3,32 @@ import { useEffect, useState } from 'react';
 import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import SubmitDelete from './submitDelete';
+import { any } from 'prop-types';
+
 export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
-	// const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
-	// useEffect(() => {
-	//     setNote(note);
-	//     if (note) {
-	//         setSelectBoxValue(note.status);
-	//     }
-	// }, [note]);
-	console.log(note);
+
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
 		setBackground('bg-gray-300');
 	};
 
+	// const deleteHandler = async (e: any) => {
+	// 	e.preventDefault();
+	// 	await axios.delete(uri(`notes/${note.id}`), {
+	// 		headers: {
+	// 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+	// 		},
+	// 		// setChange(!change)
+	// 	});
+	// };
+	const [showsubmitDelete, setShowsubmitDelete] = useState(false);
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
@@ -36,7 +44,6 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 		const title = formData.get('title');
 		const description = formData.get('description');
 		const body = { date, title, description };
-		console.log(body);
 		await axios.put(uri(`notes/${note.id}`), body, {
 			headers: {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
@@ -52,6 +59,7 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 
 	return (
 		<>
+			{showsubmitDelete && <SubmitDelete setOpen={setShowsubmitDelete} note={note} />}
 			<div
 				className="py-12  backdrop-blur-sm transition duration-150 ease-in-out z-10 fixed top-14 right-0 bottom-0 left-0"
 				id="modal">
@@ -95,11 +103,13 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 								/>
 							</div>
 							<div className="flex items-center justify-start w-full">
-								<button
-									type="submit"
-									className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm">
-									Delete
-								</button>
+								<Button
+									label="Delete"
+									style="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm"
+									type="button"
+									onClick={() => setShowsubmitDelete(true)}
+								/>
+
 								<button
 									className="focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
 									type="button"
