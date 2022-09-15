@@ -11,9 +11,15 @@ import {
 import { InviteService } from 'src/services/invite.service';
 import { CreateInvitesDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
-import { EEntityTypeLog, ERole } from 'src/utils/types';
+import {
+  EEntityTypeLog,
+  ERole,
+  SecureUserWithOrganization,
+} from 'src/utils/types';
 import { TemplateEngineService } from 'src/services/templateEngine.service';
 import { LogService } from 'src/services/log.service';
+import { RequestContextService } from 'src/services/requestContext.service';
+import { Organization } from 'src/entities/organization.entity';
 import { JwtGuard } from 'src/utils/jwt.guard';
 
 @UseGuards(JwtGuard)
@@ -24,30 +30,34 @@ export class InviteController {
     private readonly authService: AuthService,
     private readonly logService: LogService,
     private readonly templateService: TemplateEngineService,
+    private readonly contextService: RequestContextService,
   ) {}
 
   @Post()
   async createNewInvite(@Body() { invites }: CreateInvitesDto) {
-    const errors: any[] = [];
+    const user = this.contextService.get(
+      'userData',
+    ) as SecureUserWithOrganization;
+    const invitedByUserEmail = user.email;
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
+    const orgSlug = organization.slug;
 
-    for await (const invite of invites) {
-      try {
-        await this.inviteService.createInvite(invite);
+    for await (let invite of invites) {
+      invite = { ...invite, invitedByUserEmail, orgSlug };
 
-        this.logService.addLog({
-          title: 'Send Invite Successfully',
-          description: `Send Invite to ${invite.email}  Successfully`,
-          entityType: 'Send Invite',
-          entityId: EEntityTypeLog.Invite,
-          event: 'Invite',
-        });
-      } catch (error: any) {
-        errors.push(error.message);
-      }
+      await this.inviteService.createInvite(invite);
+      // await this.inviteService.sendEmailToInvite(invite.email)
+
+      this.logService.addLog({
+        title: 'Send Invite Successfully',
+        description: `Send Invite to ${invite.email}  Successfully`,
+        entityType: 'Send Invite',
+        entityId: EEntityTypeLog.Invite,
+        event: 'Invite',
+      });
     }
-
-    if (errors.length > 0)
-      throw new HttpException(errors.join(', '), HttpStatus.BAD_REQUEST);
 
     return;
   }

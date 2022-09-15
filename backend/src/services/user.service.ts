@@ -58,6 +58,7 @@ export class UserService {
 
   async existsAndFindByEmail(email: string): Promise<[boolean, User]> {
     const user = await this.findOneUserByEmail(email);
-    return [!!user, user];
+
+    return [user !== null, user];
   }
 }
