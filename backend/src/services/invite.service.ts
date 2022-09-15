@@ -12,7 +12,6 @@ import { UserService } from './user.service';
 import { randomBytes } from 'crypto';
 import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
-import { MaliciousUserRequestException } from '../utils/exceptions';
 import { TemplateEngineService } from './templateEngine.service';
 import { RequestContextService } from './requestContext.service';
 
@@ -30,16 +29,22 @@ export class InviteService {
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {
-    const user = this.requestContextService.get('userData');
-    const organization = this.requestContextService.get('organization');
+    const invitedBy = await this.userService.findOneUserByEmail(
+      invite.invitedByUserEmail,
+    );
+    
+
+    const invitedOrganization = await this.orgService.findOneOrganizationBySlug(
+      invite.orgSlug,
+    );
 
     const token = randomBytes(48).toString('hex');
 
     const newInvite = await this.inviteRepository.save({
       email: invite.email,
-      invitedBy: user,
+      invitedBy,
       name: invite.name,
-      invitedOrganization: organization,
+      invitedOrganization,
       token,
     });
 
