@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useApiContext } from '../../context/api';
 import { uri } from '../../utils';
 import { Button } from '../atoms/button';
