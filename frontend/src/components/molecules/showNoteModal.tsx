@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
-import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import SubmitDelete from './submitDelete';
 
@@ -11,28 +10,28 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
-
+	// const [backgroundDescription, setBackgroundDescription] = useState('bg-transparent');
+	const [contactDate, setContactDate] = useState(note?.date);
+	const [contactTitle, setContactTitle] = useState(note?.title);
+	const [contactDescription, setContactDescription] = useState(note?.description);
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
 		setBackground('bg-gray-300');
+		// setBackgroundDescription(
+		// 	'bg-gray-300 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-24 flex items-center pl-3 text-sm border-gray-300 rounded border',
+		// );
 	};
 
-	// const deleteHandler = async (e: any) => {
-	// 	e.preventDefault();
-	// 	await axios.delete(uri(`notes/${note.id}`), {
-	// 		headers: {
-	// 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-	// 		},
-	// 		// setChange(!change)
-	// 	});
-	// };
 	const [showsubmitDelete, setShowsubmitDelete] = useState(false);
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
 		setNote(note);
 		setBackground('bg-transparent');
+		setContactDate(note?.date);
+		setContactDescription(note?.description);
+		setContactTitle(note?.title);
 	};
 
 	const submitHandler = async (e: any) => {
@@ -53,6 +52,7 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 		setInputDisabled(true);
 		setInputsShow(false);
 		setBackground('bg-transparent');
+		// setBackgroundDescription('bg-transparent');
 	};
 
 	return (
@@ -76,6 +76,8 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 								defaultValue={note?.date}
 								name="date"
 								className={background}
+								onChange={(e) => setContactDate(e.target.value)}
+								value={contactDate}
 							/>
 							<div>
 								<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Title</label>
@@ -88,18 +90,32 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 										defaultValue={note?.title}
 										name="title"
 										className={background}
+										onChange={(e) => setContactTitle(e.target.value)}
+										value={contactTitle}
 									/>
 								</div>
 							</div>
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
 							<div className="relative mb-5 mt-2">
+								{/* <textarea
+									disabled={inputDisabled}
+									// className={background}
+									onChange={(e) => setContactDescription(e.target.value)}
+									value={contactDescription}
+									id={'description'}
+									defaultValue={note?.description}
+									name="description"
+									className={backgroundDescription}
+									placeholder="Description"></textarea> */}
 								<Input
 									disabled={inputDisabled}
 									type={'text'}
 									id={'description'}
 									defaultValue={note?.description}
 									name="description"
-									className={background}
+									className={`text-gray-600 focus:outline-none font-normal w-full h-24 flex items-center pl-3 text-sm ${background}`}
+									onChange={(e) => setContactDescription(e.target.value)}
+									value={contactDescription}
 								/>
 							</div>
 							<div className="flex items-center justify-start w-full">
