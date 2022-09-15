@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import SubmitDelete from './submitDelete';
-import { any } from 'prop-types';
 
 export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
@@ -55,7 +54,6 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 		setInputsShow(false);
 		setBackground('bg-transparent');
 	};
-	console.log(note.date, note);
 
 	return (
 		<>

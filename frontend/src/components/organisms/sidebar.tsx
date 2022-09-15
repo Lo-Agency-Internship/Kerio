@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '../atoms/button';
 import ContactModal from '../molecules/contactModal';
 import AddEmployModal from '../molecules/addEmployModal';
@@ -9,7 +9,7 @@ import { useApiContext } from '../../context/api';
 const Sidebar = () => {
 	const [showContactModal, setShowContactModal] = useState<boolean>(false);
 	const [showAddEmployModal, setAddEmployModal] = useState<boolean>(false);
-	const { contacts, setContacts } = useApiContext();
+	const { setContacts } = useApiContext();
 
 	const allContacts = async () => {
 		const leads = await axios.get(uri(`contacts`), {

@@ -5,12 +5,16 @@ export interface Props {
 	defaultValue?: any;
 	name?: string;
 	className?: string;
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	value?: string;
 }
 
-export function Input({ disabled, type, id, defaultValue, name, className }: Props) {
+export function Input({ disabled, type, id, defaultValue, name, className, onChange, value }: Props) {
 	return (
 		<>
 			<input
+				value={value}
+				onChange={onChange}
 				disabled={disabled}
 				type={type}
 				id={id}
