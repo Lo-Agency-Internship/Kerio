@@ -29,12 +29,14 @@ export class InviteService {
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {
-    const [userExists, invitedBy] = await this.userService.existsAndFindByEmail(
+    const invitedBy = await this.userService.findOneUserByEmail(
       invite.invitedByUserEmail,
     );
+    console.log('=====================', invitedBy);
 
-    const [orgExists, invitedOrganization] =
-      await this.orgService.existsAndFindBySlug(invite.orgSlug);
+    const invitedOrganization = await this.orgService.findOneOrganizationBySlug(
+      invite.orgSlug,
+    );
 
     const token = randomBytes(48).toString('hex');
 
