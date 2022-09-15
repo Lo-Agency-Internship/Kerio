@@ -32,7 +32,7 @@ export class InviteService {
     const invitedBy = await this.userService.findOneUserByEmail(
       invite.invitedByUserEmail,
     );
-    console.log('=====================', invitedBy);
+    
 
     const invitedOrganization = await this.orgService.findOneOrganizationBySlug(
       invite.orgSlug,
