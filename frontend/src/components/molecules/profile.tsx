@@ -61,7 +61,6 @@ export default function Profile({ user, setUser }: any) {
 		setDeleteBtn(true);
 	};
 
-	// i have bug in this part we will fix it
 	const cancelDelete = () => {
 		setDeleteBtn(false);
 	};
