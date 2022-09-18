@@ -10,7 +10,6 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
-	// const [backgroundDescription, setBackgroundDescription] = useState('bg-transparent');
 	const [contactDate, setContactDate] = useState(note?.date);
 	const [contactTitle, setContactTitle] = useState(note?.title);
 	const [contactDescription, setContactDescription] = useState(note?.description);
@@ -18,9 +17,6 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 		setInputDisabled(false);
 		setInputsShow(true);
 		setBackground('bg-gray-300');
-		// setBackgroundDescription(
-		// 	'bg-gray-300 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-24 flex items-center pl-3 text-sm border-gray-300 rounded border',
-		// );
 	};
 
 	const [showsubmitDelete, setShowsubmitDelete] = useState(false);
@@ -52,7 +48,6 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 		setInputDisabled(true);
 		setInputsShow(false);
 		setBackground('bg-transparent');
-		// setBackgroundDescription('bg-transparent');
 	};
 
 	return (
