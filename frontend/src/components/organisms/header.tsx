@@ -14,22 +14,7 @@ const Header = () => {
 			{/* header start here */}
 			<nav
 				className="
-				fixed
-				w-5/6
-				h-24
-				z-40
-  right-0
-  flex flex-wrap
-  items-center
-  justify-between
-  py-6
-  bg-[#212121]
-  text-gray-500
-  hover:text-gray-700
-  focus:text-gray-700
-  shadow-lg
-  navbar navbar-expand-lg navbar-light
-  ">
+				flex items-center justify-between border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
 				<div className="container-fluid w-full flex flex-wrap items-center justify-between px-6">
 					<div className="collapse navbar-collapse flex-grow items-center" id="navbarSupportedContent"></div>
 

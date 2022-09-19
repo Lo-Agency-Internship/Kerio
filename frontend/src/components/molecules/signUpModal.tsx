@@ -85,8 +85,8 @@ function SignUpModal({ setOpen }: any) {
 	return (
 		// <!--  // modal starts here component -->
 		<div className="absolute flex flex-col z-50 items-center justify-center w-full px-20 pt-5 pb-30 lg:pt-18 lg:flex-row top-0 right-0 bottom-0 left-0">
-			<div className="relative z-10 w-full max-w-2xl mt-20 lg:mt-0 lg:w-6/12">
-				<div className="relative z-10 flex flex-col items-start justify-start p-10 bg-white shadow-2xl rounded-xl">
+			<div className="relative border-solid border-2 border-black z-10 w-full max-w-2xl mt-20 lg:mt-0 lg:w-6/12">
+				<div className="relative z-10 flex flex-col items-start justify-start p-10 bg-white shadow-2xl rounded-none">
 					<button
 						className="cursor-pointer absolute top-0 right-0 mt-8 mr-8
                          text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out 
