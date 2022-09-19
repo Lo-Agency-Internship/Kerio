@@ -74,7 +74,7 @@ export default function Profile({ user, setUser }: any) {
 	return (
 		<>
 			<div className="flex justify-center justify-items-center my-4  w-full p-10">
-				<div className="flex w-full mx-8  p-4 bg-gray-200 rounded-lg hover:shadow-xl ">
+				<div className="flex w-full mx-8  p-4 bg-white border-solid border-2 border-gray-300  rounded-lg hover:shadow-xl ">
 					<form onSubmit={submitHandler}>
 						<div className="flex justify-start  flex-row flex-wrap">
 							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
@@ -175,7 +175,7 @@ export default function Profile({ user, setUser }: any) {
 							) : (
 								<Button
 									label="Edit"
-									style="focus:outline-none mx-3 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+									style="focus:outline-none mx-3 text-black border-solid border-2 border-yellow-500 hover:border-yellow-400 hover:bg-yellow-400 hover:text-white shadow-md focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
 									onClick={editHandler}
 									type="button"
 								/>
@@ -246,7 +246,7 @@ export default function Profile({ user, setUser }: any) {
 							) : (
 								<Button
 									label="Delete"
-									style="focus:outline-none mx-3 text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
+									style="focus:outline-none mx-3 text-black  border-solid border-2 border-red-500 hover:border-red-400 hover:bg-red-500 hover:text-white focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
 									type="button"
 									onClick={deleteHandler}
 								/>

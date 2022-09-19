@@ -77,12 +77,12 @@ const Sidebar = () => {
 			{showAddEmployModal && <AddEmployModal setOpen={setAddEmployModal} />}
 			{showContactModal && <ContactModal setOpen={setShowContactModal} />}
 			{showNotesModal && <NoteModal setOpen={setShowNotesModal} />}
-			<div className="w-64 shadow-md bg-[#212121] px-1 h-screen fixed" id="sidenavExample">
-				<img className="h-8 w-auto my-4 sm:h-20" src={Images} alt="Img" />
+			<div className="w-64 shadow-md px-1 h-screen fixed" id="sidenavExample">
+				<img className="h-8 w-auto my-4 mx-4 sm:h-20" src={Images} alt="Img" />
 				<ul className="relative top-6">
 					<li className="relative">
 						<Button
-							style="border-black hover:text-gray-500 font-bold text-center text-white px-2 mx-2 my-3"
+							style="border-black hover:text-gray-500 text-xl text-center text-black px-2 mx-2 my-3"
 							label={'Add contact'}
 							onClick={() => {
 								setShowContactModal(true);
@@ -93,7 +93,7 @@ const Sidebar = () => {
 					{/* this button show only for leader */}
 					<li className="relative">
 						<Button
-							style="border-black hover:text-gray-500 font-bold text-center text-white px-2 mx-2 mb-3"
+							style="border-black hover:text-gray-500 text-xl text-center text-black px-2 mx-2 mb-3"
 							label={'Add Employee'}
 							onClick={() => {
 								setAddEmployModal(true);
@@ -103,7 +103,7 @@ const Sidebar = () => {
 					</li>
 					<li className="relative">
 						<Button
-							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 mx-2 mt-6"
+							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 mx-2 mt-6"
 							label={'All Contacts'}
 							onClick={allContacts}
 							type="button"
@@ -111,7 +111,7 @@ const Sidebar = () => {
 					</li>
 					<li className="relative">
 						<Button
-							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 mx-2 mt-6"
+							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 mx-2 mt-6"
 							label={'Leads'}
 							onClick={filterLead}
 							type="button"
@@ -119,7 +119,7 @@ const Sidebar = () => {
 					</li>
 					<li className="relative">
 						<Button
-							style=" border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
+							style=" border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
 							label={'Lost Loyal'}
 							onClick={filterLostLoyal}
 							type="button"
@@ -127,7 +127,7 @@ const Sidebar = () => {
 					</li>
 					<li className="relative">
 						<Button
-							style="  border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
+							style="  border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
 							label={'Potential Customer'}
 							onClick={potentialCustomer}
 							type="button"
@@ -135,7 +135,7 @@ const Sidebar = () => {
 					</li>
 					<li className="relative">
 						<Button
-							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
+							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
 							label={'Lost Potential Customer'}
 							onClick={lostPotentialCustomer}
 							type="button"
@@ -143,7 +143,7 @@ const Sidebar = () => {
 					</li>
 					<li className="relative">
 						<Button
-							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
+							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
 							label={'Loyal Customer'}
 							onClick={loyalCustomer}
 							type="button"
@@ -151,7 +151,7 @@ const Sidebar = () => {
 					</li>
 					<li className="relative">
 						<Button
-							style="border-black  hover:text-gray-500 font-bold text-center text-white px-2 m-2"
+							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
 							label={'Lost Loyal Customer'}
 							onClick={lostLoyalCustomer}
 							type="button"

@@ -26,7 +26,7 @@ export default function Contact() {
 				<>
 					<div>
 						<div className="flex justify-start mt-8 w-12/12 ">
-							<div className="flex bg-gray-500 ml-8 p-2 rounded-xl">
+							<div className="flex bg-white ml-8 p-2 border-solid border-2 border-gray-300  rounded-xl">
 								<div className="flex -space-x-1 overflow-hidden">
 									<img className="h-10 w-10 rounded-full ring-1 ring-white" src={Images} alt="" />
 								</div>
