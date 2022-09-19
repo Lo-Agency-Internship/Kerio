@@ -24,6 +24,7 @@ interface IApiContext {
 	getAllEmployees?: any;
 	postContactInfo?: any;
 	postUserInfo?: any;
+	postNoteInfo?: any;
 	updateContactInfo?: any;
 	deleteContact?: any;
 	postLogin?: any;
@@ -121,6 +122,10 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const postInviteEmployee = async (body: object) => {
 		await axios.post(uri('invites'), body, headerAuth);
 	};
+	// post data for add note
+	const postNoteInfo = async (body: object, id: string) => {
+		await axios.post(uri(`notes/${id}`), body, headerAuth);
+	};
 	/// //////////////// PUT
 
 	// update contact info
@@ -148,6 +153,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				postUserInfo,
 				postLogin,
 				postSignUp,
+				postNoteInfo,
 				updateContactInfo,
 				deleteContact,
 				postInviteEmployee,

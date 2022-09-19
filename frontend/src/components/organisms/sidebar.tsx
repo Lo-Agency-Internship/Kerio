@@ -6,9 +6,12 @@ import Images from '../../assets/images/logo.png';
 import { uri } from '../../utils';
 import axios from 'axios';
 import { useApiContext } from '../../context/api';
+import NoteModal from '../molecules/noteModal';
+
 const Sidebar = () => {
 	const [showContactModal, setShowContactModal] = useState<boolean>(false);
 	const [showAddEmployModal, setAddEmployModal] = useState<boolean>(false);
+	const [showNotesModal, setShowNotesModal] = useState<boolean>(false);
 	const { setContacts } = useApiContext();
 
 	const allContacts = async () => {
@@ -73,6 +76,7 @@ const Sidebar = () => {
 		<>
 			{showAddEmployModal && <AddEmployModal setOpen={setAddEmployModal} />}
 			{showContactModal && <ContactModal setOpen={setShowContactModal} />}
+			{showNotesModal && <NoteModal setOpen={setShowNotesModal} />}
 			<div className="w-64 shadow-md px-1 h-screen fixed" id="sidenavExample">
 				<img className="h-8 w-auto my-4 mx-4 sm:h-20" src={Images} alt="Img" />
 				<ul className="relative top-6">
@@ -97,6 +101,7 @@ const Sidebar = () => {
 						/>
 						<hr />
 					</li>
+
 					<li className="relative">
 						<Button
 							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 mx-2 mt-6"
@@ -154,6 +159,15 @@ const Sidebar = () => {
 						/>
 					</li>
 				</ul>
+				{location.pathname !== '/dashboard' && (
+					<div className="py-12 px-12">
+						<button
+							onClick={() => setShowNotesModal(true)}
+							className="w-32 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 hover:border-gray-600 hover:bg-gray-800 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
+							<span className="mx-auto">Add Note</span>
+						</button>
+					</div>
+				)}
 			</div>
 		</>
 	);

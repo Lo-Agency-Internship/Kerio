@@ -35,13 +35,13 @@ export default function Contact() {
 						</div>
 					</div>
 					<div className="flex justify-center">
-						{showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />}
+						{/* {showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />} */}
 					</div>
 					<Profile setUser={setContact} user={contact} />
 
 					<div className="flex justify-center w-12/12 border">
 						<Timeline />
-						<Note setShowNoteModal={setShowNoteModal} user={contact} setUser={setContact} />
+						<Note user={contact} setUser={setContact} />
 					</div>
 				</>
 			)}
