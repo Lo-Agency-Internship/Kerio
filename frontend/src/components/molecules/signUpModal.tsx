@@ -66,11 +66,11 @@ function SignUpModal({ setOpen }: any) {
 		if (isValid) {
 			try {
 				await postSignUp(body).then((response: any) => {
-					if (response.status === 201) {
-						alert('Successful signUp! Please signIn');
-						navigate('/');
-						setOpen(false);
-					}
+					// if (response.status === 201) {
+					alert('Successful signUp! Please signIn');
+					navigate('/');
+					setOpen(false);
+					// }
 				});
 			} catch (err: SetStateAction<any>) {
 				setError(err.response.data.message);
