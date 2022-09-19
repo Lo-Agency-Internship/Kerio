@@ -1,12 +1,12 @@
-import axios from 'axios';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
-import { uri } from '../../utils';
 import { addNoteModalValidation } from '../../validation/addNoteModalValidation';
 
 export default function NoteModal({ user, setOpen }: any) {
 	const [error, setError] = useState<string | null>(null);
-	const { change, setChange } = useApiContext();
+	const { id } = useParams();
+	const { change, setChange, postNoteInfo } = useApiContext();
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
@@ -21,16 +21,10 @@ export default function NoteModal({ user, setOpen }: any) {
 
 		const isValid = await addNoteModalValidation.isValid(body);
 		if (isValid) {
-			await axios
-				.post(uri(`notes/${user.id}`), body, {
-					headers: {
-						Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-					},
-				})
-				.then((_response) => {
-					setOpen(false);
-					setChange(!change);
-				});
+			postNoteInfo(body, id).then(() => {
+				setOpen(false);
+				setChange(!change);
+			});
 		} else {
 			addNoteModalValidation.validate(body).catch((e) => {
 				setError(e.message);
