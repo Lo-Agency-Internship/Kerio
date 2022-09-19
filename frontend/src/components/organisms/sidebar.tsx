@@ -74,7 +74,7 @@ const Sidebar = () => {
 			{showAddEmployModal && <AddEmployModal setOpen={setAddEmployModal} />}
 			{showContactModal && <ContactModal setOpen={setShowContactModal} />}
 			<div className="w-64 shadow-md px-1 h-screen fixed" id="sidenavExample">
-				<img className="h-8 w-auto my-4 sm:h-20" src={Images} alt="Img" />
+				<img className="h-8 w-auto my-4 mx-4 sm:h-20" src={Images} alt="Img" />
 				<ul className="relative top-6">
 					<li className="relative">
 						<Button
