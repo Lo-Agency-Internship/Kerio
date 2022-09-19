@@ -3,17 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
+import { modalContactValidation } from '../../validation/addContactValidaion';
 export default function Profile({ user, setUser }: any) {
 	const [deleteBtn, setDeleteBtn] = useState(false);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
 	const [background, setBackground] = useState('bg-transparent');
-	const { updateContactInfo, deleteContact } = useApiContext();
+	const { updateContactInfo, deleteContact, change, setChange } = useApiContext();
 	const [contactName, setContactName] = useState(user?.name);
 	const [contactEmail, setContactEmail] = useState(user?.email);
 	const [contactPhone, setContactPhone] = useState(user?.phone);
 	const [contactStatus, setContactStatus] = useState(user?.status);
+	const [error, setError] = useState<string | null | boolean>(null);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -21,7 +23,7 @@ export default function Profile({ user, setUser }: any) {
 		if (user) {
 			setSelectBoxValue(user.status);
 		}
-	}, []);
+	}, [user]);
 	// after ckick it we can see 2 new buttons ( yes & no)
 	const editHandler = () => {
 		setInputDisabled(false);
@@ -45,18 +47,28 @@ export default function Profile({ user, setUser }: any) {
 		e.preventDefault();
 		setSelectBoxValue(null);
 		const formData = new FormData(e.currentTarget);
-		const name = formData.get('name');
-		const email = formData.get('email');
+		const name = formData.get('name')?.toString().toLowerCase();
+		const email = formData.get('email')?.toString().toLowerCase();
 		const phone = formData.get('phone');
 		const status = formData.get('status');
 		const body = { name, email, phone, status };
-		await updateContactInfo(user.id, body);
+		const isValid = await modalContactValidation.isValid(body);
+		if (isValid) {
+			updateContactInfo(user.id, body);
+			setError(!error);
+		} else {
+			modalContactValidation.validate(body).catch((event) => {
+				setError(event.message);
+			});
+		}
+		// await updateContactInfo(user.id, body);
 		setSelectBoxValue(status as string);
 		setUser({ ...body, id: user.id });
 		setInputDisabled(true);
 		setInputsShow(false);
 		setBackground('bg-transparent');
 	};
+
 	const deleteHandler = () => {
 		setDeleteBtn(true);
 	};
@@ -155,7 +167,7 @@ export default function Profile({ user, setUser }: any) {
 								</div>
 							)}
 						</div>
-
+						{error && <p className="text-red-700">{error}</p>}
 						{/* show and hide buttons */}
 						<div className="mt-16">
 							{inputsShow ? (
