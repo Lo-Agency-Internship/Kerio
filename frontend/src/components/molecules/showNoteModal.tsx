@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { uri } from '../../utils';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import SubmitDelete from './submitDelete';
 
 export default function ShowNoteModal({ note, setNote, setOpen }: any) {
