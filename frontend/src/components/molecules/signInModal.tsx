@@ -40,8 +40,8 @@ const SignInModal: FC<ISignInModal> = ({ setOpen }) => {
 	};
 	return (
 		<div className="flex flex-col z-50 absolute items-start justify-center w-full px-10 pt-5 pb-20 lg:pt-20 lg:flex-row">
-			<div className="relative z-10 w-full max-w-2xl mt-20 lg:mt-0 lg:w-5/12">
-				<div className="relative z-10 flex flex-col items-start justify-start p-10 bg-white shadow-2xl rounded-xl">
+			<div className="relative border-solid border-2 border-black z-10 w-full max-w-2xl mt-20 lg:mt-0 lg:w-5/12">
+				<div className="relative z-10 flex flex-col items-start justify-start p-10 bg-white shadow-2xl rounded-none">
 					<button
 						className="cursor-pointer absolute top-0 right-0 mt-8 mr-8
                          text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out 

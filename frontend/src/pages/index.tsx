@@ -12,10 +12,10 @@ export default function Index() {
 			{showSignInModal && <SignInModal setOpen={setShowSignInModal} />}
 			{/* // <!-- This is button of signUp/signIn component --> */}
 
-			<div className="bg-white-700 p-9 h-screen w-screen flex items-center justify-center">
-				<div className="flex w-11/12 h-[90%] justify-center bg-gray-900 rounded-3xl shadow-xl">
+			<div className="bg-white p-9 h-screen w-screen flex items-center justify-center">
+				<div className="flex w-11/12 h-[90%] justify-center bg-white border-solid border-2 border-gray-200  rounded-3xl shadow-xl">
 					<div className="flex-col flex  self-center lg:p-10 sm:max-w-5xl xl:max-w-lg  z-10">
-						<div className="self-start hidden lg:flex flex-col  text-white">
+						<div className="self-start hidden lg:flex flex-col  text-black">
 							<div className="flex items-center mb-5">
 								<h3 className="text-3xl font-semibold ml-2">Welcome</h3>
 							</div>
@@ -28,14 +28,14 @@ export default function Index() {
 							<div className="m-3">
 								<button
 									onClick={() => setShowSignUpModal(true)}
-									className="w-32 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
+									className="w-32 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-solid border-2 border-indigo-600 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
 									<span className="mx-auto">SignUp</span>
 								</button>
 							</div>
 							<div className="m-3">
 								<button
 									onClick={() => setShowSignInModal(true)}
-									className="w-32 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 hover:border-red-600 hover:bg-red-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
+									className="w-32 bg-white tracking-wide text-gray-800 font-bold rounded border-b-5 border-solid border-2 border-red-600 hover:border-red-600 hover:bg-red-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
 									<span className="mx-auto">SignIn</span>
 								</button>
 							</div>

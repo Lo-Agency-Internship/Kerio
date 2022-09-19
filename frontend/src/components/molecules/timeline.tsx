@@ -26,7 +26,7 @@ export default function Timeline() {
 	return (
 		<>
 			<div className="container">
-				<div className="flex flex-col md:grid grid-cols-9 mx-auto p-2 text-blue-50">
+				<div className="flex flex-col md:grid grid-cols-9 mx-auto p-2">
 					{timelineStatus && timelineStatus.map((Element, Index) => <CardTimeline timeline={Element} key={Index} />)}
 					{timelineNotes && timelineNotes.map((Element, Index) => <CardTimeline timeline={Element} key={Index} />)}
 				</div>
