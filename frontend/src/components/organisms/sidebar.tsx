@@ -101,6 +101,7 @@ const Sidebar = () => {
 						/>
 						<hr />
 					</li>
+
 					<li className="relative">
 						<Button
 							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 mx-2 mt-6"
@@ -158,13 +159,15 @@ const Sidebar = () => {
 						/>
 					</li>
 				</ul>
-				<div className="py-12 px-12">
-					<button
-						onClick={() => setShowNotesModal(true)}
-						className="w-32 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 hover:border-gray-600 hover:bg-gray-800 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
-						<span className="mx-auto">Add Note</span>
-					</button>
-				</div>
+				{location.pathname !== '/dashboard' && (
+					<div className="py-12 px-12">
+						<button
+							onClick={() => setShowNotesModal(true)}
+							className="w-32 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 hover:border-gray-600 hover:bg-gray-800 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
+							<span className="mx-auto">Add Note</span>
+						</button>
+					</div>
+				)}
 			</div>
 		</>
 	);
