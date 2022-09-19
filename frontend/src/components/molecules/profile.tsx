@@ -10,6 +10,10 @@ export default function Profile({ user, setUser }: any) {
 	const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
 	const [background, setBackground] = useState('bg-transparent');
 	const { updateContactInfo, deleteContact } = useApiContext();
+	const [contactName, setContactName] = useState(user?.name);
+	const [contactEmail, setContactEmail] = useState(user?.email);
+	const [contactPhone, setContactPhone] = useState(user?.phone);
+	const [contactStatus, setContactStatus] = useState(user?.status);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -17,7 +21,7 @@ export default function Profile({ user, setUser }: any) {
 		if (user) {
 			setSelectBoxValue(user.status);
 		}
-	}, [user]);
+	}, []);
 	// after ckick it we can see 2 new buttons ( yes & no)
 	const editHandler = () => {
 		setInputDisabled(false);
@@ -31,6 +35,10 @@ export default function Profile({ user, setUser }: any) {
 		setInputsShow(false);
 		setUser(user);
 		setBackground('bg-transparent');
+		setContactName(user?.name);
+		setContactEmail(user?.email);
+		setContactPhone(user?.phone);
+		setContactStatus(user?.status);
 	};
 
 	const submitHandler = async (e: any) => {
@@ -53,7 +61,6 @@ export default function Profile({ user, setUser }: any) {
 		setDeleteBtn(true);
 	};
 
-	// i have bug in this part we will fix it
 	const cancelDelete = () => {
 		setDeleteBtn(false);
 	};
@@ -81,6 +88,8 @@ export default function Profile({ user, setUser }: any) {
 									defaultValue={user?.name}
 									name="name"
 									className={background}
+									onChange={(e) => setContactName(e.target.value)}
+									value={contactName}
 								/>
 							</div>
 							<div className="m-3 pt-0 hover:shadow-md rounded-lg">
@@ -94,6 +103,8 @@ export default function Profile({ user, setUser }: any) {
 									defaultValue={user?.email}
 									name="email"
 									className={background}
+									onChange={(e) => setContactEmail(e.target.value)}
+									value={contactEmail}
 								/>
 							</div>
 
@@ -108,6 +119,8 @@ export default function Profile({ user, setUser }: any) {
 									defaultValue={user?.phone}
 									name="phone"
 									className={background}
+									onChange={(e) => setContactPhone(e.target.value)}
+									value={contactPhone}
 								/>
 							</div>
 							{selectBoxValue && (
@@ -117,6 +130,8 @@ export default function Profile({ user, setUser }: any) {
 									</label>
 									<select
 										disabled={inputDisabled}
+										onChange={(e) => setContactStatus(e.target.value)}
+										value={contactStatus}
 										name="status"
 										className={`${background} status px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-transparent rounded text-sm outline-none focus:outline-none focus:shadow-outline`}
 										defaultValue={selectBoxValue}
