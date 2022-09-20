@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { format } from 'date-fns';
 import { useState } from 'react';
 import { uri } from '../../utils';
 import { Button } from '../atoms/button';
@@ -65,13 +66,12 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
 							<Input
 								disabled={inputDisabled}
-								type={'date'}
 								id={'date'}
-								defaultValue={note?.date}
+								defaultValue={format(new Date(note.date), 'dd/MM/yyyy')}
 								name="date"
 								className={background}
 								onChange={(e) => setContactDate(e.target.value)}
-								value={contactDate}
+								// value={contactDate}
 							/>
 							<div>
 								<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Title</label>
