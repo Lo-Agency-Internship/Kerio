@@ -7,12 +7,14 @@ import { uri } from '../../utils';
 import axios from 'axios';
 import { useApiContext } from '../../context/api';
 import NoteModal from '../molecules/noteModal';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
 	const [showContactModal, setShowContactModal] = useState<boolean>(false);
 	const [showAddEmployModal, setAddEmployModal] = useState<boolean>(false);
 	const [showNotesModal, setShowNotesModal] = useState<boolean>(false);
 	const { setContacts } = useApiContext();
+	const navigate = useNavigate();
 
 	const allContacts = async () => {
 		const leads = await axios.get(uri(`contacts`), {
@@ -20,7 +22,9 @@ const Sidebar = () => {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 			},
 		});
+
 		setContacts(leads.data);
+		navigate('/dashboard');
 	};
 	const filterLead = async () => {
 		const leads = await axios.get(uri(`contacts?status=Lead`), {
@@ -28,6 +32,7 @@ const Sidebar = () => {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 			},
 		});
+
 		setContacts(leads.data);
 	};
 
@@ -86,30 +91,34 @@ const Sidebar = () => {
 							type="button"
 						/>
 					</li>
-					<li className="relative">
-						<Button
-							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 mx-2 mt-6"
-							label={'Leads'}
-							onClick={filterLead}
-							type="button"
-						/>
-					</li>
-					<li className="relative">
-						<Button
-							style="  border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
-							label={'Potential Customer'}
-							onClick={potentialCustomer}
-							type="button"
-						/>
-					</li>
-					<li className="relative">
-						<Button
-							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
-							label={'Loyal Customer'}
-							onClick={loyalCustomer}
-							type="button"
-						/>
-					</li>
+					{location.pathname === '/dashboard' && (
+						<>
+							<li className="relative">
+								<Button
+									style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 mx-2 mt-6"
+									label={'Leads'}
+									onClick={filterLead}
+									type="button"
+								/>
+							</li>
+							<li className="relative">
+								<Button
+									style="  border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
+									label={'Potential Customer'}
+									onClick={potentialCustomer}
+									type="button"
+								/>
+							</li>
+							<li className="relative">
+								<Button
+									style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
+									label={'Loyal Customer'}
+									onClick={loyalCustomer}
+									type="button"
+								/>
+							</li>
+						</>
+					)}
 				</ul>
 				{location.pathname !== '/dashboard' && (
 					<div className="py-12 px-12">
