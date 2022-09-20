@@ -4,4 +4,5 @@ export interface IUser {
 	email?: string;
 	phone?: string;
 	status?: string;
+	score?: string;
 }
