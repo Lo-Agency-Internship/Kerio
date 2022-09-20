@@ -30,14 +30,6 @@ const Sidebar = () => {
 		});
 		setContacts(leads.data);
 	};
-	const filterLostLoyal = async () => {
-		const leads = await axios.get(uri(`contacts?status=Lostloyal`), {
-			headers: {
-				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-			},
-		});
-		setContacts(leads.data);
-	};
 
 	const potentialCustomer = async () => {
 		const leads = await axios.get(uri(`contacts?status=PotentialCustomer`), {
@@ -48,24 +40,8 @@ const Sidebar = () => {
 		setContacts(leads.data);
 	};
 
-	const lostPotentialCustomer = async () => {
-		const leads = await axios.get(uri(`contacts?status=LostPotentialCustomer`), {
-			headers: {
-				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-			},
-		});
-		setContacts(leads.data);
-	};
 	const loyalCustomer = async () => {
 		const leads = await axios.get(uri(`contacts?status=LoyalCustomer`), {
-			headers: {
-				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-			},
-		});
-		setContacts(leads.data);
-	};
-	const lostLoyalCustomer = async () => {
-		const leads = await axios.get(uri(`contacts?status=LostLoyalCustomer`), {
 			headers: {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 			},
@@ -120,14 +96,6 @@ const Sidebar = () => {
 					</li>
 					<li className="relative">
 						<Button
-							style=" border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
-							label={'Lost Loyal'}
-							onClick={filterLostLoyal}
-							type="button"
-						/>
-					</li>
-					<li className="relative">
-						<Button
 							style="  border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
 							label={'Potential Customer'}
 							onClick={potentialCustomer}
@@ -137,24 +105,8 @@ const Sidebar = () => {
 					<li className="relative">
 						<Button
 							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
-							label={'Lost Potential Customer'}
-							onClick={lostPotentialCustomer}
-							type="button"
-						/>
-					</li>
-					<li className="relative">
-						<Button
-							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
 							label={'Loyal Customer'}
 							onClick={loyalCustomer}
-							type="button"
-						/>
-					</li>
-					<li className="relative">
-						<Button
-							style="border-black  hover:text-gray-500 text-xl text-center text-black px-2 m-2"
-							label={'Lost Loyal Customer'}
-							onClick={lostLoyalCustomer}
 							type="button"
 						/>
 					</li>
