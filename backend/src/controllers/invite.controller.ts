@@ -48,7 +48,7 @@ export class InviteController {
       invite = { ...invite, invitedByUserEmail, orgSlug };
 
       await this.inviteService.createInvite(invite);
-      await this.inviteService.sendEmailToInvite(invite.email);
+      await this.inviteService.sendEmailToInvite(invite);
 
       this.logService.addLog({
         title: 'Send Invite Successfully',
@@ -86,7 +86,7 @@ export class InviteController {
     });
 
     // TODO: send email to user to activate the account
-    this.inviteService.sendEmailToActiveAccount(invite.email);
+    this.inviteService.sendEmailToActiveAccount({ email: invite.email });
 
     await this.inviteService.invalidateInviteByToken(token);
     return resultUser;

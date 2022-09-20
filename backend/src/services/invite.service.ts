@@ -50,7 +50,7 @@ export class InviteService {
     return newInvite;
   }
 
-  async sendEmailToInvite(invite): Promise<void> {
+  async sendEmailToInvite(invite: BasicInviteDto): Promise<void> {
     const inviteData = await this.inviteRepository.findOneBy({
       email: invite.email,
     });
@@ -101,7 +101,7 @@ export class InviteService {
     });
   }
 
-  async sendEmailToActiveAccount(email) {
+  async sendEmailToActiveAccount({ email }: BasicInviteDto) {
     const activeTemplate = await this.templateService.render(
       'activeEmailTemplate',
       {
