@@ -32,7 +32,6 @@ export class InviteService {
     const invitedBy = await this.userService.findOneUserByEmail(
       invite.invitedByUserEmail,
     );
-    
 
     const invitedOrganization = await this.orgService.findOneOrganizationBySlug(
       invite.orgSlug,
@@ -59,7 +58,7 @@ export class InviteService {
     if (!inviteData)
       throw new Error(`no invitation could be found for the email`);
 
-    const mailTemplate = await this.templateService.render('maiilTemplate', {
+    const mailTemplate = await this.templateService.render('mailTemplate', {
       link: `${this.configService.get('FRONTEND_URL')}/invite?token=${
         inviteData.token
       }`,
@@ -99,6 +98,27 @@ export class InviteService {
   async invalidateInviteByToken(token: string): Promise<DeleteResult> {
     return await this.inviteRepository.delete({
       token,
+    });
+  }
+
+  async sendEmailToActiveAccount({ email }: BasicInviteDto) {
+    const activeTemplate = await this.templateService.render(
+      'activeEmailTemplate',
+      {
+        link: `${this.configService.get(
+          'BACKEND_URL',
+        )}/auth/enable?email=${email}`,
+        email,
+      },
+    );
+
+    const response = await this.mailerService.send({
+      to: email,
+      subject: 'active your account',
+      html: activeTemplate,
+      text: `${this.configService.get(
+        'BACKEND_URL',
+      )}/auth/enable?email=${email}`,
     });
   }
 }
