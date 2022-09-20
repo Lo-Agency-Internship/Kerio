@@ -1,11 +1,13 @@
 import { modalContactValidation } from '../../validation/addContactValidaion';
 import { FC, useState } from 'react';
 import { useApiContext } from '../../context/api';
+import { useNavigate } from 'react-router-dom';
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 	const { change, setChange, postContactInfo } = useApiContext();
+	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
@@ -26,6 +28,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 			postContactInfo(body).then(() => {
 				setOpen(false);
 				setChange(!change);
+				navigate('/dashboard');
 			});
 		} else {
 			modalContactValidation.validate(body).catch((e) => {
