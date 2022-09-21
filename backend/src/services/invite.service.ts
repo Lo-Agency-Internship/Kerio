@@ -106,8 +106,8 @@ export class InviteService {
       'activeEmailTemplate',
       {
         link: `${this.configService.get(
-          'BACKEND_URL',
-        )}/auth/enable?email=${email}`,
+          'FRONTEND_URL',
+        )}/active?email=${email}`,
         email,
       },
     );
@@ -117,8 +117,8 @@ export class InviteService {
       subject: 'active your account',
       html: activeTemplate,
       text: `${this.configService.get(
-        'BACKEND_URL',
-      )}/auth/enable?email=${email}`,
+        'FRONTEND_URL',
+      )}/active?email=${email}`,
     });
   }
 }
