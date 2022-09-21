@@ -31,7 +31,7 @@ const columns: TableColumn<IUser>[] = [
 	},
 ];
 const ContactTable: React.FC<IContactTable> = ({ contact }) => {
-	return <DataTable columns={columns} data={contact} />;
+	return <DataTable columns={columns} data={contact} pagination />;
 };
 
 export default ContactTable;
