@@ -13,6 +13,7 @@ export default function NoteModal({ user, setOpen }: any) {
 		const title = formData.get('title')?.toString().toLowerCase();
 		const description = formData.get('description');
 		const date = formData.get('date');
+		// const score = formData.get('score');
 		const body = {
 			title,
 			description,
@@ -59,6 +60,19 @@ export default function NoteModal({ user, setOpen }: any) {
 									className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border"
 									placeholder="title"
 								/>
+							</div>
+							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Note score</label>
+							<div className="mb-5 mt-2">
+								{/* // dropDown starts here */}
+								<select
+									name="score"
+									id="score"
+									className="mb-8 text-gray-600 focus:outline-none focus:border focus:border-gray-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border">
+									<option value="0"> 0</option>
+									<option value="+1">+1</option>
+									<option value="-1"> -1</option>
+									<option value="null">None</option>
+								</select>
 							</div>
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
 							<div className="relative mb-5 mt-2">
