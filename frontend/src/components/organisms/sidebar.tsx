@@ -17,7 +17,7 @@ const Sidebar = () => {
 	const navigate = useNavigate();
 
 	const allContacts = async () => {
-		const leads = await axios.get(uri(`contacts`), {
+		const leads = await axios.get(uri(`contacts?pageNumber=1&perPage=10`), {
 			headers: {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 			},
@@ -27,7 +27,7 @@ const Sidebar = () => {
 		navigate('/dashboard');
 	};
 	const filterLead = async () => {
-		const leads = await axios.get(uri(`contacts?status=Lead`), {
+		const leads = await axios.get(uri(`contacts?status=Lead&pageNumber=1&perPage=10`), {
 			headers: {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 			},
@@ -37,7 +37,7 @@ const Sidebar = () => {
 	};
 
 	const potentialCustomer = async () => {
-		const leads = await axios.get(uri(`contacts?status=PotentialCustomer`), {
+		const leads = await axios.get(uri(`contacts?status=PotentialCustomer&pageNumber=1&perPage=10`), {
 			headers: {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 			},
@@ -46,7 +46,7 @@ const Sidebar = () => {
 	};
 
 	const loyalCustomer = async () => {
-		const leads = await axios.get(uri(`contacts?status=LoyalCustomer`), {
+		const leads = await axios.get(uri(`contacts?status=LoyalCustomer&pageNumber=1&perPage=10`), {
 			headers: {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 			},

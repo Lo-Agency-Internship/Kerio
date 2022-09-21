@@ -50,7 +50,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	// get contacts
 	const getAllContacts = async () => {
 		setIsLoading(true);
-		const { data } = await axios.get(uri('contacts'), headerAuth);
+		const { data } = await axios.get(uri(`contacts?pageNumber=1&perPage=20`), headerAuth);
 		console.log(data);
 		setIsLoading(false);
 		return data;
