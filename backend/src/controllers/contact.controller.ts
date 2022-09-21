@@ -29,25 +29,30 @@ export class ContactController {
 
   @Get()
   @UseGuards(JwtGuard)
-  getAllContacts(@Query() query: { status: string,pageNumber:number,perPage:number } ): Promise<Contact[]> {
+  getAllContacts(
+    @Query() query: { status: string; pageNumber: number; perPage: number },
+  ): Promise<Contact[]> {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
 
-    const {pageNumber} = query
-    const {perPage} = query;
+    const { pageNumber } = query;
+    const { perPage } = query;
 
     const organizationId = organization.id;
     if (!query.status) {
-      return this.contactService.getAllContact(organizationId,Number(pageNumber),Number(perPage));
+      return this.contactService.getAllContact(
+        organizationId,
+        Number(pageNumber),
+        Number(perPage),
+      );
     }
-
 
     return this.contactService.getContactsFilteredByStatus(
       query.status,
       organizationId,
       Number(pageNumber),
-      Number(perPage)
+      Number(perPage),
     );
   }
 
@@ -97,6 +102,4 @@ export class ContactController {
     });
     return this.contactService.deleteContact(param.id);
   }
-
-  
 }

@@ -15,14 +15,14 @@ export class ContactService {
     private readonly contactStatusRepository: Repository<ContactStatus>,
   ) {}
 
-  
-
-  getAllContact(organizationId,pageNumber,perPage): Promise<Contact[]> {
-    return this.contactRepository.find({ where: { organizationId },order:{createdAt:'DESC'},
-    take:perPage,
-    skip:pageNumber > 0 ? (pageNumber - 1 ) * perPage : 1
-   });
-}
+  getAllContact(organizationId, pageNumber, perPage): Promise<Contact[]> {
+    return this.contactRepository.find({
+      where: { organizationId },
+      order: { createdAt: 'DESC' },
+      take: perPage,
+      skip: pageNumber > 0 ? (pageNumber - 1) * perPage : 1,
+    });
+  }
 
   findOneContactById(id: any): Promise<Contact> {
     return this.contactRepository.findOneBy({ id });
@@ -66,15 +66,20 @@ export class ContactService {
     return await this.contactRepository.softDelete(id);
   }
 
-  async getContactsFilteredByStatus(query, organizationId,pageNumber,perPage) {
+  async getContactsFilteredByStatus(
+    query,
+    organizationId,
+    pageNumber,
+    perPage,
+  ) {
     const contacts = this.contactRepository.find({
       where: {
         status: query,
         organizationId,
       },
-    order:{createdAt:'DESC'},
-    take:perPage,
-    skip:pageNumber > 0 ? (pageNumber - 1 ) * perPage : 1
+      order: { createdAt: 'DESC' },
+      take: perPage,
+      skip: pageNumber > 0 ? (pageNumber - 1) * perPage : 1,
     });
     return contacts;
   }
