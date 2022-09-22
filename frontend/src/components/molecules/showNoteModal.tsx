@@ -115,17 +115,39 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 							<div className="flex items-center justify-start w-full">
 								<Button
 									label="Delete"
-									style="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 transition duration-150 ease-in-out hover:bg-gray-600 bg-gray-700 rounded text-white px-8 py-2 text-sm"
+									style="focus:outline-none mx-3 text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
 									type="button"
 									onClick={() => setShowsubmitDelete(true)}
 								/>
 
 								<button
-									className="focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
+									className="focus:outline-none mx-3 text-white bg-gray-400 hover:bg-gray-500 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-gray-900"
 									type="button"
 									onClick={() => setOpen(false)}>
 									Cancel
 								</button>
+								{inputsShow ? (
+									<>
+										<Button
+											label="No"
+											style="focus:outline-none mx-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+											onClick={cancelHandler}
+											type="reset"
+										/>
+										<Button
+											label="Yes"
+											style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+											type="submit"
+										/>
+									</>
+								) : (
+									<Button
+										label="Edit"
+										style="focus:outline-none mx-3 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+										onClick={editHandler}
+										type="button"
+									/>
+								)}
 							</div>
 							<button
 								className="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
@@ -150,30 +172,7 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 							</button>
 
 							{/* show and hide buttons */}
-							<div className="mt-16">
-								{inputsShow ? (
-									<>
-										<Button
-											label="No"
-											style="focus:outline-none mx-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-											onClick={cancelHandler}
-											type="reset"
-										/>
-										<Button
-											label="Yes"
-											style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-											type="submit"
-										/>
-									</>
-								) : (
-									<Button
-										label="Edit"
-										style="focus:outline-none mx-3 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
-										onClick={editHandler}
-										type="button"
-									/>
-								)}
-							</div>
+							<div className="mt-16"></div>
 						</form>
 					</div>
 				</div>

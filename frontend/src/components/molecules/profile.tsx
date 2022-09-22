@@ -10,7 +10,7 @@ export default function Profile({ user, setUser }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
 	const [background, setBackground] = useState('bg-transparent');
-	const { updateContactInfo, deleteContact, change, setChange } = useApiContext();
+	const { updateContactInfo, deleteContact } = useApiContext();
 	const [contactName, setContactName] = useState(user?.name);
 	const [contactEmail, setContactEmail] = useState(user?.email);
 	const [contactPhone, setContactPhone] = useState(user?.phone);

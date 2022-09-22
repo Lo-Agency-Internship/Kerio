@@ -121,10 +121,10 @@ const Sidebar = () => {
 					)}
 				</ul>
 				{location.pathname !== '/dashboard' && (
-					<div className="py-12 px-12">
+					<div className="py-12 px-1">
 						<button
 							onClick={() => setShowNotesModal(true)}
-							className="w-32 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 hover:border-gray-600 hover:bg-gray-800 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
+							className="w-32 bg-white tracking-wide text-gray-800 rounded border-b-2 hover:border-gray-400 hover:bg-gray-600 hover:text-white shadow-md py-2 px-6 inline-flex items-center">
 							<span className="mx-auto">Add Note</span>
 						</button>
 					</div>
