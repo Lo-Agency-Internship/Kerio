@@ -11,6 +11,7 @@ import Invite from './pages/invite';
 import { useState } from 'react';
 import Employees from './pages/employees';
 import NotFoundPage from './pages/notFoundPage';
+import EmployeeProfile from './pages/employeeProfile';
 
 function App() {
 	const [role] = useState<string>('owner');
@@ -38,6 +39,7 @@ function App() {
 				<Route index element={<Dashboard />} />
 				<Route path="contacts/:id" element={<Contact />} />
 				{role === 'owner' && <Route path="employees" element={<Employees />} />}
+				{role === 'owner' && <Route path="employeeProfile" element={<EmployeeProfile />} />}
 			</Route>
 			<Route path="*" element={<NotFoundPage />} />
 		</Routes>

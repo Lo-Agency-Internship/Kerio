@@ -39,6 +39,11 @@ import { Note } from './entities/note.entity';
 import { Log } from './entities/log.entity';
 import { ContactStatus } from './entities/contactStatus';
 import { StatusService } from './services/status.service';
+import { LogService } from './services/log.service';
+import { NoteController } from './controllers/note.controller';
+import { NoteService } from './services/note.service';
+import { EmployeeService } from './services/employee.service';
+import { EmployeeController } from './controllers/employee.controller';
 
 const entitiesToAdd = [
   Contact,
@@ -106,6 +111,8 @@ const entitiesToAdd = [
     UserController,
     OrganizationController,
     InviteController,
+    NoteController,
+    EmployeeController,
   ],
   providers: [
     AppService,
@@ -124,6 +131,9 @@ const entitiesToAdd = [
     RoleService,
     RequestContextService,
     StatusService,
+    LogService,
+    NoteService,
+    EmployeeService,
   ],
   exports: [AuthService, RoleService, StatusService],
 })

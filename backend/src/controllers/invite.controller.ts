@@ -6,49 +6,60 @@ import {
   HttpStatus,
   Param,
   Post,
-  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
-import { CreateInvitesDto, RegisterUserByInviteDto } from 'src/dtos/invite.dto';
+import { CreateInvitesDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
-import { roleEnum } from 'src/utils/types';
+import {
+  EEntityTypeLog,
+  ERole,
+  SecureUserWithOrganization,
+} from 'src/utils/types';
 import { TemplateEngineService } from 'src/services/templateEngine.service';
-import { MaliciousUserRequestException } from '../utils/exceptions';
+import { LogService } from 'src/services/log.service';
+import { RequestContextService } from 'src/services/requestContext.service';
+import { Organization } from 'src/entities/organization.entity';
+import { JwtGuard } from 'src/utils/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Controller('invites')
 export class InviteController {
   constructor(
     private readonly inviteService: InviteService,
     private readonly authService: AuthService,
+    private readonly logService: LogService,
     private readonly templateService: TemplateEngineService,
+    private readonly contextService: RequestContextService,
   ) {}
-
-  @Get()
-  async index() {
-    return this.inviteService.createInvite({
-      email: '',
-      invitedByUserEmail: '',
-      name: '',
-      orgSlug: '',
-    });
-  }
 
   @Post()
   async createNewInvite(@Body() { invites }: CreateInvitesDto) {
-    const errors: any[] = [];
+    const user = this.contextService.get(
+      'userData',
+    ) as SecureUserWithOrganization;
+    const invitedByUserEmail = user.email;
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
+    const orgSlug = organization.slug;
 
-    for await (const invite of invites) {
-      try {
-        await this.inviteService.createInvite(invite)
-      } catch (error: MaliciousUserRequestException) {
-        errors.push(error.message)
-      }
+    for await (let invite of invites) {
+      invite = { ...invite, invitedByUserEmail, orgSlug };
+
+      await this.inviteService.createInvite(invite);
+      await this.inviteService.sendEmailToInvite(invite);
+
+      this.logService.addLog({
+        title: 'Send Invite Successfully',
+        description: `Send Invite to ${invite.email}  Successfully`,
+        entityType: 'Send Invite',
+        entityId: EEntityTypeLog.Invite,
+        event: 'Invite',
+      });
     }
 
-    if (errors.length > 0)
-      throw new HttpException(errors.join(", "), HttpException.BAD_REQUEST)
-
-    return
+    return;
   }
 
   @Get('/:token')
@@ -65,7 +76,7 @@ export class InviteController {
 
     const invite = await this.inviteService.getInviteByToken(token);
 
-    const roleId = roleEnum.Employee;
+    const roleId = ERole.Employee;
     const resultUser = await this.authService.registerUser({
       email: invite.email,
       name: body.name,
@@ -75,6 +86,7 @@ export class InviteController {
     });
 
     // TODO: send email to user to activate the account
+    this.inviteService.sendEmailToActiveAccount({ email: invite.email });
 
     await this.inviteService.invalidateInviteByToken(token);
     return resultUser;

@@ -1,0 +1,5 @@
+GET http://localhost:3001/contacts?status=Lead&pageNumber=1&perPage=5 HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjk4LCJuYW1lIjoiZ29saSBEb2UiLCJpYXQiOjE2NjM3NTAxMjEsImV4cCI6MTY2NjM0MjEyMX0.zraqTJa373E2fFVItvLc-q2MA0vDaJqSfB-uLviF7jM
+
+//user goli@d.com

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   BasicInviteDto,
@@ -12,7 +12,8 @@ import { UserService } from './user.service';
 import { randomBytes } from 'crypto';
 import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
-import { MaliciousUserRequestException } from '../utils/exceptions';
+import { TemplateEngineService } from './templateEngine.service';
+import { RequestContextService } from './requestContext.service';
 
 @Injectable()
 export class InviteService {
@@ -23,24 +24,18 @@ export class InviteService {
     private readonly userService: UserService,
     private readonly orgService: OrganizationService,
     private readonly configService: ConfigService,
+    private readonly templateService: TemplateEngineService,
+    private readonly requestContextService: RequestContextService,
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {
-    const [userExists, invitedBy] = await this.userService.existsAndFindByEmail(
+    const invitedBy = await this.userService.findOneUserByEmail(
       invite.invitedByUserEmail,
     );
 
-    if (!userExists)
-      throw new MaliciousUserRequestException(`malicious invited by user`)
-
-    const [orgExists, invitedOrganization] =
-      await this.orgService.existsAndFindBySlug(invite.orgSlug);
-
-    if (!orgExists)
-      throw new HttpException(
-        `organization does not exist`,
-        HttpStatus.BAD_REQUEST,
-      );
+    const invitedOrganization = await this.orgService.findOneOrganizationBySlug(
+      invite.orgSlug,
+    );
 
     const token = randomBytes(48).toString('hex');
 
@@ -63,13 +58,16 @@ export class InviteService {
     if (!inviteData)
       throw new Error(`no invitation could be found for the email`);
 
-    // TODO: implement the rendering via template engine
+    const mailTemplate = await this.templateService.render('mailTemplate', {
+      link: `${this.configService.get('FRONTEND_URL')}/invite?token=${
+        inviteData.token
+      }`,
+      email: inviteData.email,
+    });
     const response = await this.mailerService.send({
       to: inviteData.email,
       subject: 'Invitation Email',
-      html: `${this.configService.get('FRONTEND_URL')}/invite?token=${
-        inviteData.token
-      }`,
+      html: mailTemplate,
       text: `${this.configService.get('FRONTEND_URL')}/invite?token=${
         inviteData.token
       }`,
@@ -100,6 +98,23 @@ export class InviteService {
   async invalidateInviteByToken(token: string): Promise<DeleteResult> {
     return await this.inviteRepository.delete({
       token,
+    });
+  }
+
+  async sendEmailToActiveAccount({ email }: BasicInviteDto) {
+    const activeTemplate = await this.templateService.render(
+      'activeEmailTemplate',
+      {
+        link: `${this.configService.get('FRONTEND_URL')}/active?email=${email}`,
+        email,
+      },
+    );
+
+    const response = await this.mailerService.send({
+      to: email,
+      subject: 'active your account',
+      html: activeTemplate,
+      text: `${this.configService.get('FRONTEND_URL')}/active?email=${email}`,
     });
   }
 }

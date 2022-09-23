@@ -20,11 +20,16 @@ interface IApiContext {
 	getAllUsers?: any;
 	getContactsInfoById?: any;
 	getUsersInfoById?: any;
+	getEmployeesInfoById?: any;
+	getAllEmployees?: any;
 	postContactInfo?: any;
 	postUserInfo?: any;
+	postNoteInfo?: any;
 	updateContactInfo?: any;
+	deleteContact?: any;
 	postLogin?: any;
 	postSignUp?: any;
+	postInviteEmployee?: any;
 }
 
 const ApiContext = createContext<IApiContext>({});
@@ -45,11 +50,19 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	// get contacts
 	const getAllContacts = async () => {
 		setIsLoading(true);
-		const { data } = await axios.get(uri('contacts'), headerAuth);
+		const { data } = await axios.get(uri(`contacts?pageNumber=1&perPage=20`), headerAuth);
 		console.log(data);
 		setIsLoading(false);
 		return data;
 	};
+	// get employees
+	// const getAllEmployees = async () => {
+	// 	setIsLoading(true);
+	// 	const { data } = await axios.get(uri('???'), headerAuth);
+	// 	console.log(data);
+	// 	setIsLoading(false);
+	// 	return data;
+	// };
 
 	// get users(employees)
 	const getAllUsers = async () => {
@@ -66,6 +79,13 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		setIsLoading(false);
 		return data;
 	};
+	// get employees info by ID
+	// const getEmployeesInfoById = async (id: string) => {
+	// 	setIsLoading(true);
+	// 	const { data } = await axios.get(uri(`???/${id}`), headerAuth);
+	// 	setIsLoading(false);
+	// 	return data;
+	// };
 
 	// get Users info by ID
 	const getUsersInfoById = async (id: string) => {
@@ -98,12 +118,23 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const postUserInfo = async (body: object) => {
 		await axios.post(uri('user'), body, headerAuth);
 	};
-
+	// post data for add a employee
+	const postInviteEmployee = async (body: object) => {
+		await axios.post(uri('invites'), body, headerAuth);
+	};
+	// post data for add note
+	const postNoteInfo = async (body: object, id: string) => {
+		await axios.post(uri(`notes/${id}`), body, headerAuth);
+	};
 	/// //////////////// PUT
 
 	// update contact info
 	const updateContactInfo = async (id: string, body: object) => {
 		axios.put(uri(`contacts/${id}`), body, headerAuth);
+	};
+	// ///////delete contact
+	const deleteContact = async (id: string) => {
+		axios.delete(uri(`contacts/${id}`), headerAuth);
 	};
 
 	return (
@@ -122,7 +153,10 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				postUserInfo,
 				postLogin,
 				postSignUp,
+				postNoteInfo,
 				updateContactInfo,
+				deleteContact,
+				postInviteEmployee,
 			}}>
 			{children}
 		</ApiContext.Provider>

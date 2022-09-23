@@ -19,7 +19,5 @@ export class MailerService {
       text: data.text,
       html: data.html,
     });
-
-    return res;
   }
 }

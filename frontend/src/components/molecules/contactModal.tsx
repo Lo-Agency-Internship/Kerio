@@ -1,11 +1,13 @@
 import { modalContactValidation } from '../../validation/addContactValidaion';
 import { FC, useState } from 'react';
 import { useApiContext } from '../../context/api';
+import { useNavigate } from 'react-router-dom';
 interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 	const { change, setChange, postContactInfo } = useApiContext();
+	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
@@ -26,6 +28,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 			postContactInfo(body).then(() => {
 				setOpen(false);
 				setChange(!change);
+				navigate('/dashboard');
 			});
 		} else {
 			modalContactValidation.validate(body).catch((e) => {
@@ -44,7 +47,7 @@ const ContactModal: FC<IContactModal> = ({ setOpen }) => {
 						<div className="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
 							<h1 className="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Contact Form</h1>
 							{/* // form starts here */}
-							{error && <p>{error}</p>}
+							{error && <p className="text-red-700">{error}</p>}
 							<form onSubmit={handleSubmit}>
 								<label htmlFor="title" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
 									Name
