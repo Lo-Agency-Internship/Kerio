@@ -1,19 +1,18 @@
-import SignInModal from '../components/molecules/signInModal';
-
+import SignInModal from '../components/templates/signInModal';
 import { useState } from 'react';
-import SignUpModal from '../components/molecules/signUpModal';
+import SignUpModal from '../components/templates/signUpModal';
 
 export default function Index() {
 	const [showSignUpModal, setShowSignUpModal] = useState(false);
 	const [showSignInModal, setShowSignInModal] = useState(false);
+
 	return (
 		<>
-			{showSignUpModal && <SignUpModal setOpen={setShowSignUpModal} />}
+			<SignUpModal open={showSignUpModal} setOpen={setShowSignUpModal} />
 			{showSignInModal && <SignInModal setOpen={setShowSignInModal} />}
-			{/* // <!-- This is button of signUp/signIn component --> */}
 
 			<div className="bg-white p-9 h-screen w-screen flex items-center justify-center">
-				<div className="flex w-11/12 h-[90%] justify-center bg-white border-solid border-2 border-gray-200  rounded-3xl shadow-xl">
+				<div className="flex w-11/12 h-[90%] justify-center bg-white">
 					<div className="flex-col flex  self-center lg:p-10 sm:max-w-5xl xl:max-w-lg  z-10">
 						<div className="self-start hidden lg:flex flex-col  text-black">
 							<div className="flex items-center mb-5">

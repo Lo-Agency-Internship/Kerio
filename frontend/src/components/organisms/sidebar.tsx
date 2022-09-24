@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../atoms/button';
 import ContactModal from '../molecules/contactModal';
-import AddEmployModal from '../molecules/addEmployModal';
+import AddEmployeeModal from '../molecules/addEmployeeModal';
 import Images from '../../assets/images/logo.png';
 import { uri } from '../../utils';
 import axios from 'axios';
@@ -55,7 +55,7 @@ const Sidebar = () => {
 	};
 	return (
 		<>
-			{showAddEmployModal && <AddEmployModal setOpen={setAddEmployModal} />}
+			{showAddEmployModal && <AddEmployeeModal setOpen={setAddEmployModal} />}
 			{showContactModal && <ContactModal setOpen={setShowContactModal} />}
 			{showNotesModal && <NoteModal setOpen={setShowNotesModal} />}
 			<div className="w-64 shadow-md px-1 h-screen fixed" id="sidenavExample">
