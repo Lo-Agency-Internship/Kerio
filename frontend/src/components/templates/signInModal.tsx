@@ -30,7 +30,7 @@ const SignInModal: FC<ISignInModal> = ({ setOpen }) => {
 			postLogin(body).then(() => {
 				setOpen(false);
 				getAllContacts().then(setContacts);
-				navigate(`/dashboard`);
+				navigate(`/`);
 			});
 		} else {
 			signInValidation.validate({ email }).catch((e) => {

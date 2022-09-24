@@ -32,7 +32,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 	}, [emailValue]);
 
 	useEffect(() => {
-		if (registerSuccess) navigate('/dashboard');
+		if (registerSuccess) navigate('/');
 	}, [registerSuccess]);
 
 	const inputChanged = (e: any) => {
@@ -109,18 +109,30 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			{error && <p className="text-red-500">{error}</p>}
 			<form id={SIGNUP_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 				<FormControl label={'Name'} placeholder={'Your name'} />
-				<FormControl label={'Organization Name'} placeholder={'Your organization name'}/>
-				<FormControl label={'Email address'} placeholder={'Your email address'} inputProps={{
-					value: emailValue,
-					onChange: inputChanged,
-					type: 'email',
-				}}/>
-				<FormControl label={'Password'} placeholder={'Your password'} inputProps={{
-					type: 'password',
-				}}/>
-				<FormControl label={'Repeat Password'} placeholder={'Repeat the previous password'} inputProps={{
-					type: 'password',
-				}}/>
+				<FormControl label={'Organization Name'} placeholder={'Your organization name'} />
+				<FormControl
+					label={'Email address'}
+					placeholder={'Your email address'}
+					inputProps={{
+						value: emailValue,
+						onChange: inputChanged,
+						type: 'email',
+					}}
+				/>
+				<FormControl
+					label={'Password'}
+					placeholder={'Your password'}
+					inputProps={{
+						type: 'password',
+					}}
+				/>
+				<FormControl
+					label={'Repeat Password'}
+					placeholder={'Repeat the previous password'}
+					inputProps={{
+						type: 'password',
+					}}
+				/>
 			</form>
 		</Modal>
 	);
