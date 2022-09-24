@@ -7,7 +7,7 @@ interface IContactModal {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
+const AddEmployeeModal: FC<IContactModal> = ({ setOpen }) => {
 	const { postInviteEmployee } = useApiContext();
 	const [error, setError] = useState<string | null>(null);
 	const [employees, setEmployees] = useState<any>([]);
@@ -199,4 +199,4 @@ const AddEmployModal: FC<IContactModal> = ({ setOpen }) => {
 		</>
 	);
 };
-export default AddEmployModal;
+export default AddEmployeeModal;

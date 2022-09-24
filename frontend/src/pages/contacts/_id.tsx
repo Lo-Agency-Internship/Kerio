@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import Profile from '../components/molecules/profile';
-import Timeline from '../components/molecules/timeline';
-import Note from '../components/molecules/note';
-import NoteModal from '../components/molecules/noteModal';
-import { useApiContext } from '../context/api';
-import Images from '../assets/images/user.png';
+import Profile from '../../components/molecules/profile';
+import Timeline from '../../components/molecules/timeline';
+import Note from '../../components/molecules/note';
+import { useApiContext } from '../../context/api';
+import Images from '../../assets/images/user.png';
 import { useParams } from 'react-router-dom';
-import { IUser } from '../utils/interfaces/user';
-import Loading from '../components/molecules/loading';
+import { IUser } from '../../utils/interfaces/user';
+import Loading from '../../components/molecules/loading';
+import { Page } from '../../layout/page';
 
-export default function Contact() {
+export default function ContactPage() {
 	const [contact, setContact] = useState<IUser>();
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
 	const { getContactsInfoById, isLoading } = useApiContext();
@@ -19,7 +19,10 @@ export default function Contact() {
 		getContactsInfoById(id as string).then((res: any) => setContact(res));
 	}, []);
 	return (
-		<>
+		<Page
+			header={{
+				actions: [() => <p>Salam</p>],
+			}}>
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -45,6 +48,6 @@ export default function Contact() {
 					</div>
 				</>
 			)}
-		</>
+		</Page>
 	);
 }

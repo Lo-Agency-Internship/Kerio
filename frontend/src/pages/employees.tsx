@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import EmployeeCard from '../components/molecules/employeeCard';
+import { Page } from '../layout/page';
 interface IEmployee {
 	name: string;
 	phone: string;
@@ -62,10 +63,10 @@ export default function Employees() {
 		setEmployees(data);
 	}, []);
 	return (
-		<>
+		<Page>
 			{data.map((element, index) => (
 				<EmployeeCard employee={element} key={index} />
 			))}{' '}
-		</>
+		</Page>
 	);
 }

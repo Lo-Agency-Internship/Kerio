@@ -1,8 +1,9 @@
 import { Button } from '../components/atoms/button';
+import { Page } from '../layout/page';
 
 export default function Invite() {
 	return (
-		<>
+		<Page>
 			<div className="flex flex-col absolute w-5/6 h-4/5 bg-white rounded-lg shadow-lg overflow-hidden md:flex-row my-16 mx-12 justify-center top-12 right-32 left-20 mt-2 mr-12">
 				<div className="md:flex items-center justify-center md:w-1/2 md:bg-gray-800">
 					<div className="py-9 px-14 md:py-0">
@@ -65,6 +66,6 @@ export default function Invite() {
 					</form>
 				</div>
 			</div>
-		</>
+		</Page>
 	);
 }
