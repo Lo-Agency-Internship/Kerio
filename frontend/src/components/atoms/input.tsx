@@ -1,4 +1,4 @@
-export interface Props {
+export interface IInputProps {
 	disabled?: any;
 	type?: string;
 	id?: string;
@@ -7,21 +7,21 @@ export interface Props {
 	className?: string;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	value?: string;
+	placeholder?: string;
 }
 
-export function Input({ disabled, type, id, defaultValue, name, className, onChange, value }: Props) {
+export const Input: React.FC<IInputProps> = (props) => {
 	return (
-		<>
-			<input
-				value={value}
-				onChange={onChange}
-				disabled={disabled}
-				type={type}
-				id={id}
-				defaultValue={defaultValue}
-				name={name}
-				className={`px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative  rounded text-sm outline-none focus:outline-none focus:shadow-outline ${className}`}
-			/>
-		</>
+		<input
+			value={props.value}
+			onChange={props.onChange}
+			disabled={props.disabled}
+			type={props.type}
+			id={props.id}
+			defaultValue={props.defaultValue}
+			name={props.name}
+			placeholder={props.placeholder}
+			className={`px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative rounded text-sm outline-none focus:outline-none focus:shadow-outline ${props.className}`}
+		/>
 	);
-}
+};
