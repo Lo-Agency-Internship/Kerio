@@ -3,7 +3,10 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -57,8 +60,23 @@ export class ContactController {
   }
 
   @Get(':id')
-  findOneContactById(@Param() param: FindOneContactByIdDto): Promise<Contact> {
-    return this.contactService.findOneContactById(param.id.toString());
+  async findOneContactById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Contact> {
+    console.log({ id });
+    const organization = this.contextService.get('organization');
+    const organizationId = organization.id;
+    const contact = await this.contactService.findOneContactById(
+      id,
+      organizationId,
+    );
+    if (contact.length === 0) {
+      throw new HttpException(
+        `the contact does not exist in this organization`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return contact[0];
   }
 
   @Post()

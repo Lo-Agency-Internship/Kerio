@@ -24,8 +24,8 @@ export class ContactService {
     });
   }
 
-  findOneContactById(id: any): Promise<Contact> {
-    return this.contactRepository.findOneBy({ id });
+  findOneContactById(id: any, organizationId): Promise<Contact[]> {
+    return this.contactRepository.find({ where: { id, organizationId } });
   }
   async addContact(body): Promise<Contact> {
     const { status } = body;
