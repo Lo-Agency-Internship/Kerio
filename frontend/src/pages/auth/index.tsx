@@ -9,7 +9,7 @@ export default function Index() {
 	return (
 		<>
 			<SignUpModal open={showSignUpModal} setOpen={setShowSignUpModal} />
-			{showSignInModal && <SignInModal setOpen={setShowSignInModal} />}
+			<SignInModal open={showSignInModal} setOpen={setShowSignInModal} />
 
 			<div className="bg-white p-9 h-screen w-screen flex items-center justify-center">
 				<div className="flex w-11/12 h-[90%] justify-center bg-white">
