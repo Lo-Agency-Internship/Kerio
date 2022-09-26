@@ -1,5 +1,6 @@
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { IUser } from '../../utils/interfaces/user';
+import { useNavigate } from 'react-router-dom';
 interface IContactTable {
 	contact: IUser[];
 }
@@ -30,8 +31,25 @@ const columns: TableColumn<IUser>[] = [
 		sortable: true,
 	},
 ];
+
 const ContactTable: React.FC<IContactTable> = ({ contact }) => {
-	return <DataTable columns={columns} data={contact} pagination />;
+	const navigate = useNavigate();
+	const handleRowClicked = (row: any) => {
+		console.log(row.id);
+		console.log(row);
+		navigate(`/contacts/${row.id}`);
+	};
+	return (
+		<DataTable
+			columns={columns}
+			data={contact}
+			onRowClicked={handleRowClicked}
+			highlightOnHover
+			pointerOnHover
+			// selectableRows
+			pagination
+		/>
+	);
 };
 
 export default ContactTable;
