@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { SetStateAction, useEffect, useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { IUser } from '../../utils/interfaces/user';
@@ -32,59 +33,51 @@ const columns: TableColumn<IUser>[] = [
 	},
 ];
 const ContactTable: React.FC<IContactTable> = ({ contact }) => {
-	const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
-  const [totalRows, setTotalRows] = useState(0);
-  const [perPage, setPerPage] = useState(10);
+	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [totalRows, setTotalRows] = useState(0);
+	const [perPage, setPerPage] = useState(10);
 
-  useEffect(() => {
-    fetchData(1, perPage);
-  }, [perPage])
+	const fetchUsers = async (page: number) => {
+		setLoading(true);
 
-  const fetchData = async (page: number, per_page: number) => {
-    fetch(`https://www.mecallapi.com/api/attractions?page=${page}&per_page=${per_page}`)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          setIsLoaded(true);
-          setItems(result.data);
-          setTotalRows(result.total);
-        },
-        (error) => {
-          setIsLoaded(true);
-		  setError(error);
-        }
-      )
-  }
+		const response = await axios.get(`https://reqres.in/api/users?page=${page}&per_page=${perPage}&delay=1`);
 
-  const handlePageChange = (page: any) => {
-    fetchData(page, perPage);
-  }
+		setData(response.data.data);
+		setTotalRows(response.data.total);
+		setLoading(false);
+	};
 
-  const handlePerRowsChange = async (newPerPage: SetStateAction<number>, page: any) => {
-    setPerPage(newPerPage);
-  }
-  if (error) {
-    return <div>{error && <p className="text-red-700">{error}</p>}</div>;
-  } else if (!isLoaded) {
-    return <div>Loading...</div>;
-  } else {
+	const handlePageChange = (page: number) => {
+		fetchUsers(page);
+	};
 
-	return(
-		<div className="App">
-	 <DataTable columns={columns} 
-	 data={contact} 
-	 pagination
-          paginationServer
-          paginationTotalRows={totalRows}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handlePerRowsChange}
-	 
-	 />
-	 </div>
+	const handlePerRowsChange = async (newPerPage: SetStateAction<number>, page: any) => {
+		setLoading(true);
+
+		const response = await axios.get(`https://reqres.in/api/users?pageNumber=${page}&perPage=${newPerPage}&delay=1`);
+
+		setData(response.data.data);
+		setPerPage(newPerPage);
+		setLoading(false);
+	};
+
+	useEffect(() => {
+		fetchUsers(1); // fetch page 1 of users
+	}, []);
+
+	return (
+		<DataTable
+			title="List Of Customer"
+			columns={columns}
+			data={contact}
+			progressPending={loading}
+			pagination
+			paginationServer
+			paginationTotalRows={totalRows}
+			onChangeRowsPerPage={handlePerRowsChange}
+			onChangePage={handlePageChange}
+		/>
 	);
-}
-}
-
+};
 export default ContactTable;
