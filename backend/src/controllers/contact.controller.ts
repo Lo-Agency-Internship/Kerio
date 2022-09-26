@@ -61,7 +61,7 @@ export class ContactController {
 
   @Get(':id')
   async findOneContactById(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: FindOneContactByIdDto,
   ): Promise<Contact> {
     console.log({ id });
     const organization = this.contextService.get('organization');
