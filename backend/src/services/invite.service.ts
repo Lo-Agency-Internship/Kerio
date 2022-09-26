@@ -105,9 +105,7 @@ export class InviteService {
     const activeTemplate = await this.templateService.render(
       'activeEmailTemplate',
       {
-        link: `${this.configService.get(
-          'BACKEND_URL',
-        )}/auth/enable?email=${email}`,
+        link: `${this.configService.get('FRONTEND_URL')}/active?email=${email}`,
         email,
       },
     );
@@ -116,9 +114,7 @@ export class InviteService {
       to: email,
       subject: 'active your account',
       html: activeTemplate,
-      text: `${this.configService.get(
-        'BACKEND_URL',
-      )}/auth/enable?email=${email}`,
+      text: `${this.configService.get('FRONTEND_URL')}/active?email=${email}`,
     });
   }
 }

@@ -45,13 +45,11 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		},
 	};
 	const [contacts, setContacts] = useState([]);
-	/// //////////////// GET
 
 	// get contacts
 	const getAllContacts = async () => {
 		setIsLoading(true);
-		const { data } = await axios.get(uri('contacts'), headerAuth);
-		console.log(data);
+		const { data } = await axios.get(uri(`contacts?pageNumber=1&perPage=20`), headerAuth);
 		setIsLoading(false);
 		return data;
 	};
