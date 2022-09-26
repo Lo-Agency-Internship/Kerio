@@ -17,6 +17,7 @@ import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
 import { LogService } from 'src/services/log.service';
 import { EEntityTypeLog } from 'src/utils/types';
+import { SearchService } from 'src/services/search.service';
 
 @UseGuards(JwtGuard)
 @Controller('contacts')
@@ -25,6 +26,7 @@ export class ContactController {
     private readonly contactService: ContactService,
     private readonly contextService: RequestContextService,
     private readonly logService: LogService,
+    private readonly searchService: SearchService,
   ) {}
 
   @Get()
@@ -76,7 +78,10 @@ export class ContactController {
       entityId: EEntityTypeLog.AddContact,
       event: 'Contact',
     });
+  
     return this.contactService.addContact(body);
+    
+    
   }
 
   @Put(':id')

@@ -4,6 +4,7 @@ import { Contact } from '../entities/contact.entity';
 import { Repository } from 'typeorm';
 import { ContactStatus } from 'src/entities/contactStatus';
 import { EStatus } from 'src/utils/types';
+import { SearchService } from './search.service';
 
 @Injectable()
 export class ContactService {
@@ -13,6 +14,7 @@ export class ContactService {
 
     @InjectRepository(ContactStatus)
     private readonly contactStatusRepository: Repository<ContactStatus>,
+    private readonly searchService:SearchService,
   ) {}
 
   getAllContact(organizationId, pageNumber, perPage): Promise<Contact[]> {
@@ -36,6 +38,13 @@ export class ContactService {
       contactId,
       statusId,
     });
+    //const test = this.searchService.getDocuments();
+    // const contacts = await this.contactRepository.find()
+    // contacts.push(newContact)
+    // console.log('===================',contacts);
+
+    this.searchService.addDocument([newContact])
+    
     return newContact;
   }
 
@@ -58,8 +67,9 @@ export class ContactService {
       const statusId = EStatus[`${status}`];
       this.contactStatusRepository.save({ contactId, statusId });
     }
-
-    return this.contactRepository.update(id, contact);
+    const updatedContact =this.contactRepository.update(id, contact);
+    this.searchService.addDocument(updatedContact)
+    return updatedContact
   }
 
   async deleteContact(id: string): Promise<any> {

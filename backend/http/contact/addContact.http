@@ -1,10 +1,12 @@
+
 POST http://localhost:3001/contacts HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbWlAZ21haWwuY29tIiwic3ViIjozMiwibmFtZSI6InNhbSIsImlhdCI6MTY2MjU3NDEwMSwiZXhwIjoxNjY1MTY2MTAxfQ.zV72MTxIqREMDlXaiEFZTOVg-vDm-JzdHBjtckHeKvE
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNpbmFAZC5jb20iLCJzdWIiOjMsIm5hbWUiOiJzaW5hIiwiaWF0IjoxNjY0MTE2MjAxLCJleHAiOjE2NjY3MDgyMDF9.j3RnkRy4OhgHhcm0Db7c8LUKX8ghhry61ZWe2lE2svg
 
 {
-	"email": "peach@doe.com",
-    "name": "peach Doe",
-    "phone": "092145678",
+	"email": "whyhopeeeee@loagency.com",
+    "name": "del search",
+    "phone": "09214777778",
     "status": "Lead"
 }
+//user goli@d.com
