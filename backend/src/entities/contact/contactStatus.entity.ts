@@ -1,9 +1,17 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn, DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm';
 import { Contact } from './contact.entity';
 import { Status } from './status.entity';
 
 @Entity()
-export class ContactStatus {
+export class ContactStatus{
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,4 +26,13 @@ export class ContactStatus {
 
   @ManyToOne(() => Status, (s) => s.contacts)
   status: Status;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

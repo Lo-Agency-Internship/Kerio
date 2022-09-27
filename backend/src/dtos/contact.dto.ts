@@ -33,7 +33,8 @@ export class CreateBodyDto {
 
 export class ReadAllQueryDto extends PaginationDto {
   @IsEnum(EContactStatus)
-  status: EContactStatus;
+  @IsOptional()
+  status?: EContactStatus;
 }
 
 export class UpdateContactBodyDto {

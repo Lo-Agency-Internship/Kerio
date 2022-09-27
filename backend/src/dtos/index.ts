@@ -1,16 +1,21 @@
-import { IsIn, IsOptional, IsString, Min } from 'class-validator';
+import {IsIn, IsInt, IsNumber, IsOptional, IsString, Min} from 'class-validator';
+import {Type} from "class-transformer";
 
 export class PaginationDto {
   @IsOptional()
   @Min(1)
-  page: number;
+  @IsInt()
+  @Type(() => Number)
+  page?: number = 1;
 
   @IsOptional()
   @Min(1)
-  size: number;
+  @IsInt()
+  @Type(() => Number)
+  size?: number = 200;
 
   @IsOptional()
   @IsString()
   @IsIn(['asc', 'desc'])
-  sort: 'asc' | 'desc';
+  sort?: 'asc' | 'desc' = "asc";
 }

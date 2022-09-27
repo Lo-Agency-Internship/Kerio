@@ -36,12 +36,13 @@ export enum ERole {
 }
 
 export enum EContactStatus {
-  PotentialCustomer = 1,
-  LostLoyal = 2,
-  LostPotentialCustomer = 3,
-  LoyalCustomer = 4,
-  Lead = 5,
-  LostLoyalCustomer = 6,
+  Lead = "Lead",
+  PotentialCustomer = "PotentialCustomer",
+  LostPotentialCustomer = "LostPotentialCustomer",
+  LoyalCustomer = "LoyalCustomer",
+  LostLoyalCustomer = "LostLoyalCustomer",
+  Loyal = "Loyal",
+  LostLoyal = "LostLoyal",
 }
 
 export enum EEntityTypeLog {

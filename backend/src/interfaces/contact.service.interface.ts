@@ -15,7 +15,7 @@ export interface IFindOneByIdPayload {
 }
 
 export interface ICreatePayload {
-  organizationId: number | FindOperator<number>;
+  organizationId: number;
   contact: DeepPartial<Contact>;
 }
 

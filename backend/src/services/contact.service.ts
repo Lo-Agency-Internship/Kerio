@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Contact } from '../entities/contact/contact.entity';
-import { DeepPartial, Repository, UpdateResult } from 'typeorm';
-import { EContactStatus as EContactStatus } from 'src/utils/types';
+import {Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Contact} from '../entities/contact/contact.entity';
+import {DeepPartial, Repository, UpdateResult} from 'typeorm';
 import {
   ICreatePayload,
   IDeletePayload,
@@ -11,38 +10,59 @@ import {
   IUpdateOneByIdPayload,
   IUpdateStatusPayload,
 } from '../interfaces/contact.service.interface';
-import { getPaginationOffset } from '../utils/functions';
+import {getPaginationOffset} from '../utils/functions';
+import {ContactStatus} from "../entities/contact/contactStatus.entity";
+import {Status} from "../entities/contact/status.entity";
 
 @Injectable()
 export class ContactService {
   constructor(
     @InjectRepository(Contact)
     private readonly contactRepository: Repository<Contact>,
+
+    @InjectRepository(ContactStatus)
+    private readonly contactStatusRepository: Repository<ContactStatus>,
+
+    @InjectRepository(Status)
+    private readonly statusRepository: Repository<Status>,
   ) {}
 
-  find(payload: IFindPayload): Promise<Contact[]> {
-    return this.contactRepository.find({
+  async find(payload: IFindPayload): Promise<Contact[]> {
+    const contacts = await this.contactRepository.find({
       where: {
         organizationId: payload.organizationId,
-        ...(payload.status && {
-          status: payload.status,
-        }),
       },
+      relations: ['statuses', 'statuses.status', 'statuses.status'],
       order: { createdAt: payload.sort },
       take: payload.page,
       skip: getPaginationOffset(payload),
     });
+
+    if (!payload.status)
+      return contacts
+
+    return contacts.filter(contact => {
+      const lastStatus = contact.statuses[contact.statuses.length - 1]
+
+      return lastStatus.status.status === payload.status
+    })
   }
 
-  findOneById(payload: IFindOneByIdPayload): Promise<Contact | null> {
-    return this.contactRepository.findOneBy({
-      id: payload.id,
-      organizationId: payload.organizationId,
+  async findOneById(payload: IFindOneByIdPayload): Promise<Contact | null> {
+    return await this.contactRepository.findOne({
+      where: {
+        id: payload.id,
+        organizationId: payload.organizationId,
+      },
+      relations: ['statuses', 'statuses.status'],
     });
   }
 
   async create(payload: ICreatePayload): Promise<Contact> {
-    return await this.contactRepository.save(payload.contact);
+    return await this.contactRepository.save({
+      ...payload.contact,
+      organizationId: payload.organizationId,
+    })
   }
 
   async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
@@ -55,13 +75,12 @@ export class ContactService {
       organizationId: payload.organizationId,
     });
 
-    return this.updateOneById({
-      id: payload.id,
-      contact: {
-        ...contact,
-        statuses: [...contact.statuses, payload.status],
-      },
-    });
+    return await this.contactStatusRepository.save({
+      contact,
+      status: payload.status,
+      contactId: contact.id,
+      statusId: payload.status.id
+    })
   }
 
   async delete(payload: IDeletePayload): Promise<any> {

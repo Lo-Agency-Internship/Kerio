@@ -45,9 +45,13 @@ export class Contact {
   @ManyToOne(() => Organization, (organization) => organization.contacts)
   organization: Organization;
 
-  @OneToMany(() => Note, (note) => note.contact)
+  @OneToMany(() => Note, (note) => note.contact, {
+    cascade: true
+  })
   notes: Note[];
 
-  @OneToMany(() => ContactStatus, (c) => c.contact)
-  statuses: Status[];
+  @OneToMany(() => ContactStatus, (c) => c.contact, {
+    cascade: true
+  })
+  statuses: ContactStatus[];
 }

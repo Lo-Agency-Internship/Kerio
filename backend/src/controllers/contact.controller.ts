@@ -10,7 +10,7 @@ import {
   Post,
   Put,
   Query,
-  UseGuards,
+  UseGuards, UsePipes, ValidationPipe,
 } from '@nestjs/common';
 import { Contact } from '../entities/contact/contact.entity';
 import { ContactService } from '../services/contact.service';
@@ -27,6 +27,7 @@ import { EContactStatus, EEntityTypeLog } from 'src/utils/types';
 import { StatusService } from '../services/status.service';
 import { UpdateResult } from 'typeorm';
 import { constants } from 'http2';
+import {ContactStatus} from "../entities/contact/contactStatus.entity";
 
 @UseGuards(JwtGuard)
 @Controller('contacts')
@@ -40,34 +41,41 @@ export class ContactController {
 
   @Get()
   @UseGuards(JwtGuard)
+  @UsePipes(new ValidationPipe({transform: true}))
   readAll(@Query() query: ReadAllQueryDto): Promise<Contact[]> {
     const { id } = this.contextService.get('organization') as Organization;
 
-    const { size, sort, page } = query;
+    const { size, sort, page, status } = query;
 
-    if (!query.status) {
-      return this.contactService.find({
-        size,
-        sort,
-        page,
-        organizationId: id,
-      });
-    }
+    return this.contactService.find({
+      size,
+      sort,
+      page,
+      organizationId: id,
+      status
+    });
   }
 
   @Get(':id')
+  @UsePipes(new ValidationPipe({transform: true}))
   async readOneById(@Param('id', ParseIntPipe) id: number): Promise<Contact> {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
 
-    return await this.contactService.findOneById({
+    const contact =  await this.contactService.findOneById({
       id,
       organizationId: organization.id,
     });
+
+    if (contact)
+      return contact
+
+    throw new HttpException("contact not found", constants.HTTP_STATUS_NOT_FOUND)
   }
 
   @Post()
+  @UsePipes(new ValidationPipe({transform: true}))
   async create(@Body() body: CreateBodyDto): Promise<Contact> {
     const organization = this.contextService.get(
       'organization',
@@ -81,7 +89,9 @@ export class ContactController {
       name: body.name,
       email: body.email,
       phone: body.phone,
-      statuses: [status],
+      statuses: [{
+        status
+      }],
     });
 
     return this.contactService.create({
@@ -91,6 +101,7 @@ export class ContactController {
   }
 
   @Put(':id')
+  @UsePipes(new ValidationPipe({transform: true}))
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() contact: UpdateContactBodyDto,
@@ -102,10 +113,11 @@ export class ContactController {
   }
 
   @Put(':id/status/:title')
+  @UsePipes(new ValidationPipe({transform: true}))
   async updateStatus(
     @Param('id', ParseIntPipe) id: number,
     @Param('title', new ParseEnumPipe(EContactStatus)) title: EContactStatus,
-  ): Promise<UpdateResult> {
+  ): Promise<ContactStatus> {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
@@ -128,6 +140,7 @@ export class ContactController {
   }
 
   @Delete(':id')
+  @UsePipes(new ValidationPipe({transform: true}))
   delete(@Param('id', ParseIntPipe) id: number): Promise<Contact> {
     return this.contactService.delete({ id });
   }
