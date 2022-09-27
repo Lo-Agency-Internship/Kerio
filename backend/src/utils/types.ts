@@ -35,7 +35,7 @@ export enum ERole {
   Employee = 2,
 }
 
-export enum EStatus {
+export enum EContactStatus {
   PotentialCustomer = 1,
   LostLoyal = 2,
   LostPotentialCustomer = 3,

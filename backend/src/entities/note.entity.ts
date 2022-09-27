@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Contact } from './contact.entity';
+import { Contact } from './contact/contact.entity';
 
 @Entity()
 export class Note {

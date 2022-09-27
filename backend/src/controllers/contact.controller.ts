@@ -4,22 +4,29 @@ import {
   Delete,
   Get,
   HttpException,
-  HttpStatus,
   Param,
+  ParseEnumPipe,
   ParseIntPipe,
   Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { Contact } from '../entities/contact.entity';
+import { Contact } from '../entities/contact/contact.entity';
 import { ContactService } from '../services/contact.service';
-import { AddContactDto } from '../dtos/contact.dto';
+import {
+  CreateBodyDto,
+  ReadAllQueryDto,
+  UpdateContactBodyDto,
+} from '../dtos/contact.dto';
 import { RequestContextService } from '../services/requestContext.service';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
 import { LogService } from 'src/services/log.service';
-import { EEntityTypeLog } from 'src/utils/types';
+import { EContactStatus, EEntityTypeLog } from 'src/utils/types';
+import { StatusService } from '../services/status.service';
+import { UpdateResult } from 'typeorm';
+import { constants } from 'http2';
 
 @UseGuards(JwtGuard)
 @Controller('contacts')
@@ -28,88 +35,100 @@ export class ContactController {
     private readonly contactService: ContactService,
     private readonly contextService: RequestContextService,
     private readonly logService: LogService,
+    private readonly statusService: StatusService,
   ) {}
 
   @Get()
   @UseGuards(JwtGuard)
-  getAllContacts(
-    @Query() query: { status: string; pageNumber: number; perPage: number },
-  ): Promise<Contact[]> {
-    const organization = this.contextService.get(
-      'organization',
-    ) as Organization;
+  readAll(@Query() query: ReadAllQueryDto): Promise<Contact[]> {
+    const { id } = this.contextService.get('organization') as Organization;
 
-    const { pageNumber } = query;
-    const { perPage } = query;
+    const { size, sort, page } = query;
 
-    const organizationId = organization.id;
     if (!query.status) {
-      return this.contactService.getAllContact(
-        organizationId,
-        Number(pageNumber),
-        Number(perPage),
-      );
+      return this.contactService.find({
+        size,
+        sort,
+        page,
+        organizationId: id,
+      });
     }
-
-    return this.contactService.getContactsFilteredByStatus(
-      query.status,
-      organizationId,
-      Number(pageNumber),
-      Number(perPage),
-    );
   }
 
   @Get(':id')
-  async findOneContactById(
-    @Param('id', ParseIntPipe) id:number,
-  ): Promise<Contact> {
-    const organization = this.contextService.get('organization');
-    const organizationId = organization.id;
-    const contact = await this.contactService.findOneContactById(
-      id,
-      organizationId,
-    );
-    if (contact.length === 0) {
-      throw new HttpException(
-        `the contact does not exist in this organization`,
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    return contact[0];
-  }
-
-  @Post()
-  addContact(@Body() body: AddContactDto): Promise<Contact> {
+  async readOneById(@Param('id', ParseIntPipe) id: number): Promise<Contact> {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
 
-    const contact = this.contactService.createNewContact({})
-    
-    return this.contactService.createContact(contact);
+    return await this.contactService.findOneById({
+      id,
+      organizationId: organization.id,
+    });
+  }
+
+  @Post()
+  async create(@Body() body: CreateBodyDto): Promise<Contact> {
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
+
+    const status = await this.statusService.findOneByTitle({
+      title: body.status,
+    });
+
+    const contact = this.contactService.createNewContactObject({
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      statuses: [status],
+    });
+
+    return this.contactService.create({
+      contact,
+      organizationId: organization.id,
+    });
   }
 
   @Put(':id')
-  updateContact(@Param() param, @Body() contact): Promise<Contact> {
-    this.logService.addLog({
-      title: 'Update Contact Successfully',
-      description: `Contact with id=${param.id} Updated Successfully `,
-      entityType: 'Update Contact',
-      entityId: EEntityTypeLog.UpdateContact,
-      event: 'Contact',
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() contact: UpdateContactBodyDto,
+  ): Promise<UpdateResult> {
+    return this.contactService.updateOneById({
+      id,
+      contact,
     });
-    return this.contactService.updateContact(param.id, contact);
+  }
+
+  @Put(':id/status/:title')
+  async updateStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('title', new ParseEnumPipe(EContactStatus)) title: EContactStatus,
+  ): Promise<UpdateResult> {
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
+
+    const status = await this.statusService.findOneByTitle({
+      title,
+    });
+
+    if (!status)
+      throw new HttpException(
+        'status not found',
+        constants.HTTP_STATUS_NOT_FOUND,
+      );
+
+    return this.contactService.updateStatus({
+      status,
+      id,
+      organizationId: organization.id,
+    });
   }
 
   @Delete(':id')
-  deleteContact(@Param() param): Promise<Contact> {
-    this.logService.addLog({
-      title: 'Delete Contact Successfully',
-      description: `Contact with id=${param.id} Deleted Successfully `,
-      entityType: 'Delete Contact',
-      entityId: EEntityTypeLog.DeleteContact,
-      event: 'Contact',
-    });
-    return this.contactService.deleteContact(param.id);
+  delete(@Param('id', ParseIntPipe) id: number): Promise<Contact> {
+    return this.contactService.delete({ id });
   }
 }

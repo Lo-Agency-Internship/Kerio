@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HealthController } from './controllers/health.controller';
 import { AppService } from './services/app.service';
-import { Contact } from './entities/contact.entity';
+import { Contact } from './entities/contact/contact.entity';
 import { ContactController } from './controllers/contact.controller';
 import { ContactService } from './services/contact.service';
 import { Organization } from './entities/organization.entity';
@@ -34,7 +34,7 @@ import { Role } from './entities/role.entity';
 import { RoleService } from './services/role.service';
 import { RequestContextService } from './services/requestContext.service';
 import { RequestContextModule } from 'nestjs-request-context';
-import { Status } from './entities/status.entity';
+import { Status } from './entities/contact/status.entity';
 import { Note } from './entities/note.entity';
 import { Log } from './entities/log.entity';
 import { ContactStatus } from './entities/contactStatus';
@@ -52,7 +52,7 @@ const entitiesToAdd = [
   User,
   Invite,
   Role,
-  Status,
+  ContactStatus,
   Note,
   Log,
   ContactStatus,
