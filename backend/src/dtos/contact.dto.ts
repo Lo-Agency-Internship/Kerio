@@ -6,12 +6,6 @@ import {
   IsString,
 } from 'class-validator';
 
-export class FindOneContactByIdDto {
-  @IsNotEmpty()
-  @IsNumber()
-  id: number;
-}
-
 export class AddContactDto {
   @IsNotEmpty()
   @IsString()

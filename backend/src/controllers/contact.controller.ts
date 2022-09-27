@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { Contact } from '../entities/contact.entity';
 import { ContactService } from '../services/contact.service';
-import { AddContactDto, FindOneContactByIdDto } from '../dtos/contact.dto';
+import { AddContactDto } from '../dtos/contact.dto';
 import { RequestContextService } from '../services/requestContext.service';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
@@ -61,9 +61,8 @@ export class ContactController {
 
   @Get(':id')
   async findOneContactById(
-    @Param('id', ParseIntPipe) id: FindOneContactByIdDto,
+    @Param('id', ParseIntPipe) id:number,
   ): Promise<Contact> {
-    console.log({ id });
     const organization = this.contextService.get('organization');
     const organizationId = organization.id;
     const contact = await this.contactService.findOneContactById(
@@ -84,17 +83,10 @@ export class ContactController {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
-    const organizationId = organization.id;
-    body = { ...body, organizationId };
 
-    this.logService.addLog({
-      title: 'Add Contact Successfully',
-      description: `The email this Contact is ${body.email}, phone number is ${body.phone}, name is ${body.name} and Organization is ${organization.name} `,
-      entityType: 'AddContact',
-      entityId: EEntityTypeLog.AddContact,
-      event: 'Contact',
-    });
-    return this.contactService.addContact(body);
+    const contact = this.contactService.createNewContact({})
+    
+    return this.contactService.createContact(contact);
   }
 
   @Put(':id')

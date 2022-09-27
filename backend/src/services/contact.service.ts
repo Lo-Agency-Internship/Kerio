@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Contact } from '../entities/contact.entity';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { ContactStatus } from 'src/entities/contactStatus';
-import { EStatus } from 'src/utils/types';
+import { EStatus as EContactStatus } from 'src/utils/types';
+import { AddContactDto } from 'src/dtos/contact.dto';
 
 @Injectable()
 export class ContactService {
@@ -27,10 +28,9 @@ export class ContactService {
   findOneContactById(id: any, organizationId): Promise<Contact[]> {
     return this.contactRepository.find({ where: { id, organizationId } });
   }
-  async addContact(body): Promise<Contact> {
-    const { status } = body;
-    const statusId = EStatus[`${status}`];
-    const newContact = await this.contactRepository.save(body);
+  async createContact(contact: Contact): Promise<Contact> {
+    const statusId = EContactStatus[contact.status];
+    const newContact = await this.contactRepository.save(contact);
     const contactId = newContact.id;
     await this.contactStatusRepository.save({
       contactId,
@@ -55,7 +55,7 @@ export class ContactService {
     const recentStatus = recentContactStatus.status.title;
     const contactId = id;
     if (status !== recentStatus) {
-      const statusId = EStatus[`${status}`];
+      const statusId = EContactStatus[`${status}`];
       this.contactStatusRepository.save({ contactId, statusId });
     }
 
@@ -82,5 +82,9 @@ export class ContactService {
       skip: pageNumber > 0 ? (pageNumber - 1) * perPage : 1,
     });
     return contacts;
+  }
+
+  createNewContact(contact: DeepPartial<Contact>) {
+    return this.contactRepository.create(contact);
   }
 }
