@@ -1,17 +1,18 @@
 import {
   BaseEntity,
   Column,
-  CreateDateColumn, DeleteDateColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { Contact } from './contact.entity';
 import { Status } from './status.entity';
 
 @Entity()
-export class ContactStatus{
+export class ContactStatus {
   @PrimaryGeneratedColumn()
   id: number;
 

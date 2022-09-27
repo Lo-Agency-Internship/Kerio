@@ -46,12 +46,12 @@ export class Contact {
   organization: Organization;
 
   @OneToMany(() => Note, (note) => note.contact, {
-    cascade: true
+    cascade: true,
   })
   notes: Note[];
 
   @OneToMany(() => ContactStatus, (c) => c.contact, {
-    cascade: true
+    cascade: true,
   })
   statuses: ContactStatus[];
 }

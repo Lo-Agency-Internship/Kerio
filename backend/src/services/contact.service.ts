@@ -1,7 +1,7 @@
-import {Injectable} from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Contact} from '../entities/contact/contact.entity';
-import {DeepPartial, Repository, UpdateResult} from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Contact } from '../entities/contact/contact.entity';
+import { DeepPartial, Repository, UpdateResult } from 'typeorm';
 import {
   ICreatePayload,
   IDeletePayload,
@@ -10,9 +10,9 @@ import {
   IUpdateOneByIdPayload,
   IUpdateStatusPayload,
 } from '../interfaces/contact.service.interface';
-import {getPaginationOffset} from '../utils/functions';
-import {ContactStatus} from "../entities/contact/contactStatus.entity";
-import {Status} from "../entities/contact/status.entity";
+import { getPaginationOffset } from '../utils/functions';
+import { ContactStatus } from '../entities/contact/contactStatus.entity';
+import { Status } from '../entities/contact/status.entity';
 
 @Injectable()
 export class ContactService {
@@ -38,14 +38,13 @@ export class ContactService {
       skip: getPaginationOffset(payload),
     });
 
-    if (!payload.status)
-      return contacts
+    if (!payload.status) return contacts;
 
-    return contacts.filter(contact => {
-      const lastStatus = contact.statuses[contact.statuses.length - 1]
+    return contacts.filter((contact) => {
+      const lastStatus = contact.statuses[contact.statuses.length - 1];
 
-      return lastStatus.status.status === payload.status
-    })
+      return lastStatus.status.status === payload.status;
+    });
   }
 
   async findOneById(payload: IFindOneByIdPayload): Promise<Contact | null> {
@@ -62,7 +61,7 @@ export class ContactService {
     return await this.contactRepository.save({
       ...payload.contact,
       organizationId: payload.organizationId,
-    })
+    });
   }
 
   async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
@@ -79,8 +78,8 @@ export class ContactService {
       contact,
       status: payload.status,
       contactId: contact.id,
-      statusId: payload.status.id
-    })
+      statusId: payload.status.id,
+    });
   }
 
   async delete(payload: IDeletePayload): Promise<any> {
