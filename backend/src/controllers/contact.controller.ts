@@ -68,8 +68,8 @@ export class ContactController {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
-    const organizationId = organization.id;
-    body = { ...body, organizationId };
+    //const organizationId = organization.id;
+    const newBody = { ...body, organizationId: organization.id };
 
     this.logService.addLog({
       title: 'Add Contact Successfully',
@@ -78,10 +78,8 @@ export class ContactController {
       entityId: EEntityTypeLog.AddContact,
       event: 'Contact',
     });
-  
-    return this.contactService.addContact(body);
-    
-    
+
+    return this.contactService.addContact(newBody);
   }
 
   @Put(':id')

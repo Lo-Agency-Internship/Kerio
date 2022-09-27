@@ -14,7 +14,7 @@ export class ContactService {
 
     @InjectRepository(ContactStatus)
     private readonly contactStatusRepository: Repository<ContactStatus>,
-    private readonly searchService:SearchService,
+    private readonly searchService: SearchService,
   ) {}
 
   getAllContact(organizationId, pageNumber, perPage): Promise<Contact[]> {
@@ -32,20 +32,16 @@ export class ContactService {
   async addContact(body): Promise<Contact> {
     const { status } = body;
     const statusId = EStatus[`${status}`];
-    const newContact = await this.contactRepository.save(body);
-    const contactId = newContact.id;
+    await this.contactRepository.save(body);
+
     await this.contactStatusRepository.save({
-      contactId,
+      contactId: body.id,
       statusId,
     });
-    //const test = this.searchService.getDocuments();
-    // const contacts = await this.contactRepository.find()
-    // contacts.push(newContact)
-    // console.log('===================',contacts);
 
-    this.searchService.addDocument([newContact])
-    
-    return newContact;
+    this.searchService.addDocument([body]);
+
+    return body;
   }
 
   async updateContact(id: number, contact: Contact): Promise<any> {
@@ -67,12 +63,15 @@ export class ContactService {
       const statusId = EStatus[`${status}`];
       this.contactStatusRepository.save({ contactId, statusId });
     }
-    const updatedContact =this.contactRepository.update(id, contact);
-    this.searchService.addDocument(updatedContact)
-    return updatedContact
+    const updatedContact = await this.contactRepository.update(id, contact);
+    contact = { ...contact, id };
+
+    this.searchService.updateDocument([contact]);
+    return updatedContact;
   }
 
   async deleteContact(id: string): Promise<any> {
+    this.searchService.deleteDocument(id);
     return await this.contactRepository.softDelete(id);
   }
 

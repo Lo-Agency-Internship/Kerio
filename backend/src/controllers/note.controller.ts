@@ -38,7 +38,6 @@ export class NoteController {
     @Body() body: AddNotetDto,
   ): Promise<Note> {
     console.log('checkcontroller');
-    //assign note to the its contact
     body = { ...body, contactId };
 
     this.logService.addLog({

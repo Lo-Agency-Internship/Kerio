@@ -4,8 +4,8 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNpbmFAZC5jb20iLCJzdWIiOjMsIm5hbWUiOiJzaW5hIiwiaWF0IjoxNjY0MTE2MjAxLCJleHAiOjE2NjY3MDgyMDF9.j3RnkRy4OhgHhcm0Db7c8LUKX8ghhry61ZWe2lE2svg
 
 {
-	"email": "whyhopeeeee@loagency.com",
-    "name": "del search",
+	"email":"nil@loagency.com",
+    "name": "river",
     "phone": "09214777778",
     "status": "Lead"
 }
