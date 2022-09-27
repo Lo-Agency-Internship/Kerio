@@ -16,7 +16,7 @@ const SIGNIN_FORM_ID = 'SIGNIN_FORM_ID';
 const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
-	const { postLogin, getAllContacts, setContacts } = useApiContext();
+	const { postLogin, getContacts, setContacts } = useApiContext();
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
@@ -33,7 +33,7 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			await signInValidation.isValid({ email });
 			await postLogin(body);
 			setOpen(false);
-			getAllContacts().then(setContacts);
+			// getContacts().then(setContacts);
 			navigate(`/`);
 		} catch (err: any) {
 			console.log(err);

@@ -5,10 +5,10 @@ import ContactTable from '../../components/organisms/contactTable';
 import { Page } from '../../layout/page';
 
 export default function ContactsPage() {
-	const { getAllContacts, change, isLoading, contacts, setContacts } = useApiContext();
+	const { getContacts, change, isLoading, contacts, setContacts } = useApiContext();
 	useEffect(() => {
-		getAllContacts().then(setContacts);
-	}, [change]);
+		getContacts(1, 5).then(setContacts);
+	}, []);
 
 	return (
 		<Page

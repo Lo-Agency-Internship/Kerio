@@ -5,7 +5,13 @@ import { uri } from '../utils/index';
 interface IApiProvider {
 	children: ReactNode;
 }
-
+interface IApiPaginationParams {
+	pagination: {
+		page?: number;
+		size?: number;
+		sort?: 'asc' | 'desc';
+	};
+}
 interface IApiContext {
 	user?: IUser;
 	setUser?: (value: IUser) => void;
@@ -16,7 +22,7 @@ interface IApiContext {
 	isLoading?: boolean;
 	contacts?: any;
 	setContacts?: any;
-	getAllContacts?: any;
+	getContacts?: any;
 	getAllUsers?: any;
 	getContactsInfoById?: any;
 	getUsersInfoById?: any;
@@ -47,19 +53,25 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const [contacts, setContacts] = useState([]);
 
 	// get contacts
-	const getAllContacts = async () => {
-		setIsLoading(true);
-		const { data } = await axios.get(uri(`contacts?pageNumber=1&perPage=20`), headerAuth);
+	// interface IGetContactsPayload extends IApiPaginationParams {}
+	const getContacts = async (page: number, size: number) => {
+		const { data } = await axios.get(uri(`contacts`), {
+			params: {
+				page,
+				size,
+			},
+			...headerAuth,
+		});
 		setIsLoading(false);
 		return data;
 	};
 	// get employees
 	// const getAllEmployees = async () => {
-	// 	setIsLoading(true);
-	// 	const { data } = await axios.get(uri('???'), headerAuth);
-	// 	console.log(data);
-	// 	setIsLoading(false);
-	// 	return data;
+	//     setIsLoading(true);
+	//     const { data } = await axios.get(uri('???'), headerAuth);
+	//     console.log(data);
+	//     setIsLoading(false);
+	//     return data;
 	// };
 
 	// get users(employees)
@@ -79,10 +91,10 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 	// get employees info by ID
 	// const getEmployeesInfoById = async (id: string) => {
-	// 	setIsLoading(true);
-	// 	const { data } = await axios.get(uri(`???/${id}`), headerAuth);
-	// 	setIsLoading(false);
-	// 	return data;
+	//     setIsLoading(true);
+	//     const { data } = await axios.get(uri(`???/${id}`), headerAuth);
+	//     setIsLoading(false);
+	//     return data;
 	// };
 
 	// get Users info by ID
@@ -144,7 +156,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				contacts,
 				setContacts,
 				getAllUsers,
-				getAllContacts,
+				getContacts,
 				getContactsInfoById,
 				getUsersInfoById,
 				postContactInfo,

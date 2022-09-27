@@ -30,29 +30,29 @@ export class ContactController {
   @Get()
   @UseGuards(JwtGuard)
   getAllContacts(
-    @Query() query: { status: string; pageNumber: number; perPage: number },
+    @Query() query: { status: string; page: number; size: number },
   ): Promise<Contact[]> {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
 
-    const { pageNumber } = query;
-    const { perPage } = query;
+    const { page } = query;
+    const { size } = query;
 
     const organizationId = organization.id;
     if (!query.status) {
       return this.contactService.getAllContact(
         organizationId,
-        Number(pageNumber),
-        Number(perPage),
+        Number(page),
+        Number(size),
       );
     }
 
     return this.contactService.getContactsFilteredByStatus(
       query.status,
       organizationId,
-      Number(pageNumber),
-      Number(perPage),
+      Number(page),
+      Number(size),
     );
   }
 

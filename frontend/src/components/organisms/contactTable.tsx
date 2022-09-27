@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { SetStateAction, useEffect, useState } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
+import { uri } from '../../utils';
 import { IUser } from '../../utils/interfaces/user';
+import { useApiContext } from '../../context/api';
 interface IContactTable {
 	contact: IUser[];
 }
@@ -36,35 +38,64 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [totalRows, setTotalRows] = useState(0);
-	const [perPage, setPerPage] = useState(10);
-
-	const fetchUsers = async (page: number) => {
-		setLoading(true);
-
-		const response = await axios.get(`https://reqres.in/api/users?page=${page}&per_page=${perPage}&delay=1`);
-
-		setData(response.data.data);
-		setTotalRows(response.data.total);
-		setLoading(false);
+	const [perPage, setPerPage] = useState(5);
+	const { getContacts } = useApiContext();
+	const headerAuth = {
+		headers: {
+			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
+		},
 	};
 
-	const handlePageChange = (page: number) => {
-		fetchUsers(page);
-	};
+	// const fetchUsers = async (page: number, size: number) => {
+	// 	setLoading(true);
+	// 	console.log(page);
+	// 	const response = await axios.get(uri(`contacts`), {
+	// 		params: {
+	// 			page,
+	// 			size,
+	// 		},
+	// 		...headerAuth,
+	// 	});
 
-	const handlePerRowsChange = async (newPerPage: SetStateAction<number>, page: any) => {
-		setLoading(true);
+	// const response1 = await getAllContacts(page, perPage);
+	// 	console.log(response);
+	// 	console.log(response.data);
+	// 	console.log(response.data.length);
 
-		const response = await axios.get(`https://reqres.in/api/users?pageNumber=${page}&perPage=${newPerPage}&delay=1`);
+	// 	setData(response.data.data);
+	// 	setTotalRows(response.data.length);
+	// 	setLoading(false);
+	// };
 
-		setData(response.data.data);
-		setPerPage(newPerPage);
-		setLoading(false);
-	};
+	//
 
-	useEffect(() => {
-		fetchUsers(1); // fetch page 1 of users
-	}, []);
+	// const handlePageChange = (page: number) => {
+	// 	fetchUsers(page);
+	// };
+
+	// const handlePerRowsChange = async (newPerPage: SetStateAction<number>, page: number) => {
+	// 	setLoading(true);
+	// 	// console.log(page);
+	// 	console.log({ perPage, page });
+
+	// 	const response = await axios.get(uri(`contacts`), {
+	// 		params: {
+	// 			size: newPerPage,
+	// 			page: page,
+	// 		},
+	// 		...headerAuth,
+	// 	});
+	// 	// const response1 = await getAllContacts(page, newPerPage);
+	// 	console.log(response);
+
+	// 	setData(response.data.data);
+	// 	setPerPage(newPerPage);
+	// 	setLoading(false);
+	// };
+
+	// useEffect(() => {
+	// 	fetchUsers(1, 5); // fetch page 1 of users
+	// }, []);
 
 	return (
 		<DataTable
@@ -75,8 +106,8 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 			pagination
 			paginationServer
 			paginationTotalRows={totalRows}
-			onChangeRowsPerPage={handlePerRowsChange}
-			onChangePage={handlePageChange}
+			// onChangeRowsPerPage={handlePerRowsChange}
+			// onChangePage={handlePageChange}
 		/>
 	);
 };
