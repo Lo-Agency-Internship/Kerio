@@ -4,6 +4,7 @@ import DataTable, { TableColumn } from 'react-data-table-component';
 import { uri } from '../../utils';
 import { IUser } from '../../utils/interfaces/user';
 import { useApiContext } from '../../context/api';
+import { useNavigate } from 'react-router-dom';
 interface IContactTable {
 	contact: IUser[];
 }
@@ -34,6 +35,7 @@ const columns: TableColumn<IUser>[] = [
 		sortable: true,
 	},
 ];
+
 const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -45,6 +47,24 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 		},
 	};
+	const navigate = useNavigate();
+	const handleRowClicked = (row: any) => {
+		console.log(row.id);
+		console.log(row);
+		navigate(`/contacts/${row.id}`);
+	};
+	return (
+		<DataTable
+			columns={columns}
+			data={contact}
+			onRowClicked={handleRowClicked}
+			highlightOnHover
+			pointerOnHover
+			// selectableRows
+			pagination
+		/>
+	);
+};
 
 	// const fetchUsers = async (page: number, size: number) => {
 	// 	setLoading(true);
@@ -97,18 +117,18 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 	// 	fetchUsers(1, 5); // fetch page 1 of users
 	// }, []);
 
-	return (
-		<DataTable
-			title="List Of Customer"
-			columns={columns}
-			data={contact}
-			progressPending={loading}
-			pagination
-			paginationServer
-			paginationTotalRows={totalRows}
-			// onChangeRowsPerPage={handlePerRowsChange}
-			// onChangePage={handlePageChange}
-		/>
-	);
-};
+// 	return (
+// 		<DataTable
+// 			title="List Of Customer"
+// 			columns={columns}
+// 			data={contact}
+// 			progressPending={loading}
+// 			pagination
+// 			paginationServer
+// 			paginationTotalRows={totalRows}
+// 			// onChangeRowsPerPage={handlePerRowsChange}
+// 			// onChangePage={handlePageChange}
+// 		/>
+// 	);
+// };
 export default ContactTable;
