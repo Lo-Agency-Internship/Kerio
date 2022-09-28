@@ -1,12 +1,12 @@
 
 POST http://localhost:3001/contacts HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNpbmFAZC5jb20iLCJzdWIiOjMsIm5hbWUiOiJzaW5hIiwiaWF0IjoxNjY0MTE2MjAxLCJleHAiOjE2NjY3MDgyMDF9.j3RnkRy4OhgHhcm0Db7c8LUKX8ghhry61ZWe2lE2svg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFpZW4rdGVzdDFAbG8uYWdlbmN5Iiwic3ViIjoxLCJuYW1lIjoiZ29sIERvZSIsImlhdCI6MTY2NDI3OTY2NywiZXhwIjoxNjY2ODcxNjY3fQ.OplbQR1BSXt8xQkavy5X12FCnV34gAWBFHeGgzdJEfw
 
 {
-	"email":"nil@loagency.com",
-    "name": "river",
-    "phone": "09214777778",
+	"email": "josef@lo.agency",
+    "name": "Josef Baltazar",
+    "phone": "09123456789",
     "status": "Lead"
 }
 //user goli@d.com

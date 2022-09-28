@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HealthController } from './controllers/health.controller';
 import { AppService } from './services/app.service';
-import { Contact } from './entities/contact.entity';
+import { Contact } from './entities/contact/contact.entity';
 import { ContactController } from './controllers/contact.controller';
 import { ContactService } from './services/contact.service';
 import { Organization } from './entities/organization.entity';
@@ -25,19 +25,15 @@ import { OrganizationUserService } from './services/organizationUser.service';
 import { Invite } from './entities/invite.entity';
 import { InviteController } from './controllers/invite.controller';
 import { InviteService } from './services/invite.service';
-
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailerService } from './services/mail.service';
 import { TemplateEngineService } from './services/templateEngine.service';
-
 import { Role } from './entities/role.entity';
 import { RoleService } from './services/role.service';
 import { RequestContextService } from './services/requestContext.service';
 import { RequestContextModule } from 'nestjs-request-context';
-import { Status } from './entities/status.entity';
 import { Note } from './entities/note.entity';
 import { Log } from './entities/log.entity';
-import { ContactStatus } from './entities/contactStatus';
 import { StatusService } from './services/status.service';
 import { LogService } from './services/log.service';
 import { NoteController } from './controllers/note.controller';
@@ -46,18 +42,20 @@ import { EmployeeService } from './services/employee.service';
 import { EmployeeController } from './controllers/employee.controller';
 import { SearchService } from './services/search.service';
 import { SearchController } from './controllers/search.controller';
+import { ContactStatus } from './entities/contact/contactStatus.entity';
+import { Status } from './entities/contact/status.entity';
 
 const entitiesToAdd = [
   Contact,
+  ContactStatus,
+  Status,
   Organization,
   OrganizationUser,
   User,
   Invite,
   Role,
-  Status,
   Note,
   Log,
-  ContactStatus,
 ];
 
 @Module({
@@ -73,7 +71,7 @@ const entitiesToAdd = [
         url: configService.get('DB_URL'),
         ssl: { rejectUnauthorized: false },
         synchronize: true,
-        logging: true,
+        logging: false,
         entities: entitiesToAdd,
       }),
     }),
@@ -127,10 +125,8 @@ const entitiesToAdd = [
     LocalStrategy,
     JwtStrategy,
     InviteService,
-
     MailerService,
     TemplateEngineService,
-
     RoleService,
     RequestContextService,
     StatusService,

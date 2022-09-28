@@ -1,9 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Contact } from '../entities/contact.entity';
-import { Repository } from 'typeorm';
-import { ContactStatus } from 'src/entities/contactStatus';
-import { EStatus } from 'src/utils/types';
+import { Contact } from '../entities/contact/contact.entity';
+import { DeepPartial, Repository, UpdateResult } from 'typeorm';
+import {
+  ICreatePayload,
+  IDeletePayload,
+  IFindOneByIdPayload,
+  IFindPayload,
+  IUpdateOneByIdPayload,
+  IUpdateStatusPayload,
+} from '../interfaces/contact.service.interface';
+import { getPaginationOffset } from '../utils/functions';
+import { ContactStatus } from '../entities/contact/contactStatus.entity';
+import { Status } from '../entities/contact/status.entity';
 import { SearchService } from './search.service';
 
 @Injectable()
@@ -14,82 +23,78 @@ export class ContactService {
 
     @InjectRepository(ContactStatus)
     private readonly contactStatusRepository: Repository<ContactStatus>,
-    private readonly searchService: SearchService,
+
+    @InjectRepository(Status)
+    private readonly statusRepository: Repository<Status>,
+
+    private readonly searchService:SearchService,
   ) {}
 
-  getAllContact(organizationId, pageNumber, perPage): Promise<Contact[]> {
-    return this.contactRepository.find({
-      where: { organizationId },
-      order: { createdAt: 'DESC' },
-      take: perPage,
-      skip: pageNumber > 0 ? (pageNumber - 1) * perPage : 1,
-    });
-  }
-
-  findOneContactById(id: any): Promise<Contact> {
-    return this.contactRepository.findOneBy({ id });
-  }
-  async addContact(body): Promise<Contact> {
-    const { status } = body;
-    const statusId = EStatus[`${status}`];
-    await this.contactRepository.save(body);
-
-    await this.contactStatusRepository.save({
-      contactId: body.id,
-      statusId,
-    });
-
-    this.searchService.addDocument([body]);
-
-    return body;
-  }
-
-  async updateContact(id: number, contact: Contact): Promise<any> {
-    const { status } = contact;
-    const allOfContactStatus = await this.contactStatusRepository.find({
+  async find(payload: IFindPayload): Promise<Contact[]> {
+    const contacts = await this.contactRepository.find({
       where: {
-        contactId: id,
+        organizationId: payload.organizationId,
       },
-      relations: ['status'],
-      loadEagerRelations: true,
-      relationLoadStrategy: 'join',
+      relations: ['statuses', 'statuses.status', 'statuses.status'],
+      order: { createdAt: payload.sort },
+      take: payload.page,
+      skip: getPaginationOffset(payload),
     });
 
-    const recentContactStatus =
-      allOfContactStatus[allOfContactStatus.length - 1];
-    const recentStatus = recentContactStatus.status.title;
-    const contactId = id;
-    if (status !== recentStatus) {
-      const statusId = EStatus[`${status}`];
-      this.contactStatusRepository.save({ contactId, statusId });
-    }
-    const updatedContact = await this.contactRepository.update(id, contact);
-    contact = { ...contact, id };
+    if (!payload.status) return contacts;
 
-    this.searchService.updateDocument([contact]);
-    return updatedContact;
+    return contacts.filter((contact) => {
+      const lastStatus = contact.statuses[contact.statuses.length - 1];
+
+      return lastStatus.status.status === payload.status;
+    });
   }
 
-  async deleteContact(id: string): Promise<any> {
-    this.searchService.deleteDocument(id);
-    return await this.contactRepository.softDelete(id);
-  }
-
-  async getContactsFilteredByStatus(
-    query,
-    organizationId,
-    pageNumber,
-    perPage,
-  ) {
-    const contacts = this.contactRepository.find({
+  async findOneById(payload: IFindOneByIdPayload): Promise<Contact | null> {
+    return await this.contactRepository.findOne({
       where: {
-        status: query,
-        organizationId,
+        id: payload.id,
+        organizationId: payload.organizationId,
       },
-      order: { createdAt: 'DESC' },
-      take: perPage,
-      skip: pageNumber > 0 ? (pageNumber - 1) * perPage : 1,
+      relations: ['statuses', 'statuses.status'],
     });
-    return contacts;
+  }
+
+  async create(payload: ICreatePayload): Promise<Contact> {
+     return await this.contactRepository.save({
+      ...payload.contact,
+      organizationId: payload.organizationId,
+    });
+    
+  }
+
+  async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
+    return this.contactRepository.update(payload.id, payload.contact);
+  }
+
+  async updateStatus(payload: IUpdateStatusPayload) {
+    const contact = await this.findOneById({
+      id: payload.id,
+      organizationId: payload.organizationId,
+    });
+
+    return await this.contactStatusRepository.save({
+      contact,
+      status: payload.status,
+      contactId: contact.id,
+      statusId: payload.status.id,
+    });
+  }
+
+  async delete(payload: IDeletePayload): Promise<any> {
+    return await this.contactRepository.softDelete(payload.id);
+  }
+
+  createNewContactObject(contact: DeepPartial<Contact>) {
+    
+  const result =this.contactRepository.create(contact);
+    this.searchService.addDocument([contact]);
+    
+    return result
   }
 }

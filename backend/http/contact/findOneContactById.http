@@ -1,1 +1,2 @@
-GET http://localhost:3001/contacts/1 HTTP/1.1
+GET http://localhost:3001/contacts/7 HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFpZW4rdGVzdDFAbG8uYWdlbmN5Iiwic3ViIjoxLCJuYW1lIjoiZ29sIERvZSIsImlhdCI6MTY2NDI3OTY2NywiZXhwIjoxNjY2ODcxNjY3fQ.OplbQR1BSXt8xQkavy5X12FCnV34gAWBFHeGgzdJEfw

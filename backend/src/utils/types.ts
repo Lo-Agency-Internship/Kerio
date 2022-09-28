@@ -35,13 +35,14 @@ export enum ERole {
   Employee = 2,
 }
 
-export enum EStatus {
-  PotentialCustomer = 1,
-  LostLoyal = 2,
-  LostPotentialCustomer = 3,
-  LoyalCustomer = 4,
-  Lead = 5,
-  LostLoyalCustomer = 6,
+export enum EContactStatus {
+  Lead = 'Lead',
+  PotentialCustomer = 'PotentialCustomer',
+  LostPotentialCustomer = 'LostPotentialCustomer',
+  LoyalCustomer = 'LoyalCustomer',
+  LostLoyalCustomer = 'LostLoyalCustomer',
+  Loyal = 'Loyal',
+  LostLoyal = 'LostLoyal',
 }
 
 export enum EEntityTypeLog {

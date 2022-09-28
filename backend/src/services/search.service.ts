@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import MeiliSearch, { Document, Index } from 'meilisearch';
-import { Contact } from 'src/entities/contact.entity';
+import { Contact } from 'src/entities/contact/contact.entity';
 import { RequestContextService } from './requestContext.service';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class SearchService {
     return this.client.index(String(organization.id));
   }
 
-  async addDocument(documents: Document<Contact>[]) {
+  async addDocument(documents) {
     const index = this.getIndex();
 
     return await index.addDocuments(documents, {
