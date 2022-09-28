@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -7,7 +8,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
 import { Contact } from './contact.entity';
 import { Status } from './status.entity';
 
@@ -17,10 +17,16 @@ export class ContactStatus {
   id: number;
 
   @Column()
-  contactId?: number;
+  contactId: number;
 
   @Column()
-  statusId?: number;
+  statusId: number;
+
+  @ManyToOne(() => Contact, (c) => c.statuses)
+  contact: Contact;
+
+  @ManyToOne(() => Status, (s) => s.contacts)
+  status: Status;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -30,10 +36,4 @@ export class ContactStatus {
 
   @DeleteDateColumn()
   deletedAt: Date;
-
-  @ManyToOne(() => Contact, (contact) => contact.contactStatus)
-  contact: Contact;
-
-  @ManyToOne(() => Status, (status) => status.contactStatus)
-  status: Status;
 }
