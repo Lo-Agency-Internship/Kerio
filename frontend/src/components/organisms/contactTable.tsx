@@ -6,6 +6,26 @@ import { IUser } from '../../utils/interfaces/user';
 interface IContactTable {
 	contact: IUser[];
 }
+
+const customStyles = {
+	rows: {
+		style: {
+			minHeight: '72px', // override the row height
+		},
+	},
+	headCells: {
+		style: {
+			paddingLeft: '8px', // override the cell padding for head cells
+			paddingRight: '8px',
+		},
+	},
+	cells: {
+		style: {
+			paddingLeft: '8px', // override the cell padding for data cells
+			paddingRight: '8px',
+		},
+	},
+};
 const columns: TableColumn<IUser>[] = [
 	{
 		name: 'Name',
@@ -71,7 +91,7 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 		return <div>Loading...</div>;
 	} else {
 		return (
-			<div className="App">
+			<>
 				<DataTable
 					columns={columns}
 					data={items}
@@ -83,8 +103,9 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 					onRowClicked={handleRowClicked}
 					highlightOnHover
 					pointerOnHover
+					customStyles={customStyles}
 				/>
-			</div>
+			</>
 		);
 	}
 };
