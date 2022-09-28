@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button } from '../atoms/button';
+import SearchComponent from '../molecules/searchCompounent';
 
 export interface IHeaderProps {
 	actions?: React.FC[];
@@ -21,7 +21,9 @@ const Header: React.FC<IHeaderProps> = (props) => {
 						<C key={idx} />
 					))}
 				</div>
-				<div className="collapse navbar-collapse flex-grow items-center" id="navbarSupportedContent" />
+				<div className="flex items-center justify-between relative">
+					<SearchComponent />
+				</div>
 				<div className="flex items-center justify-center relative">
 					<button
 						className="block py-2 px-4 mr-2 text-sm font-medium text-gray-700 focus:outline-none bg-white hover:bg-gray-100 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200"
