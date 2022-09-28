@@ -3,15 +3,18 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { ContactStatus } from './contactStatus';
-import { Note } from './note.entity';
-import { Organization } from './organization.entity';
+import { Status } from './status.entity';
+import { Note } from '../note.entity';
+import { Organization } from '../organization.entity';
+import { JoinTable } from 'typeorm/browser';
+import { ContactStatus } from './contactStatus.entity';
 
 @Entity()
 export class Contact {
@@ -26,9 +29,6 @@ export class Contact {
 
   @Column({ length: 14 })
   phone: string;
-
-  @Column()
-  status: string;
 
   @Column({ nullable: true })
   organizationId: number;
@@ -45,9 +45,13 @@ export class Contact {
   @ManyToOne(() => Organization, (organization) => organization.contacts)
   organization: Organization;
 
-  @OneToMany(() => Note, (note) => note.contact)
+  @OneToMany(() => Note, (note) => note.contact, {
+    cascade: true,
+  })
   notes: Note[];
 
-  @OneToMany(() => ContactStatus, (contactStatus) => contactStatus.contact)
-  contactStatus: ContactStatus;
+  @OneToMany(() => ContactStatus, (c) => c.contact, {
+    cascade: true,
+  })
+  statuses: ContactStatus[];
 }
