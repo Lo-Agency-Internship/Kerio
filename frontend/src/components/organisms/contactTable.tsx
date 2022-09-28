@@ -1,10 +1,8 @@
-import axios from 'axios';
-import { SetStateAction, useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { uri } from '../../utils';
-import { IUser } from '../../utils/interfaces/user';
-import { useApiContext } from '../../context/api';
 import { useNavigate } from 'react-router-dom';
+import { useApiContext } from '../../context/api';
+import { IUser } from '../../utils/interfaces/user';
 interface IContactTable {
 	contact: IUser[];
 }
@@ -37,15 +35,29 @@ const columns: TableColumn<IUser>[] = [
 ];
 
 const ContactTable: React.FC<IContactTable> = ({ contact }) => {
-	const [data, setData] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(null);
+	const [isLoaded, setIsLoaded] = useState(false);
+	const [items, setItems] = useState([]);
 	const [totalRows, setTotalRows] = useState(0);
-	const [perPage, setPerPage] = useState(5);
-	const { getContacts } = useApiContext();
-	const headerAuth = {
-		headers: {
-			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-		},
+	const [perPage, setPerPage] = useState(10);
+	const { getAllContacts } = useApiContext();
+	const fetchData = async (page: number, size: number) => {
+		const result = await getAllContacts(page, size);
+		setIsLoaded(true);
+		setItems(result);
+		setTotalRows(13);
+	};
+
+	useEffect(() => {
+		fetchData(1, perPage);
+	}, [perPage]);
+
+	const handlePageChange = (page: any) => {
+		fetchData(page, perPage);
+	};
+
+	const handlePerRowsChange = async (newPerPage: React.SetStateAction<number>, page: any) => {
+		setPerPage(newPerPage);
 	};
 	const navigate = useNavigate();
 	const handleRowClicked = (row: any) => {
@@ -53,82 +65,27 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 		console.log(row);
 		navigate(`/contacts/${row.id}`);
 	};
-	return (
-		<DataTable
-			columns={columns}
-			data={contact}
-			onRowClicked={handleRowClicked}
-			highlightOnHover
-			pointerOnHover
-			// selectableRows
-			pagination
-		/>
-	);
+	if (error) {
+		return <div>Error</div>;
+	} else if (!isLoaded) {
+		return <div>Loading...</div>;
+	} else {
+		return (
+			<div className="App">
+				<DataTable
+					columns={columns}
+					data={items}
+					pagination
+					paginationServer
+					paginationTotalRows={totalRows}
+					onChangePage={handlePageChange}
+					onChangeRowsPerPage={handlePerRowsChange}
+					onRowClicked={handleRowClicked}
+					highlightOnHover
+					pointerOnHover
+				/>
+			</div>
+		);
+	}
 };
-
-	// const fetchUsers = async (page: number, size: number) => {
-	// 	setLoading(true);
-	// 	console.log(page);
-	// 	const response = await axios.get(uri(`contacts`), {
-	// 		params: {
-	// 			page,
-	// 			size,
-	// 		},
-	// 		...headerAuth,
-	// 	});
-
-	// const response1 = await getAllContacts(page, perPage);
-	// 	console.log(response);
-	// 	console.log(response.data);
-	// 	console.log(response.data.length);
-
-	// 	setData(response.data.data);
-	// 	setTotalRows(response.data.length);
-	// 	setLoading(false);
-	// };
-
-	//
-
-	// const handlePageChange = (page: number) => {
-	// 	fetchUsers(page);
-	// };
-
-	// const handlePerRowsChange = async (newPerPage: SetStateAction<number>, page: number) => {
-	// 	setLoading(true);
-	// 	// console.log(page);
-	// 	console.log({ perPage, page });
-
-	// 	const response = await axios.get(uri(`contacts`), {
-	// 		params: {
-	// 			size: newPerPage,
-	// 			page: page,
-	// 		},
-	// 		...headerAuth,
-	// 	});
-	// 	// const response1 = await getAllContacts(page, newPerPage);
-	// 	console.log(response);
-
-	// 	setData(response.data.data);
-	// 	setPerPage(newPerPage);
-	// 	setLoading(false);
-	// };
-
-	// useEffect(() => {
-	// 	fetchUsers(1, 5); // fetch page 1 of users
-	// }, []);
-
-// 	return (
-// 		<DataTable
-// 			title="List Of Customer"
-// 			columns={columns}
-// 			data={contact}
-// 			progressPending={loading}
-// 			pagination
-// 			paginationServer
-// 			paginationTotalRows={totalRows}
-// 			// onChangeRowsPerPage={handlePerRowsChange}
-// 			// onChangePage={handlePageChange}
-// 		/>
-// 	);
-// };
 export default ContactTable;

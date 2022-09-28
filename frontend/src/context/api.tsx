@@ -1,10 +1,7 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
 import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
 import { uri } from '../utils/index';
-interface IApiProvider {
-	children: ReactNode;
-}
+import { createContext, ReactNode, useContext, useState } from 'react';
 interface IApiPaginationParams {
 	pagination: {
 		page?: number;
@@ -12,6 +9,11 @@ interface IApiPaginationParams {
 		sort?: 'asc' | 'desc';
 	};
 }
+
+interface IApiProvider {
+	children: ReactNode;
+}
+
 interface IApiContext {
 	user?: IUser;
 	setUser?: (value: IUser) => void;
@@ -22,7 +24,7 @@ interface IApiContext {
 	isLoading?: boolean;
 	contacts?: any;
 	setContacts?: any;
-	getContacts?: any;
+	getAllContacts?: any;
 	getAllUsers?: any;
 	getContactsInfoById?: any;
 	getUsersInfoById?: any;
@@ -51,18 +53,15 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		},
 	};
 	const [contacts, setContacts] = useState([]);
-
-	// get contacts
-	// interface IGetContactsPayload extends IApiPaginationParams {}
-	const getContacts = async (page: number, size: number) => {
-		const { data } = await axios.get(uri(`contacts`), {
+	type IGetContactsPayload = IApiPaginationParams;
+	const getAllContacts = async (page: number, size: number) => {
+		const { data, status } = await axios.get(uri(`contacts`), {
 			params: {
 				page,
 				size,
 			},
 			...headerAuth,
 		});
-		setIsLoading(false);
 		return data;
 	};
 	// get employees
@@ -156,7 +155,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				contacts,
 				setContacts,
 				getAllUsers,
-				getContacts,
+				getAllContacts,
 				getContactsInfoById,
 				getUsersInfoById,
 				postContactInfo,

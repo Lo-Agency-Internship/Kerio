@@ -16,7 +16,7 @@ const SIGNIN_FORM_ID = 'SIGNIN_FORM_ID';
 const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
-	const { postLogin, getContacts, setContacts } = useApiContext();
+	const { postLogin, getAllContacts, setContacts } = useApiContext();
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
