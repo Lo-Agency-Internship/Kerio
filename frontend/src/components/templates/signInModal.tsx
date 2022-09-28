@@ -33,7 +33,7 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			await signInValidation.isValid({ email });
 			await postLogin(body);
 			setOpen(false);
-			getAllContacts().then(setContacts);
+			// getContacts().then(setContacts);
 			navigate(`/`);
 		} catch (err: any) {
 			console.log(err);
