@@ -34,11 +34,15 @@ export class ContactService {
       },
       relations: ['statuses', 'statuses.status', 'statuses.status'],
       order: { createdAt: payload.sort },
-      take: payload.page,
+      take: payload.size,
       skip: getPaginationOffset(payload),
     });
 
-    if (!payload.status) return contacts;
+    if (!payload.status) return contacts.map(contact => ({
+      ...contact,
+      statuses: undefined,
+      lastStatus: contact.statuses.length > 0 && contact.statuses[contact.statuses.length - 1]
+    }));
 
     return contacts.filter((contact) => {
       const lastStatus = contact.statuses[contact.statuses.length - 1];

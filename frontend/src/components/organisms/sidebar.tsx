@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const Sidebar = () => {
 	const owner = true;
 	return (
-		<aside className="w-64 h-screen fixed" aria-label="Sidebar">
+		<aside className="w-56 h-screen fixed" aria-label="Sidebar">
 			<div className="overflow-y-auto py-4 px-3 bg-gray-50 h-full">
 				<ul className="space-y-2">
 					<li>

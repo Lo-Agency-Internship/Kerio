@@ -6,6 +6,26 @@ import { IUser } from '../../utils/interfaces/user';
 interface IContactTable {
 	contact: IUser[];
 }
+
+const customStyles = {
+	rows: {
+		style: {
+			minHeight: '72px', // override the row height
+		},
+	},
+	headCells: {
+		style: {
+			paddingLeft: '8px', // override the cell padding for head cells
+			paddingRight: '8px',
+		},
+	},
+	cells: {
+		style: {
+			paddingLeft: '8px', // override the cell padding for data cells
+			paddingRight: '8px',
+		},
+	},
+};
 const columns: TableColumn<IUser>[] = [
 	{
 		name: 'Name',
@@ -24,7 +44,7 @@ const columns: TableColumn<IUser>[] = [
 	},
 	{
 		name: 'Status',
-		selector: (row) => row.status as string,
+		selector: (row) => row.statuses[0].status.status as any,
 		sortable: true,
 	},
 	{
@@ -61,8 +81,6 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 	};
 	const navigate = useNavigate();
 	const handleRowClicked = (row: any) => {
-		console.log(row.id);
-		console.log(row);
 		navigate(`/contacts/${row.id}`);
 	};
 	if (error) {
@@ -71,7 +89,7 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 		return <div>Loading...</div>;
 	} else {
 		return (
-			<div className="App">
+			<>
 				<DataTable
 					columns={columns}
 					data={items}
@@ -83,8 +101,9 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 					onRowClicked={handleRowClicked}
 					highlightOnHover
 					pointerOnHover
+					customStyles={customStyles}
 				/>
-			</div>
+			</>
 		);
 	}
 };
