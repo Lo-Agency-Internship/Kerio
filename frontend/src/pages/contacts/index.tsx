@@ -6,7 +6,7 @@ import { Page } from '../../layout/page';
 import ContactTable from '../../components/organisms/contactTable';
 
 export default function ContactsPage() {
-	const { getAllContacts, change, isLoading, contacts, setContacts } = useApiContext();
+	const { getAllContacts, isLoading, contacts, setContacts } = useApiContext();
 	useEffect(() => {
 		getAllContacts(1, 5).then(setContacts);
 	}, []);
