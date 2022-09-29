@@ -18,6 +18,7 @@ export class SearchService {
     const organization = this.contextService.get('organization');
 
     return this.client.index(String(organization.id));
+    
   }
 
   async addDocument(documents) {
@@ -28,7 +29,7 @@ export class SearchService {
     });
   }
   async deleteIndex() {
-    return await this.client.deleteIndex('contacts');
+    return await this.client.deleteIndex('test');
   }
 
   async updateDocument(documents) {
