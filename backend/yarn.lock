@@ -2243,24 +2243,17 @@ create-require@^1.1.0:
   resolved "https://registry.npmjs.org/create-require/-/create-require-1.1.1.tgz"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
-<<<<<<< HEAD
-"cross-fetch@^3.1.5":
-  "integrity" "sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw=="
-  "resolved" "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.1.5.tgz"
-  "version" "3.1.5"
+cross-fetch@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.1.5.tgz"
+  integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
   dependencies:
-    "node-fetch" "2.6.7"
+    node-fetch "2.6.7"
 
-"cross-spawn@^7.0.0", "cross-spawn@^7.0.2", "cross-spawn@^7.0.3":
-  "integrity" "sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w=="
-  "resolved" "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz"
-  "version" "7.0.3"
-=======
 cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz"
   integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
->>>>>>> 35011a7be79b344c095026fd73f152900ea1ff28
   dependencies:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
@@ -4503,24 +4496,17 @@ mediaquery-text@^1.2.0:
   dependencies:
     cssom "^0.5.0"
 
-<<<<<<< HEAD
-"meilisearch@^0.27.0":
-  "integrity" "sha512-kZOZFIuSO7c6xRf+Y2/9/h6A9pl0sCl/G44X4KuaSwxGbruOZPhmxbeVEgLHBv4pUFvQ56rNVTA/2d/5GCU1YA=="
-  "resolved" "https://registry.npmjs.org/meilisearch/-/meilisearch-0.27.0.tgz"
-  "version" "0.27.0"
+meilisearch@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.npmjs.org/meilisearch/-/meilisearch-0.27.0.tgz"
+  integrity sha512-kZOZFIuSO7c6xRf+Y2/9/h6A9pl0sCl/G44X4KuaSwxGbruOZPhmxbeVEgLHBv4pUFvQ56rNVTA/2d/5GCU1YA==
   dependencies:
-    "cross-fetch" "^3.1.5"
+    cross-fetch "^3.1.5"
 
-"memfs@^3.4.1":
-  "integrity" "sha512-ygaiUSNalBX85388uskeCyhSAoOSgzBbtVCr9jA2RROssFL9Q19/ZXFqS+2Th2sr1ewNIWgFdLzLC3Yl1Zv+lw=="
-  "resolved" "https://registry.npmjs.org/memfs/-/memfs-3.4.7.tgz"
-  "version" "3.4.7"
-=======
 memfs@^3.4.1:
   version "3.4.7"
   resolved "https://registry.npmjs.org/memfs/-/memfs-3.4.7.tgz"
   integrity sha512-ygaiUSNalBX85388uskeCyhSAoOSgzBbtVCr9jA2RROssFL9Q19/ZXFqS+2Th2sr1ewNIWgFdLzLC3Yl1Zv+lw==
->>>>>>> 35011a7be79b344c095026fd73f152900ea1ff28
   dependencies:
     fs-monkey "^1.0.3"
 
@@ -5070,17 +5056,10 @@ node-emoji@1.11.0:
   dependencies:
     lodash "^4.17.21"
 
-<<<<<<< HEAD
-"node-fetch@^2.6.0", "node-fetch@^2.6.1", "node-fetch@^2.6.7", "node-fetch@2.6.7":
-  "integrity" "sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ=="
-  "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
-  "version" "2.6.7"
-=======
-node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.7:
+node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.7:
   version "2.6.7"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
->>>>>>> 35011a7be79b344c095026fd73f152900ea1ff28
   dependencies:
     whatwg-url "^5.0.0"
 

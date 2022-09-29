@@ -6,8 +6,6 @@ export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
   @Get()
-  
-
   @Delete()
   deleteIndex() {
     this.searchService.deleteIndex();

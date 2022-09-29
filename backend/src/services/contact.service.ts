@@ -28,7 +28,7 @@ export class ContactService {
     @InjectRepository(Status)
     private readonly statusRepository: Repository<Status>,
 
-    private readonly searchService:SearchService,
+    private readonly searchService: SearchService,
   ) {}
 
   async find(payload: IFindPayload): Promise<Contact[]> {
@@ -66,21 +66,26 @@ export class ContactService {
       ...payload.contact,
       organizationId: payload.organizationId,
     });
-    
-    this.searchService.addDocument([result]);
 
-    return result
-    
+    this.searchService.addDocument([
+      {
+        ...result,
+        lastStatus: payload.contact.statuses[0].status.status,
+      },
+    ]);
+
+    return result;
   }
 
   async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
-    const updatedContact = this.contactRepository.update(payload.id, payload.contact);
-    const contact = {...payload.contact,id:payload.id}
-    console.log(contact)
-    
+    const updatedContact = await this.contactRepository.update(
+      payload.id,
+      payload.contact,
+    );
+    const contact = { ...payload.contact, id: payload.id };
 
     this.searchService.updateDocument([contact]);
-    return updatedContact
+    return updatedContact;
   }
 
   async updateStatus(payload: IUpdateStatusPayload) {
@@ -88,6 +93,13 @@ export class ContactService {
       id: payload.id,
       organizationId: payload.organizationId,
     });
+
+    this.searchService.updateDocument([
+      {
+        ...contact,
+        lastStatus: payload.status.status,
+      },
+    ]);
 
     return await this.contactStatusRepository.save({
       contact,
@@ -103,9 +115,6 @@ export class ContactService {
   }
 
   createNewContactObject(contact: DeepPartial<Contact>) {
-  
-   return this.contactRepository.create(contact);
-  
-    
+    return this.contactRepository.create(contact);
   }
 }
