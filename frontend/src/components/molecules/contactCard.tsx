@@ -15,7 +15,7 @@ const ContactCards: React.FC<IContactCards> = ({ contact }) => {
 				</div>
 				<div>
 					<div className="font-mono text-base">{contact.email}</div>
-					<div className="font-mono text-base">{contact.status}</div>
+					<div className="font-mono text-base">{contact.statuses[0].status.status}</div>
 				</div>
 				<div>
 					<Button

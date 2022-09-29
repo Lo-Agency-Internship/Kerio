@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInValidation } from '../../validation/userValidation';
 import { useApiContext } from '../../context/api';
-import { FormControl } from '../molecules/formControl';
+import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import Modal from '../organisms/modal';
 
 interface IProps {
@@ -36,7 +36,6 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			// getContacts().then(setContacts);
 			navigate(`/`);
 		} catch (err: any) {
-			console.log(err);
 			setError(err.response.data.message);
 		}
 	};
@@ -55,18 +54,18 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			]}>
 			{error && <p className="text-red-500">{error}</p>}
 			<form id={SIGNIN_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
-				<FormControl
+				<InputFormControl
 					label={'Email address'}
-					placeholder={'Your email address'}
 					inputProps={{
 						type: 'email',
+						placeholder: 'Your email address',
 					}}
 				/>
-				<FormControl
+				<InputFormControl
 					label={'Password'}
-					placeholder={'Your password'}
 					inputProps={{
 						type: 'password',
+						placeholder: 'Your password',
 					}}
 				/>
 			</form>
