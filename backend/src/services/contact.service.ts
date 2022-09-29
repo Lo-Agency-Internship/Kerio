@@ -13,6 +13,8 @@ import {
 import { getPaginationOffset } from '../utils/functions';
 import { ContactStatus } from '../entities/contact/contactStatus.entity';
 import { Status } from '../entities/contact/status.entity';
+import { SearchService } from './search.service';
+import { UpdateContactBodyDto } from 'src/dtos/contact.dto';
 
 @Injectable()
 export class ContactService {
@@ -25,6 +27,8 @@ export class ContactService {
 
     @InjectRepository(Status)
     private readonly statusRepository: Repository<Status>,
+
+    private readonly searchService: SearchService,
   ) {}
 
   async find(payload: IFindPayload): Promise<Contact[]> {
@@ -62,14 +66,30 @@ export class ContactService {
   }
 
   async create(payload: ICreatePayload): Promise<Contact> {
-    return await this.contactRepository.save({
+    const result = await this.contactRepository.save({
       ...payload.contact,
       organizationId: payload.organizationId,
     });
+
+    this.searchService.addDocument([
+      {
+        ...result,
+        lastStatus: payload.contact.statuses[0].status.status,
+      },
+    ]);
+
+    return result;
   }
 
   async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
-    return this.contactRepository.update(payload.id, payload.contact);
+    const updatedContact = await this.contactRepository.update(
+      payload.id,
+      payload.contact,
+    );
+    const contact = { ...payload.contact, id: payload.id };
+
+    this.searchService.updateDocument([contact]);
+    return updatedContact;
   }
 
   async updateStatus(payload: IUpdateStatusPayload) {
@@ -77,6 +97,13 @@ export class ContactService {
       id: payload.id,
       organizationId: payload.organizationId,
     });
+
+    this.searchService.updateDocument([
+      {
+        ...contact,
+        lastStatus: payload.status.status,
+      },
+    ]);
 
     return await this.contactStatusRepository.save({
       contact,
@@ -87,6 +114,7 @@ export class ContactService {
   }
 
   async delete(payload: IDeletePayload): Promise<any> {
+    this.searchService.deleteDocument(payload.id);
     return await this.contactRepository.softDelete(payload.id);
   }
 

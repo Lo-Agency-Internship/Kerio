@@ -40,6 +40,8 @@ import { NoteController } from './controllers/note.controller';
 import { NoteService } from './services/note.service';
 import { EmployeeService } from './services/employee.service';
 import { EmployeeController } from './controllers/employee.controller';
+import { SearchService } from './services/search.service';
+import { SearchController } from './controllers/search.controller';
 import { ContactStatus } from './entities/contact/contactStatus.entity';
 import { Status } from './entities/contact/status.entity';
 
@@ -111,6 +113,7 @@ const entitiesToAdd = [
     InviteController,
     NoteController,
     EmployeeController,
+    SearchController,
   ],
   providers: [
     AppService,
@@ -130,6 +133,7 @@ const entitiesToAdd = [
     LogService,
     NoteService,
     EmployeeService,
+    SearchService,
   ],
   exports: [AuthService, RoleService, StatusService],
 })
