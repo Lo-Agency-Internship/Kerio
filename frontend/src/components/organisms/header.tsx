@@ -14,7 +14,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
 	}
 
 	return (
-		<nav className="flex items-center justify-between border-b-2 border-gray-300 py-2 md:justify-start md:space-x-10">
+		<nav className=" bg-gray-50 items-center flex fixed w-5/6 z-40 right-0 flex-wrap border-b-2 border-gray-300 py-2 md:justify-start md:space-x-10">
 			<div className="container-fluid w-full flex flex-wrap items-center justify-between px-6">
 				<div className="flex items-center justify-center relative">
 					{props.actions?.map((C, idx) => (

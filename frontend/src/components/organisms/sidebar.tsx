@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
 	return (
-		<aside className="w-56 h-screen fixed" aria-label="Sidebar">
-			<div className="overflow-y-auto py-4 px-3 bg-gray-50 h-full">
+		<aside className=" h-screen flex fixed" aria-label="Sidebar">
+			<div className="overflow-y-auto w-52 py-4 px-3 bg-gray-50 h-full">
 				<ul className="space-y-2">
 					<li>
 						<Link
