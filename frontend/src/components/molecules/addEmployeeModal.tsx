@@ -149,13 +149,12 @@ const AddEmployeeModal: FC<IContactModal> = ({ setOpen }) => {
 															placeholder="X@gmail.com"
 														/>
 													</div>
-
-													<Button
+													<button
 														type="button"
 														onClick={() => handleRemoveClick(index)}
-														style={`${'inline-block mb-5 mt-8 p-1 py-2 h-10 bg-red-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-900 hover:shadow-lg focus:bg-red-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-900 active:shadow-lg transition duration-150 ease-in-out'}`}
-														label="Remove"
-													/>
+														className="inline-block mb-5 mt-8 p-1 py-2 h-10 bg-red-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-900 hover:shadow-lg focus:bg-red-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-900 active:shadow-lg transition duration-150 ease-in-outt">
+														Remove
+													</button>
 												</div>
 											</React.Fragment>
 										);

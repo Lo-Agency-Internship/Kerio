@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
 import { addNoteModalValidation } from '../../validation/addNoteModalValidation';
 
-export default function NoteModal({ user, setOpen }: any) {
+export default function NoteModal({ setOpen }: any) {
 	const [error, setError] = useState<string | null>(null);
 	const { id } = useParams();
 	const { change, setChange, postNoteInfo } = useApiContext();
