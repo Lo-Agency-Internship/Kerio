@@ -27,7 +27,7 @@ const AddEmployeeModal: FC<IContactModal> = ({ setOpen }) => {
 			};
 		});
 
-		await postInviteEmployee({ invites: data }).then(() => {
+		postInviteEmployee({ invites: data }).then(() => {
 			setOpen(false);
 		});
 	};
