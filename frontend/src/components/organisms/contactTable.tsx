@@ -22,7 +22,7 @@ const columns: TableColumn<IUser>[] = [
 	},
 	{
 		name: 'Status',
-		selector: (row) => row.status as string,
+		selector: (row) => row.statuses[0].status.status as any,
 		sortable: true,
 	},
 	{
@@ -35,8 +35,6 @@ const columns: TableColumn<IUser>[] = [
 const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 	const navigate = useNavigate();
 	const handleRowClicked = (row: any) => {
-		console.log(row.id);
-		console.log(row);
 		navigate(`/contacts/${row.id}`);
 	};
 	return (

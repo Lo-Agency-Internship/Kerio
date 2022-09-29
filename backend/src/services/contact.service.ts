@@ -34,7 +34,7 @@ export class ContactService {
       },
       relations: ['statuses', 'statuses.status', 'statuses.status'],
       order: { createdAt: payload.sort },
-      take: payload.page,
+      take: payload.size,
       skip: getPaginationOffset(payload),
     });
 
