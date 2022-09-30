@@ -10,7 +10,7 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
-	const [contactDate, setContactDate] = useState(note?.date);
+	const [setContactDate] = useState(note?.date);
 	const [contactTitle, setContactTitle] = useState(note?.title);
 	const [contactDescription, setContactDescription] = useState(note?.description);
 	const editHandler = () => {
@@ -91,16 +91,6 @@ export default function ShowNoteModal({ note, setNote, setOpen }: any) {
 							</div>
 							<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
 							<div className="relative mb-5 mt-2">
-								{/* <textarea
-									disabled={inputDisabled}
-									// className={background}
-									onChange={(e) => setContactDescription(e.target.value)}
-									value={contactDescription}
-									id={'description'}
-									defaultValue={note?.description}
-									name="description"
-									className={backgroundDescription}
-									placeholder="Description"></textarea> */}
 								<Input
 									disabled={inputDisabled}
 									type={'text'}

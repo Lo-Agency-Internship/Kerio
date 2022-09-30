@@ -44,7 +44,7 @@ const columns: TableColumn<IUser>[] = [
 	},
 	{
 		name: 'Status',
-		selector: (row) => row.statuses[0].status.status as any,
+		selector: (row) => row.lastStatus.status.status as any,
 		sortable: true,
 	},
 	{
