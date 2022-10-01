@@ -27,7 +27,7 @@ const AddEmployeeModal: FC<IContactModal> = ({ setOpen }) => {
 			};
 		});
 
-		await postInviteEmployee({ invites: data }).then(() => {
+		postInviteEmployee({ invites: data }).then(() => {
 			setOpen(false);
 		});
 	};
@@ -149,13 +149,12 @@ const AddEmployeeModal: FC<IContactModal> = ({ setOpen }) => {
 															placeholder="X@gmail.com"
 														/>
 													</div>
-
-													<Button
+													<button
 														type="button"
 														onClick={() => handleRemoveClick(index)}
-														style="inline-block mb-5 mt-8 p-1 py-2 h-10 bg-red-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-900 hover:shadow-lg focus:bg-red-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-900 active:shadow-lg transition duration-150 ease-in-out"
-														label="Remove"
-													/>
+														className="inline-block mb-5 mt-8 p-1 py-2 h-10 bg-red-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-900 hover:shadow-lg focus:bg-red-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-900 active:shadow-lg transition duration-150 ease-in-outt">
+														Remove
+													</button>
 												</div>
 											</React.Fragment>
 										);
@@ -163,7 +162,7 @@ const AddEmployeeModal: FC<IContactModal> = ({ setOpen }) => {
 
 									<Button
 										type="submit"
-										style="inline-block mb-5 mt-8 p-4 h-10 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out"
+										style="mt-3 inline-flex w-full flex items-center justify-center rounded-md border border-blue-700 bg-white px-4 py-2 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
 										label="invite"
 									/>
 									<button

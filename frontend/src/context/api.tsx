@@ -1,7 +1,15 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
 import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
 import { uri } from '../utils/index';
+import { createContext, ReactNode, useContext, useState } from 'react';
+interface IApiPaginationParams {
+	pagination: {
+		page?: number;
+		size?: number;
+		sort?: 'asc' | 'desc';
+	};
+}
+
 interface IApiProvider {
 	children: ReactNode;
 }
@@ -45,21 +53,24 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		},
 	};
 	const [contacts, setContacts] = useState([]);
-
-	// get contacts
-	const getAllContacts = async () => {
-		setIsLoading(true);
-		const { data } = await axios.get(uri(`contacts?pageNumber=1&perPage=20`), headerAuth);
-		setIsLoading(false);
+	type IGetContactsPayload = IApiPaginationParams;
+	const getAllContacts = async (page: number, size: number) => {
+		const { data, status } = await axios.get(uri(`contacts`), {
+			params: {
+				page,
+				size,
+			},
+			...headerAuth,
+		});
 		return data;
 	};
 	// get employees
 	// const getAllEmployees = async () => {
-	// 	setIsLoading(true);
-	// 	const { data } = await axios.get(uri('???'), headerAuth);
-	// 	console.log(data);
-	// 	setIsLoading(false);
-	// 	return data;
+	//     setIsLoading(true);
+	//     const { data } = await axios.get(uri('???'), headerAuth);
+	//     console.log(data);
+	//     setIsLoading(false);
+	//     return data;
 	// };
 
 	// get users(employees)
@@ -79,10 +90,10 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 	// get employees info by ID
 	// const getEmployeesInfoById = async (id: string) => {
-	// 	setIsLoading(true);
-	// 	const { data } = await axios.get(uri(`???/${id}`), headerAuth);
-	// 	setIsLoading(false);
-	// 	return data;
+	//     setIsLoading(true);
+	//     const { data } = await axios.get(uri(`???/${id}`), headerAuth);
+	//     setIsLoading(false);
+	//     return data;
 	// };
 
 	// get Users info by ID

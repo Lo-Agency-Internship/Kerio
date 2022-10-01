@@ -28,7 +28,7 @@ export class NoteController {
   getAllNotesByContactId(
     @Param('contactId', ParseIntPipe) contactId: number,
   ): Promise<Note[]> {
-    const notes = this.noteService.getAllNotesByContactId(contactId);
+    const notes = this.noteService.readAllByContactId(contactId);
     return notes;
   }
 
@@ -38,7 +38,6 @@ export class NoteController {
     @Body() body: AddNotetDto,
   ): Promise<Note> {
     console.log('checkcontroller');
-    //assign note to the its contact
     body = { ...body, contactId };
 
     this.logService.addLog({
@@ -49,7 +48,7 @@ export class NoteController {
       event: 'Note',
     });
 
-    return this.noteService.addNote(body);
+    return this.noteService.create(body);
   }
   @Put(':noteId')
   editNote(@Param('noteId', ParseIntPipe) id: number, @Body() body) {
@@ -61,7 +60,7 @@ export class NoteController {
       event: 'Note',
     });
 
-    return this.noteService.updateNote(id, body);
+    return this.noteService.update(id, body);
   }
 
   @Delete(':noteId')
@@ -74,10 +73,6 @@ export class NoteController {
       event: 'Note',
     });
 
-    return this.noteService.deleteNote(id);
-  }
-  @Get('timeline/:contactId')
-  getContactTimeLine(@Param('contactId', ParseIntPipe) id: number) {
-    return this.noteService.getContactTimeLine(id);
+    return this.noteService.delete(id);
   }
 }

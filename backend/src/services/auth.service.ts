@@ -73,7 +73,7 @@ export class AuthService {
       email,
       name,
     });
-    //inja bayad beshe userID
+
     await this.orgUserService.assignUserToOrganization(
       createdUser.id,
       organization.id,
