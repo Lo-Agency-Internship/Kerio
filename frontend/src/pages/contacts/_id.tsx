@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom';
 import { IUser } from '../../utils/interfaces/user';
 import Loading from '../../components/molecules/loading';
 import { Page } from '../../layout/page';
+import { Button } from '../../components/atoms/button';
+import NoteModal from '../../components/molecules/noteModal';
 
 export default function ContactPage() {
 	const [contact, setContact] = useState<IUser>();
@@ -21,8 +23,20 @@ export default function ContactPage() {
 	return (
 		<Page
 			header={{
-				actions: [() => <p>Salam</p>],
+				actions: [
+					() => (
+						<Button
+							style="mt-3 inline-flex w-full flex items-center justify-center rounded-md border border-blue-700 bg-white px-4 py-2 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+							label={'Add Note'}
+							onClick={() => {
+								setShowNoteModal(true);
+							}}
+						/>
+					),
+				],
 			}}>
+			{showNoteModal && <NoteModal setOpen={setShowNoteModal} />}
+
 			{isLoading ? (
 				<Loading />
 			) : (
