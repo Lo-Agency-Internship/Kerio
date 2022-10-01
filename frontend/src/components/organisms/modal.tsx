@@ -15,7 +15,7 @@ const Modal: React.FC<IProps> = (props) => {
 
 	return (
 		<Transition.Root show={props.show} as={Fragment}>
-			<Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={props.onClose}>
+			<Dialog as="div" className="relative z-20" initialFocus={cancelButtonRef} onClose={props.onClose}>
 				<Transition.Child
 					as={Fragment}
 					enter="ease-out duration-300"
