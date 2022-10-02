@@ -25,7 +25,7 @@ import { RequestContextService } from '../services/requestContext.service';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
 import { LogService } from 'src/services/log.service';
-import { EContactStatus, EEntityTypeLog } from 'src/utils/types';
+import { EContactStatus } from 'src/utils/types';
 import { StatusService } from '../services/status.service';
 import { UpdateResult } from 'typeorm';
 import { constants } from 'http2';

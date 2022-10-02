@@ -14,7 +14,6 @@ import { getPaginationOffset } from '../utils/functions';
 import { ContactStatus } from '../entities/contact/contactStatus.entity';
 import { Status } from '../entities/contact/status.entity';
 import { SearchService } from './search.service';
-import { UpdateContactBodyDto } from 'src/dtos/contact.dto';
 
 @Injectable()
 export class ContactService {
@@ -38,15 +37,18 @@ export class ContactService {
       },
       relations: ['statuses', 'statuses.status', 'statuses.status'],
       order: { createdAt: payload.sort },
-      take: payload.size,
+      take: payload.page,
       skip: getPaginationOffset(payload),
     });
 
-    if (!payload.status) return contacts.map(contact => ({
-      ...contact,
-      statuses: undefined,
-      lastStatus: contact.statuses.length > 0 && contact.statuses[contact.statuses.length - 1]
-    }));
+    if (!payload.status)
+      return contacts.map((contact) => ({
+        ...contact,
+        statuses: undefined,
+        lastStatus:
+          contact.statuses.length > 0 &&
+          contact.statuses[contact.statuses.length - 1],
+      }));
 
     return contacts.filter((contact) => {
       const lastStatus = contact.statuses[contact.statuses.length - 1];
@@ -114,8 +116,9 @@ export class ContactService {
   }
 
   async delete(payload: IDeletePayload): Promise<any> {
+    const deletedContact = await this.contactRepository.softDelete(payload.id);
     this.searchService.deleteDocument(payload.id);
-    return await this.contactRepository.softDelete(payload.id);
+    return deletedContact;
   }
 
   createNewContactObject(contact: DeepPartial<Contact>) {
