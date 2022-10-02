@@ -7,6 +7,7 @@ import {
   IDeletePayload,
   IFindOneByIdPayload,
   IFindPayload,
+  IPaginatedContacts,
   IUpdateOneByIdPayload,
   IUpdateStatusPayload,
 } from '../interfaces/contact.service.interface';
@@ -30,8 +31,8 @@ export class ContactService {
     private readonly searchService: SearchService,
   ) {}
 
-  async find(payload: IFindPayload): Promise<Contact[]> {
-    const contacts = await this.contactRepository.find({
+  async find(payload: IFindPayload): Promise<IPaginatedContacts> {
+    const [result, total] = await this.contactRepository.findAndCount({
       where: {
         organizationId: payload.organizationId,
       },
@@ -41,17 +42,37 @@ export class ContactService {
       skip: getPaginationOffset(payload),
     });
 
-    if (!payload.status) return contacts.map(contact => ({
-      ...contact,
-      statuses: undefined,
-      lastStatus: contact.statuses.length > 0 && contact.statuses[contact.statuses.length - 1]
-    }));
 
-    return contacts.filter((contact) => {
+    if (!payload.status) {
+      const contacts = result.map((contact) => ({
+        ...contact,
+        statuses: undefined,
+        lastStatus:
+          contact.statuses.length > 0 &&
+          contact.statuses[contact.statuses.length - 1],
+      }));
+      return {
+        contacts,
+        metadata: {
+          total,
+          size: payload.size,
+          page: payload.page,
+        },
+      };
+    }
+
+    const contacts = result.filter((contact) => {
       const lastStatus = contact.statuses[contact.statuses.length - 1];
-
       return lastStatus.status.status === payload.status;
     });
+    return {
+      contacts,
+      metadata: {
+        total,
+        size: payload.size,
+        page: payload.page,
+      },
+    };
   }
 
   async findOneById(payload: IFindOneByIdPayload): Promise<Contact | null> {
@@ -113,8 +134,9 @@ export class ContactService {
   }
 
   async delete(payload: IDeletePayload): Promise<DeleteResult> {
+    const deletedContact = await this.contactRepository.softDelete(payload.id);
     this.searchService.deleteDocument(payload.id);
-    return await this.contactRepository.softDelete(payload.id);
+    return deletedContact;
   }
 
   createNewContactObject(contact: DeepPartial<Contact>) {
