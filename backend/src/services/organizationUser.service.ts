@@ -59,6 +59,9 @@ export class OrganizationUserService {
       relationLoadStrategy: 'join',
     });
 
+    delete user.password;
+    delete user.salt;
+
     const org = await this.orgRepository.findOneBy({
       id: user.organization.orgId,
     });
