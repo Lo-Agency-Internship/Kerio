@@ -7,6 +7,7 @@ import {
   IDeletePayload,
   IFindOneByIdPayload,
   IFindPayload,
+  IPaginatedContacts,
   IUpdateOneByIdPayload,
   IUpdateStatusPayload,
 } from '../interfaces/contact.service.interface';
@@ -14,7 +15,6 @@ import { getPaginationOffset } from '../utils/functions';
 import { ContactStatus } from '../entities/contact/contactStatus.entity';
 import { Status } from '../entities/contact/status.entity';
 import { SearchService } from './search.service';
-import { UpdateContactBodyDto } from 'src/dtos/contact.dto';
 
 @Injectable()
 export class ContactService {
@@ -31,8 +31,8 @@ export class ContactService {
     private readonly searchService: SearchService,
   ) {}
 
-  async find(payload: IFindPayload): Promise<Contact[]> {
-    const contacts = await this.contactRepository.find({
+  async find(payload: IFindPayload): Promise<IPaginatedContacts> {
+    const [result, total] = await this.contactRepository.findAndCount({
       where: {
         organizationId: payload.organizationId,
       },
@@ -42,17 +42,37 @@ export class ContactService {
       skip: getPaginationOffset(payload),
     });
 
-    if (!payload.status) return contacts.map(contact => ({
-      ...contact,
-      statuses: undefined,
-      lastStatus: contact.statuses.length > 0 && contact.statuses[contact.statuses.length - 1]
-    }));
+    if (!payload.status) {
+      const contacts = result.map((contact) => ({
+        ...contact,
+        statuses: undefined,
+        lastStatus:
+          contact.statuses.length > 0 &&
+          contact.statuses[contact.statuses.length - 1],
+      }));
 
-    return contacts.filter((contact) => {
+      return {
+        contacts,
+        metadata: {
+          total,
+          size: payload.size,
+          page: payload.page,
+        },
+      };
+    }
+
+    const contacts = result.filter((contact) => {
       const lastStatus = contact.statuses[contact.statuses.length - 1];
-
       return lastStatus.status.status === payload.status;
     });
+    return {
+      contacts,
+      metadata: {
+        total,
+        size: payload.size,
+        page: payload.page,
+      },
+    };
   }
 
   async findOneById(payload: IFindOneByIdPayload): Promise<Contact | null> {

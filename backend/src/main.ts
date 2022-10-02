@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { RoleService } from './services/role.service';
 import { StatusService } from './services/status.service';
-import { EContactStatus } from './utils/types';
 
 const PORT = parseInt(process.env.PORT || '3001');
 

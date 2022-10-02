@@ -33,3 +33,12 @@ export interface IUpdateStatusPayload {
 export interface IDeletePayload {
   id: number;
 }
+
+export interface IPaginatedContacts {
+  contacts: Contact[];
+  metadata: {
+    total: number;
+    size: number;
+    page: number;
+  };
+}

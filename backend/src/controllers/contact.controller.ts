@@ -18,6 +18,7 @@ import { Contact } from '../entities/contact/contact.entity';
 import { ContactService } from '../services/contact.service';
 import {
   CreateBodyDto,
+  IPaginatedContactResponse,
   ReadAllQueryDto,
   UpdateContactBodyDto,
 } from '../dtos/contact.dto';
@@ -25,7 +26,7 @@ import { RequestContextService } from '../services/requestContext.service';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
 import { LogService } from 'src/services/log.service';
-import { EContactStatus, EEntityTypeLog } from 'src/utils/types';
+import { EContactStatus } from 'src/utils/types';
 import { StatusService } from '../services/status.service';
 import { UpdateResult } from 'typeorm';
 import { constants } from 'http2';
@@ -44,7 +45,7 @@ export class ContactController {
   @Get()
   @UseGuards(JwtGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
-  readAll(@Query() query: ReadAllQueryDto): Promise<Contact[]> {
+  readAll(@Query() query: ReadAllQueryDto): Promise<IPaginatedContactResponse> {
     const { id } = this.contextService.get('organization') as Organization;
 
     const { size, sort, page, status } = query;

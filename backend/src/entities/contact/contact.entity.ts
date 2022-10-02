@@ -3,17 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Status } from './status.entity';
 import { Note } from '../note.entity';
 import { Organization } from '../organization.entity';
-import { JoinTable } from 'typeorm/browser';
 import { ContactStatus } from './contactStatus.entity';
 
 @Entity()
