@@ -18,8 +18,6 @@ import { NoteService } from 'src/services/note.service';
 import { JwtGuard } from 'src/utils/jwt.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
-
-
 @UseGuards(JwtGuard)
 @UsePipes(new ValidationPipe({ transform: true }))
 @Controller('notes')
@@ -33,26 +31,28 @@ export class NoteController {
   getAllNotesByContactId(
     @Param('contactId', ParseIntPipe) id: number,
   ): Promise<Note[]> {
-    const notes = this.noteService.readAllByContactId({id});
+    const notes = this.noteService.readAllByContactId({ id });
     return notes;
   }
 
   @Post(':contactId')
   create(
-    @Param('contactId',ParseIntPipe) contactId,
+    @Param('contactId', ParseIntPipe) contactId,
     @Body() body: AddNotetDto,
   ): Promise<Note> {
     const note = this.noteService.createNewNoteObject(body);
-    return this.noteService.create({note,contactId})
+    return this.noteService.create({ note, contactId });
   }
   @Put(':noteId')
-  update(@Param('noteId', ParseIntPipe) id: number, @Body() note:UpdateNoteBodyDto):Promise<UpdateResult> {
-
-    return this.noteService.updateOneById({id, note});
+  update(
+    @Param('noteId', ParseIntPipe) id: number,
+    @Body() note: UpdateNoteBodyDto,
+  ): Promise<UpdateResult> {
+    return this.noteService.updateOneById({ id, note });
   }
 
   @Delete(':noteId')
-  delete(@Param('noteId', ParseIntPipe) id: number):Promise<DeleteResult>{
-    return this.noteService.delete({id});
+  delete(@Param('noteId', ParseIntPipe) id: number): Promise<DeleteResult> {
+    return this.noteService.delete({ id });
   }
 }

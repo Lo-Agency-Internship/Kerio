@@ -3,7 +3,7 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFpZW4rdGVzdDFAbG8uYWdlbmN5Iiwic3ViIjoxLCJuYW1lIjoiZ29sIERvZSIsImlhdCI6MTY2NDM3OTg2MSwiZXhwIjoxNjY2OTcxODYxfQ.YXFco9imWLau2zEa-qb_0hET3tHOilPu8iryDD6wsPs
 
 {
-	"title": "update moon time",
+	"title": "update second time",
     "description": "talk about product",
     "date": "2022-09-05"
 }

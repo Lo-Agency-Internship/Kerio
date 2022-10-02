@@ -42,7 +42,6 @@ export class ContactService {
       skip: getPaginationOffset(payload),
     });
 
-
     if (!payload.status) {
       const contacts = result.map((contact) => ({
         ...contact,

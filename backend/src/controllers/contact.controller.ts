@@ -25,7 +25,6 @@ import {
 import { RequestContextService } from '../services/requestContext.service';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
-import { LogService } from 'src/services/log.service';
 import { EContactStatus } from 'src/utils/types';
 import { StatusService } from '../services/status.service';
 import { DeleteResult, UpdateResult } from 'typeorm';
@@ -38,7 +37,6 @@ export class ContactController {
   constructor(
     private readonly contactService: ContactService,
     private readonly contextService: RequestContextService,
-    private readonly logService: LogService,
     private readonly statusService: StatusService,
   ) {}
 
@@ -148,7 +146,7 @@ export class ContactController {
 
   @Delete(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
-  delete(@Param('id', ParseIntPipe) id: number):Promise<DeleteResult> {
+  delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
     return this.contactService.delete({ id });
   }
 }

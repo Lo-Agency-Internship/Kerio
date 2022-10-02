@@ -17,14 +17,13 @@ export class AddNotetDto {
   contactId: number;
 }
 
-
 export class UpdateNoteBodyDto {
   @IsString()
-  title:string;
+  title: string;
 
   @IsString()
-  date:string;
+  date: string;
 
   @IsString()
-  description:string
+  description: string;
 }
