@@ -7,6 +7,7 @@ import {
 } from 'class-validator';
 import { PaginationDto } from './index';
 import { EContactStatus } from '../utils/types';
+import { Contact } from '../entities/contact/contact.entity';
 
 export class CreateBodyDto {
   @IsNotEmpty()
@@ -43,4 +44,13 @@ export class UpdateContactBodyDto {
 
   @IsString()
   phone: string;
+}
+
+export class IPaginatedContactResponse {
+  contacts: Contact[];
+  metadata: {
+    total: number;
+    page: number;
+    size: number;
+  };
 }

@@ -18,6 +18,7 @@ import { Contact } from '../entities/contact/contact.entity';
 import { ContactService } from '../services/contact.service';
 import {
   CreateBodyDto,
+  IPaginatedContactResponse,
   ReadAllQueryDto,
   UpdateContactBodyDto,
 } from '../dtos/contact.dto';
@@ -44,7 +45,7 @@ export class ContactController {
   @Get()
   @UseGuards(JwtGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
-  readAll(@Query() query: ReadAllQueryDto): Promise<Contact[]> {
+  readAll(@Query() query: ReadAllQueryDto): Promise<IPaginatedContactResponse> {
     const { id } = this.contextService.get('organization') as Organization;
 
     const { size, sort, page, status } = query;

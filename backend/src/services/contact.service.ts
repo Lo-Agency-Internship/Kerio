@@ -7,6 +7,7 @@ import {
   IDeletePayload,
   IFindOneByIdPayload,
   IFindPayload,
+  IPaginatedContacts,
   IUpdateOneByIdPayload,
   IUpdateStatusPayload,
 } from '../interfaces/contact.service.interface';
@@ -30,31 +31,48 @@ export class ContactService {
     private readonly searchService: SearchService,
   ) {}
 
-  async find(payload: IFindPayload): Promise<Contact[]> {
-    const contacts = await this.contactRepository.find({
+  async find(payload: IFindPayload): Promise<IPaginatedContacts> {
+    const [result, total] = await this.contactRepository.findAndCount({
       where: {
         organizationId: payload.organizationId,
       },
       relations: ['statuses', 'statuses.status', 'statuses.status'],
       order: { createdAt: payload.sort },
-      take: payload.page,
+      take: payload.size,
       skip: getPaginationOffset(payload),
     });
 
-    if (!payload.status)
-      return contacts.map((contact) => ({
+
+    if (!payload.status) {
+      const contacts = result.map((contact) => ({
         ...contact,
         statuses: undefined,
         lastStatus:
           contact.statuses.length > 0 &&
           contact.statuses[contact.statuses.length - 1],
       }));
+      return {
+        contacts,
+        metadata: {
+          total,
+          size: payload.size,
+          page: payload.page,
+        },
+      };
+    }
 
-    return contacts.filter((contact) => {
+    const contacts = result.filter((contact) => {
       const lastStatus = contact.statuses[contact.statuses.length - 1];
-
       return lastStatus.status.status === payload.status;
     });
+    return {
+      contacts,
+      metadata: {
+        total,
+        size: payload.size,
+        page: payload.page,
+      },
+    };
   }
 
   async findOneById(payload: IFindOneByIdPayload): Promise<Contact | null> {

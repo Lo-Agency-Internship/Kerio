@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Status } from 'src/entities/contact/status.entity';
-import { statuses } from 'src/utils/status.seed';
 import { Repository } from 'typeorm';
 import { IFindOneByTitlePayload } from '../interfaces/status.service.interface';
 import { EContactStatus } from '../utils/types';
