@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Contact } from '../entities/contact/contact.entity';
-import { DeepPartial, Repository, UpdateResult } from 'typeorm';
+import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
 import {
   ICreatePayload,
   IDeletePayload,
@@ -14,7 +14,6 @@ import { getPaginationOffset } from '../utils/functions';
 import { ContactStatus } from '../entities/contact/contactStatus.entity';
 import { Status } from '../entities/contact/status.entity';
 import { SearchService } from './search.service';
-import { UpdateContactBodyDto } from 'src/dtos/contact.dto';
 
 @Injectable()
 export class ContactService {
@@ -113,7 +112,7 @@ export class ContactService {
     });
   }
 
-  async delete(payload: IDeletePayload): Promise<any> {
+  async delete(payload: IDeletePayload): Promise<DeleteResult> {
     this.searchService.deleteDocument(payload.id);
     return await this.contactRepository.softDelete(payload.id);
   }

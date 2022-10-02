@@ -8,15 +8,20 @@ import {
   Post,
   Put,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
-import { AddNotetDto } from 'src/dtos/note.dto';
+import { AddNotetDto, UpdateNoteBodyDto } from 'src/dtos/note.dto';
 import { Note } from 'src/entities/note.entity';
 import { LogService } from 'src/services/log.service';
 import { NoteService } from 'src/services/note.service';
 import { JwtGuard } from 'src/utils/jwt.guard';
-import { EEntityTypeLog } from 'src/utils/types';
+import { DeleteResult, UpdateResult } from 'typeorm';
+
+
 
 @UseGuards(JwtGuard)
+@UsePipes(new ValidationPipe({ transform: true }))
 @Controller('notes')
 export class NoteController {
   constructor(
@@ -26,53 +31,28 @@ export class NoteController {
 
   @Get(':contactId')
   getAllNotesByContactId(
-    @Param('contactId', ParseIntPipe) contactId: number,
+    @Param('contactId', ParseIntPipe) id: number,
   ): Promise<Note[]> {
-    const notes = this.noteService.readAllByContactId(contactId);
+    const notes = this.noteService.readAllByContactId({id});
     return notes;
   }
 
   @Post(':contactId')
-  addNote(
-    @Param('contactId') contactId,
+  create(
+    @Param('contactId',ParseIntPipe) contactId,
     @Body() body: AddNotetDto,
   ): Promise<Note> {
-    console.log('checkcontroller');
-    body = { ...body, contactId };
-
-    this.logService.addLog({
-      title: 'Add Note Successfully',
-      description: `Added Note with  (${body.title}) Title, and (${body.description}) Describtion Successfully `,
-      entityType: 'Add Note',
-      entityId: EEntityTypeLog.AddNote,
-      event: 'Note',
-    });
-
-    return this.noteService.create(body);
+    const note = this.noteService.createNewNoteObject(body);
+    return this.noteService.create({note,contactId})
   }
   @Put(':noteId')
-  editNote(@Param('noteId', ParseIntPipe) id: number, @Body() body) {
-    this.logService.addLog({
-      title: 'Updated Note Successfully',
-      description: `Updated Note with  (${body.title}) Title, and (${body.description}) Describtion Successfully `,
-      entityType: 'Update Note',
-      entityId: EEntityTypeLog.UpdateNote,
-      event: 'Note',
-    });
+  update(@Param('noteId', ParseIntPipe) id: number, @Body() note:UpdateNoteBodyDto):Promise<UpdateResult> {
 
-    return this.noteService.update(id, body);
+    return this.noteService.updateOneById({id, note});
   }
 
   @Delete(':noteId')
-  deleteNote(@Param('noteId', ParseIntPipe) id: number) {
-    this.logService.addLog({
-      title: 'Deleted Note Successfully',
-      description: `Deleted Note with id=${id}  Successfully`,
-      entityType: 'Delete Note',
-      entityId: EEntityTypeLog.DeleteNote,
-      event: 'Note',
-    });
-
-    return this.noteService.delete(id);
+  delete(@Param('noteId', ParseIntPipe) id: number):Promise<DeleteResult>{
+    return this.noteService.delete({id});
   }
 }

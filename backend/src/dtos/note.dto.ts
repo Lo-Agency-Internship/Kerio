@@ -16,3 +16,15 @@ export class AddNotetDto {
   @IsOptional()
   contactId: number;
 }
+
+
+export class UpdateNoteBodyDto {
+  @IsString()
+  title:string;
+
+  @IsString()
+  date:string;
+
+  @IsString()
+  description:string
+}

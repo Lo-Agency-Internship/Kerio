@@ -27,7 +27,7 @@ import { Organization } from '../entities/organization.entity';
 import { LogService } from 'src/services/log.service';
 import { EContactStatus, EEntityTypeLog } from 'src/utils/types';
 import { StatusService } from '../services/status.service';
-import { UpdateResult } from 'typeorm';
+import { DeleteResult, UpdateResult } from 'typeorm';
 import { constants } from 'http2';
 import { ContactStatus } from '../entities/contact/contactStatus.entity';
 
@@ -147,7 +147,7 @@ export class ContactController {
 
   @Delete(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
-  delete(@Param('id', ParseIntPipe) id: number): Promise<Contact> {
+  delete(@Param('id', ParseIntPipe) id: number):Promise<DeleteResult> {
     return this.contactService.delete({ id });
   }
 }

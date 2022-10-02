@@ -1,31 +1,36 @@
 import { Body, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Note } from 'src/entities/note.entity';
-import { Repository } from 'typeorm';
-import { ContactStatus } from '../entities/contact/contactStatus.entity';
+
+import { ICreatePayload, IDeletePayloadById, IFindByContactIdPayload, IUpdateOneByIdPayload } from 'src/interfaces/note.service.interface';
+import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
+
 
 @Injectable()
 export class NoteService {
   constructor(
     @InjectRepository(Note)
     private readonly noteRepository: Repository<Note>,
-    @InjectRepository(ContactStatus)
-    private readonly contactStatusRepository: Repository<ContactStatus>,
+    
   ) {}
 
-  async create(@Body() body): Promise<Note> {
-    return await this.noteRepository.save(body);
+  async create(payload:ICreatePayload): Promise<Note> {
+    return await this.noteRepository.save({...payload.note,contactId:payload.contactId});
   }
 
-  async update(id, body) {
-    return await this.noteRepository.update(id, body);
+  async updateOneById(payload:IUpdateOneByIdPayload):Promise<UpdateResult> {
+    return await this.noteRepository.update(payload.id, payload.note);
   }
 
-  async delete(id) {
-    return await this.noteRepository.softDelete(id);
+  async delete(payload:IDeletePayloadById):Promise<DeleteResult> {
+    return await this.noteRepository.softDelete(payload.id);
   }
 
-  async readAllByContactId(contactId): Promise<Note[]> {
-    return await this.noteRepository.find({ where: { contactId } });
+  async readAllByContactId(payload:IFindByContactIdPayload): Promise<Note[]> {
+    return await this.noteRepository.find({ where: { contactId:payload.id } });
+  }
+
+  createNewNoteObject(note:DeepPartial<Note>){
+      return this.noteRepository.create(note)
   }
 }
