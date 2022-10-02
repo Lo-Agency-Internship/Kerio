@@ -42,6 +42,7 @@ export class ContactService {
       skip: getPaginationOffset(payload),
     });
 
+
     if (!payload.status) {
       const contacts = result.map((contact) => ({
         ...contact,
@@ -50,7 +51,6 @@ export class ContactService {
           contact.statuses.length > 0 &&
           contact.statuses[contact.statuses.length - 1],
       }));
-
       return {
         contacts,
         metadata: {
@@ -134,8 +134,9 @@ export class ContactService {
   }
 
   async delete(payload: IDeletePayload): Promise<any> {
+    const deletedContact = await this.contactRepository.softDelete(payload.id);
     this.searchService.deleteDocument(payload.id);
-    return await this.contactRepository.softDelete(payload.id);
+    return deletedContact;
   }
 
   createNewContactObject(contact: DeepPartial<Contact>) {
