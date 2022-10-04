@@ -44,6 +44,7 @@ import { SearchService } from './services/search.service';
 import { SearchController } from './controllers/search.controller';
 import { ContactStatus } from './entities/contact/contactStatus.entity';
 import { Status } from './entities/contact/status.entity';
+import { SentryModule } from '@ntegral/nestjs-sentry';
 
 const entitiesToAdd = [
   Contact,
@@ -74,6 +75,18 @@ const entitiesToAdd = [
         logging: false,
         entities: entitiesToAdd,
       }),
+    }),
+    SentryModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          dsn: configService.get('SENTRY_DSN'),
+          debug: configService.get('SENTRY_DEBUG'),
+          environment: configService.get('SENTRY_ENVIRONMENT'),
+          logLevels: ['debug', 'error', 'warn'],
+        };
+      },
     }),
     MailerModule.forRootAsync({
       useFactory: () => ({
