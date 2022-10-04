@@ -13,8 +13,9 @@ import {
 } from '@nestjs/common';
 import { AddNotetDto, UpdateNoteBodyDto } from 'src/dtos/note.dto';
 import { Note } from 'src/entities/note.entity';
-import { LogService } from 'src/services/log.service';
+import { ContactService } from 'src/services/contact.service';
 import { NoteService } from 'src/services/note.service';
+import { RequestContextService } from 'src/services/requestContext.service';
 import { JwtGuard } from 'src/utils/jwt.guard';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
@@ -24,24 +25,28 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 export class NoteController {
   constructor(
     private readonly noteService: NoteService,
-    private readonly logService: LogService,
+    private readonly contactService: ContactService,
+    private readonly contextService: RequestContextService,
   ) {}
 
   @Get(':contactId')
-  getAllNotesByContactId(
-    @Param('contactId', ParseIntPipe) id: number,
-  ): Promise<Note[]> {
+  readAll(@Param('contactId', ParseIntPipe) id: number): Promise<Note[]> {
     const notes = this.noteService.readAllByContactId({ id });
     return notes;
   }
 
   @Post(':contactId')
-  create(
-    @Param('contactId', ParseIntPipe) contactId,
+  async create(
+    @Param('contactId', ParseIntPipe) id: number,
     @Body() body: AddNotetDto,
   ): Promise<Note> {
+    const organization = this.contextService.get('organization');
+    const contact = await this.contactService.findOneById({
+      id,
+      organizationId: organization.id,
+    });
     const note = this.noteService.createNewNoteObject(body);
-    return this.noteService.create({ note, contactId });
+    return this.noteService.create({ note, contact });
   }
   @Put(':noteId')
   update(

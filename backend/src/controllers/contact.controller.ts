@@ -44,7 +44,10 @@ export class ContactController {
   @UseGuards(JwtGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
   readAll(@Query() query: ReadAllQueryDto): Promise<IPaginatedContactResponse> {
-    const { id } = this.contextService.get('organization') as Organization;
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
+    console.log(organization);
 
     const { size, sort, page, status } = query;
 
@@ -52,7 +55,7 @@ export class ContactController {
       size,
       sort,
       page,
-      organizationId: id,
+      organization,
       status,
     });
   }
@@ -101,7 +104,7 @@ export class ContactController {
 
     return this.contactService.create({
       contact,
-      organizationId: organization.id,
+      organization,
     });
   }
 

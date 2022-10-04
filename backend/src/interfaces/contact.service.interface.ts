@@ -3,6 +3,7 @@ import { DeepPartial, FindOperator } from 'typeorm';
 import { EContactStatus } from '../utils/types';
 import { Contact } from '../entities/contact/contact.entity';
 import { Status } from '../entities/contact/status.entity';
+import { Organization } from 'src/entities/organization.entity';
 
 export interface IFindPayload extends IPaginationParams {
   organizationId: number | FindOperator<number>;
@@ -15,7 +16,7 @@ export interface IFindOneByIdPayload {
 }
 
 export interface ICreatePayload {
-  organizationId: number;
+  organization: Organization;
   contact: DeepPartial<Contact>;
 }
 
@@ -26,8 +27,8 @@ export interface IUpdateOneByIdPayload {
 
 export interface IUpdateStatusPayload {
   id: number;
-  organizationId: number | FindOperator<number>;
   status: Status;
+  organizationId: number | FindOperator<number>;
 }
 
 export interface IDeletePayload {

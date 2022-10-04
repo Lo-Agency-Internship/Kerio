@@ -13,7 +13,6 @@ import {
 } from '../interfaces/contact.service.interface';
 import { getPaginationOffset } from '../utils/functions';
 import { ContactStatus } from '../entities/contact/contactStatus.entity';
-import { Status } from '../entities/contact/status.entity';
 import { SearchService } from './search.service';
 
 @Injectable()
@@ -25,18 +24,21 @@ export class ContactService {
     @InjectRepository(ContactStatus)
     private readonly contactStatusRepository: Repository<ContactStatus>,
 
-    @InjectRepository(Status)
-    private readonly statusRepository: Repository<Status>,
-
     private readonly searchService: SearchService,
   ) {}
 
-  async find(payload: IFindPayload): Promise<IPaginatedContacts> {
+  async find(payload): Promise<IPaginatedContacts> {
+    console.log(payload.organization);
     const [result, total] = await this.contactRepository.findAndCount({
       where: {
-        organizationId: payload.organizationId,
+        organization: payload.organization.id,
       },
-      relations: ['statuses', 'statuses.status', 'statuses.status'],
+      relations: [
+        'statuses',
+        'statuses.status',
+        'statuses.status',
+        'organization',
+      ],
       order: { createdAt: payload.sort },
       take: payload.size,
       skip: getPaginationOffset(payload),
@@ -78,16 +80,16 @@ export class ContactService {
     return await this.contactRepository.findOne({
       where: {
         id: payload.id,
-        organizationId: payload.organizationId,
+        organization: !!payload.organizationId,
       },
-      relations: ['statuses', 'statuses.status'],
+      relations: ['statuses', 'statuses.status', 'organization', 'notes'],
     });
   }
 
   async create(payload: ICreatePayload): Promise<Contact> {
     const result = await this.contactRepository.save({
       ...payload.contact,
-      organizationId: payload.organizationId,
+      organization: payload.organization,
     });
 
     this.searchService.addDocument([

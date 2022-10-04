@@ -1,5 +1,6 @@
+import { Contact } from 'src/entities/contact/contact.entity';
 import { Note } from 'src/entities/note.entity';
-import { DeepPartial } from 'typeorm';
+import { DeepPartial, FindOperator } from 'typeorm';
 
 export interface IUpdateOneByIdPayload {
   id: number;
@@ -11,10 +12,10 @@ export interface IDeletePayloadById {
 }
 
 export interface IFindByContactIdPayload {
-  id: number;
+  id: number | FindOperator<number>;
 }
 
 export interface ICreatePayload {
-  contactId: number;
+  contact: Contact;
   note: DeepPartial<Note>;
 }
