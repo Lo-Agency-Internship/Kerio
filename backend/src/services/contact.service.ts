@@ -27,11 +27,10 @@ export class ContactService {
     private readonly searchService: SearchService,
   ) {}
 
-  async find(payload): Promise<IPaginatedContacts> {
-    console.log(payload.organization);
+  async find(payload: IFindPayload): Promise<IPaginatedContacts> {
     const [result, total] = await this.contactRepository.findAndCount({
       where: {
-        organization: payload.organization.id,
+        organization: { id: payload.organization.id },
       },
       relations: [
         'statuses',

@@ -32,9 +32,9 @@ export class NoteService {
     return await this.noteRepository.softDelete(payload.id);
   }
 
-  async readAllByContactId(payload): Promise<Note[]> {
+  async readAllByContactId(payload: IFindByContactIdPayload): Promise<Note[]> {
     return await this.noteRepository.find({
-      where: { contact: payload.id },
+      where: { contact: { id: payload.id } },
       relations: ['contact'],
     });
   }

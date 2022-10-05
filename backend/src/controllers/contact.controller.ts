@@ -47,7 +47,6 @@ export class ContactController {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
-    console.log(organization);
 
     const { size, sort, page, status } = query;
 

@@ -6,7 +6,7 @@ import { Status } from '../entities/contact/status.entity';
 import { Organization } from 'src/entities/organization.entity';
 
 export interface IFindPayload extends IPaginationParams {
-  organizationId: number | FindOperator<number>;
+  organization: Organization;
   status?: EContactStatus;
 }
 

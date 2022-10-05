@@ -1,11 +1,11 @@
 
 POST http://localhost:3001/contacts HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haHNhQGxvLmFnZW5jeSIsInN1YiI6MiwibmFtZSI6Im1haHNhIERvZSIsImlhdCI6MTY2NDgyMDk0MSwiZXhwIjoxNjY3NDEyOTQxfQ.yn74k7uXyLGd-olHC-pr5uQk4XOsNJyI2ycdJs9tZvE
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtlcmlvQGxvLmFnZW5jeSIsInN1YiI6MiwibmFtZSI6ImtlcmlvIERvZSIsImlhdCI6MTY2NDk2MTQ5MSwiZXhwIjoxNjY3NTUzNDkxfQ.hSVAqad2JEnlr6-6ANnsBhAfsSJypOXEzEhzLEK_hv4
 
 {
-	"email": "work@lo.agency",
-    "name": "work7777 Baltazar",
+	"email": "melon@lo.agency",
+    "name": "melom7777 Baltazar",
     "phone": "09123456789",
     "status": "Lead"
 }
