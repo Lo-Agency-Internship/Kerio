@@ -22,7 +22,7 @@ export class Seeder {
     return await Promise.all(this.roleSeederService.create())
       .then(createdRoles => {
         this.logger.debug(
-          'No. of languages created : ' +
+          'No. of roles created : ' +
             createdRoles.filter(
               nullValueOrCreatedRole => nullValueOrCreatedRole,
             ).length,

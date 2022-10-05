@@ -6,8 +6,10 @@ import { Role } from './entities/role.entity';
 @Module({
     imports: [
       TypeOrmModule.forRootAsync({
+
         imports: [ConfigModule],
         useFactory: async (configService: ConfigService) => ({
+          
           type: 'postgres' ,
           url: configService.get('DB_URL'),
           ssl: { rejectUnauthorized: false },
@@ -23,4 +25,5 @@ import { Role } from './entities/role.entity';
       } as TypeOrmModuleAsyncOptions),
     ],
   })
+  
   export class PostgresDatabaseProviderModule {}
