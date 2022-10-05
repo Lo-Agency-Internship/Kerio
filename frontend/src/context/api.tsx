@@ -23,6 +23,8 @@ interface IApiContext {
 	setUserToken?: any;
 	isLoading?: boolean;
 	contacts?: any;
+	employee?: any;
+	setEmployee?: any;
 	setContacts?: any;
 	getAllContacts?: any;
 	getAllUsers?: any;

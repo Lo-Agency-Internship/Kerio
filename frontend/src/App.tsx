@@ -8,7 +8,7 @@ import PrivateRoute from './utils/auth/privateRoute';
 import PublicRoute from './utils/auth/publicRoute';
 import Invite from './pages/invite';
 import { useState } from 'react';
-import Employees from './pages/employees';
+import EmployeesPage from './pages/employees/index';
 import NotFoundPage from './pages/notFoundPage';
 import EmployeeProfile from './pages/employeeProfile';
 import ContactPage from './pages/contacts/_id';
@@ -40,7 +40,7 @@ function App() {
 				<Route index element={<Index />} />
 				<Route path="contacts" element={<ContactsPage />} />
 				<Route path="contacts/:id" element={<ContactPage />} />
-				{role === 'owner' && <Route path="employees" element={<Employees />} />}
+				{role === 'owner' && <Route path="employees" element={<EmployeesPage />} />}
 				{role === 'owner' && <Route path="employeeProfile" element={<EmployeeProfile />} />}
 			</Route>
 			<Route path="*" element={<NotFoundPage />} />
