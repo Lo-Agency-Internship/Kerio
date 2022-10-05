@@ -79,7 +79,7 @@ export class ContactService {
     return await this.contactRepository.findOne({
       where: {
         id: payload.id,
-        organization: !!payload.organizationId,
+        organization: { id: payload.organizationId },
       },
       relations: ['statuses', 'statuses.status', 'organization', 'notes'],
     });
