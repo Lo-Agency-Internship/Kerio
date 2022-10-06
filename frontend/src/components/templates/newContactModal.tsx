@@ -25,7 +25,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open }) => {
 		const name = formData.get('name')?.toString().toLowerCase();
 		const phone = formData.get('phone-number');
 		const email = formData.get('email')?.toString().toLowerCase();
-		const status = formData.get('status');
+		const status = formData.get('customer-status');
 		const body = {
 			name,
 			phone,
