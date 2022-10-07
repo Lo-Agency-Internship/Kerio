@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigModule } from '@nestjs/config/dist/config.module';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
-import { Role } from './entities/role.entity';
+import { Role } from '../src/entities/role.entity';
 @Module({
     imports: [
       TypeOrmModule.forRootAsync({
@@ -13,11 +13,6 @@ import { Role } from './entities/role.entity';
           type: 'postgres' ,
           url: configService.get('DB_URL'),
           ssl: { rejectUnauthorized: false },
-        //   host: mysqlConfigService.host,
-        //   port: mysqlConfigService.port,
-        //   username: mysqlConfigService.username,
-        //   password: mysqlConfigService.password,
-        //   database: mysqlConfigService.database,
           entities: [Role],
           synchronize: true,
         }),

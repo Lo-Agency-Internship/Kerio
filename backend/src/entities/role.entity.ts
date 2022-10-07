@@ -1,4 +1,5 @@
-import { IRole } from 'src/interfaces/role.interface';
+import { IRole } from 'seed/role.interface';
+import { ERoleSeed } from 'seed/seed.type';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -7,7 +8,7 @@ export class Role implements IRole {
   id: number;
 
   @Column()
-  name: string;
+  name: ERoleSeed;
 
   @Column({
     type: 'timestamp',

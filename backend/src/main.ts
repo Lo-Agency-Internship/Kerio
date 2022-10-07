@@ -11,7 +11,6 @@ async function bootstrap() {
     cors: true,
     logger: false,
   });
-  
 
   const statusService = app.get(StatusService);
   await statusService.seedStatus();
