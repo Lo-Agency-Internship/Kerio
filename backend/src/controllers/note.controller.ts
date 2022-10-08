@@ -37,7 +37,7 @@ export class NoteController {
     @Param('contactId') contactId,
     @Body() body: AddNotetDto,
   ): Promise<Note> {
-    console.log('checkcontroller');
+
     body = { ...body, contactId };
 
     this.logService.addLog({

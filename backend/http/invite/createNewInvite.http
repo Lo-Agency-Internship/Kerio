@@ -1,13 +1,12 @@
 POST http://localhost:3001/invites HTTP/1.1
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhbmlAcC5jb20iLCJzdWIiOjExLCJuYW1lIjoiUGFuaXoiLCJpYXQiOjE2NjUyMjAwNTAsImV4cCI6MTY2NzgxMjA1MH0.rpTOntYNwCMjlpzDCv4IoFRbeNeYPaGbq9r1Rb6JXoQ
 
 {
 	"invites": [
 		{
 			"name": false,
-			"orgSlug": "hutt",
-			"invitedByUserEmail": "aien.saidi@gmail.com",
-			"email": "ttt@tttt.com"
+			"email": "alinaghihootan@gmail.com"
 		}
 	]
 }
