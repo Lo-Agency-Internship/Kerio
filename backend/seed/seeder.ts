@@ -1,5 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { RoleSeederService } from "./role.service";
+import { RoleSeederService } from "./role/role.service";
 
 @Injectable()
 export class Seeder {

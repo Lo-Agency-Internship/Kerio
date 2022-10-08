@@ -1,4 +1,4 @@
-import { ERoleSeed } from "./seed.type";
+import { ERoleSeed } from "../seed.type";
 
 
 export interface IRole {

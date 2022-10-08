@@ -1,4 +1,4 @@
-import { IRole } from 'seed/role.interface';
+import { IRole } from 'seed/role/role.interface';
 import { ERoleSeed } from 'seed/seed.type';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
