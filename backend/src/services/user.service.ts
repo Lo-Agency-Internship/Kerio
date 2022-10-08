@@ -2,13 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
-import { NewUser, SecureUser } from '../utils/types';
+import { NewUser, SecureUser, UserWithOrganization } from '../utils/types';
+import { Organization } from 'src/entities/organization.entity';
+import { Role } from 'src/entities/role.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
+    @InjectRepository(Organization)
+    private readonly orgRepository: Repository<Organization>,
+
+    @InjectRepository(Role)
+    private readonly roleRepository: Repository<Role>,
   ) {}
 
   async addUser(user: NewUser): Promise<User> {
@@ -55,7 +63,36 @@ export class UserService {
 
   async existsAndFindByEmail(email: string): Promise<[boolean, User]> {
     const user = await this.findOneUserByEmail(email);
-
     return [user !== null, user];
+  }
+
+  async findUserWithOrganizationByUserEmail(
+    email: string,
+  ): Promise<[boolean, UserWithOrganization]> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+      relations: ['organization'],
+      loadEagerRelations: true,
+      relationLoadStrategy: 'join',
+    });
+
+    const org = await this.orgRepository.findOneBy({
+      id: user.organization.orgId,
+    });
+
+    const role = await this.roleRepository.findOneBy({
+      id: user.organization.roleId,
+    });
+
+    return [
+      user !== null,
+      {
+        ...user,
+        organization: org,
+        role,
+      },
+    ];
   }
 }

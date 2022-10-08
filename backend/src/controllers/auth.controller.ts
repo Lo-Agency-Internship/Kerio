@@ -13,7 +13,6 @@ import { hashSync } from 'bcrypt';
 import {
   EEntityTypeLog,
   ERole,
-  SecureUser,
   SecureUserWithOrganization,
 } from '../utils/types';
 
@@ -36,7 +35,8 @@ export class AuthController {
   //@UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() { password, email }: UserLoginDto) {
-    const [exists, user] = await this.userService.existsAndFindByEmail(email);
+    const [exists, user] =
+      await this.userService.findUserWithOrganizationByUserEmail(email);
 
     if (!exists)
       throw new HttpException(
@@ -60,7 +60,11 @@ export class AuthController {
         HttpStatus.BAD_REQUEST,
       );
 
-    const jwt = await this.authService.createJwt(user as SecureUser);
+    delete user.password;
+    delete user.salt;
+    const jwt = await this.authService.createJwt(
+      user as SecureUserWithOrganization,
+    );
 
     this.logService.addLog({
       title: 'Login Successfully',
