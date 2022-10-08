@@ -20,7 +20,6 @@ import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
 import { OrganizationUserService } from '../services/organizationUser.service';
 import { kebab } from 'case';
-import { LogService } from 'src/services/log.service';
 
 @Controller('auth')
 export class AuthController {
@@ -29,7 +28,6 @@ export class AuthController {
     private readonly orgService: OrganizationService,
     private readonly orgUserService: OrganizationUserService,
     private readonly authService: AuthService,
-    private readonly logService: LogService,
   ) {}
 
   //@UseGuards(AuthGuard('local'))
@@ -66,13 +64,6 @@ export class AuthController {
       user as SecureUserWithOrganization,
     );
 
-    this.logService.addLog({
-      title: 'Login Successfully',
-      description: `${user.email} Logged in Successfully and Created token for save to localstorage on Browser`,
-      entityType: 'Login',
-      entityId: EEntityTypeLog.Login,
-      event: 'Login',
-    });
     return jwt;
   }
 
@@ -110,14 +101,6 @@ export class AuthController {
       organizationSlug: newOrg.slug,
       password,
       roleId,
-    });
-
-    this.logService.addLog({
-      title: 'Register Successfully',
-      description: `${resultUser.email} Registered Successfully `,
-      entityType: 'Register',
-      entityId: EEntityTypeLog.Register,
-      event: 'Register',
     });
 
     return resultUser;
