@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '../components/atoms/button';
 import EmployeeCard from '../components/molecules/employeeCard';
 import { Page } from '../layout/page';
-import AddEmployModal from '../components/molecules/addEmployeeModal';
+import NewEmployeeModal from '../components/templates/newEmployeeModal';
 interface IEmployee {
 	name: string;
 	phone: string;
@@ -82,7 +82,7 @@ export default function Employees() {
 					),
 				],
 			}}>
-			{showAddEmployModal && <AddEmployModal setOpen={setAddEmployModal} />}
+			{showAddEmployModal && <NewEmployeeModal setOpen={setAddEmployModal} open={showAddEmployModal} />}
 			{data.map((element, index) => (
 				<EmployeeCard employee={element} key={index} />
 			))}{' '}

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { addEmployeModalValidation } from '../../validation/addEmployModalValidation';
+import { modalEmployeeValidation } from '../../validation/addEmployModalValidation';
 import { Button } from '../atoms/button';
 import { useApiContext } from '../../context/api';
 
@@ -44,7 +44,7 @@ const AddEmployeeModal: FC<IContactModal> = ({ setOpen }) => {
 			name: nameValue,
 			email: emailValue,
 		};
-		const isValid = await addEmployeModalValidation.isValid(body);
+		const isValid = await modalEmployeeValidation.isValid(body);
 		const exists = employees.find((employee: { email: string }) => employee.email === body.email);
 		if (isValid && !exists) {
 			setEmployees([...employees, body]);
@@ -54,7 +54,7 @@ const AddEmployeeModal: FC<IContactModal> = ({ setOpen }) => {
 			if (exists) {
 				setError('This email is already exists');
 			}
-			addEmployeModalValidation.validate(body).catch((e) => {
+			modalEmployeeValidation.validate(body).catch((e) => {
 				setError(e.message);
 			});
 		}
