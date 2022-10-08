@@ -25,6 +25,12 @@ export class Note {
   contactId: number;
 
   @Column({ nullable: true })
+  score: number;
+
+  @Column()
+  status: string;
+
+  @Column({ nullable: true })
   date: Date;
 
   @CreateDateColumn()

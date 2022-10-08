@@ -29,7 +29,6 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { MailerService } from './services/mail.service';
 import { TemplateEngineService } from './services/templateEngine.service';
 import { Role } from './entities/role.entity';
-import { RoleService } from './services/role.service';
 import { RequestContextService } from './services/requestContext.service';
 import { RequestContextModule } from 'nestjs-request-context';
 import { Note } from './entities/note.entity';
@@ -140,7 +139,6 @@ const entitiesToAdd = [
     InviteService,
     MailerService,
     TemplateEngineService,
-    RoleService,
     RequestContextService,
     StatusService,
     LogService,
@@ -148,7 +146,7 @@ const entitiesToAdd = [
     EmployeeService,
     SearchService,
   ],
-  exports: [AuthService, RoleService, StatusService],
+  exports: [AuthService, StatusService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
