@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { SidebarLinkGroup } from './sidebarLinkGroup';
+// import { SidebarLinkGroup } from './sidebarLinkGroup';
 
 export interface SidebarProps {
 	children: React.ReactNode;
