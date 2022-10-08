@@ -14,14 +14,7 @@ export default function EmployeesPage() {
 	}, []);
 
 	return (
-		<Page
-			header={{
-				actions: [
-					() => (
-						<Button label="New Contact" type="submit" style="" onClick={() => setShowAddConactModal(true)}></Button>
-					),
-				],
-			}}>
+		<Page>
 			<EmployeeTable employee={[]} />
 		</Page>
 	);

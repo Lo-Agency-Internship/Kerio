@@ -14,14 +14,7 @@ export default function ContactsPage() {
 	}, []);
 
 	return (
-		<Page
-			header={{
-				actions: [
-					() => (
-						<Button label="New Contact" type="submit" style="" onClick={() => setShowAddConactModal(true)}></Button>
-					),
-				],
-			}}>
+		<Page>
 			<NewContactModal open={showAddConactModal} setOpen={setShowAddConactModal} />
 			<ContactTable contact={contacts} />
 		</Page>
