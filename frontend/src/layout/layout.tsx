@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import Header from '../components/organisms/header';
+// import Header from '../components/organisms/header';
 import Sidebar from '../components/organisms/sidebar';
-import { Page } from './page';
+// import { Page } from './page';
 
 interface ILayout {
 	children: ReactNode;
