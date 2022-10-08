@@ -42,7 +42,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 	const checkEmail = async (emailValue: any) => {
 		try {
 			await axios.post(uri('auth/duplicateEmail'), { email: emailValue }).then((response) => {
-				setError(response.data.message);
+				setError("");
 			});
 		} catch (err: any) {
 			setError(err.response.data.message);
