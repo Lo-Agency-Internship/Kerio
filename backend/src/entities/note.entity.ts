@@ -23,6 +23,12 @@ export class Note {
   description: string;
 
   @Column({ nullable: true })
+  score: number;
+
+  @Column()
+  status: string;
+
+  @Column({ nullable: true })
   date: Date;
 
   @CreateDateColumn()

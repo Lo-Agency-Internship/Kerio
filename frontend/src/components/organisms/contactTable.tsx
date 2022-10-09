@@ -64,8 +64,8 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 	const fetchData = async (page: number, size: number) => {
 		const result = await getAllContacts(page, size);
 		setIsLoaded(true);
-		setItems(result);
-		setTotalRows(13);
+		setItems(result.contacts);
+		setTotalRows(result.metadata.total);
 	};
 
 	useEffect(() => {

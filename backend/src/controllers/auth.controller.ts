@@ -13,7 +13,6 @@ import { hashSync } from 'bcrypt';
 import {
   EEntityTypeLog,
   ERole,
-  SecureUser,
   SecureUserWithOrganization,
 } from '../utils/types';
 
@@ -21,7 +20,6 @@ import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
 import { OrganizationUserService } from '../services/organizationUser.service';
 import { kebab } from 'case';
-import { LogService } from 'src/services/log.service';
 
 @Controller('auth')
 export class AuthController {
@@ -30,13 +28,13 @@ export class AuthController {
     private readonly orgService: OrganizationService,
     private readonly orgUserService: OrganizationUserService,
     private readonly authService: AuthService,
-    private readonly logService: LogService,
   ) {}
 
   //@UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() { password, email }: UserLoginDto) {
-    const [exists, user] = await this.userService.existsAndFindByEmail(email);
+    const [exists, user] =
+      await this.userService.findUserWithOrganizationByUserEmail(email);
 
     if (!exists)
       throw new HttpException(
@@ -60,15 +58,12 @@ export class AuthController {
         HttpStatus.BAD_REQUEST,
       );
 
-    const jwt = await this.authService.createJwt(user as SecureUser);
+    delete user.password;
+    delete user.salt;
+    const jwt = await this.authService.createJwt(
+      user as SecureUserWithOrganization,
+    );
 
-    this.logService.addLog({
-      title: 'Login Successfully',
-      description: `${user.email} Logged in Successfully and Created token for save to localstorage on Browser`,
-      entityType: 'Login',
-      entityId: EEntityTypeLog.Login,
-      event: 'Login',
-    });
     return jwt;
   }
 
@@ -106,14 +101,6 @@ export class AuthController {
       organizationSlug: newOrg.slug,
       password,
       roleId,
-    });
-
-    this.logService.addLog({
-      title: 'Register Successfully',
-      description: `${resultUser.email} Registered Successfully `,
-      entityType: 'Register',
-      entityId: EEntityTypeLog.Register,
-      event: 'Register',
     });
 
     return resultUser;

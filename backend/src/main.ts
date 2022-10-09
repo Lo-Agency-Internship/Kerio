@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { RoleService } from './services/role.service';
 import { StatusService } from './services/status.service';
 import { SentryService } from '@ntegral/nestjs-sentry';
 
@@ -12,9 +11,6 @@ async function bootstrap() {
     cors: true,
     logger: false,
   });
-
-  const roleService = app.get(RoleService);
-  await roleService.seed();
 
   const statusService = app.get(StatusService);
   await statusService.seedStatus();

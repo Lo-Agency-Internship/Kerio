@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export const addEmployeModalValidation = yup.object().shape({
+export const modalEmployeeValidation = yup.object().shape({
 	name: yup
 		.string()
 		.matches(/[A-Z,a-z]/, 'Name should be valid')
