@@ -7,14 +7,21 @@ import AddEmployeeModal from '../../components/molecules/addEmployeeModal';
 
 export default function EmployeesPage() {
 	const { getAllEmployees, employee, setEmployee } = useApiContext();
-	const [showAddConactModal, setShowAddConactModal] = useState(false);
+	const [showAddEmployeeModal, setShowAddEmployeeModal] = useState(false);
 
 	useEffect(() => {
 		getAllEmployees(1, 5).then(setEmployee);
 	}, []);
 
 	return (
-		<Page>
+		<Page
+			header={{
+				actions: [
+					() => (
+						<Button label="New Contact" type="submit" style="" onClick={() => setShowAddEmployeeModal(true)}></Button>
+					),
+				],
+			}}>
 			<EmployeeTable employee={[]} />
 		</Page>
 	);

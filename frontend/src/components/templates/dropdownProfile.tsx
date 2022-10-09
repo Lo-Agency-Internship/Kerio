@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Transition from '../../utils/component/transition';
 
 interface DropdownProfileProps {
@@ -11,6 +11,7 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 
 	const trigger = useRef<any>(null);
 	const dropdown = useRef<any>(null);
+	const navigate = useNavigate();
 
 	// close on click outside
 	useEffect(() => {
@@ -33,6 +34,9 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 		return () => document.removeEventListener('keydown', keyHandler);
 	});
 
+	function handleSignOut() {
+		localStorage.removeItem('access_token');
+	}
 	return (
 		<div className="relative inline-flex">
 			<button
@@ -71,16 +75,8 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 						<li>
 							<Link
 								className="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-								to="/settings"
-								onClick={() => setDropdownOpen(!dropdownOpen)}>
-								Settings
-							</Link>
-						</li>
-						<li>
-							<Link
-								className="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3"
-								to="/signin"
-								onClick={() => setDropdownOpen(!dropdownOpen)}>
+								to="/auth"
+								onClick={() => handleSignOut()}>
 								Sign Out
 							</Link>
 						</li>

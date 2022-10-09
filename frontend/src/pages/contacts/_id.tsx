@@ -21,7 +21,12 @@ export default function ContactPage() {
 		getContactsInfoById(id as string).then((res: any) => setContact(res));
 	}, []);
 	return (
-		<Page>
+		<Page
+			header={{
+				actions: [
+					() => <Button label="New Contact" type="submit" style="" onClick={() => setShowNoteModal(true)}></Button>,
+				],
+			}}>
 			{showNoteModal && <NoteModal setOpen={setShowNoteModal} />}
 
 			{isLoading ? (

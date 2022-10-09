@@ -5,23 +5,21 @@ import SearchModal from '../templates/SearchModal';
 
 export interface IHeaderProps {
 	actions?: React.FC[];
-	sidebarOpen: any;
-	setSidebarOpen: any;
+	sidebarOpen?: any;
+	setSidebarOpen?: any;
 }
 
-const Header: React.FC<IHeaderProps> = ({ sidebarOpen, setSidebarOpen }) => {
-	const navigate = useNavigate();
+const Header: React.FC<IHeaderProps> = ({ sidebarOpen, setSidebarOpen, actions }) => {
 	const location = useLocation();
 	const [searchModalOpen, setSearchModalOpen] = useState(false);
 
-	function handleSignOut() {
-		localStorage.removeItem('access_token');
-		navigate('/');
-	}
 	return (
 		<header className="sticky top-0 bg-white border-b border-slate-200 z-30">
 			<div className="px-4 sm:px-6 lg:px-8">
 				<div className="flex items-center justify-between h-16 -mb-px">
+					{actions?.map((C, idx) => (
+						<C key={idx} />
+					))}
 					{/* Header: Left side */}
 					<div className="flex">
 						{/* Hamburger button */}

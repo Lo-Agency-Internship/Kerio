@@ -10,7 +10,7 @@ export const Page: React.FC<IPage> = (props) => {
 
 	return (
 		<div className="w-full flex flex-col overflow-scroll">
-			<Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+			<Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} actions={props.header?.actions} />
 			<div className="mx-8 flex flex-1 mt-16 min-h-full flex-col items-center justify-self-stretch  w-full">
 				{props.children}
 			</div>
