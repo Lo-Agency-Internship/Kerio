@@ -1,14 +1,19 @@
-import { IRole } from 'seed/role/role.interface';
-import { ERoleSeed } from 'seed/seed.type';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ERole } from '../utils/types';
+import { IRole } from '../interfaces/role.entity.interface';
 
 @Entity()
 export class Role implements IRole {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: ERoleSeed;
+  @Column({
+    type: 'enum',
+    enum: ERole,
+    default: ERole.Owner,
+    unique: true,
+  })
+  name: ERole;
 
   @Column({
     type: 'timestamp',

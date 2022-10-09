@@ -55,7 +55,7 @@ export class AuthService {
     name,
     password,
     organizationSlug,
-    roleId,
+    role,
   }: UserRegisterDto): Promise<SecureUserWithOrganization> {
     const [orgExists, organization] = await this.orgService.existsAndFindBySlug(
       organizationSlug,
@@ -77,7 +77,7 @@ export class AuthService {
     await this.orgUserService.assignUserToOrganization(
       createdUser.id,
       organization.id,
-      roleId,
+      role,
     );
 
     return await this.orgUserService.findUserWithOrganizationByUserEmail(email);

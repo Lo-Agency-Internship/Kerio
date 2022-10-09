@@ -27,12 +27,16 @@ export class OrganizationUserService {
   async assignUserToOrganization(
     userId: number,
     orgId: number,
-    roleId: ERole,
+    role: ERole,
   ): Promise<OrganizationUser> {
+    const userRole = await this.roleRepository.findOneByOrFail({
+      name: role,
+    });
+
     const orgUser = await this.orgUserRepository.save({
       orgId,
       userId,
-      roleId,
+      role: userRole,
     });
 
     await this.userRepository.update(
@@ -54,7 +58,7 @@ export class OrganizationUserService {
       where: {
         email,
       },
-      relations: ['organization'],
+      relations: ['organization', 'organization.role'],
       loadEagerRelations: true,
       relationLoadStrategy: 'join',
     });
@@ -66,14 +70,10 @@ export class OrganizationUserService {
       id: user.organization.orgId,
     });
 
-    const role = await this.roleRepository.findOneBy({
-      id: user.organization.roleId,
-    });
-
     return {
       ...user,
       organization: org,
-      role,
+      role: user.organization.role,
     };
   }
 }

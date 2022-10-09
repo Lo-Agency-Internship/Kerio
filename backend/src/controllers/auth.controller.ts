@@ -105,7 +105,7 @@ export class AuthController {
       name,
       organizationSlug: newOrg.slug,
       password,
-      roleId,
+      role: roleId,
     });
 
     this.logService.addLog({
