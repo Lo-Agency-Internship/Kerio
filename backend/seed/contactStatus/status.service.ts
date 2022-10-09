@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Status } from "src/entities/contact/status.entity";
+import { Status } from "../../src/entities/contact/status.entity";
 import { Repository } from "typeorm";
 import { IContactStatus } from "./status.interface";
 import { statuses } from "./status.seed";

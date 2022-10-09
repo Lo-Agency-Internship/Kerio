@@ -9,18 +9,28 @@ async function bootstrap() {
         const logger = appContext.get(Logger);
         const seeder = appContext.get(Seeder);
         seeder
-          .seed()
+          .seedRole()
           .then(() => {
-            logger.debug('Seeding complete!');
+            logger.debug('Seeding Role complete!');
           })
           .catch(error => {
-            logger.error('Seeding failed!');
+            logger.error('Seeding Role failed!');
             throw error;
           })
-          .finally(() => appContext.close());
+          
+          seeder.seedStatus().then(()=>{logger.debug('Seeding Status compelete!')}).catch(error => {
+            logger.error('Seeding status failed!')
+            throw error;
+          }).finally(() => appContext.close());
       })
       .catch(error => {
         throw error;
+
+      
       });
+
+      
+
+      
   }
   bootstrap();

@@ -1,7 +1,7 @@
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Status } from 'src/entities/contact/status.entity';
+import { Status } from '../../src/entities/contact/status.entity';
 import { StatusSeederService } from './status.service';
 
 
@@ -11,4 +11,4 @@ import { StatusSeederService } from './status.service';
   exports: [StatusSeederService],
 
 })
-export class RoleSeederModule {}
+export class StatusSeederModule {}

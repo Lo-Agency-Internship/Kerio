@@ -34,7 +34,6 @@ import { RequestContextModule } from 'nestjs-request-context';
 import { Note } from './entities/note.entity';
 import { Log } from './entities/log.entity';
 import { StatusService } from './services/status.service';
-import { LogService } from './services/log.service';
 import { NoteController } from './controllers/note.controller';
 import { NoteService } from './services/note.service';
 import { EmployeeService } from './services/employee.service';
@@ -141,7 +140,6 @@ const entitiesToAdd = [
     TemplateEngineService,
     RequestContextService,
     StatusService,
-    LogService,
     NoteService,
     EmployeeService,
     SearchService,
