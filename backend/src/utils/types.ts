@@ -8,6 +8,12 @@ export type SecureUserWithOrganization = Omit<SecureUser, 'organization'> & {
   organization: Organization;
   role: Role | null;
 };
+
+export type UserWithOrganization = Omit<User, 'organization'> & {
+  organization: Organization;
+  role: Role | null;
+};
+
 export type NewUser = Omit<
   User,
   'id' | 'createdAt' | 'deletedAt' | 'updatedAt' | 'organization'
@@ -22,6 +28,7 @@ export type JwtPayload = {
   email: string;
   sub: number;
   name: string;
+  role: Role;
 };
 
 export type JwtResponse = {
