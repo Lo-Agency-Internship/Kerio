@@ -6,9 +6,11 @@ export interface IPage {
 }
 export const Page: React.FC<IPage> = (props) => {
 	return (
-		<div className="w-5/6 ml-56 m-auto relative flex flex-col items-stretch min-h-screen">
+		<div className="w-full flex flex-col overflow-scroll">
 			<Header {...props.header} />
-			<div className="flex flex-1 mt-16 min-h-full flex-col items-center justify-self-stretch">{props.children}</div>
+			<div className="mx-8 flex flex-1 mt-16 min-h-full flex-col items-center justify-self-stretch  w-full">
+				{props.children}
+			</div>
 		</div>
 	);
 };

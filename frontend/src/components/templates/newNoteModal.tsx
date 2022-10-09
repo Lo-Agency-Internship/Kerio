@@ -1,4 +1,4 @@
-import { modalContactValidation } from '../../validation/addContactValidaion';
+import { modalNoteValidation } from '../../validation/addNoteModalValidation';
 import { FC, useState } from 'react';
 import { useApiContext } from '../../context/api';
 import { useNavigate } from 'react-router-dom';
@@ -11,10 +11,11 @@ interface IProps {
 	open: boolean;
 }
 
-const ADDCONTACT_FORM_ID = 'ADDCONTACT_FORM_ID';
+const ADDNOTE_FORM_ID = 'ADDNOTE_FORM_ID';
 
-const NewContactModal: FC<IProps> = ({ setOpen, open }) => {
-	const { change, setChange, postContactInfo } = useApiContext();
+const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
+	// const { id } = useParams();
+	const { change, setChange, postNoteInfo } = useApiContext();
 	const navigate = useNavigate();
 	const [error, setError] = useState<string[] | null>(null);
 	const handleSubmit = async (event: any) => {
@@ -22,22 +23,20 @@ const NewContactModal: FC<IProps> = ({ setOpen, open }) => {
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
-		const name = formData.get('name')?.toString().toLowerCase();
-		const phone = formData.get('phone-number');
-		const email = formData.get('email')?.toString().toLowerCase();
-		const status = formData.get('customer-status');
+		const title = formData.get('title')?.toString().toLowerCase();
+		const description = formData.get('description');
+		const date = formData.get('date');
 		const body = {
-			name,
-			phone,
-			email,
-			status,
+			title,
+			description,
+			date,
 		};
 		try {
-			await modalContactValidation.isValid(body);
-			await postContactInfo(body);
+			await modalNoteValidation.isValid(body);
+			await postNoteInfo(body);
 			setOpen(false);
 			setChange(!change);
-			navigate('/contacts');
+			navigate('/contacts:id');
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
@@ -47,12 +46,12 @@ const NewContactModal: FC<IProps> = ({ setOpen, open }) => {
 		<Modal
 			show={open}
 			onClose={() => setOpen(false)}
-			title={'New Contact'}
+			title={'New Note'}
 			actions={[
 				{
 					label: 'Submit',
 					type: 'submit',
-					form: ADDCONTACT_FORM_ID,
+					form: ADDNOTE_FORM_ID,
 				},
 			]}>
 			{error && (
@@ -65,52 +64,43 @@ const NewContactModal: FC<IProps> = ({ setOpen, open }) => {
 					))}
 				</p>
 			)}
-			<form id={ADDCONTACT_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
+			<form id={ADDNOTE_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 				<InputFormControl
-					label={'Name'}
+					label={'Title'}
 					inputProps={{
 						type: 'string',
-						placeholder: 'Name',
+						placeholder: 'Title of your note',
 					}}
 				/>
 				<InputFormControl
-					label={'Phone Number'}
+					label={'Date'}
 					inputProps={{
-						type: 'string',
-						placeholder: 'Phone',
+						type: 'date',
+						placeholder: 'Date',
 					}}
 				/>
 				<InputFormControl
-					label={'Email'}
+					label={'Description'}
 					inputProps={{
 						type: 'email',
-						placeholder: 'Email',
+						placeholder: 'Description',
 					}}
 				/>
-
 				<SelectFormControl
-					label={'Customer Status'}
+					label={'Score'}
 					iSelectProps={{
 						iOptionProps: [
 							{
-								title: 'Lead',
-								value: 'Lead',
+								title: '+1',
+								value: '+1',
 							},
 							{
-								title: 'PotentialCustomer',
-								value: 'PotentialCustomer',
+								title: '-1',
+								value: '-1',
 							},
 							{
-								title: 'LostPotentialCustomer',
-								value: 'LostPotentialCustomer',
-							},
-							{
-								title: 'LostLoyalCustomer',
-								value: 'LostLoyalCustomer',
-							},
-							{
-								title: 'LoyalCustomer',
-								value: 'LoyalCustomer',
+								title: '0',
+								value: '0',
 							},
 						],
 					}}
@@ -120,4 +110,4 @@ const NewContactModal: FC<IProps> = ({ setOpen, open }) => {
 	);
 };
 
-export default NewContactModal;
+export default NewNoteModal;
