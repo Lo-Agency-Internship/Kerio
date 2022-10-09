@@ -9,7 +9,7 @@ import { IUser } from '../../utils/interfaces/user';
 import Loading from '../../components/molecules/loading';
 import { Page } from '../../layout/page';
 import { Button } from '../../components/atoms/button';
-import NoteModal from '../../components/molecules/noteModal';
+import NewNoteModal from '../../components/templates/newNoteModal';
 
 export default function ContactPage() {
 	const [contact, setContact] = useState<IUser>();
@@ -35,7 +35,7 @@ export default function ContactPage() {
 					),
 				],
 			}}>
-			{showNoteModal && <NoteModal setOpen={setShowNoteModal} />}
+			{showNoteModal && <NewNoteModal setOpen={setShowNoteModal} open={showNoteModal} />}
 
 			{isLoading ? (
 				<Loading />
