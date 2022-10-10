@@ -2,10 +2,8 @@ import { IPaginationParams } from './index';
 import { DeepPartial, FindOperator } from 'typeorm';
 import { Note } from 'src/entities/note.entity';
 
-
 export interface IFindPayload extends IPaginationParams {
   organizationId: number | FindOperator<number>;
- 
 }
 
 export interface IFindOneByIdPayload {
