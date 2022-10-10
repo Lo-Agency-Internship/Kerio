@@ -5,6 +5,12 @@ import { useApiContext } from '../../context/api';
 import { IUser } from '../../utils/interfaces/user';
 interface IContactTable {
 	contact: IUser[];
+	setContacts: any;
+	fetchData: any;
+	isLoaded: boolean;
+	totalRows: number;
+	perPage: number;
+	setPerPage: (page: React.SetStateAction<number>) => void;
 }
 
 const customStyles = {
@@ -54,19 +60,18 @@ const columns: TableColumn<IUser>[] = [
 	},
 ];
 
-const ContactTable: React.FC<IContactTable> = ({ contact }) => {
+const ContactTable: React.FC<IContactTable> = ({
+	contact,
+	setContacts,
+	fetchData,
+	isLoaded,
+	totalRows,
+	perPage,
+	setPerPage,
+}) => {
 	const [error, setError] = useState(null);
-	const [isLoaded, setIsLoaded] = useState(false);
-	const [items, setItems] = useState([]);
-	const [totalRows, setTotalRows] = useState(0);
-	const [perPage, setPerPage] = useState(10);
+
 	const { getAllContacts } = useApiContext();
-	const fetchData = async (page: number, size: number) => {
-		const result = await getAllContacts(page, size);
-		setIsLoaded(true);
-		setItems(result.contacts);
-		setTotalRows(result.metadata.total);
-	};
 
 	useEffect(() => {
 		fetchData(1, perPage);
@@ -92,7 +97,7 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 			<>
 				<DataTable
 					columns={columns}
-					data={items}
+					data={contact}
 					pagination
 					paginationServer
 					paginationTotalRows={totalRows}
