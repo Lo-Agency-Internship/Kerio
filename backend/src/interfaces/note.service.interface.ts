@@ -21,10 +21,7 @@ export interface IUpdateOneByIdPayload {
   note: DeepPartial<Note>;
 }
 
-export interface IUpdateStatusPayload {
-  id: number;
-  organizationId: number | FindOperator<number>;
-}
+
 
 export interface IDeletePayload {
   id: number;
