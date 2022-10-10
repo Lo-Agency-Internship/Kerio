@@ -48,7 +48,7 @@ export default function EmployeesPage() {
 			header={{
 				actions: [
 					() => (
-						<Button label="New Contact" type="submit" style="" onClick={() => setShowAddConactModal(true)}></Button>
+						<Button label="New Contact" type="submit" style="" onClick={() => setAddEmployModal(true)}></Button>
 					),
 				],
 			}}>
