@@ -5,6 +5,7 @@ import Images from '../assets/images/user.png';
 import { IEmployee } from '../utils/interfaces/user/employee.interface';
 import Employee from '../components/molecules/employee';
 import { Page } from '../layout/page';
+import { Button } from '../components/atoms/button';
 
 export default function EmployeeProfile() {
 	const [employee, setEmployee] = useState<IEmployee>();
@@ -15,7 +16,10 @@ export default function EmployeeProfile() {
 		// 	getEmployeesInfoById(id as string).then((res: any) => setEmployee(res));
 	}, []);
 	return (
-		<Page>
+		<Page
+			header={{
+				actions: [() => <Button label="New Contact" type="submit" style=""></Button>],
+			}}>
 			<div>
 				<div className="flex justify-start mt-8 w-12/12 ">
 					<div className="flex bg-gray-500 ml-8 p-2 rounded-xl">
