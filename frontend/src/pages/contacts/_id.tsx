@@ -4,7 +4,7 @@ import Timeline from '../../components/molecules/timeline';
 import Note from '../../components/molecules/note';
 import { useApiContext } from '../../context/api';
 import Images from '../../assets/images/user.png';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IUser } from '../../utils/interfaces/user';
 import Loading from '../../components/molecules/loading';
 import { Page } from '../../layout/page';
@@ -16,10 +16,20 @@ export default function ContactPage() {
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
 	const { getContactsInfoById, isLoading } = useApiContext();
 	const { id } = useParams();
-
+	const navigate = useNavigate();
+	async function fetchData() {
+		try {
+			await getContactsInfoById(id as string).then((res: any) => setContact(res));
+		} catch (err: any) {
+			if (err.response.data.message === 'contact not found') {
+				navigate('/404');
+			}
+		}
+	}
 	useEffect(() => {
-		getContactsInfoById(id as string).then((res: any) => setContact(res));
+		fetchData();
 	}, []);
+
 	return (
 		<Page
 			header={{

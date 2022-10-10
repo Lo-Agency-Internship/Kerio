@@ -1,7 +1,6 @@
 import { modalContactValidation } from '../../validation/addContactValidaion';
 import { FC, useState } from 'react';
 import { useApiContext } from '../../context/api';
-import { useNavigate } from 'react-router-dom';
 import Modal from '../organisms/modal';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import { SelectFormControl } from '../molecules/formControls/selectFormControl';
@@ -9,13 +8,16 @@ import { SelectFormControl } from '../molecules/formControls/selectFormControl';
 interface IProps {
 	setOpen: (close: boolean) => void;
 	open: boolean;
+	setContact: any;
+	fetchData: any;
+	totalRows: number;
+	perPage: number;
 }
 
 const ADDCONTACT_FORM_ID = 'ADDCONTACT_FORM_ID';
 
-const NewContactModal: FC<IProps> = ({ setOpen, open }) => {
-	const { change, setChange, postContactInfo } = useApiContext();
-	const navigate = useNavigate();
+const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perPage }) => {
+	const { postContactInfo } = useApiContext();
 	const [error, setError] = useState<string[] | null>(null);
 	const handleSubmit = async (event: any) => {
 		setError(null);
@@ -35,9 +37,9 @@ const NewContactModal: FC<IProps> = ({ setOpen, open }) => {
 		try {
 			await modalContactValidation.isValid(body);
 			await postContactInfo(body);
+			const pageNumber = Math.ceil((totalRows + 1) / perPage);
+			await fetchData(pageNumber, perPage);
 			setOpen(false);
-			setChange(!change);
-			navigate('/contacts');
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
