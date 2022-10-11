@@ -34,7 +34,7 @@ export default function ContactPage() {
 		<Page
 			header={{
 				actions: [
-					() => <Button label="New Contact" type="submit" style="" onClick={() => setShowNoteModal(true)}></Button>,
+					() => <Button label="New Note" type="submit" style="" onClick={() => setShowNoteModal(true)}></Button>,
 				],
 			}}>
 			{showNoteModal && <NewNoteModal setOpen={setShowNoteModal} open={showNoteModal} />}
