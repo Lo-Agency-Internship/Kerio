@@ -29,10 +29,10 @@ export default function Activation() {
 				<>
 					<p className="text-red-700">Your account activated successfully!</p>
 					<Link
-							to="/Auth"
-							className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100">
-							<span className="ml-3">Click here for Registeration!</span>
-						</Link>
+						to="/Auth"
+						className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100">
+						<span className="ml-3">Click here for Registeration!</span>
+					</Link>
 				</>
 			)}
 

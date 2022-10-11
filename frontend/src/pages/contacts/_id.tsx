@@ -10,16 +10,23 @@ import Loading from '../../components/molecules/loading';
 import { Page } from '../../layout/page';
 import { Button } from '../../components/atoms/button';
 import NewNoteModal from '../../components/templates/newNoteModal';
+import Roadmap from '../../components/organisms/roadMap';
+import { ITimeline } from '../../utils/interfaces/user/timeline.interface';
 
 export default function ContactPage() {
 	const [contact, setContact] = useState<IUser>();
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
-	const { getContactsInfoById, isLoading } = useApiContext();
+	const [roadMap, setRoadMap] = useState<ITimeline[] | null>();
+	const { getContactsInfoById, isLoading, getAllTimelines } = useApiContext();
 	const { id } = useParams();
 
 	useEffect(() => {
 		getContactsInfoById(id as string).then((res: any) => setContact(res));
+		getAllTimelines(id as string).then((res: any) => {
+			setRoadMap(res);
+		});
 	}, []);
+
 	return (
 		<Page
 			header={{
@@ -57,7 +64,19 @@ export default function ContactPage() {
 					<Profile setUser={setContact} user={contact} />
 
 					<div className="flex justify-center w-12/12 border">
-						<Timeline />
+						{roadMap &&
+							roadMap.map((element, index) => (
+								<Roadmap
+									records={[
+										{
+											items: [{ description: element.description, title: element.title, completed: false }],
+											createdAt: element.createdAt,
+											date: element.date,
+										},
+									]}
+									key={index}
+								/>
+							))}
 						<Note user={contact} setUser={setContact} />
 					</div>
 				</>
