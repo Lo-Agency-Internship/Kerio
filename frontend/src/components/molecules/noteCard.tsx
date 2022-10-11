@@ -6,14 +6,16 @@ interface INoteCards {
 	data: INote;
 }
 const NoteCard: React.FC<INoteCards> = ({ data }) => {
-	const [showNoteModal, setShowNoteModal] = useState(false);
+	const [editNoteModal, setEditNoteModal] = useState<boolean>(false);
 	const [note, setNote] = useState<INote>(data);
 	const truncate = (input: string) => (input.length > 10 ? `${input.substring(0, 10)}...` : input);
 
 	return (
 		<>
-			{showNoteModal && <ShowNoteModal setOpen={setShowNoteModal} note={note} setNote={setNote} />}
-			<div onClick={() => setShowNoteModal(true)}>
+			{/* {showNoteModal && <ShowNoteModal setOpen={setShowNoteModal} note={note} setNote={setNote} />} */}
+			{editNoteModal && <ShowNoteModal setOpen={setEditNoteModal} open={editNoteModal} note={note} />}
+
+			<div onClick={() => setEditNoteModal(true)}>
 				<div className="m-auto h-32 w-96 my-5 bg-white shadow p-2 border-t-8 border-gray-700 rounded-xl">
 					<header className="p-2 border-b flex">
 						<div className="flex flex-col">

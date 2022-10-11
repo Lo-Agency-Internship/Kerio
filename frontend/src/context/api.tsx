@@ -35,6 +35,8 @@ interface IApiContext {
 	postContactInfo?: any;
 	postUserInfo?: any;
 	postNoteInfo?: any;
+	getNoteInfo?: any;
+	getAllNotes?: any;
 	updateContactInfo?: any;
 	deleteContact?: any;
 	postLogin?: any;
