@@ -4,7 +4,7 @@ import Timeline from '../../components/molecules/timeline';
 import Note from '../../components/molecules/note';
 import { useApiContext } from '../../context/api';
 import Images from '../../assets/images/user.png';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IUser } from '../../utils/interfaces/user';
 import Loading from '../../components/molecules/loading';
 import { Page } from '../../layout/page';
@@ -16,23 +16,25 @@ export default function ContactPage() {
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
 	const { getContactsInfoById, isLoading } = useApiContext();
 	const { id } = useParams();
-
+	const navigate = useNavigate();
+	async function fetchData() {
+		try {
+			await getContactsInfoById(id as string).then((res: any) => setContact(res));
+		} catch (err: any) {
+			if (err.response.data.message === 'contact not found') {
+				navigate('/404');
+			}
+		}
+	}
 	useEffect(() => {
-		getContactsInfoById(id as string).then((res: any) => setContact(res));
+		fetchData();
 	}, []);
+
 	return (
 		<Page
 			header={{
 				actions: [
-					() => (
-						<Button
-							style="mt-3 inline-flex w-full flex items-center justify-center rounded-md border border-blue-700 bg-white px-4 py-2 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-							label={'Add Note'}
-							onClick={() => {
-								setShowNoteModal(true);
-							}}
-						/>
-					),
+					() => <Button label="New Contact" type="submit" style="" onClick={() => setShowNoteModal(true)}></Button>,
 				],
 			}}>
 			{showNoteModal && <NewNoteModal setOpen={setShowNoteModal} open={showNoteModal} />}

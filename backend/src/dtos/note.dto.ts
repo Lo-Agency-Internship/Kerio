@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Note } from 'src/entities/note.entity';
 
 export class AddNotetDto {
   @IsNotEmpty()
@@ -15,4 +16,13 @@ export class AddNotetDto {
 
   @IsOptional()
   contactId: number;
+}
+
+export class IPaginatedNoteResponse {
+  note: Note[];
+  metadata: {
+    total: number;
+    page: number;
+    size: number;
+  };
 }
