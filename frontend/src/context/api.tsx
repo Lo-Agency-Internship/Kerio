@@ -137,6 +137,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 	// post data for add note
 	const postNoteInfo = async (body: object, id: string) => {
+		console.log(id);
 		await axios.post(uri(`notes/${id}`), body, headerAuth);
 	};
 	/// //////////////// PUT

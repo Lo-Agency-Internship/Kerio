@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import ShowNoteModal from '../molecules/showNoteModal';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { format } from 'date-fns';
+import NewNoteModal from '../templates/newNoteModal';
+import ShowNoteModal from './showNoteModal';
 interface INoteCards {
 	data: INote;
 }
