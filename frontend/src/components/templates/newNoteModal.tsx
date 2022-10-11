@@ -1,7 +1,7 @@
 import { modalNoteValidation } from '../../validation/addNoteModalValidation';
 import { FC, useState } from 'react';
 import { useApiContext } from '../../context/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Modal from '../organisms/modal';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import { SelectFormControl } from '../molecules/formControls/selectFormControl';
@@ -14,9 +14,9 @@ interface IProps {
 const ADDNOTE_FORM_ID = 'ADDNOTE_FORM_ID';
 
 const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
-	// const { id } = useParams();
+	const { id } = useParams();
 	const { change, setChange, postNoteInfo } = useApiContext();
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 	const [error, setError] = useState<string[] | null>(null);
 	const handleSubmit = async (event: any) => {
 		setError(null);
@@ -26,17 +26,21 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 		const title = formData.get('title')?.toString().toLowerCase();
 		const description = formData.get('description');
 		const date = formData.get('date');
+		const status = formData.get('status');
+		const score = formData.get('score');
 		const body = {
 			title,
 			description,
 			date,
+			status,
+			score,
 		};
+		console.log(body);
 		try {
 			await modalNoteValidation.isValid(body);
-			await postNoteInfo(body);
+			await postNoteInfo(body, id);
 			setOpen(false);
 			setChange(!change);
-			navigate('/contacts:id');
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
@@ -54,21 +58,12 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 					form: ADDNOTE_FORM_ID,
 				},
 			]}>
-			{error && (
-				<p>
-					{error.map((element, index) => (
-						<p className="text-red-500 block" key={index}>
-							{element}
-							<br />
-						</p>
-					))}
-				</p>
-			)}
+			{error && <p>{error}</p>}
 			<form id={ADDNOTE_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 				<InputFormControl
 					label={'Title'}
 					inputProps={{
-						type: 'string',
+						type: 'text',
 						placeholder: 'Title of your note',
 					}}
 				/>
@@ -82,7 +77,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 				<InputFormControl
 					label={'Description'}
 					inputProps={{
-						type: 'email',
+						type: 'text',
 						placeholder: 'Description',
 					}}
 				/>
@@ -101,6 +96,33 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 							{
 								title: '0',
 								value: '0',
+							},
+						],
+					}}
+				/>
+				<SelectFormControl
+					label={'Status'}
+					iSelectProps={{
+						iOptionProps: [
+							{
+								title: 'Lead',
+								value: 'Lead',
+							},
+							{
+								title: 'PotentialCustomer',
+								value: 'PotentialCustomer',
+							},
+							{
+								title: 'LostPotentialCustomer',
+								value: 'LostPotentialCustomer',
+							},
+							{
+								title: 'LostLoyalCustomer',
+								value: 'LostLoyalCustomer',
+							},
+							{
+								title: 'LoyalCustomer',
+								value: 'LoyalCustomer',
 							},
 						],
 					}}
