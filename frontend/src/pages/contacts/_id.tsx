@@ -16,15 +16,12 @@ import { ITimeline } from '../../utils/interfaces/user/timeline.interface';
 export default function ContactPage() {
 	const [contact, setContact] = useState<IUser>();
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
-	const [roadMap, setRoadMap] = useState<ITimeline[] | null>();
+	const [roadMap, setRoadMap] = useState<ITimeline[] | null>(null);
 	const { getContactsInfoById, isLoading, getAllTimelines } = useApiContext();
 	const { id } = useParams();
 
 	useEffect(() => {
 		getContactsInfoById(id as string).then((res: any) => setContact(res));
-		getAllTimelines(id as string).then((res: any) => {
-			setRoadMap(res);
-		});
 	}, []);
 
 	return (

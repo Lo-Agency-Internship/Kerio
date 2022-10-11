@@ -1,9 +1,5 @@
-import axios from 'axios';
 import * as React from 'react';
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useApiContext } from '../../context/api';
-import { uri } from '../../utils';
+
 
 export interface RoadmapRecordItems {
 	completed: boolean;
