@@ -58,8 +58,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 					form: ADDNOTE_FORM_ID,
 				},
 			]}>
-			{/* {error && <p>{error}</p>} */}
-			<p>{error}</p>
+			{error && <p>{error}</p>}
 			<form id={ADDNOTE_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 				<InputFormControl
 					label={'Title'}
