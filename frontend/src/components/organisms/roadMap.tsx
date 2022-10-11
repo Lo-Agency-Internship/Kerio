@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-
 export interface RoadmapRecordItems {
 	completed: boolean;
 	title?: string;
