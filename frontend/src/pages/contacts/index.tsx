@@ -5,6 +5,7 @@ import { Button } from '../../components/atoms/button';
 import NewContactModal from '../../components/templates/newContactModal';
 import ContactTable from '../../components/organisms/contactTable';
 import { IUser } from '../../utils/interfaces/user';
+import DeleteModal from '../../components/molecules/deleteModal';
 
 export default function ContactsPage() {
 	const { getAllContacts } = useApiContext();
@@ -13,6 +14,9 @@ export default function ContactsPage() {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [totalRows, setTotalRows] = useState(0);
 	const [perPage, setPerPage] = useState(10);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [selectedRows, setSelectedRows] = useState<IUser[]>([]);
+
 	useEffect(() => {
 		getAllContacts(1, 5).then(setContacts);
 	}, []);
@@ -22,8 +26,10 @@ export default function ContactsPage() {
 		setContacts(result.contacts);
 		setTotalRows(result.metadata.total);
 	};
-	console.log(fetchData);
 
+	const handleDelete = () => {
+		console.log(selectedRows);
+	};
 	return (
 		<Page
 			header={{
@@ -49,7 +55,24 @@ export default function ContactsPage() {
 				totalRows={totalRows}
 				perPage={perPage}
 				setPerPage={setPerPage}
+				setSelectedRows={setSelectedRows}
+				selectedRows={selectedRows}
+				showDeleteModal={showDeleteModal}
+				setShowDeleteModal={setShowDeleteModal}
 			/>
+			<DeleteModal
+				open={showDeleteModal}
+				setOpen={setShowDeleteModal}
+				title={'Delete Modal'}
+				handleDelete={handleDelete}>
+				{selectedRows.length !== 1 ? (
+					<p>Are you sure that you want Delete these contacts ?</p>
+				) : (
+					<p>
+						Are you sure that you want Delete <span className="text-red-700">{selectedRows[0].name}</span> ?
+					</p>
+				)}
+			</DeleteModal>
 		</Page>
 	);
 }
