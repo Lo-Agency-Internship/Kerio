@@ -1,10 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
 import { IUser } from '../../utils/interfaces/user';
+import differenceBy from 'lodash/differenceBy';
+import { Button } from '../atoms/button';
+
 interface IContactTable {
 	contact: IUser[];
+	setContacts: any;
+	fetchData: any;
+	isLoaded: boolean;
+	totalRows: number;
+	perPage: number;
+	setPerPage: (page: React.SetStateAction<number>) => void;
+	setSelectedRows: any;
+	selectedRows: IUser[];
+	showDeleteModal: boolean;
+	setShowDeleteModal: any;
 }
 
 const customStyles = {
@@ -23,6 +36,12 @@ const customStyles = {
 		style: {
 			paddingLeft: '8px', // override the cell padding for data cells
 			paddingRight: '8px',
+		},
+	},
+	header: {
+		style: {
+			minHeight: '50px',
+			maxHeight: '60px',
 		},
 	},
 };
@@ -54,20 +73,20 @@ const columns: TableColumn<IUser>[] = [
 	},
 ];
 
-const ContactTable: React.FC<IContactTable> = ({ contact }) => {
+const ContactTable: React.FC<IContactTable> = ({
+	contact,
+	fetchData,
+	isLoaded,
+	totalRows,
+	perPage,
+	setPerPage,
+	setSelectedRows,
+	selectedRows,
+	showDeleteModal,
+	setShowDeleteModal,
+}) => {
 	const [error, setError] = useState(null);
-	const [isLoaded, setIsLoaded] = useState(false);
-	const [items, setItems] = useState([]);
-	const [totalRows, setTotalRows] = useState(0);
-	const [perPage, setPerPage] = useState(10);
-	const { getAllContacts } = useApiContext();
-	const fetchData = async (page: number, size: number) => {
-		const result = await getAllContacts(page, size);
-		setIsLoaded(true);
-		setItems(result.contacts);
-		setTotalRows(result.metadata.total);
-	};
-
+	const [toggleCleared, setToggleCleared] = useState(false);
 	useEffect(() => {
 		fetchData(1, perPage);
 	}, [perPage]);
@@ -83,6 +102,24 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 	const handleRowClicked = (row: any) => {
 		navigate(`/contacts/${row.id}`);
 	};
+
+	const handleRowSelected = React.useCallback((state: any) => {
+		setSelectedRows(state.selectedRows);
+	}, []);
+	const contextActions = useMemo(() => {
+		return (
+			<Button
+				onClick={() => {
+					setSelectedRows(selectedRows);
+					setShowDeleteModal(!showDeleteModal);
+				}}
+				label="Delete"
+				type="button"
+				style="bg-rose-500 text-gray-900 border-slate-200"
+			/>
+		);
+	}, [contact, selectedRows, toggleCleared]);
+
 	if (error) {
 		return <div>Error</div>;
 	} else if (!isLoaded) {
@@ -92,7 +129,12 @@ const ContactTable: React.FC<IContactTable> = ({ contact }) => {
 			<>
 				<DataTable
 					columns={columns}
-					data={items}
+					title="Contacts"
+					data={contact}
+					selectableRows
+					contextActions={contextActions}
+					onSelectedRowsChange={handleRowSelected}
+					clearSelectedRows={toggleCleared}
 					pagination
 					paginationServer
 					paginationTotalRows={totalRows}

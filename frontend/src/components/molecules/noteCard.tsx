@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import ShowNoteModal from '../molecules/showNoteModal';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { format } from 'date-fns';
+import NewNoteModal from '../templates/newNoteModal';
 interface INoteCards {
 	data: INote;
 }
@@ -12,7 +12,7 @@ const NoteCard: React.FC<INoteCards> = ({ data }) => {
 
 	return (
 		<>
-			{showNoteModal && <ShowNoteModal setOpen={setShowNoteModal} note={note} setNote={setNote} />}
+			{showNoteModal && <NewNoteModal setOpen={setShowNoteModal} open={showNoteModal} />}
 			<div onClick={() => setShowNoteModal(true)}>
 				<div className="m-auto h-32 w-96 my-5 bg-white shadow p-2 border-t-8 border-gray-700 rounded-xl">
 					<header className="p-2 border-b flex">

@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Note } from 'src/entities/note.entity';
 
 export class AddNotetDto {
   @IsNotEmpty()
@@ -26,4 +27,14 @@ export class UpdateNoteBodyDto {
 
   @IsString()
   description: string;
+
+}
+
+export class IPaginatedNoteResponse {
+  note: Note[];
+  metadata: {
+    total: number;
+    page: number;
+    size: number;
+  };
 }
