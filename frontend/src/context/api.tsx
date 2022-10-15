@@ -29,6 +29,7 @@ interface IApiContext {
 	getAllContacts?: any;
 	getAllUsers?: any;
 	getContactsInfoById?: any;
+	getAllTimelines?: any;
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
 	getAllEmployees?: any;
@@ -115,6 +116,11 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
+	const getAllTimelines = async (id: string) => {
+		const { data } = await axios.get(uri(`notes/timeline/${id}`), headerAuth);
+		return data;
+	};
+
 	/// //////////////// POST
 
 	// post info for signup
@@ -167,7 +173,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				setContacts,
 				getAllUsers,
 				getAllContacts,
-				getAllNotes,
+				getAllTimelines,
 				getContactsInfoById,
 				getUsersInfoById,
 				postContactInfo,
