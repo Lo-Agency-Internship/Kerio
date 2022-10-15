@@ -17,7 +17,7 @@ export interface IUpdateOneByIdPayload {
   note: DeepPartial<Note>;
 }
 
-export interface IDeletePayloadById {
+export interface IDeleteByIdPayload {
   id: number;
 }
 

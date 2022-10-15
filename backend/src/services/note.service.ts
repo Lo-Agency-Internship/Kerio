@@ -4,7 +4,7 @@ import { Note } from 'src/entities/note.entity';
 
 import {
   ICreatePayload,
-  IDeletePayloadById,
+  IDeleteByIdPayload,
   IFindByContactIdPayload,
   IUpdateOneByIdPayload,
 } from 'src/interfaces/note.service.interface';
@@ -28,7 +28,7 @@ export class NoteService {
     return await this.noteRepository.update(payload.id, payload.note);
   }
 
-  async delete(payload: IDeletePayloadById): Promise<DeleteResult> {
+  async delete(payload: IDeleteByIdPayload): Promise<DeleteResult> {
     return await this.noteRepository.softDelete(payload.id);
   }
 
