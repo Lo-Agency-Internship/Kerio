@@ -47,7 +47,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
-		console.log(note.id, 'ooo');
 
 		const formData = new FormData(e.currentTarget);
 		const date = formData.get('date') as string;
@@ -57,7 +56,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 		const status = formData.get('status') as string;
 
 		const body = { date, title, description, score, status };
-		console.log('KKK', body);
+
 		await axios.put(uri(`notes/${note.id}`), body, {
 			headers: {
 				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
