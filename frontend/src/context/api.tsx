@@ -85,6 +85,13 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
+	// get notes(employees)
+	const getAllNotes = async () => {
+		setIsLoading(true);
+		const { data } = await axios.get(uri('note'), headerAuth);
+		setIsLoading(false);
+		return data;
+	};
 	// get contacts info by ID
 	const getContactsInfoById = async (id: string) => {
 		setIsLoading(true);
@@ -137,7 +144,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 	// post data for add note
 	const postNoteInfo = async (body: object, id: string) => {
-		console.log(id);
 		await axios.post(uri(`notes/${id}`), body, headerAuth);
 	};
 	/// //////////////// PUT
@@ -161,6 +167,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				setContacts,
 				getAllUsers,
 				getAllContacts,
+				getAllNotes,
 				getContactsInfoById,
 				getUsersInfoById,
 				postContactInfo,

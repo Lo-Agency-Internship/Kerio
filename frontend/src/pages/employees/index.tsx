@@ -9,7 +9,7 @@ import { IEmployee } from '../../utils/interfaces/user/employee.interface';
 
 export default function EmployeesPage() {
 	const { getAllEmployees, employee, setEmployee } = useApiContext();
-	const [showAddConactModal, setShowAddConactModal] = useState(false);
+	// const [showAddConactModal, setShowAddConactModal] = useState(false);
 	const [showAddEmployModal, setAddEmployModal] = useState<boolean>(false);
 
 	const data: IEmployee[] = [
@@ -47,7 +47,7 @@ export default function EmployeesPage() {
 		<Page
 			header={{
 				actions: [
-					() => <Button label="New Note" type="submit" style="" onClick={() => setAddEmployModal(true)}></Button>,
+					() => <Button label="New Employee" type="submit" style="" onClick={() => setAddEmployModal(true)}></Button>,
 				],
 			}}>
 			{showAddEmployModal && <NewEmployeeModal setOpen={setAddEmployModal} open={showAddEmployModal} />}

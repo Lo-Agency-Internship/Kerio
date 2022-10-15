@@ -10,13 +10,10 @@ import Loading from '../../components/molecules/loading';
 import { Page } from '../../layout/page';
 import { Button } from '../../components/atoms/button';
 import NewNoteModal from '../../components/templates/newNoteModal';
-import EditNoteModal from '../../components/templates/editNoteModal';
-import ShowNoteModal from '../../components/molecules/showNoteModal';
 
 export default function ContactPage() {
 	const [contact, setContact] = useState<IUser>();
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
-	const [editNoteModal, setEditNoteModal] = useState<boolean>(false);
 	const { getContactsInfoById, isLoading } = useApiContext();
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -41,13 +38,6 @@ export default function ContactPage() {
 				],
 			}}>
 			{showNoteModal && <NewNoteModal setOpen={setShowNoteModal} open={showNoteModal} />}
-			{editNoteModal && (
-				<EditNoteModal
-					setOpen={setEditNoteModal}
-					open={editNoteModal}
-				
-				/>
-			)}
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -62,9 +52,7 @@ export default function ContactPage() {
 							</div>
 						</div>
 					</div>
-					<div className="flex justify-center">
-						{/* {showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />} */}
-					</div>
+
 					<Profile setUser={setContact} user={contact} />
 
 					<div className="flex justify-center w-12/12 border">
