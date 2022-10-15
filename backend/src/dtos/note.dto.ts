@@ -27,7 +27,6 @@ export class UpdateNoteBodyDto {
 
   @IsString()
   description: string;
-
 }
 
 export class IPaginatedNoteResponse {

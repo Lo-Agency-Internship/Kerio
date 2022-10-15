@@ -3,8 +3,6 @@ import { Note } from 'src/entities/note.entity';
 import { DeepPartial, FindOperator } from 'typeorm';
 import { IPaginationParams } from './index';
 
-
-
 export interface IFindPayload extends IPaginationParams {
   organizationId: number | FindOperator<number>;
 }
@@ -30,8 +28,6 @@ export interface IFindByContactIdPayload {
 export interface ICreatePayload {
   contact: Contact;
   note: DeepPartial<Note>;
-
-
 }
 
 export interface IPaginatedNotes {
