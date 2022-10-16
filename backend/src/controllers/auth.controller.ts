@@ -10,11 +10,7 @@ import {
 import { UserLoginDto, UserRegisterDto } from '../dtos/user.dto';
 import { UserService } from '../services/user.service';
 import { hashSync } from 'bcrypt';
-import {
-  EEntityTypeLog,
-  ERole,
-  SecureUserWithOrganization,
-} from '../utils/types';
+import { ERole, SecureUserWithOrganization } from '../utils/types';
 
 import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
@@ -34,7 +30,7 @@ export class AuthController {
   @Post('login')
   async login(@Body() { password, email }: UserLoginDto) {
     const [exists, user] =
-      await this.userService.findUserWithOrganizationByUserEmail(email);
+      await this.userService.findUserWithOrganizationByUserEmail({ email });
 
     if (!exists)
       throw new HttpException(
