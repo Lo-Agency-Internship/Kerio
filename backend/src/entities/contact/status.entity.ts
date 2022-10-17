@@ -13,6 +13,16 @@ export class Status {
     default: EContactStatus.Lead,
   })
   status: EContactStatus;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: string;
 
   @OneToMany(() => ContactStatus, (c) => c.status)
   contacts: ContactStatus[];

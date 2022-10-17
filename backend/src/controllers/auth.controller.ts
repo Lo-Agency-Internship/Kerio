@@ -100,7 +100,7 @@ export class AuthController {
       name,
       organizationSlug: newOrg.slug,
       password,
-      roleId,
+      role: roleId,
     });
 
     return resultUser;

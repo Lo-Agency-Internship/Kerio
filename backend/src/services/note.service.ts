@@ -9,8 +9,8 @@ export class NoteService {
   constructor(
     @InjectRepository(Note)
     private readonly noteRepository: Repository<Note>,
-    @InjectRepository(ContactStatus)
-    private readonly contactStatusRepository: Repository<ContactStatus>,
+    // @InjectRepository(ContactStatus)
+    // private readonly contactStatusRepository: Repository<ContactStatus>,
   ) {}
 
   async create(@Body() body): Promise<Note> {
