@@ -3,6 +3,6 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhvcGVAbG8uYWdlbmN5Iiwic3ViIjoyLCJuYW1lIjoic2FsYXIgRG9lIiwiaWF0IjoxNjY1MjM5NDk0LCJleHAiOjE2Njc4MzE0OTR9.ABUFGEiYmyf0hfp4K1WCf9CvPlhqV0Q6S8vR9USyMTE
 
 {
-  "email": "hope@lo.agency",
-  "password": "0000"
+  "email": "goli@dd.com",
+  "password": "00000000"
 }

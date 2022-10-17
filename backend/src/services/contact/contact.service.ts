@@ -25,8 +25,8 @@ export class ContactService {
     @InjectRepository(ContactStatus)
     private readonly contactStatusRepository: Repository<ContactStatus>,
 
-    @InjectRepository(Status)
-    private readonly statusRepository: Repository<Status>,
+    // @InjectRepository(Status)
+    // private readonly statusRepository: Repository<Status>,
 
     private readonly searchService: SearchService,
   ) {}

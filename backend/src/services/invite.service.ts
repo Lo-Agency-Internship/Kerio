@@ -25,7 +25,7 @@ export class InviteService {
     private readonly orgService: OrganizationService,
     private readonly configService: ConfigService,
     private readonly templateService: TemplateEngineService,
-    private readonly requestContextService: RequestContextService,
+    // private readonly requestContextService: RequestContextService,
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {

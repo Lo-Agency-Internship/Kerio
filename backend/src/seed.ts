@@ -11,14 +11,20 @@ async function bootstrap() {
 
   try {
     const seeded = await seeder.seedRoles();
-    logger.debug(`${seeded.length} roles seeded`);
+    if (seeded){
+
+      logger.debug(`${seeded.length} roles seeded`);
+    }
   } catch (e) {
     logger.error(`error occurred while seeding roles: ${e.message}`);
   }
 
   try {
     const seeded = await seeder.seedStatuses();
-    logger.debug(`${seeded.length} statuses seeded`);
+    if (seeded){
+
+      logger.debug(`${seeded.length} statuses seeded`);
+    }
   } catch (e) {
     logger.error(`error occurred while seeding statuses: ${e.message}`);
   }

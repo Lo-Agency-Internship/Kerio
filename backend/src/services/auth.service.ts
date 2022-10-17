@@ -22,7 +22,7 @@ export class AuthService {
     private readonly orgService: OrganizationService,
     private readonly orgUserService: OrganizationUserService,
     private readonly jwtService: JwtService,
-    private readonly mailgunService: MailerService,
+    // private readonly mailgunService: MailerService,
   ) {}
 
   async validateUser(

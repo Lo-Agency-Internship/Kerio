@@ -43,6 +43,7 @@ import { SearchController } from './controllers/search.controller';
 import { ContactStatus } from './entities/contact/contactStatus.entity';
 import { Status } from './entities/contact/status.entity';
 import { SentryModule } from '@ntegral/nestjs-sentry';
+import { LogService } from './services/log.service';
 
 const entitiesToAdd = [
   Contact,
@@ -69,7 +70,7 @@ const entitiesToAdd = [
         type: 'postgres',
         url: configService.get('DB_URL'),
         ssl: { rejectUnauthorized: false },
-        synchronize: true,
+        synchronize: false,
         logging: false,
         entities: entitiesToAdd,
       }),
@@ -143,11 +144,18 @@ const entitiesToAdd = [
     NoteService,
     EmployeeService,
     SearchService,
+    LogService
   ],
   exports: [AuthService, StatusService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
     // FOR LATER
+  }
+  onModuleInit(){
+    console.log('initializing app module')
+  }
+  onApplicationBootstrap(){
+    console.log('bootstraping app module')
   }
 }
