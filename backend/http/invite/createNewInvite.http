@@ -1,6 +1,6 @@
 POST http://localhost:3001/invites HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhbmlAcC5jb20iLCJzdWIiOjExLCJuYW1lIjoiUGFuaXoiLCJpYXQiOjE2NjUyMjAwNTAsImV4cCI6MTY2NzgxMjA1MH0.rpTOntYNwCMjlpzDCv4IoFRbeNeYPaGbq9r1Rb6JXoQ
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZGQuY29tIiwic3ViIjoyLCJuYW1lIjoibXJlemEiLCJyb2xlIjpudWxsLCJpYXQiOjE2NjU4MjM3MzEsImV4cCI6MTY2ODQxNTczMX0.2EszbgxtwvoIJD5aL4MRpNsLuVl77_DT94PleVMWcIY
 
 {
 	"invites": [
