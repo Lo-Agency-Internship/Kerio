@@ -120,8 +120,8 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 				<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
 				<div className="relative mb-5 mt-2">
 					<textarea
-						disabled={inputDisabled}
 						id={'description'}
+						disabled={inputDisabled}
 						defaultValue={note?.description}
 						name="description"
 						className={`text-gray-600 focus:outline-none font-normal w-full h-24 flex items-center pl-3 text-sm ${background}`}
