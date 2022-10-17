@@ -6,6 +6,7 @@ import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
 import { modalContactValidation } from '../../validation/addContactValidaion';
 import { IUser } from '../../utils/interfaces/user';
+import DeleteModal from '../molecules/deleteModal';
 export interface AccountPanelProps {
 	user?: IUser;
 	setUser?: (value: IUser) => void;
@@ -23,6 +24,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 	const [contactPhone, setContactPhone] = useState(user?.phone);
 	const [contactStatus, setContactStatus] = useState(user?.lastStatus);
 	const [error, setError] = useState<string | null | boolean>(null);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const navigate = useNavigate();
 
 	// useEffect(() => {
@@ -72,9 +74,9 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 		setBackground('bg-transparent');
 	};
 
-	const deleteHandler = () => {
-		setDeleteBtn(true);
-	};
+	// const deleteHandler = () => {
+	// 	setDeleteBtn(true);
+	// };
 
 	const cancelDelete = () => {
 		setDeleteBtn(false);
@@ -184,7 +186,14 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 					)}
 					{deleteBtn ? (
 						<>
-							<div
+							<DeleteModal
+								open={showDeleteModal}
+								setOpen={setShowDeleteModal}
+								title={'Delete Modal'}
+								handleDelete={submitDelete}>
+								<p>Do you want to delete this contact?</p>
+							</DeleteModal>
+							{/* <div
 								className="fixed backdrop-blur-sm
 										top-0
 										h-full
@@ -243,14 +252,14 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 										</button>
 									</div>
 								</div>
-							</div>
+							</div> */}
 						</>
 					) : (
 						<Button
 							label="Delete"
 							style="focus:outline-none mx-3 text-black  border-solid border-2 border-red-500 hover:border-red-400 hover:bg-red-500 hover:text-white focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
 							type="button"
-							onClick={deleteHandler}
+							onClick={() => setShowDeleteModal(true)}
 						/>
 					)}
 				</div>
