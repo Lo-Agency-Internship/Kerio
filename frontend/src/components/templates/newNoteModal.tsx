@@ -1,6 +1,7 @@
-import { modalContactValidation } from '../../validation/addContactValidaion';
+import { modalNoteValidation } from '../../validation/addNoteModalValidation';
 import { FC, useState } from 'react';
 import { useApiContext } from '../../context/api';
+import { useParams } from 'react-router-dom';
 import Modal from '../organisms/modal';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import { SelectFormControl } from '../molecules/formControls/selectFormControl';
@@ -8,38 +9,37 @@ import { SelectFormControl } from '../molecules/formControls/selectFormControl';
 interface IProps {
 	setOpen: (close: boolean) => void;
 	open: boolean;
-	setContact: any;
-	fetchData: any;
-	totalRows: number;
-	perPage: number;
 }
 
-const ADDCONTACT_FORM_ID = 'ADDCONTACT_FORM_ID';
+const ADDNOTE_FORM_ID = 'ADDNOTE_FORM_ID';
 
-const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perPage }) => {
-	const { postContactInfo } = useApiContext();
+const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
+	const { id } = useParams();
+	const { change, setChange, postNoteInfo } = useApiContext();
+	// const navigate = useNavigate();
 	const [error, setError] = useState<string[] | null>(null);
 	const handleSubmit = async (event: any) => {
 		setError(null);
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
-		const name = formData.get('name')?.toString().toLowerCase();
-		const phone = formData.get('phone-number');
-		const email = formData.get('email')?.toString().toLowerCase();
-		const status = formData.get('customer-status');
+		const title = formData.get('title')?.toString().toLowerCase();
+		const description = formData.get('description');
+		const date = formData.get('date');
+		const status = formData.get('status');
+		const score = formData.get('score');
 		const body = {
-			name,
-			phone,
-			email,
+			title,
+			description,
+			date,
 			status,
+			score,
 		};
 		try {
-			await modalContactValidation.isValid(body);
-			await postContactInfo(body);
-			const pageNumber = Math.ceil((totalRows + 1) / perPage);
-			await fetchData(pageNumber, perPage);
+			await modalNoteValidation.isValid(body);
+			await postNoteInfo(body, id);
 			setOpen(false);
+			setChange(!change);
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
@@ -49,49 +49,58 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 		<Modal
 			show={open}
 			onClose={() => setOpen(false)}
-			title={'New Contact'}
+			title={'New Note'}
 			actions={[
 				{
 					label: 'Submit',
 					type: 'submit',
-					form: ADDCONTACT_FORM_ID,
+					form: ADDNOTE_FORM_ID,
 				},
 			]}>
-			{error && (
-				<p>
-					{error.map((element, index) => (
-						<p className="text-red-500 block" key={index}>
-							{element}
-							<br />
-						</p>
-					))}
-				</p>
-			)}
-			<form id={ADDCONTACT_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
+			{error && <p>{error}</p>}
+			<form id={ADDNOTE_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 				<InputFormControl
-					label={'Name'}
+					label={'Title'}
 					inputProps={{
-						type: 'string',
-						placeholder: 'Name',
+						type: 'text',
+						placeholder: 'Title of your note',
 					}}
 				/>
 				<InputFormControl
-					label={'Phone Number'}
+					label={'Date'}
 					inputProps={{
-						type: 'string',
-						placeholder: 'Phone',
+						type: 'date',
+						placeholder: 'Date',
 					}}
 				/>
 				<InputFormControl
-					label={'Email'}
+					label={'Description'}
 					inputProps={{
-						type: 'email',
-						placeholder: 'Email',
+						type: 'text',
+						placeholder: 'Description',
 					}}
 				/>
-
 				<SelectFormControl
-					label={'Customer Status'}
+					label={'Score'}
+					iSelectProps={{
+						iOptionProps: [
+							{
+								title: '+1',
+								value: '+1',
+							},
+							{
+								title: '-1',
+								value: '-1',
+							},
+							{
+								title: '0',
+								value: '0',
+							},
+						],
+					}}
+				/>
+				<SelectFormControl
+					label={'Status'}
 					iSelectProps={{
 						iOptionProps: [
 							{
@@ -122,4 +131,4 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 	);
 };
 
-export default NewContactModal;
+export default NewNoteModal;

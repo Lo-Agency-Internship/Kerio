@@ -38,11 +38,12 @@ export class AuthService {
     return rest;
   }
 
-  async createJwt(user: SecureUser): Promise<JwtResponse> {
+  async createJwt(user: SecureUserWithOrganization): Promise<JwtResponse> {
     const payload: JwtPayload = {
       email: user.email,
       sub: user.id,
       name: user.name,
+      role: user.role,
     };
 
     return {

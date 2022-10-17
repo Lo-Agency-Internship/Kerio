@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Button, IButtonProps } from '../atoms/button';
 
@@ -15,7 +15,7 @@ const Modal: React.FC<IProps> = (props) => {
 
 	return (
 		<Transition.Root show={props.show} as={Fragment}>
-			<Dialog as="div" className="relative z-20" initialFocus={cancelButtonRef} onClose={props.onClose}>
+			<Dialog as="div" className="relative z-30" initialFocus={cancelButtonRef} onClose={props.onClose}>
 				<Transition.Child
 					as={Fragment}
 					enter="ease-out duration-300"

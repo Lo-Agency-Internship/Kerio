@@ -1,11 +1,11 @@
-import { ReactNode, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Header from '../components/organisms/header';
+import { ReactNode, useState } from 'react';
+// import { Link } from 'react-router-dom';
+// import Header from '../components/organisms/header';
 import Sidebar from '../components/organisms/sidebar/sidebar';
 import { SidebarGroup } from '../components/organisms/sidebar/sidebarGroup';
 import { SidebarLink } from '../components/organisms/sidebar/sidebarLink';
-import { SidebarLinkGroup } from '../components/organisms/sidebar/sidebarLinkGroup';
-import { Page } from './page';
+// import { SidebarLinkGroup } from '../components/organisms/sidebar/sidebarLinkGroup';
+// import { Page } from './page';
 
 interface ILayout {
 	children: ReactNode;
