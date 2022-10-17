@@ -55,15 +55,12 @@ export default function ContactPage() {
 						</div>
 						{/* </div> */}
 					</div>
-<<<<<<< HEAD
 					<div className="flex justify-center">
 						{/* {showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />} */}
 					</div>
 					<Account user={contact} setUser={setContact} />
-=======
 
 					<Profile setUser={setContact} user={contact} />
->>>>>>> 27ee8e5a58f899b6e1ef1f254b44a918cb00c34e
 
 					<div className="flex justify-center w-12/12 border">
 						{roadMap &&
