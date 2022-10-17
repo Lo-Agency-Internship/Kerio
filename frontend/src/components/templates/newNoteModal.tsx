@@ -35,7 +35,6 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 			status,
 			score,
 		};
-		console.log(body);
 		try {
 			await modalNoteValidation.isValid(body);
 			await postNoteInfo(body, id);
