@@ -70,7 +70,7 @@ const entitiesToAdd = [
         type: 'postgres',
         url: configService.get('DB_URL'),
         ssl: { rejectUnauthorized: false },
-        synchronize: false,
+        synchronize: true,
         logging: false,
         entities: entitiesToAdd,
       }),
