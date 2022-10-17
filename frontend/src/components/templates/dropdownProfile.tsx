@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Transition from '../../utils/component/transition';
 
@@ -11,7 +11,7 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 
 	const trigger = useRef<any>(null);
 	const dropdown = useRef<any>(null);
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	// close on click outside
 	useEffect(() => {
