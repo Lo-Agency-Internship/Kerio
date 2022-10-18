@@ -82,7 +82,7 @@ export class InviteController {
       name: body.name,
       organizationSlug: invite.invitedOrganization.slug,
       password: body.password,
-      roleId,
+      role: roleId,
     });
 
     // TODO: send email to user to activate the account

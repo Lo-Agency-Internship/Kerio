@@ -5,7 +5,7 @@ import { HealthController } from './controllers/health.controller';
 import { AppService } from './services/app.service';
 import { Contact } from './entities/contact/contact.entity';
 import { ContactController } from './controllers/contact.controller';
-import { ContactService } from './services/contact.service';
+import { ContactService } from './services/contact/contact.service';
 import { Organization } from './entities/organization.entity';
 import { User } from './entities/user.entity';
 import { OrganizationUser } from './entities/organizationUser.entity';
@@ -33,8 +33,7 @@ import { RequestContextService } from './services/requestContext.service';
 import { RequestContextModule } from 'nestjs-request-context';
 import { Note } from './entities/note.entity';
 import { Log } from './entities/log.entity';
-import { StatusService } from './services/status.service';
-import { LogService } from './services/log.service';
+import { StatusService } from './services/contact/status.service';
 import { NoteController } from './controllers/note.controller';
 import { NoteService } from './services/note.service';
 import { EmployeeService } from './services/employee.service';
@@ -44,6 +43,7 @@ import { SearchController } from './controllers/search.controller';
 import { ContactStatus } from './entities/contact/contactStatus.entity';
 import { Status } from './entities/contact/status.entity';
 import { SentryModule } from '@ntegral/nestjs-sentry';
+import { LogService } from './services/log.service';
 
 const entitiesToAdd = [
   Contact,
@@ -141,10 +141,10 @@ const entitiesToAdd = [
     TemplateEngineService,
     RequestContextService,
     StatusService,
-    LogService,
     NoteService,
     EmployeeService,
     SearchService,
+    LogService,
   ],
   exports: [AuthService, StatusService],
 })

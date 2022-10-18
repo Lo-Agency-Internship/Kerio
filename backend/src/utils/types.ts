@@ -36,10 +36,10 @@ export type JwtResponse = {
 };
 
 export type SecureInvite = Omit<Invite, 'token'>;
-//ERole
+
 export enum ERole {
-  Owner = 1,
-  Employee = 2,
+  Owner = 'Owner',
+  Employee = 'Employee',
 }
 
 export enum EContactStatus {
