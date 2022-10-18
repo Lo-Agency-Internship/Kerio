@@ -18,6 +18,17 @@ export class AddNotetDto {
   contactId: number;
 }
 
+export class UpdateNoteBodyDto {
+  @IsString()
+  title: string;
+
+  @IsString()
+  date: string;
+
+  @IsString()
+  description: string;
+}
+
 export class IPaginatedNoteResponse {
   note: Note[];
   metadata: {
