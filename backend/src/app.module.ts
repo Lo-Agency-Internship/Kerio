@@ -144,18 +144,12 @@ const entitiesToAdd = [
     NoteService,
     EmployeeService,
     SearchService,
-    LogService
+    LogService,
   ],
   exports: [AuthService, StatusService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
     // FOR LATER
-  }
-  onModuleInit(){
-    console.log('initializing app module')
-  }
-  onApplicationBootstrap(){
-    console.log('bootstraping app module')
   }
 }
