@@ -47,14 +47,14 @@ export class NoteController {
       id,
       organizationId: organization.id,
     });
-    if (contact) {
-      const note = this.noteService.createNewNoteObject(body);
-      return this.noteService.create({ note, contact });
+    if (!contact) {
+      throw new HttpException(
+        `this contact  does not exist`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    throw new HttpException(
-      `this contact  does not exist`,
-      HttpStatus.BAD_REQUEST,
-    );
+    const note = this.noteService.createNewNoteObject(body);
+    return this.noteService.create({ note, contact });
   }
   @Put(':noteId')
   update(
