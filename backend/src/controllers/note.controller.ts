@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { AddNotetDto, UpdateNoteBodyDto } from 'src/dtos/note.dto';
 import { Note } from 'src/entities/note.entity';
-import { ContactService } from 'src/services/contact.service';
+import { ContactService } from 'src/services/contact/contact.service';
 import { NoteService } from 'src/services/note.service';
 import { RequestContextService } from 'src/services/requestContext.service';
 import { JwtGuard } from 'src/utils/jwt.guard';

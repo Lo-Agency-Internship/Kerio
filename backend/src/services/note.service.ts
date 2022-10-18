@@ -10,7 +10,6 @@ import {
 } from 'src/interfaces/note.service.interface';
 import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
 
-
 @Injectable()
 export class NoteService {
   constructor(
