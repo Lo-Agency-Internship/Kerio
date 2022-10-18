@@ -12,7 +12,6 @@ import { genSaltSync, hashSync } from 'bcrypt';
 import { User } from 'src/entities/user.entity';
 import { OrganizationUserService } from './organizationUser.service';
 import { OrganizationService } from './organization.service';
-import { MailerService } from './mail.service';
 import { NotExistException } from '../utils/exceptions';
 
 @Injectable()
@@ -22,7 +21,6 @@ export class AuthService {
     private readonly orgService: OrganizationService,
     private readonly orgUserService: OrganizationUserService,
     private readonly jwtService: JwtService,
-    // private readonly mailgunService: MailerService,
   ) {}
 
   async validateUser(

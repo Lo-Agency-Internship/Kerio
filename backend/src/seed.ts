@@ -11,8 +11,7 @@ async function bootstrap() {
 
   try {
     const seeded = await seeder.seedRoles();
-    if (seeded){
-
+    if (seeded) {
       logger.debug(`${seeded.length} roles seeded`);
     }
   } catch (e) {
@@ -21,8 +20,7 @@ async function bootstrap() {
 
   try {
     const seeded = await seeder.seedStatuses();
-    if (seeded){
-
+    if (seeded) {
       logger.debug(`${seeded.length} statuses seeded`);
     }
   } catch (e) {
