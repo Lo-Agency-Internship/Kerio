@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-// import { SidebarLinkGroup } from './sidebarLinkGroup';
+import { SidebarLinkGroup } from './sidebarLinkGroup';
 
 export interface SidebarProps {
 	children: React.ReactNode;
@@ -116,7 +116,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, sidebarOpen, setSide
 						<ul className="mt-3">{children}</ul>
 					</div>
 				</div>
-
 				{/* Expand / collapse button */}
 				<div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
 					<div className="px-3 py-2">

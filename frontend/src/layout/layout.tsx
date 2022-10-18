@@ -1,10 +1,11 @@
-import { ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 // import { Link } from 'react-router-dom';
 // import Header from '../components/organisms/header';
 import Sidebar from '../components/organisms/sidebar/sidebar';
 import { SidebarGroup } from '../components/organisms/sidebar/sidebarGroup';
 import { SidebarLink } from '../components/organisms/sidebar/sidebarLink';
-// import { SidebarLinkGroup } from '../components/organisms/sidebar/sidebarLinkGroup';
+import { SidebarLinkGroup } from '../components/organisms/sidebar/sidebarLinkGroup';
 // import { Page } from './page';
 
 interface ILayout {
@@ -12,6 +13,15 @@ interface ILayout {
 }
 export default function Layout({ children }: ILayout) {
 	const [sidebarOpen, setSidebarOpen] = useState(true);
+	const location = useLocation();
+	const { pathname } = location;
+	const trigger = React.useRef<any>(null);
+	const sidebar = React.useRef<any>(null);
+
+	const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
+	const [sidebarExpanded, setSidebarExpanded] = React.useState(
+		storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true',
+	);
 	return (
 		<>
 			<div className="flex h-screen overflow-hidden">
@@ -66,10 +76,10 @@ export default function Layout({ children }: ILayout) {
 								</svg>
 							}
 						/>
-						<SidebarLink
-							href="/contacts"
-							anchor="Contacts"
-							icon={
+						<SidebarLinkGroup
+							activeCondition={pathname.includes('contact')}
+							linkGroupTitle={'Contacts'}
+							linkGroupIcon={
 								<svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
 									<path
 										className="fill-current text-slate-600 false"
@@ -78,12 +88,18 @@ export default function Layout({ children }: ILayout) {
 										className="fill-current text-slate-400 false"
 										d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z"></path>
 								</svg>
-							}
-						/>
-						<SidebarLink
-							href="/employees"
-							anchor="Employees"
-							icon={
+							}>
+							<li className="mb-1 last:mb-0">
+								<SidebarLink href="/contacts" anchor="Contact Table" />
+							</li>
+							<li className="mb-1 last:mb-0">
+								<SidebarLink href="/contacts" anchor="Add Contact" />
+							</li>
+						</SidebarLinkGroup>
+						<SidebarLinkGroup
+							activeCondition={pathname.includes('Employees')}
+							linkGroupTitle={'Employees'}
+							linkGroupIcon={
 								<svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
 									<path
 										className={`fill-current text-slate-600 `}
@@ -94,8 +110,14 @@ export default function Layout({ children }: ILayout) {
 										d="M11 1C5.477 1 1 4.582 1 9c0 1.797.75 3.45 2 4.785V19l4.833-2.416C8.829 16.85 9.892 17 11 17c5.523 0 10-3.582 10-8s-4.477-8-10-8z"
 									/>
 								</svg>
-							}
-						/>
+							}>
+							<li className="mb-1 last:mb-0">
+								<SidebarLink href="/Employees" anchor="Employee Table" />
+							</li>
+							<li className="mb-1 last:mb-0">
+								<SidebarLink href="/Employees" anchor="Add Employee" />
+							</li>
+						</SidebarLinkGroup>
 					</SidebarGroup>
 					<SidebarGroup groupTitle="Settings">
 						<SidebarLink href="/" anchor="Profile" />
