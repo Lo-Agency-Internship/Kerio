@@ -15,7 +15,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Contact } from '../entities/contact/contact.entity';
-import { ContactService } from '../services/contact.service';
+import { ContactService } from '../services/contact/contact.service';
 import {
   CreateBodyDto,
   IPaginatedContactResponse,
@@ -26,7 +26,7 @@ import { RequestContextService } from '../services/requestContext.service';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
 import { EContactStatus } from 'src/utils/types';
-import { StatusService } from '../services/status.service';
+import { StatusService } from '../services/contact/status.service';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { constants } from 'http2';
 import { ContactStatus } from '../entities/contact/contactStatus.entity';

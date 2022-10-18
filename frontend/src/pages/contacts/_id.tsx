@@ -41,7 +41,6 @@ export default function ContactPage() {
 				],
 			}}>
 			{showNoteModal && <NewNoteModal setOpen={setShowNoteModal} open={showNoteModal} />}
-
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -56,9 +55,7 @@ export default function ContactPage() {
 							</div>
 						</div>
 					</div>
-					<div className="flex justify-center">
-						{/* {showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />} */}
-					</div>
+
 					<Profile setUser={setContact} user={contact} />
 
 					<div className="flex justify-center w-12/12 border">

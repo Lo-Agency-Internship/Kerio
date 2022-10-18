@@ -1,7 +1,7 @@
 
 POST http://localhost:3001/contacts HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhpQGQuY29tIiwic3ViIjo1LCJuYW1lIjoiaGkgRG9lIiwicm9sZSI6bnVsbCwiaWF0IjoxNjY1ODMwMzYzLCJleHAiOjE2Njg0MjIzNjN9.ppk6SKccKqjVbH1mxd35ehDjs43C4jD11DWw_JsV0ig
+Authorization: bearer 
 
 {
 	"email": "refactor@lo.agency",
