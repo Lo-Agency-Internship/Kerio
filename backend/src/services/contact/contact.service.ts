@@ -13,7 +13,6 @@ import {
 } from '../../interfaces/contact.service.interface';
 import { getPaginationOffset } from '../../utils/functions';
 import { ContactStatus } from '../../entities/contact/contactStatus.entity';
-import { Status } from '../../entities/contact/status.entity';
 import { SearchService } from '../search.service';
 
 @Injectable()
@@ -24,9 +23,6 @@ export class ContactService {
 
     @InjectRepository(ContactStatus)
     private readonly contactStatusRepository: Repository<ContactStatus>,
-
-    // @InjectRepository(Status)
-    // private readonly statusRepository: Repository<Status>,
 
     private readonly searchService: SearchService,
   ) {}
