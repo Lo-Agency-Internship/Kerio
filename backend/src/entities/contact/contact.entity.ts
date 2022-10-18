@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -27,9 +28,6 @@ export class Contact {
   @Column({ length: 14 })
   phone: string;
 
-  @Column({ nullable: true })
-  organizationId: number;
-
   @CreateDateColumn()
   createdAt: Date;
 
@@ -40,6 +38,7 @@ export class Contact {
   deletedAt: Date;
 
   @ManyToOne(() => Organization, (organization) => organization.contacts)
+  @JoinColumn()
   organization: Organization;
 
   @OneToMany(() => Note, (note) => note.contact, {

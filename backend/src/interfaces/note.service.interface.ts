@@ -1,6 +1,7 @@
-import { IPaginationParams } from './index';
-import { DeepPartial, FindOperator } from 'typeorm';
+import { Contact } from 'src/entities/contact/contact.entity';
 import { Note } from 'src/entities/note.entity';
+import { DeepPartial, FindOperator } from 'typeorm';
+import { IPaginationParams } from './index';
 
 export interface IFindPayload extends IPaginationParams {
   organizationId: number | FindOperator<number>;
@@ -11,18 +12,22 @@ export interface IFindOneByIdPayload {
   id: number;
 }
 
-export interface ICreatePayload {
-  organizationId: number;
-  note: DeepPartial<Note>;
-}
-
 export interface IUpdateOneByIdPayload {
   id: number;
   note: DeepPartial<Note>;
 }
 
-export interface IDeletePayload {
+export interface IDeleteByIdPayload {
   id: number;
+}
+
+export interface IFindByContactIdPayload {
+  id: number | FindOperator<number>;
+}
+
+export interface ICreatePayload {
+  contact: Contact;
+  note: DeepPartial<Note>;
 }
 
 export interface IPaginatedNotes {
