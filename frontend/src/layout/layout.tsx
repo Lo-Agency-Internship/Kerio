@@ -50,7 +50,7 @@ export default function Layout({ children }: ILayout) {
 							href="/"
 							anchor="Dashbaord"
 							icon={
-								<svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
+								<svg className="shrink-0 h-6 w-6 pr-1" viewBox="0 0 24 24">
 									<path
 										className={`fill-current text-slate-400 `}
 										d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0z"
@@ -70,7 +70,7 @@ export default function Layout({ children }: ILayout) {
 							href="/contacts"
 							anchor="Contacts"
 							icon={
-								<svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
+								<svg className="shrink-0 h-6 w-6 pr-1" viewBox="0 0 24 24">
 									<path
 										className="fill-current text-slate-600 false"
 										d="M18.974 8H22a2 2 0 012 2v6h-2v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5h-2v-6a2 2 0 012-2h.974zM20 7a2 2 0 11-.001-3.999A2 2 0 0120 7zM2.974 8H6a2 2 0 012 2v6H6v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5H0v-6a2 2 0 012-2h.974zM4 7a2 2 0 11-.001-3.999A2 2 0 014 7z"></path>
@@ -84,7 +84,7 @@ export default function Layout({ children }: ILayout) {
 							href="/employees"
 							anchor="Employees"
 							icon={
-								<svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24">
+								<svg className="shrink-0 h-6 w-6 pr-1" viewBox="0 0 24 24">
 									<path
 										className={`fill-current text-slate-600 `}
 										d="M14.5 7c4.695 0 8.5 3.184 8.5 7.111 0 1.597-.638 3.067-1.7 4.253V23l-4.108-2.148a10 10 0 01-2.692.37c-4.695 0-8.5-3.184-8.5-7.11C6 10.183 9.805 7 14.5 7z"
