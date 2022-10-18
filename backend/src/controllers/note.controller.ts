@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Post,
@@ -45,8 +47,14 @@ export class NoteController {
       id,
       organizationId: organization.id,
     });
-    const note = this.noteService.createNewNoteObject(body);
-    return this.noteService.create({ note, contact });
+    if (contact) {
+      const note = this.noteService.createNewNoteObject(body);
+      return this.noteService.create({ note, contact });
+    }
+    throw new HttpException(
+      `this contact  does not exist`,
+      HttpStatus.BAD_REQUEST,
+    );
   }
   @Put(':noteId')
   update(
