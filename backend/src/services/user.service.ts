@@ -97,16 +97,12 @@ export class UserService {
       id: user.organization.orgId,
     });
 
-    const role = await this.roleRepository.findOneBy({
-      id: user.organization.roleId,
-    });
-
     return [
       user !== null,
       {
         ...user,
         organization: org,
-        role,
+        role: user.organization.role,
       },
     ];
   }

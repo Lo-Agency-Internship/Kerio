@@ -13,7 +13,6 @@ import { randomBytes } from 'crypto';
 import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
 import { TemplateEngineService } from './templateEngine.service';
-import { RequestContextService } from './requestContext.service';
 
 @Injectable()
 export class InviteService {
@@ -25,7 +24,6 @@ export class InviteService {
     private readonly orgService: OrganizationService,
     private readonly configService: ConfigService,
     private readonly templateService: TemplateEngineService,
-    private readonly requestContextService: RequestContextService,
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {

@@ -28,7 +28,6 @@ export default function EmployeeProfile() {
 						</div>
 						<h1 className="pt-2 pl-4 font-bold">{employee?.name} Information</h1>
 					</div>
-					<h1 className="pt-2 pl-4 font-bold">{employee?.name} Information</h1>
 				</div>
 			</div>
 			<Employee setUser={setEmployee} user={employee} />)

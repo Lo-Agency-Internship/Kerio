@@ -15,7 +15,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Contact } from '../entities/contact/contact.entity';
-import { ContactService } from '../services/contact.service';
+import { ContactService } from '../services/contact/contact.service';
 import {
   CreateBodyDto,
   IPaginatedContactResponse,
@@ -25,10 +25,9 @@ import {
 import { RequestContextService } from '../services/requestContext.service';
 import { JwtGuard } from '../utils/jwt.guard';
 import { Organization } from '../entities/organization.entity';
-import { LogService } from 'src/services/log.service';
 import { EContactStatus } from 'src/utils/types';
-import { StatusService } from '../services/status.service';
-import { UpdateResult } from 'typeorm';
+import { StatusService } from '../services/contact/status.service';
+import { DeleteResult, UpdateResult } from 'typeorm';
 import { constants } from 'http2';
 import { ContactStatus } from '../entities/contact/contactStatus.entity';
 
@@ -38,7 +37,6 @@ export class ContactController {
   constructor(
     private readonly contactService: ContactService,
     private readonly contextService: RequestContextService,
-    private readonly logService: LogService,
     private readonly statusService: StatusService,
   ) {}
 
@@ -46,7 +44,9 @@ export class ContactController {
   @UseGuards(JwtGuard)
   @UsePipes(new ValidationPipe({ transform: true }))
   readAll(@Query() query: ReadAllQueryDto): Promise<IPaginatedContactResponse> {
-    const { id } = this.contextService.get('organization') as Organization;
+    const organization = this.contextService.get(
+      'organization',
+    ) as Organization;
 
     const { size, sort, page, status } = query;
 
@@ -54,7 +54,7 @@ export class ContactController {
       size,
       sort,
       page,
-      organizationId: id,
+      organization,
       status,
     });
   }
@@ -103,7 +103,7 @@ export class ContactController {
 
     return this.contactService.create({
       contact,
-      organizationId: organization.id,
+      organization,
     });
   }
 
@@ -148,7 +148,7 @@ export class ContactController {
 
   @Delete(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
-  delete(@Param('id', ParseIntPipe) id: number): Promise<Contact> {
+  delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
     return this.contactService.delete({ id });
   }
 }

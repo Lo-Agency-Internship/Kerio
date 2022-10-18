@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Contact } from '../entities/contact/contact.entity';
-import { DeepPartial, Repository, UpdateResult } from 'typeorm';
+import { Contact } from '../../entities/contact/contact.entity';
+import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
 import {
   ICreatePayload,
   IDeletePayload,
@@ -10,11 +10,10 @@ import {
   IPaginatedContacts,
   IUpdateOneByIdPayload,
   IUpdateStatusPayload,
-} from '../interfaces/contact.service.interface';
-import { getPaginationOffset } from '../utils/functions';
-import { ContactStatus } from '../entities/contact/contactStatus.entity';
-import { Status } from '../entities/contact/status.entity';
-import { SearchService } from './search.service';
+} from '../../interfaces/contact.service.interface';
+import { getPaginationOffset } from '../../utils/functions';
+import { ContactStatus } from '../../entities/contact/contactStatus.entity';
+import { SearchService } from '../search.service';
 
 @Injectable()
 export class ContactService {
@@ -25,18 +24,20 @@ export class ContactService {
     @InjectRepository(ContactStatus)
     private readonly contactStatusRepository: Repository<ContactStatus>,
 
-    @InjectRepository(Status)
-    private readonly statusRepository: Repository<Status>,
-
     private readonly searchService: SearchService,
   ) {}
 
   async find(payload: IFindPayload): Promise<IPaginatedContacts> {
     const [result, total] = await this.contactRepository.findAndCount({
       where: {
-        organizationId: payload.organizationId,
+        organization: { id: payload.organization.id },
       },
-      relations: ['statuses', 'statuses.status', 'statuses.status'],
+      relations: [
+        'statuses',
+        'statuses.status',
+        'statuses.status',
+        'organization',
+      ],
       order: { createdAt: payload.sort },
       take: payload.size,
       skip: getPaginationOffset(payload),
@@ -78,16 +79,16 @@ export class ContactService {
     return await this.contactRepository.findOne({
       where: {
         id: payload.id,
-        organizationId: payload.organizationId,
+        organization: { id: payload.organizationId },
       },
-      relations: ['statuses', 'statuses.status'],
+      relations: ['statuses', 'statuses.status', 'organization', 'notes'],
     });
   }
 
   async create(payload: ICreatePayload): Promise<Contact> {
     const result = await this.contactRepository.save({
       ...payload.contact,
-      organizationId: payload.organizationId,
+      organization: payload.organization,
     });
 
     this.searchService.addDocument([
@@ -132,7 +133,7 @@ export class ContactService {
     });
   }
 
-  async delete(payload: IDeletePayload): Promise<any> {
+  async delete(payload: IDeletePayload): Promise<DeleteResult> {
     const deletedContact = await this.contactRepository.softDelete(payload.id);
     this.searchService.deleteDocument(payload.id);
     return deletedContact;

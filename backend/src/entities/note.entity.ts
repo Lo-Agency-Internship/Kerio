@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,9 +21,6 @@ export class Note {
 
   @Column()
   description: string;
-
-  @Column()
-  contactId: number;
 
   @Column({ nullable: true })
   score: number;
@@ -43,5 +41,6 @@ export class Note {
   deletedAt: Date;
 
   @ManyToOne(() => Contact, (contact) => contact.notes)
+  @JoinColumn()
   contact: Contact;
 }
