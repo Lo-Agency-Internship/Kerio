@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Transition from '../../utils/component/transition';
-
+import { useAuthContext } from '../../context/auth';
 interface DropdownProfileProps {
 	align: any;
 }
@@ -11,8 +11,8 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 
 	const trigger = useRef<any>(null);
 	const dropdown = useRef<any>(null);
-	// const navigate = useNavigate();
-
+	const { userMetadata } = useAuthContext();
+	const { name, role, email } = userMetadata();
 	// close on click outside
 	useEffect(() => {
 		const clickHandler = ({ target }: any) => {
@@ -47,7 +47,7 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 				aria-expanded={dropdownOpen}>
 				<img className="w-8 h-8 rounded-full" src={'https://unsplash.it/70/71'} width="32" height="32" alt="User" />
 				<div className="flex items-center truncate">
-					<span className="truncate ml-2 text-sm font-medium group-hover:text-slate-800">Acme Inc.</span>
+					<span className="truncate ml-2 text-sm font-medium group-hover:text-slate-800">{name}</span>
 					<svg className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400" viewBox="0 0 12 12">
 						<path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
 					</svg>
@@ -68,8 +68,8 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 				appear={undefined}>
 				<div ref={dropdown} onFocus={() => setDropdownOpen(true)} onBlur={() => setDropdownOpen(false)}>
 					<div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
-						<div className="font-medium text-slate-800">Acme Inc.</div>
-						<div className="text-xs text-slate-500 italic">Administrator</div>
+						<div className="font-medium text-sm text-slate-800">{email}</div>
+						<div className="text-xs text-slate-500 italic">{role}</div>
 					</div>
 					<ul>
 						<li>
