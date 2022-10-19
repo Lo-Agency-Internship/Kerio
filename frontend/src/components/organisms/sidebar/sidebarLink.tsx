@@ -30,6 +30,13 @@ export const SidebarLink: React.FC<SidebarLinkProps> = ({ href, anchor, icon, is
 						{icon || null}
 						<span className={textClassnames}>{anchor}</span>
 					</div>
+
+					{/* Badge */}
+					{/* <div className="flex flex-shrink-0 ml-2">
+            <span className="inline-flex items-center justify-center h-5 text-xs font-medium text-white bg-indigo-500 px-2 rounded">
+              4
+            </span>
+          </div> */}
 				</div>
 			</a>
 		</li>

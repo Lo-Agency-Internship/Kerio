@@ -1,30 +1,20 @@
-import { string } from 'prop-types';
-
 export interface IButtonProps {
-	label?: string;
-	onClick?: any;
+	label: string;
+	onClick?: () => void;
 	type?: 'submit' | 'button' | 'reset';
 	form?: string;
 	loading?: boolean;
 	success?: boolean;
 	style?: string;
-	children?: any;
-	ariaControls?: string;
-	ariaExpanded?: any;
 }
 
 export const Button: React.FC<IButtonProps> = (props) => {
 	return (
 		<button
-			aria-expanded={props.ariaExpanded}
-			aria-controls={props.ariaControls}
 			type={props.type || 'button'}
 			form={props.form}
 			disabled={props.loading}
-			className={`${
-				!props.style &&
-				`mt-3 inline-flex w-full flex items-center justify-center rounded-md border border-blue-700 bg-white px-4 py-2 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm`
-			} ${props.style}`}
+			className={`mt-3 inline-flex w-full flex items-center justify-center rounded-md border border-blue-700 bg-white px-4 py-2 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm ${props.style}`}
 			onClick={props.onClick}>
 			{props.loading && (
 				<svg
@@ -44,7 +34,6 @@ export const Button: React.FC<IButtonProps> = (props) => {
 			)}
 			{props.success && <span>✅</span>}
 			<span>{props.label}</span>
-			{props.children}
 		</button>
 	);
 };

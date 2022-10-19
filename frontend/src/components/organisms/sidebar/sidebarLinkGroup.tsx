@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 export interface SidebarLinkGroupProps {
-	children: React.ReactNode;
-	activeCondition: boolean;
+	children: any;
+	activeCondition: any;
 	linkGroupTitle: string;
 	linkGroupIcon?: React.ReactNode;
 }
@@ -35,7 +35,6 @@ export const SidebarLinkGroup: React.FC<SidebarLinkGroupProps> = ({
 							{linkGroupTitle}
 						</span>
 					</div>
-
 					{/* Icon */}
 					<div className="flex shrink-0 ltr:ml-2 rtl:mr-2">
 						<svg
