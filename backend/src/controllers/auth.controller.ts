@@ -4,6 +4,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  NotFoundException,
   Post,
   Query,
 } from '@nestjs/common';
@@ -29,38 +30,44 @@ export class AuthController {
   //@UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() { password, email }: UserLoginDto) {
-    const [exists, user] =
-      await this.userService.findUserWithOrganizationByUserEmail({ email });
+    try {
+      const user = await this.userService.findUserWithOrganizationByUserEmail({
+        email,
+      });
 
-    if (!exists)
-      throw new HttpException(
-        `user with email ${email} does not exist`,
-        HttpStatus.BAD_REQUEST,
+      // if (!user.enabled) {
+      //   throw new HttpException(
+      //     `user with email ${email} is not activated`,
+      //     HttpStatus.BAD_REQUEST,
+      //   );
+      // }
+      const hashedPassword = hashSync(password, user.salt);
+
+      const areEqual = user.password === hashedPassword;
+
+      if (!areEqual)
+        throw new HttpException(
+          `either user or password is incorrect`,
+          HttpStatus.BAD_REQUEST,
+        );
+
+      delete user.password;
+      delete user.salt;
+      const jwt = await this.authService.createJwt(
+        user as SecureUserWithOrganization,
       );
 
-    // if (!user.enabled) {
-    //   throw new HttpException(
-    //     `user with email ${email} is not activated`,
-    //     HttpStatus.BAD_REQUEST,
-    //   );
-    // }
-    const hashedPassword = hashSync(password, user.salt);
-
-    const areEqual = user.password === hashedPassword;
-
-    if (!areEqual)
-      throw new HttpException(
-        `either user or password is incorrect`,
-        HttpStatus.BAD_REQUEST,
-      );
-
-    delete user.password;
-    delete user.salt;
-    const jwt = await this.authService.createJwt(
-      user as SecureUserWithOrganization,
-    );
-
-    return jwt;
+      return jwt;
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new HttpException(
+          `user with email ${email} does not exist`,
+          HttpStatus.BAD_REQUEST,
+        );
+      } else {
+        throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+      }
+    }
   }
 
   @Post('register')
