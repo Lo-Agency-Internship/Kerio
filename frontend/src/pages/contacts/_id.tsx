@@ -48,10 +48,7 @@ export default function ContactPage() {
 					<div>
 						<div className="flex justify-start mt-8 w-12/12 ">
 							{/* <div className="flex bg-white ml-8 p-2 border-solid border-2 border-gray-300  rounded-xl"> */}
-							<div className="flex -space-x-1 overflow-hidden">
-								{/* <img className="h-10 w-10 rounded-full ring-1 ring-white" src={Images} alt="" /> */}
-							</div>
-							{/* <h1 className="pt-2 pl-4 font-bold">{contact?.name} Information</h1> */}
+							<div className="flex -space-x-1 overflow-hidden"></div>
 						</div>
 						{/* </div> */}
 					</div>
@@ -59,8 +56,6 @@ export default function ContactPage() {
 						{/* {showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />} */}
 					</div>
 					<Account user={contact} setUser={setContact} />
-
-					<Profile setUser={setContact} user={contact} />
 
 					<div className="flex justify-center w-12/12 border">
 						{roadMap &&
