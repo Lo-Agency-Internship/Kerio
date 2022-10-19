@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import DropdownProfile from '../templates/dropdownProfile';
 import SearchModal from '../templates/SearchModal';
-
+import { Button } from '../atoms/button';
 export interface IHeaderProps {
 	actions?: React.FC[];
 	sidebarOpen?: any;
@@ -10,7 +9,6 @@ export interface IHeaderProps {
 }
 
 const Header: React.FC<IHeaderProps> = ({ sidebarOpen, setSidebarOpen, actions }) => {
-	const location = useLocation();
 	const [searchModalOpen, setSearchModalOpen] = useState(false);
 
 	return (
@@ -23,31 +21,31 @@ const Header: React.FC<IHeaderProps> = ({ sidebarOpen, setSidebarOpen, actions }
 					{/* Header: Left side */}
 					<div className="flex">
 						{/* Hamburger button */}
-						<button
-							className="text-slate-500 hover:text-slate-600 lg:hidden"
-							aria-controls="sidebar"
-							aria-expanded={sidebarOpen}
-							onClick={() => setSidebarOpen(!sidebarOpen)}>
+						<Button
+							style="text-slate-500 hover:text-slate-600 lg:hidden"
+							onClick={() => setSidebarOpen(!sidebarOpen)}
+							ariaControls="sidebar"
+							ariaExpanded={sidebarOpen}>
 							<span className="sr-only">Open sidebar</span>
 							<svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 								<rect x="4" y="5" width="16" height="2" />
 								<rect x="4" y="11" width="16" height="2" />
 								<rect x="4" y="17" width="16" height="2" />
 							</svg>
-						</button>
+						</Button>
 					</div>
 
 					{/* Header: Right side */}
 					<div className="flex items-center space-x-3">
-						<button
-							className={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 transition duration-150 rounded-full ml-3 ${
-								searchModalOpen && 'bg-slate-200'
-							}`}
-							onClick={(e) => {
+						<Button
+							ariaControls="search-modal"
+							onClick={(e: any) => {
 								e.stopPropagation();
 								setSearchModalOpen(true);
 							}}
-							aria-controls="search-modal">
+							style={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 transition duration-150 rounded-full ml-3 ${
+								searchModalOpen && 'bg-slate-200'
+							}`}>
 							<span className="sr-only">Search</span>
 							<svg className="w-4 h-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
 								<path
@@ -59,7 +57,7 @@ const Header: React.FC<IHeaderProps> = ({ sidebarOpen, setSidebarOpen, actions }
 									d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z"
 								/>
 							</svg>
-						</button>
+						</Button>
 						<SearchModal setOpen={setSearchModalOpen} open={searchModalOpen} />
 						{/* <Notifications align="right" />
 			  <Help align="right" /> */}
