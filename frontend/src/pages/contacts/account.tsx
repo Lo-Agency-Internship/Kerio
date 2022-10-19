@@ -10,7 +10,7 @@ export interface AccountProps {
 
 export const Account: React.FC<AccountProps> = ({ user, setUser }) => {
 	return (
-		<div className="flex h-screen overflow-hidden">
+		<div className="flex h-screen overflow-hidden w-full">
 			{/* Content area */}
 			<div className="relative flex flex-col flex-1 ">
 				<main>
