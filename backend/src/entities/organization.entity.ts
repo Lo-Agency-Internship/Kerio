@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Contact } from './contact/contact.entity';
+import { OrganizationUser } from './organizationUser.entity';
 
 @Entity()
 export class Organization {
@@ -22,6 +23,13 @@ export class Organization {
 
   @Column({ unique: true })
   slug: string;
+
+  @OneToMany(
+    () => OrganizationUser,
+    (organizationUser) => organizationUser.orgId,
+    {},
+  )
+  OrgUser: OrganizationUser;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -78,8 +78,8 @@ export class UserService {
       relationLoadStrategy: 'join',
     });
 
-    const org = await this.orgRepository.findOneBy({
-      id: user.organization.orgId,
+    const org = await this.orgRepository.findOne({
+      where: { id: user.organization.orgId },
     });
 
     return [
