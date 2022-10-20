@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { useApiContext } from '../../context/api';
 
-export default function Note({ user, setUser }: any) {
+export default function Note() {
 	const [notes, setNote] = useState<INote[] | null>();
 	const { change } = useApiContext();
 	const { id } = useParams();

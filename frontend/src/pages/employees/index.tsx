@@ -8,7 +8,7 @@ import EmployeeCard from '../../components/molecules/employeeCard';
 import { IEmployee } from '../../utils/interfaces/user/employee.interface';
 
 export default function EmployeesPage() {
-	const { getAllEmployees, employee, setEmployee } = useApiContext();
+	const { getAllEmployees, setEmployee } = useApiContext();
 	// const [showAddConactModal, setShowAddConactModal] = useState(false);
 	const [showAddEmployModal, setAddEmployModal] = useState<boolean>(false);
 
