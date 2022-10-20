@@ -21,7 +21,11 @@ export const Input: React.FC<IInputProps> = (props) => {
 			defaultValue={props.defaultValue}
 			name={props.name}
 			placeholder={props.placeholder}
-			className={`px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative rounded text-sm outline-none focus:outline-none focus:shadow-outline ${props.className}`}
+			className={
+				!props.className
+					? 'px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative rounded text-sm outline-none focus:outline-none focus:shadow-outline'
+					: props.className
+			}
 		/>
 	);
 };

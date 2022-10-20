@@ -1,12 +1,11 @@
-import Images from '../../assets/images/user.png';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
 import { Button } from '../atoms/button';
-import { Input } from '../atoms/input';
 import { editContactValidation } from '../../validation/editContactValidation';
 import { IUser } from '../../utils/interfaces/user';
 import DeleteModal from '../molecules/deleteModal';
+import { InputFormControl } from '../molecules/formControls/inputFormControl';
 export interface AccountPanelProps {
 	user?: IUser;
 	setUser?: (value: IUser) => void;
@@ -30,7 +29,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
-		setBackground('bg-gray-300');
+		setBackground('bg-gray-200');
 	};
 
 	const cancelHandler = () => {
@@ -84,7 +83,13 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 				<section>
 					<div className="flex items-center">
 						<div className="mr-4">
-							<img className="w-20 h-20 rounded-full" src={Images} width="80" height="80" alt="User upload" />
+							<img
+								className="w-16 h-16 rounded-full"
+								src={'https://unsplash.it/70/71'}
+								width="80"
+								height="80"
+								alt="User"
+							/>
 						</div>
 						<button className="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white">Change</button>
 					</div>
@@ -95,51 +100,45 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 					<div className="text-sm">{error && <p className="text-red-700">{error}</p>}</div>
 					<div className="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5">
 						<div className="sm:w-1/3">
-							<label className="block text-sm font-medium mb-1" htmlFor="name">
-								Name
-							</label>
-
-							<Input
-								disabled={inputDisabled}
-								type={'text'}
-								id={'name'}
-								defaultValue={user?.name}
-								name="name"
-								className={background}
-								onChange={(e) => setContactName(e.target.value)}
-								value={contactName}
+							<InputFormControl
+								label={'Name'}
+								inputProps={{
+									type: 'text',
+									placeholder: 'Name',
+									disabled: inputDisabled,
+									onChange: (e) => setContactName(e.target.value),
+									value: contactName,
+									defaultValue: user?.name,
+									className: background,
+								}}
 							/>
 						</div>
 						<div className="sm:w-1/3">
-							<label className="block text-sm font-medium mb-1" htmlFor="email">
-								Email
-							</label>
-
-							<Input
-								disabled={inputDisabled}
-								type={'text'}
-								id={'email'}
-								defaultValue={user?.email}
-								name="email"
-								className={background}
-								onChange={(e) => setContactEmail(e.target.value)}
-								value={contactEmail}
+							<InputFormControl
+								label={'Email'}
+								inputProps={{
+									type: 'text',
+									placeholder: 'Email',
+									disabled: inputDisabled,
+									onChange: (e) => setContactEmail(e.target.value),
+									value: contactEmail,
+									defaultValue: user?.email,
+									className: background,
+								}}
 							/>
 						</div>
 						<div className="sm:w-1/3">
-							<label className="block text-sm font-medium mb-1" htmlFor="phone">
-								Phone
-							</label>
-
-							<Input
-								disabled={inputDisabled}
-								type={'text'}
-								id={'phone'}
-								defaultValue={user?.phone}
-								name="phone"
-								className={background}
-								onChange={(e) => setContactPhone(e.target.value)}
-								value={contactPhone}
+							<InputFormControl
+								label={'Phone'}
+								inputProps={{
+									type: 'text',
+									placeholder: 'Phone',
+									disabled: inputDisabled,
+									onChange: (e) => setContactPhone(e.target.value),
+									value: contactPhone,
+									defaultValue: user?.phone,
+									className: background,
+								}}
 							/>
 						</div>
 					</div>
