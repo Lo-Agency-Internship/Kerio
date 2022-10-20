@@ -4,7 +4,7 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhbmlAc
 
 {
 	"invites": [
-		{ mahsa/eng-551-reimplement-status-seeding
+		{ 
 			"name": "mahsa",
 			"email": "abadian.ma@gmail.com"
 		}
