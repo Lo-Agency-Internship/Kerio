@@ -4,7 +4,7 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZ
 
 {
 	"invites": [
-		{
+		{ 
 			"name": "mahsa",
 			"email": "abadian.ma@gmail.com"
 		}

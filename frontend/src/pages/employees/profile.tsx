@@ -1,8 +1,5 @@
-import React from 'react';
 import Images from '../../assets/images/user.png';
 import { Button } from '../../components/atoms/button';
-import ProfileBg from '../../images/profile-bg.jpg';
-import UserAvatar from '../../images/user-128-01.jpg';
 
 function ProfileBody() {
 	return (
