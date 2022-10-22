@@ -1,0 +1,2 @@
+GET http://localhost:3001/employee/17 HTTP/1.1
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhcmFAZC5jb20iLCJzdWIiOjE3LCJuYW1lIjoic2FyYURvZSIsImlhdCI6MTY2NjI3NjU0NSwiZXhwIjoxNjY4ODY4NTQ1fQ.C0jZsrU16bVIPjIOtM9oFFku60utOzz8iSRgpX71eW0

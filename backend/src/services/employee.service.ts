@@ -1,11 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Organization } from 'src/entities/organization.entity';
 import { User } from 'src/entities/user.entity';
 import { Role } from 'src/entities/role.entity';
 import { OrganizationUser } from 'src/entities/organizationUser.entity';
-import { RequestContextService } from './requestContext.service';
 import { Repository } from 'typeorm';
+import {
+  IReadAllByOrganization,
+  IReadOneById,
+} from 'src/interfaces/employee.service.interface';
+import { SecureUser } from 'src/utils/types';
 
 @Injectable()
 export class EmployeeService {
@@ -14,36 +17,47 @@ export class EmployeeService {
     private readonly userRepository: Repository<User>,
 
     @InjectRepository(OrganizationUser)
-    private readonly orgRepository: Repository<OrganizationUser>,
-
-    @InjectRepository(OrganizationUser)
     private readonly orgUserRepository: Repository<OrganizationUser>,
 
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
-
-    private readonly contextService: RequestContextService,
   ) {}
 
-  /*   async findAll(): Promise<User[]> {
-    const organization = this.contextService.get(
-      'organization',
-    ) as Organization;
-    const results = await this.userRepository.find({
-      where: {},
-    });
-
-    return results;
-  } */
-
-  async findOneById(id: number): Promise<User> {
-    const orgUser = await this.orgUserRepository.findOne({
-      where: { user: { id } },
+  async readAllByOrganization(
+    payload: IReadAllByOrganization,
+  ): Promise<SecureUser[]> {
+    const results = await this.orgUserRepository.find({
+      where: { org: { id: payload.organization.id } },
       relations: ['user'],
     });
-    if (!orgUser.user) {
+
+    const empolyees = results.map((item) => {
+      delete item.user.password;
+      delete item.user.salt;
+      return item.user;
+    });
+
+    return empolyees;
+  }
+
+  async readOneById(payload: IReadOneById): Promise<SecureUser> {
+    // const orgUser = await this.orgUserRepository.findOne({
+    //   where: { user: { id } },
+    //   relations: ['user'],
+    // });
+    // if (!orgUser.user) {
+    //   throw new NotFoundException();
+    // }
+
+    const user = await this.userRepository.findOne({
+      where: { id: payload.id },
+    });
+
+    if (!user) {
       throw new NotFoundException();
     }
-    return orgUser.user;
+    delete user.password;
+    delete user.salt;
+    return user;
   }
 }

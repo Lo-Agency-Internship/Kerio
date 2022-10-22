@@ -73,20 +73,16 @@ export class UserService {
       where: {
         email,
       },
-      relations: ['organization'],
+      relations: ['organization', 'organization.role', 'organization.org'],
       loadEagerRelations: true,
       relationLoadStrategy: 'join',
-    });
-
-    const org = await this.orgRepository.findOne({
-      where: { id: user.organization.orgId },
     });
 
     return [
       user !== null,
       {
         ...user,
-        organization: org,
+        organization: user.organization.org,
         role: user.organization.role,
       },
     ];

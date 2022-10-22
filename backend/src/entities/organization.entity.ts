@@ -24,13 +24,6 @@ export class Organization {
   @Column({ unique: true })
   slug: string;
 
-  @OneToMany(
-    () => OrganizationUser,
-    (organizationUser) => organizationUser.orgId,
-    {},
-  )
-  OrgUser: OrganizationUser;
-
   @CreateDateColumn()
   createdAt: Date;
 
@@ -42,4 +35,7 @@ export class Organization {
 
   @OneToMany(() => Contact, (contact) => contact.organization)
   contacts: Contact[];
+
+  @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.org)
+  OrgUser: OrganizationUser;
 }

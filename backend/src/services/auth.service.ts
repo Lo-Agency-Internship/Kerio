@@ -74,8 +74,8 @@ export class AuthService {
     });
 
     await this.orgUserService.assignUserToOrganization(
-      createdUser.id,
-      organization.id,
+      createdUser,
+      organization,
       role,
     );
 

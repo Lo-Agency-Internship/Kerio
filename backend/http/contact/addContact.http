@@ -4,8 +4,8 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjQsIm5hbWUiOiJnb2wgRG9lIiwiaWF0IjoxNjY2MDg3MjAzLCJleHAiOjE2Njg2NzkyMDN9.zj_DHLIb0ULgSlhNdMWfDo_ZZiKbVgWkBsran1kpn1w
 
 {
-	"email": "mani@lo.agency",
-    "name": "mani Baltazar",
+	"email": "manitest@lo.agency",
+    "name": "manitest Baltazar",
     "phone": "09123456789",
     "status": "Lead"
 }

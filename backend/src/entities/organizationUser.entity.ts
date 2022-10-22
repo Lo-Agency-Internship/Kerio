@@ -1,5 +1,4 @@
 import {
-  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -20,7 +19,7 @@ export class OrganizationUser {
   user: User;
 
   @ManyToOne(() => Organization, (organization) => organization.OrgUser, {})
-  orgId: Organization;
+  org: Organization;
 
   @ManyToOne(() => Role)
   role: Role;
