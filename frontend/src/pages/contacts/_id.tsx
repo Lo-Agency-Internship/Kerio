@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
-import Profile from '../../components/molecules/profile';
-import Timeline from '../../components/molecules/timeline';
 import Note from '../../components/molecules/note';
 import { useApiContext } from '../../context/api';
-import Images from '../../assets/images/user.png';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IUser } from '../../utils/interfaces/user';
 import Loading from '../../components/molecules/loading';
@@ -13,10 +10,11 @@ import NewNoteModal from '../../components/templates/newNoteModal';
 import Roadmap from '../../components/organisms/roadMap';
 import { ITimeline } from '../../utils/interfaces/user/timeline.interface';
 import { Account } from './account';
+
 export default function ContactPage() {
 	const [contact, setContact] = useState<IUser>();
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
-	const [roadMap, setRoadMap] = useState<ITimeline[] | null>(null);
+	const [roadMap] = useState<ITimeline[] | null>(null);
 	const { getContactsInfoById, isLoading } = useApiContext();
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -71,7 +69,7 @@ export default function ContactPage() {
 									key={index}
 								/>
 							))}
-						<Note user={contact} setUser={setContact} />
+						<Note />
 					</div>
 				</>
 			)}

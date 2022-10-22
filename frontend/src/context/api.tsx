@@ -60,7 +60,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const [contacts, setContacts] = useState([]);
 	type IGetContactsPayload = IApiPaginationParams;
 	const getAllContacts = async (page: number, size: number) => {
-		const { data, status } = await axios.get(uri(`contacts`), {
+		const { data } = await axios.get(uri(`contacts`), {
 			params: {
 				page,
 				size,
@@ -87,12 +87,12 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	// get notes(employees)
-	const getAllNotes = async () => {
-		setIsLoading(true);
-		const { data } = await axios.get(uri('note'), headerAuth);
-		setIsLoading(false);
-		return data;
-	};
+	// const getAllNotes = async () => {
+	// 	setIsLoading(true);
+	// 	const { data } = await axios.get(uri('note'), headerAuth);
+	// 	setIsLoading(false);
+	// 	return data;
+	// };
 	// get contacts info by ID
 	const getContactsInfoById = async (id: string) => {
 		setIsLoading(true);
