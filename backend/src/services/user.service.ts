@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
@@ -83,7 +83,7 @@ export class UserService {
 
   async findUserWithOrganizationByUserEmail(
     payload: IFindUserWithOrganizationPayload,
-  ): Promise<UserWithOrganization> {
+  ): Promise<[boolean, UserWithOrganization]> {
     const user = await this.userRepository.findOne({
       where: {
         email: payload.email,
@@ -93,21 +93,17 @@ export class UserService {
       relationLoadStrategy: 'join',
     });
 
-    if (!user) {
-      throw new NotFoundException();
-    }
     const org = await this.orgRepository.findOneBy({
       id: user.organization.orgId,
     });
 
-    const result = {
-      ...user,
-      organization: org,
-      role: user.organization.role,
-    };
-
-    return;
-
-    result;
+    return [
+      user !== null,
+      {
+        ...user,
+        organization: org,
+        role: user.organization.role,
+      },
+    ];
   }
 }
