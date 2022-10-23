@@ -1,20 +1,25 @@
 import {
+  Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
   NotFoundException,
   Param,
   ParseIntPipe,
+  Put,
   UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { UpdateEmployeeBodyDto } from 'src/dtos/user.dto';
 import { Organization } from 'src/entities/organization.entity';
 import { EmployeeService } from 'src/services/employee.service';
 import { RequestContextService } from 'src/services/requestContext.service';
 import { JwtGuard } from 'src/utils/jwt.guard';
 import { SecureUser } from 'src/utils/types';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 @UseGuards(JwtGuard)
 @Controller('employee')
@@ -45,7 +50,26 @@ export class EmployeeController {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
-  
+
     return this.employeeService.readAllByOrganization({ organization });
+  }
+
+  @Put(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() employee: UpdateEmployeeBodyDto,
+  ): Promise<UpdateResult> {
+    console.log({ employee });
+    return this.employeeService.updateOneById({
+      id,
+      employee,
+    });
+  }
+
+  @Delete(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
+    return this.employeeService.delete({ id });
   }
 }

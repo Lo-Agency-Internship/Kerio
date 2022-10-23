@@ -3,10 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Role } from 'src/entities/role.entity';
 import { OrganizationUser } from 'src/entities/organizationUser.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import {
+  IDeleteOneByIdPayload,
   IReadAllByOrganization,
   IReadOneById,
+  IUpdateOneByIdPayload,
 } from 'src/interfaces/employee.service.interface';
 import { SecureUser } from 'src/utils/types';
 
@@ -27,7 +29,7 @@ export class EmployeeService {
     payload: IReadAllByOrganization,
   ): Promise<SecureUser[]> {
     const results = await this.orgUserRepository.find({
-      where: { org: { id: payload.organization.id } },
+      where: { org: { id: payload.organization.id }, role: { id: 2 } },
       relations: ['user'],
     });
 
@@ -59,5 +61,12 @@ export class EmployeeService {
     delete user.password;
     delete user.salt;
     return user;
+  }
+  async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
+    return await this.userRepository.update(payload.id, payload.employee);
+  }
+
+  async delete(payload: IDeleteOneByIdPayload): Promise<DeleteResult> {
+    return await this.userRepository.softDelete(payload.id);
   }
 }

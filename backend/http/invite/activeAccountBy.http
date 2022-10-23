@@ -1,4 +1,4 @@
 GET http://localhost:3001/auth/enable?email=abadian.ma@gmail.com HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhcmFAZC5jb20iLCJzdWIiOjE3LCJuYW1lIjoic2FyYURvZSIsImlhdCI6MTY2NjI3NjU0NSwiZXhwIjoxNjY4ODY4NTQ1fQ.C0jZsrU16bVIPjIOtM9oFFku60utOzz8iSRgpX71eW0
+Authorization: bearer http://localhost:3001/invites/1360fcde1787e1d1dbdca52068277a46892ec9c00583e3a70908d933a7a030943a613d6e3809ff1ba50b353e996ac69e HTTP/1.1
 
