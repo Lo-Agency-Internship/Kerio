@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   JwtPayload,
@@ -13,10 +13,18 @@ import { User } from 'src/entities/user.entity';
 import { OrganizationUserService } from './organizationUser.service';
 import { OrganizationService } from './organization.service';
 import { NotExistException } from '../utils/exceptions';
+import { Repository } from 'typeorm';
+import { Organization } from 'src/entities/organization.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+
+    @InjectRepository(Organization)
+    private readonly orgRepository: Repository<Organization>,
     private readonly userService: UserService,
     private readonly orgService: OrganizationService,
     private readonly orgUserService: OrganizationUserService,
@@ -86,5 +94,58 @@ export class AuthService {
     const getUser = await this.userService.findOneUserByEmail(email);
     getUser.enabled = true;
     await this.userService.updateUserById(getUser.id, getUser);
+  }
+  //login
+  async findUserWithOrganizationByUserEmail(
+    email: string,
+    password:string
+  ){
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+      relations: ['organization'],
+      loadEagerRelations: true,
+      relationLoadStrategy: 'join',
+    });
+
+    if (!user){
+      throw new NotFoundException();
+    }
+
+    // if (!user.enabled){
+    //   throw new UnauthorizedException()
+    // }
+
+    const hashedPassword = hashSync(password, user.salt);
+
+    const areEqual = user.password === hashedPassword;
+
+    if (!areEqual){
+      throw new NotAcceptableException()
+    }
+
+
+    const org = await this.orgRepository.findOneBy({
+      id: user.organization.orgId,
+    });
+
+    delete user.password;
+    delete user.salt;
+
+    const result = {
+      ...user,
+      organization: org,
+      role: user.organization.role,
+    }
+
+    const jwt = await this.createJwt(
+      result  as SecureUserWithOrganization,
+    );
+
+    return jwt
+      
+    
+    
   }
 }

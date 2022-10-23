@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
-import { NewUser, SecureUser, UserWithOrganization } from '../utils/types';
+import { NewUser, SecureUser, SecureUserWithOrganization, UserWithOrganization } from '../utils/types';
 import { Organization } from 'src/entities/organization.entity';
 import { Role } from 'src/entities/role.entity';
+import { hashSync } from 'bcrypt';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class UserService {
@@ -14,9 +16,7 @@ export class UserService {
 
     @InjectRepository(Organization)
     private readonly orgRepository: Repository<Organization>,
-
-    @InjectRepository(Role)
-    private readonly roleRepository: Repository<Role>,
+    //private readonly authService:AuthService,
   ) {}
 
   async addUser(user: NewUser): Promise<User> {
@@ -66,29 +66,56 @@ export class UserService {
     return [user !== null, user];
   }
 
-  async findUserWithOrganizationByUserEmail(
-    email: string,
-  ): Promise<[boolean, UserWithOrganization]> {
-    const user = await this.userRepository.findOne({
-      where: {
-        email,
-      },
-      relations: ['organization'],
-      loadEagerRelations: true,
-      relationLoadStrategy: 'join',
-    });
+  // async findUserWithOrganizationByUserEmail(
+  //   email: string,
+  //   password:string
+  // ){
+  //   const user = await this.userRepository.findOne({
+  //     where: {
+  //       email,
+  //     },
+  //     relations: ['organization'],
+  //     loadEagerRelations: true,
+  //     relationLoadStrategy: 'join',
+  //   });
 
-    const org = await this.orgRepository.findOneBy({
-      id: user.organization.orgId,
-    });
+  //   if (!user){
+  //     throw new NotFoundException();
+  //   }
 
-    return [
-      user !== null,
-      {
-        ...user,
-        organization: org,
-        role: user.organization.role,
-      },
-    ];
-  }
+  //   if (!user.enabled){
+  //     throw new UnauthorizedException()
+  //   }
+
+  //   const hashedPassword = hashSync(password, user.salt);
+
+  //   const areEqual = user.password === hashedPassword;
+
+  //   if (!areEqual){
+  //     throw new NotAcceptableException()
+  //   }
+
+
+  //   const org = await this.orgRepository.findOneBy({
+  //     id: user.organization.orgId,
+  //   });
+
+  //   delete user.password;
+  //   delete user.salt;
+
+  //   const result = {
+  //     ...user,
+  //     organization: org,
+  //     role: user.organization.role,
+  //   }
+
+  //   const jwt = await this.authService.createJwt(
+  //     result  as SecureUserWithOrganization,
+  //   );
+
+    // return jwt
+      
+    
+    
+  // }
 }

@@ -4,8 +4,11 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  NotAcceptableException,
+  NotFoundException,
   Post,
   Query,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserLoginDto, UserRegisterDto } from '../dtos/user.dto';
 import { UserService } from '../services/user.service';
@@ -29,14 +32,16 @@ export class AuthController {
   //@UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() { password, email }: UserLoginDto) {
-    const [exists, user] =
-      await this.userService.findUserWithOrganizationByUserEmail(email);
+    try{
+  
+      const jwt =  await this.authService.findUserWithOrganizationByUserEmail(email,password);
+      return jwt
 
-    if (!exists)
-      throw new HttpException(
-        `user with email ${email} does not exist`,
-        HttpStatus.BAD_REQUEST,
-      );
+    // if (!exists)
+    //   throw new HttpException(
+    //     `user with email ${email} does not exist`,
+    //     HttpStatus.BAD_REQUEST,
+    //   );
 
     // if (!user.enabled) {
     //   throw new HttpException(
@@ -44,24 +49,47 @@ export class AuthController {
     //     HttpStatus.BAD_REQUEST,
     //   );
     // }
-    const hashedPassword = hashSync(password, user.salt);
+    // const hashedPassword = hashSync(password, user.salt);
 
-    const areEqual = user.password === hashedPassword;
+    // const areEqual = user.password === hashedPassword;
 
-    if (!areEqual)
+    // if (!areEqual)
+    //   throw new HttpException(
+    //     `either user or password is incorrect`,
+    //     HttpStatus.BAD_REQUEST,
+    //   );
+
+    
+    // const jwt = await this.authService.createJwt(
+    //   user as SecureUserWithOrganization,
+    // );
+    }catch(err){
+    if ( err instanceof NotFoundException){
       throw new HttpException(
-        `either user or password is incorrect`,
-        HttpStatus.BAD_REQUEST,
-      );
+            `user with email  does not exist`,
+            HttpStatus.BAD_REQUEST,
+          );
 
-    delete user.password;
-    delete user.salt;
-    const jwt = await this.authService.createJwt(
-      user as SecureUserWithOrganization,
-    );
+    }else if (err instanceof UnauthorizedException){
 
-    return jwt;
+      throw new HttpException(
+            `user with email  is not activated`,
+            HttpStatus.BAD_REQUEST,
+          );
+
+    }else if (err instanceof  NotAcceptableException){
+      throw new HttpException(
+            `either user or password is incorrect`,
+            HttpStatus.BAD_REQUEST,
+          );
+
+    } 
   }
+
+    
+    }
+
+  
 
   @Post('register')
   async register(
