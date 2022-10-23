@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import Modal from '../organisms/modal';
-import { Button, IButtonProps } from '../atoms/button';
 interface IDeleteContatctsProps {
 	open: boolean;
 	setOpen: any;

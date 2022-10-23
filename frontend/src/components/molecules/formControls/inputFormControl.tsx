@@ -15,7 +15,11 @@ export const InputFormControl: React.FC<IInputFormControlProps> = (props) => {
 				{...props.inputProps}
 				name={htmlFor}
 				id={htmlFor}
-				className="block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
+				className={
+					!props.inputProps?.className
+						? 'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black'
+						: props.inputProps?.className
+				}
 				placeholder={title(props.inputProps?.placeholder || '')}
 			/>
 		</div>

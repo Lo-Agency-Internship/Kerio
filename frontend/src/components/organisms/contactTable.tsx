@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
-import { useApiContext } from '../../context/api';
 import { IUser } from '../../utils/interfaces/user';
-import differenceBy from 'lodash/differenceBy';
 import { Button } from '../atoms/button';
 
 interface IContactTable {
@@ -85,8 +83,8 @@ const ContactTable: React.FC<IContactTable> = ({
 	showDeleteModal,
 	setShowDeleteModal,
 }) => {
-	const [error, setError] = useState(null);
-	const [toggleCleared, setToggleCleared] = useState(false);
+	const [error] = useState(null);
+	const [toggleCleared] = useState(false);
 	useEffect(() => {
 		fetchData(1, perPage);
 	}, [perPage]);
@@ -95,7 +93,7 @@ const ContactTable: React.FC<IContactTable> = ({
 		fetchData(page, perPage);
 	};
 
-	const handlePerRowsChange = async (newPerPage: React.SetStateAction<number>, page: any) => {
+	const handlePerRowsChange = async (newPerPage: React.SetStateAction<number>) => {
 		setPerPage(newPerPage);
 	};
 	const navigate = useNavigate();
