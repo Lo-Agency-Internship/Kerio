@@ -1,7 +1,8 @@
-POST http://localhost:3001/invites/0b64d82c66448b9df76a0dc1c9c646d45b66a0a34b21784f8b39d8689be926f7c1868e1e1ab41c995acf30370e60cc3b HTTP/1.1
+POST http://localhost:3001/invites/0a1776feeeba175b041f16c113b091d7eba33bc95b54086c4822e92ed9c7dba9b250475194d8663c2b5a1274d2b3af1b  HTTP/1.1
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZGQuY29tIiwic3ViIjozLCJuYW1lIjoicmV6YSIsImlhdCI6MTY2NjUyNzY1MywiZXhwIjoxNjY5MTE5NjUzfQ.KQEJm1Svaoi-mbYRy7DKF-GnAvxttDFfL3eChA70_w0
 
 {
-	"name": "saba rad",
+	"name": "mary pourganji",
     "password": "0000"
 }
