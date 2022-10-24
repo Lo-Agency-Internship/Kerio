@@ -2,15 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
-import { SecureUser, UserWithOrganization } from '../utils/types';
+import { SecureUser } from '../utils/types';
 import { Organization } from 'src/entities/organization.entity';
-import { Role } from 'src/entities/role.entity';
 import {
   IAddUserPayload,
   IExistAndFindByEmailPayload,
   IFindOneUserByEmailPayload,
   IFindOneUserByIdPayload,
-  IFindUserWithOrganizationPayload,
   IUpdateUserByEmailPayload,
   IUpdateUserByIdPayload,
 } from 'src/interfaces/user.service.interface';
@@ -22,10 +20,7 @@ export class UserService {
     private readonly userRepository: Repository<User>,
 
     @InjectRepository(Organization)
-    private readonly orgRepository: Repository<Organization>,
-
-    @InjectRepository(Role)
-    private readonly roleRepository: Repository<Role>,
+    private readonly orgRepository: Repository<Organization>, //private readonly authService:AuthService,
   ) {}
 
   async addUser(payload: IAddUserPayload): Promise<User> {
@@ -79,31 +74,5 @@ export class UserService {
   ): Promise<[boolean, User]> {
     const user = await this.findOneUserByEmail(payload);
     return [user !== null, user];
-  }
-
-  async findUserWithOrganizationByUserEmail(
-    payload: IFindUserWithOrganizationPayload,
-  ): Promise<[boolean, UserWithOrganization]> {
-    const user = await this.userRepository.findOne({
-      where: {
-        email: payload.email,
-      },
-      relations: ['organization'],
-      loadEagerRelations: true,
-      relationLoadStrategy: 'join',
-    });
-
-    const org = await this.orgRepository.findOneBy({
-      id: user.organization.orgId,
-    });
-
-    return [
-      user !== null,
-      {
-        ...user,
-        organization: org,
-        role: user.organization.role,
-      },
-    ];
   }
 }
