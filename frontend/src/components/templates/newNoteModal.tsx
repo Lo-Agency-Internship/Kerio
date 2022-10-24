@@ -16,7 +16,6 @@ const ADDNOTE_FORM_ID = 'ADDNOTE_FORM_ID';
 const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 	const { id } = useParams();
 	const { change, setChange, postNoteInfo } = useApiContext();
-	// const navigate = useNavigate();
 	const [error, setError] = useState<string[] | null>(null);
 	const handleSubmit = async (event: any) => {
 		setError(null);

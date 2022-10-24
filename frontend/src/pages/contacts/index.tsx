@@ -6,7 +6,7 @@ import NewContactModal from '../../components/templates/newContactModal';
 import ContactTable from '../../components/organisms/contactTable';
 import { IUser } from '../../utils/interfaces/user';
 import DeleteModal from '../../components/molecules/deleteModal';
-
+import {IApiPaginationParams} from '../../utils/interfaces/api/api.interface'
 export default function ContactsPage() {
 	const { getAllContacts } = useApiContext();
 	const [showAddConactModal, setShowAddConactModal] = useState(false);
@@ -18,10 +18,10 @@ export default function ContactsPage() {
 	const [selectedRows, setSelectedRows] = useState<IUser[]>([]);
 
 	useEffect(() => {
-		getAllContacts(1, 5).then(setContacts);
+		getAllContacts().then(setContacts);
 	}, []);
-	const fetchData = async (page: number, size: number) => {
-		const result = await getAllContacts(page, size);
+	const fetchData = async (payload:IApiPaginationParams) => {
+		const result = await getAllContacts(payload);
 		setIsLoaded(true);
 		setContacts(result.contacts);
 		setTotalRows(result.metadata.total);
