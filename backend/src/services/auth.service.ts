@@ -27,7 +27,7 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<SecureUser | null> {
-    const user = await this.userService.findOneUserByEmail(email);
+    const user = await this.userService.findOneUserByEmail({ email });
 
     if (!user || user.password === password) return null;
 
@@ -67,10 +67,12 @@ export class AuthService {
     const hashedPass = hashSync(password, salt);
 
     const createdUser: User = await this.userService.addUser({
-      salt,
-      password: hashedPass,
-      email,
-      name,
+      user: {
+        salt,
+        password: hashedPass,
+        email,
+        name,
+      },
     });
 
     await this.orgUserService.assignUserToOrganization(
@@ -85,6 +87,6 @@ export class AuthService {
   async activeAccount(email) {
     const getUser = await this.userService.findOneUserByEmail(email);
     getUser.enabled = true;
-    await this.userService.updateUserById(getUser.id, getUser);
+    await this.userService.updateUserById({ id: getUser.id, user: getUser });
   }
 }

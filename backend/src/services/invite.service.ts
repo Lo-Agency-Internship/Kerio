@@ -27,9 +27,9 @@ export class InviteService {
   ) {}
 
   async createInvite(invite: CreateInviteDto): Promise<Invite> {
-    const invitedBy = await this.userService.findOneUserByEmail(
-      invite.invitedByUserEmail,
-    );
+    const invitedBy = await this.userService.findOneUserByEmail({
+      email: invite.invitedByUserEmail,
+    });
 
     const invitedOrganization = await this.orgService.findOneOrganizationBySlug(
       invite.orgSlug,

@@ -30,7 +30,9 @@ export class AuthController {
   @Post('login')
   async login(@Body() { password, email }: UserLoginDto) {
     const [exists, user] =
-      await this.userService.findUserWithOrganizationByUserEmail(email);
+      await this.userService.findUserWithOrganizationByUserEmail({
+        email,
+      });
 
     if (!exists)
       throw new HttpException(

@@ -2,9 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
-import { NewUser, SecureUser, UserWithOrganization } from '../utils/types';
+import { SecureUser, UserWithOrganization } from '../utils/types';
 import { Organization } from 'src/entities/organization.entity';
 import { Role } from 'src/entities/role.entity';
+import {
+  IAddUserPayload,
+  IExistAndFindByEmailPayload,
+  IFindOneUserByEmailPayload,
+  IFindOneUserByIdPayload,
+  IFindUserWithOrganizationPayload,
+  IUpdateUserByEmailPayload,
+  IUpdateUserByIdPayload,
+} from 'src/interfaces/user.service.interface';
 
 @Injectable()
 export class UserService {
@@ -19,25 +28,29 @@ export class UserService {
     private readonly roleRepository: Repository<Role>,
   ) {}
 
-  async addUser(user: NewUser): Promise<User> {
-    return await this.userRepository.save(user);
+  async addUser(payload: IAddUserPayload): Promise<User> {
+    return await this.userRepository.save(payload.user);
   }
 
-  async updateUserById(id: number, user: User): Promise<UpdateResult> {
-    return await this.userRepository.update(id, user);
+  async updateUserById(payload: IUpdateUserByIdPayload): Promise<UpdateResult> {
+    return await this.userRepository.update(payload.id, payload.user);
   }
 
-  async updateUserByEmail(email: string, user: User): Promise<UpdateResult> {
-    return await this.userRepository.update(email, user);
+  async updateUserByEmail(
+    payload: IUpdateUserByEmailPayload,
+  ): Promise<UpdateResult> {
+    return await this.userRepository.update(payload.email, payload.user);
   }
 
-  async findOneUserById(id: number): Promise<User> {
-    return await this.userRepository.findOneBy({ id });
+  async findOneUserById(payload: IFindOneUserByIdPayload): Promise<User> {
+    return await this.userRepository.findOneBy({ id: payload.id });
   }
 
-  async findOneUserByEmail(email: string): Promise<User | null> {
+  async findOneUserByEmail(
+    payload: IFindOneUserByEmailPayload,
+  ): Promise<User | null> {
     return await this.userRepository.findOneBy({
-      email,
+      email: payload.email,
     });
   }
 
@@ -61,17 +74,19 @@ export class UserService {
     return count > 0;
   }
 
-  async existsAndFindByEmail(email: string): Promise<[boolean, User]> {
-    const user = await this.findOneUserByEmail(email);
+  async existsAndFindByEmail(
+    payload: IExistAndFindByEmailPayload,
+  ): Promise<[boolean, User]> {
+    const user = await this.findOneUserByEmail(payload);
     return [user !== null, user];
   }
 
   async findUserWithOrganizationByUserEmail(
-    email: string,
+    payload: IFindUserWithOrganizationPayload,
   ): Promise<[boolean, UserWithOrganization]> {
     const user = await this.userRepository.findOne({
       where: {
-        email,
+        email: payload.email,
       },
       relations: ['organization', 'organization.role', 'organization.org'],
       loadEagerRelations: true,
