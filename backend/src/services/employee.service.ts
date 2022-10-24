@@ -43,14 +43,6 @@ export class EmployeeService {
   }
 
   async readOneById(payload: IReadOneById): Promise<SecureUser> {
-    // const orgUser = await this.orgUserRepository.findOne({
-    //   where: { user: { id } },
-    //   relations: ['user'],
-    // });
-    // if (!orgUser.user) {
-    //   throw new NotFoundException();
-    // }
-
     const user = await this.userRepository.findOne({
       where: { id: payload.id },
     });
@@ -62,11 +54,17 @@ export class EmployeeService {
     delete user.salt;
     return user;
   }
+
   async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
     return await this.userRepository.update(payload.id, payload.employee);
   }
 
   async delete(payload: IDeleteOneByIdPayload): Promise<DeleteResult> {
+    const orgUser = await this.orgUserRepository.findOne({
+      where: { user: { id: payload.id } },
+    });
+    console.log({ id: orgUser.id });
+    await this.orgUserRepository.softDelete(orgUser.id);
     return await this.userRepository.softDelete(payload.id);
   }
 }

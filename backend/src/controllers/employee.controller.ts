@@ -60,7 +60,6 @@ export class EmployeeController {
     @Param('id', ParseIntPipe) id: number,
     @Body() employee: UpdateEmployeeBodyDto,
   ): Promise<UpdateResult> {
-    console.log({ employee });
     return this.employeeService.updateOneById({
       id,
       employee,

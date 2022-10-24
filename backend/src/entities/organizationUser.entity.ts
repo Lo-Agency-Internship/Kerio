@@ -1,9 +1,12 @@
 import {
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Organization } from './organization.entity';
 import { Role } from './role.entity';
@@ -23,4 +26,13 @@ export class OrganizationUser {
 
   @ManyToOne(() => Role)
   role: Role;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

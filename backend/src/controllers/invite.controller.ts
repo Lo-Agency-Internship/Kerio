@@ -22,7 +22,6 @@ import { RequestContextService } from 'src/services/requestContext.service';
 import { Organization } from 'src/entities/organization.entity';
 import { JwtGuard } from 'src/utils/jwt.guard';
 
-@UseGuards(JwtGuard)
 @Controller('invites')
 export class InviteController {
   constructor(
@@ -33,6 +32,7 @@ export class InviteController {
     private readonly contextService: RequestContextService,
   ) {}
 
+  @UseGuards(JwtGuard)
   @Post()
   async createNewInvite(@Body() { invites }: CreateInvitesDto) {
     const user = this.contextService.get(
