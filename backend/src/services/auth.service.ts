@@ -1,4 +1,9 @@
-import { Injectable, NotAcceptableException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   JwtPayload,
@@ -16,6 +21,7 @@ import { NotExistException } from '../utils/exceptions';
 import { Repository } from 'typeorm';
 import { Organization } from 'src/entities/organization.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IFindUserToCheckForLogin } from 'src/interfaces/auth.service.interface';
 
 @Injectable()
 export class AuthService {
@@ -97,21 +103,19 @@ export class AuthService {
     getUser.enabled = true;
     await this.userService.updateUserById({ id: getUser.id, user: getUser });
   }
+
   //login
-  async findUserWithOrganizationByUserEmail(
-    email: string,
-    password:string
-  ){
+  async findUserToCheckForLogin(payload: IFindUserToCheckForLogin) {
     const user = await this.userRepository.findOne({
       where: {
-        email,
+        email: payload.email,
       },
       relations: ['organization'],
       loadEagerRelations: true,
       relationLoadStrategy: 'join',
     });
 
-    if (!user){
+    if (!user) {
       throw new NotFoundException();
     }
 
@@ -119,14 +123,13 @@ export class AuthService {
     //   throw new UnauthorizedException()
     // }
 
-    const hashedPassword = hashSync(password, user.salt);
+    const hashedPassword = hashSync(payload.password, user.salt);
 
     const areEqual = user.password === hashedPassword;
 
-    if (!areEqual){
-      throw new NotAcceptableException()
+    if (!areEqual) {
+      throw new NotAcceptableException();
     }
-
 
     const org = await this.orgRepository.findOneBy({
       id: user.organization.orgId,
@@ -139,15 +142,10 @@ export class AuthService {
       ...user,
       organization: org,
       role: user.organization.role,
-    }
+    };
 
-    const jwt = await this.createJwt(
-      result  as SecureUserWithOrganization,
-    );
+    const jwt = await this.createJwt(result as SecureUserWithOrganization);
 
-    return jwt
-      
-    
-    
+    return jwt;
   }
 }
