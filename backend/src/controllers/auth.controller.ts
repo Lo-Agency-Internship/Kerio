@@ -84,13 +84,13 @@ export class AuthController {
       slug: pipedOrgSlug,
     });
 
-    const roleId = ERole.Owner;
+    const role = ERole.Owner;
     const resultUser = await this.authService.registerUser({
       email,
       name,
       organizationSlug: newOrg.slug,
       password,
-      role: roleId,
+      role,
     });
 
     return resultUser;
@@ -106,7 +106,6 @@ export class AuthController {
 
   @Get('enable')
   async activeAccount(@Query() { email }) {
-    console.log(email);
     return this.authService.activeAccount(email);
   }
 }

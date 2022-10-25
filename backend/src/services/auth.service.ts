@@ -90,8 +90,8 @@ export class AuthService {
     });
 
     await this.orgUserService.assignUserToOrganization(
-      createdUser.id,
-      organization.id,
+      createdUser,
+      organization,
       role,
     );
 
@@ -110,7 +110,7 @@ export class AuthService {
       where: {
         email: payload.email,
       },
-      relations: ['organization'],
+      relations: ['organization', 'organization.role', 'organization.org'],
       loadEagerRelations: true,
       relationLoadStrategy: 'join',
     });
@@ -131,16 +131,12 @@ export class AuthService {
       throw new NotAcceptableException();
     }
 
-    const org = await this.orgRepository.findOneBy({
-      id: user.organization.orgId,
-    });
-
     delete user.password;
     delete user.salt;
 
     const result = {
       ...user,
-      organization: org,
+      organization: user.organization.org,
       role: user.organization.role,
     };
 
