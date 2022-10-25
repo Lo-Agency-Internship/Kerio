@@ -84,13 +84,13 @@ export class AuthController {
       slug: pipedOrgSlug,
     });
 
-    const roleId = ERole.Owner;
+    const role = ERole.Owner;
     const resultUser = await this.authService.registerUser({
       email,
       name,
       organizationSlug: newOrg.slug,
       password,
-      role: roleId,
+      role,
     });
 
     if (resultUser.role.name === 'Owner') {
@@ -125,5 +125,6 @@ export class AuthController {
       }
       throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
     }
+    
   }
 }

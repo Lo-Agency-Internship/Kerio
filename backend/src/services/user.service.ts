@@ -1,18 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
-import { SecureUser } from '../utils/types';
-import { Organization } from 'src/entities/organization.entity';
+import { SecureUser, UserWithOrganization } from '../utils/types';
+
 import {
   IAddUserPayload,
+  IDeleteOneByIdPayload,
   IExistAndFindByEmailPayload,
   IFindOneUserByEmailPayload,
   IFindOneUserByIdPayload,
   IUpdateOwnerEnabled,
+  IFindUserWithOrganizationPayload,
+  IReadAllByOrganization,
+  IReadOneById,
+  IUpdateOneByIdPayload,
   IUpdateUserByEmailPayload,
   IUpdateUserByIdPayload,
 } from 'src/interfaces/user.service.interface';
+import { OrganizationUser } from 'src/entities/organizationUser.entity';
 
 @Injectable()
 export class UserService {
@@ -20,8 +26,8 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
 
-    @InjectRepository(Organization)
-    private readonly orgRepository: Repository<Organization>, //private readonly authService:AuthService,
+    @InjectRepository(OrganizationUser)
+    private readonly orgUserRepository: Repository<OrganizationUser>,
   ) {}
 
   async addUser(payload: IAddUserPayload): Promise<User> {
@@ -50,16 +56,6 @@ export class UserService {
     });
   }
 
-  async findAll(): Promise<SecureUser[]> {
-    const users = await this.userRepository.find();
-
-    return users.map((user) => {
-      // eslint-disable-next-line
-      const { password, salt, ...rest } = user;
-      return rest;
-    });
-  }
-
   async exists(email: string): Promise<boolean> {
     const count = await this.userRepository.count({
       where: {
@@ -79,5 +75,70 @@ export class UserService {
 
   async updateOwnerEnabled(payload: IUpdateOwnerEnabled) {
     await this.userRepository.update(payload.id, payload.user);
+
+  }
+  
+  async findUserWithOrganizationByUserEmail(
+    payload: IFindUserWithOrganizationPayload,
+  ): Promise<[boolean, UserWithOrganization]> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email: payload.email,
+      },
+      relations: ['organization', 'organization.role', 'organization.org'],
+      loadEagerRelations: true,
+      relationLoadStrategy: 'join',
+    });
+
+    return [
+      user !== null,
+      {
+        ...user,
+        organization: user.organization.org,
+        role: user.organization.role,
+      },
+    ];
+  }
+
+  async readAllByOrganization(
+    payload: IReadAllByOrganization,
+  ): Promise<SecureUser[]> {
+    const results = await this.orgUserRepository.find({
+      where: { org: { id: payload.organization.id }, role: { id: 2 } },
+      relations: ['user'],
+    });
+
+    const empolyees = results.map((item) => {
+      delete item.user.password;
+      delete item.user.salt;
+      return item.user;
+    });
+
+    return empolyees;
+  }
+
+  async readOneById(payload: IReadOneById): Promise<SecureUser> {
+    const user = await this.userRepository.findOne({
+      where: { id: payload.id },
+    });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+    delete user.password;
+    delete user.salt;
+    return user;
+  }
+
+  async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
+    return await this.userRepository.update(payload.id, payload.employee);
+  }
+
+  async delete(payload: IDeleteOneByIdPayload): Promise<DeleteResult> {
+    const orgUser = await this.orgUserRepository.findOne({
+      where: { user: { id: payload.id } },
+    });
+    await this.orgUserRepository.softDelete(orgUser.id);
+    return await this.userRepository.softDelete(payload.id);
   }
 }
