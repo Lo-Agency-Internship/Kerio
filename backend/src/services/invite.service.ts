@@ -13,6 +13,7 @@ import { randomBytes } from 'crypto';
 import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
 import { TemplateEngineService } from './templateEngine.service';
+import { IIsInviteValid } from 'src/interfaces/invite.service.interface';
 
 @Injectable()
 export class InviteService {
@@ -74,12 +75,12 @@ export class InviteService {
     console.log(response);
   }
 
-  async isInviteValid({ token }: InviteTokenDto): Promise<boolean> {
+  async isInviteValid(payload: IIsInviteValid) {
     const invite = await this.inviteRepository.findOneBy({
-      token,
+      token: payload.token,
     });
 
-    return invite !== null;
+    return {res: invite !== null, email: invite.email };
   }
 
   async getInviteByToken(token: string): Promise<Invite> {

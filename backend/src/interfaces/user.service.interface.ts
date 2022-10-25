@@ -1,8 +1,5 @@
 import { User } from 'src/entities/user.entity';
-import {
-  NewUser,
-  SecureUserWithoutOrganization,
-} from 'src/utils/types';
+import { NewUser, SecureUserWithoutOrganization } from 'src/utils/types';
 
 export interface IAddUserPayload {
   user: NewUser;
