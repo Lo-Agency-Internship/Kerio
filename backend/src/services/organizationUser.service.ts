@@ -25,8 +25,8 @@ export class OrganizationUserService {
   ) {}
 
   async assignUserToOrganization(
-    userId: number,
-    orgId: number,
+    user: User,
+    organization: Organization,
     role: ERole,
   ): Promise<OrganizationUser> {
     const userRole = await this.roleRepository.findOneByOrFail({
@@ -34,14 +34,14 @@ export class OrganizationUserService {
     });
 
     const orgUser = await this.orgUserRepository.save({
-      orgId,
-      userId,
+      org: organization,
+      user,
       role: userRole,
     });
 
     await this.userRepository.update(
       {
-        id: userId,
+        id: user.id,
       },
       {
         organization: orgUser,
@@ -58,7 +58,7 @@ export class OrganizationUserService {
       where: {
         email,
       },
-      relations: ['organization', 'organization.role'],
+      relations: ['organization', 'organization.role', 'organization.org'],
       loadEagerRelations: true,
       relationLoadStrategy: 'join',
     });
@@ -66,13 +66,9 @@ export class OrganizationUserService {
     delete user.password;
     delete user.salt;
 
-    const org = await this.orgRepository.findOneBy({
-      id: user.organization.orgId,
-    });
-
     return {
       ...user,
-      organization: org,
+      organization: user.organization.org,
       role: user.organization.role,
     };
   }

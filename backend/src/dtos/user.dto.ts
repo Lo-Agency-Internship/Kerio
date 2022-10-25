@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ERole } from 'src/utils/types';
 
 export class UserLoginDto {
@@ -18,4 +18,15 @@ export class UserRegisterDto extends UserLoginDto {
   organizationSlug: string;
 
   role?: ERole | null;
+}
+
+export class UpdateEmployeeBodyDto {
+  @IsString()
+  name: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsBoolean()
+  enabled: boolean;
 }
