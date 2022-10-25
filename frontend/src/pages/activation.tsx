@@ -1,42 +1,39 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Button } from '../components/atoms/button';
 import { uri } from '../utils';
 
 export default function Activation() {
 	const [error, setError] = useState<string | null>(null);
 	const [message, setMessage] = useState<boolean>(false);
 	const { email } = useParams();
+	const navigate = useNavigate();
 	const active = async () => {
 		try {
-			await axios.get(uri(`enable`), {
-				params: {
-					email,
-				},
-			});
+			await axios.get(uri(`auth/enable?email=${email}`), {});
 			setMessage(true);
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
-
-		useEffect(() => {
-			active();
-		}, []);
 	};
+	useEffect(() => {
+		active();
+	}, []);
 	return (
-		<div className="pt-6 md:p-8 text-center md:text-left space-y-4">
-			{message && (
+		<div className="bg-white p-9 h-screen w-screen flex flex-col items-center justify-center space-y-4">
+			{message ? (
 				<>
-					<p className="text-red-700">Your account activated successfully!</p>
-					<Link
-						to="/Auth"
-						className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100">
-						<span className="ml-3">Click here for Registeration!</span>
-					</Link>
+					<p className="text-green-700 font-bold">Your account activated successfully!</p>
+					<Button
+						style="w-42 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-solid border-2 border-indigo-600 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
+						label="Click here for Sign In!"
+						onClick={() => navigate(`/Auth`)}
+					/>
 				</>
+			) : (
+				<>{error && <p className="text-red-700 font-bold">{error}</p>}</>
 			)}
-
-			{error && <p className="text-red-700">{error}</p>}
 		</div>
 	);
 }
