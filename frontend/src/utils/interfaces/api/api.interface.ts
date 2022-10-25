@@ -16,9 +16,9 @@ export interface IGetAllTimelines {
 	id: string;
 }
 
-export interface IPostLogin{
-    email: string;
-    password:string;
+export interface IPostLogin {
+	email: string;
+	password: string;
 }
 
 export interface IPostSignUp {
@@ -30,9 +30,9 @@ export interface IPostSignUp {
 
 export interface IPostContactInfo {
 	name: string;
-	phone:string;
-	email:string
-	status:string
+	phone: string;
+	email: string;
+	status: string;
 }
 
 export interface IPostInviteEmployee {
@@ -40,23 +40,22 @@ export interface IPostInviteEmployee {
 	email: string;
 }
 
-export interface IPostNoteInfo
-{
-	title:string;
+export interface IPostNoteInfo {
+	title: string;
 	description: string;
-	date:string;
-	status: string; 
+	date: string;
+	status: string;
 	score: string;
-	id: string
+	id: string;
 }
 
-export interface IUpdateContactInfo{
-	name: string ,
-	email:string ,
-	phone: string,
-	id: string 
+export interface IUpdateContactInfo {
+	name: string;
+	email: string;
+	phone: string;
+	id: string;
 }
 
-export interface IDeleteContact{
+export interface IDeleteContact {
 	id: string;
 }

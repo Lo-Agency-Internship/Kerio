@@ -83,12 +83,8 @@ export default function Layout({ children }: ILayout) {
 										d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z"></path>
 								</svg>
 							}>
-							<li className="mb-1 last:mb-0">
-								<SidebarLink href="/contacts" anchor="Contact Table" />
-							</li>
-							<li className="mb-1 last:mb-0">
-								<SidebarLink href="/contacts" anchor="Add Contact" />
-							</li>
+							<SidebarLink href="/contacts" anchor="Contact Table" />
+							<SidebarLink href="/contacts" anchor="Add Contact" />
 						</SidebarLinkGroup>
 						<SidebarLinkGroup
 							activeCondition={pathname.includes('Employees')}
@@ -105,12 +101,8 @@ export default function Layout({ children }: ILayout) {
 									/>
 								</svg>
 							}>
-							<li className="mb-1 last:mb-0">
-								<SidebarLink href="/Employees" anchor="Employee Table" />
-							</li>
-							<li className="mb-1 last:mb-0">
-								<SidebarLink href="/Employees" anchor="Add Employee" />
-							</li>
+							<SidebarLink href="/Employees" anchor="Employee Table" />
+							<SidebarLink href="/Employees" anchor="Add Employee" />
 						</SidebarLinkGroup>
 					</SidebarGroup>
 					<SidebarGroup groupTitle="Settings">

@@ -2,9 +2,19 @@ import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
 import { uri } from '../utils/index';
 import { createContext, ReactNode, useContext, useState } from 'react';
-import {IApiPaginationParams, IGetAllTimelines, IGetContactsInfoById, IGetUsersInfoById ,IPostLogin ,IPostSignUp, IPostContactInfo, IPostInviteEmployee , IPostNoteInfo, IUpdateContactInfo, IDeleteContact} from '../utils/interfaces/api/api.interface'
-
-
+import {
+	IApiPaginationParams,
+	IGetAllTimelines,
+	IGetContactsInfoById,
+	IGetUsersInfoById,
+	IPostLogin,
+	IPostSignUp,
+	IPostContactInfo,
+	IPostInviteEmployee,
+	IPostNoteInfo,
+	IUpdateContactInfo,
+	IDeleteContact,
+} from '../utils/interfaces/api/api.interface';
 
 interface IApiProvider {
 	children: ReactNode;
@@ -22,7 +32,7 @@ interface IApiContext {
 	employee?: any;
 	setEmployee?: any;
 	setContacts?: any;
-	getAllContacts?:any;
+	getAllContacts(payload: IApiPaginationParams): Promise<any>;
 	getAllUsers?: any;
 	getContactsInfoById?: any;
 	getAllTimelines?: any;
@@ -40,9 +50,9 @@ interface IApiContext {
 	postInviteEmployee?: any;
 }
 
-const ApiContext = createContext<IApiContext>({});
+const ApiContext = createContext<IApiContext | null>(null);
 
-export const useApiContext = () => useContext(ApiContext);
+export const useApiContext = () => useContext(ApiContext) as IApiContext;
 
 export const ApiProvider = ({ children }: IApiProvider) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +64,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 	const [contacts, setContacts] = useState([]);
 	const getAllContacts = async (payload: IApiPaginationParams) => {
+		console.log(payload);
 		const { data } = await axios.get(uri(`contacts`), {
 			params: {
 				page: payload.pagination.page,
@@ -73,7 +84,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
-
 	// get contacts info by ID
 	const getContactsInfoById = async (payload: IGetContactsInfoById) => {
 		setIsLoading(true);
@@ -86,7 +96,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		setIsLoading(false);
 		return data;
 	};
-	
 
 	// get Users info by ID
 	const getUsersInfoById = async (payload: IGetUsersInfoById) => {
@@ -106,13 +115,13 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	// post info for signup
 	const postSignUp = async (payload: IPostSignUp) => {
 		await axios.post(uri('auth/register'), {
-			params:{
+			params: {
 				email: payload.email,
 				name: payload.name,
 				password: payload.password,
-				organizationSlug: payload.organizationSlug
+				organizationSlug: payload.organizationSlug,
 			},
-			...headerAuth
+			...headerAuth,
 		});
 	};
 
@@ -125,52 +134,52 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 
 	// post data for add a new contact
 	const postContactInfo = async (payload: IPostContactInfo) => {
-		await axios.post(uri('contacts'),  {
-			params:{
+		await axios.post(uri('contacts'), {
+			params: {
 				email: payload.email,
 				name: payload.name,
 				status: payload.status,
-				phone: payload.phone
+				phone: payload.phone,
 			},
-			...headerAuth
+			...headerAuth,
 		});
 	};
 
 	// post data for add a employee
 	const postInviteEmployee = async (payload: IPostInviteEmployee) => {
-		await axios.post(uri('invites'),  {
-			params:{
+		await axios.post(uri('invites'), {
+			params: {
 				email: payload.email,
 				name: payload.name,
 			},
-			...headerAuth
+			...headerAuth,
 		});
 	};
 	// post data for add note
 	const postNoteInfo = async (payload: IPostNoteInfo) => {
-		await axios.post(uri(`notes/${payload.id}`),  {
-			params:{
-				title:payload.title,
+		await axios.post(uri(`notes/${payload.id}`), {
+			params: {
+				title: payload.title,
 				description: payload.description,
 				date: payload.date,
 				status: payload.status,
 				score: payload.score,
-				id: payload.id
+				id: payload.id,
 			},
-			...headerAuth
+			...headerAuth,
 		});
 	};
 	/// //////////////// PUT
 
 	// update contact info
-	const updateContactInfo = async (payload: IUpdateContactInfo ) => {
-		axios.put(uri(`contacts/${payload.id}`),   {
-			params:{
+	const updateContactInfo = async (payload: IUpdateContactInfo) => {
+		axios.put(uri(`contacts/${payload.id}`), {
+			params: {
 				name: payload.name,
 				phone: payload.phone,
-				email: payload.email
+				email: payload.email,
 			},
-			...headerAuth
+			...headerAuth,
 		});
 	};
 	// ///////delete contact
