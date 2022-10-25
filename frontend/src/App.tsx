@@ -28,6 +28,7 @@ function App() {
 				}
 			/>
 			<Route path="/invite" element={<Invite />} />
+			<Route path="/active" element={<Activation />} />
 
 			<Route
 				path="/"
@@ -41,7 +42,6 @@ function App() {
 				<Route index element={<Index />} />
 				<Route path="contacts" element={<ContactsPage />} />
 				<Route path="contacts/:id" element={<ContactPage />} />
-				<Route path="active?email" element={<Activation />} />
 
 				{role === 'owner' && <Route path="employees" element={<EmployeesPage />} />}
 				{role === 'owner' && <Route path="employeeProfile" element={<EmployeeProfile />} />}
