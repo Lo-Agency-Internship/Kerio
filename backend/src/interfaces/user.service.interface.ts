@@ -1,5 +1,8 @@
 import { User } from 'src/entities/user.entity';
-import { NewUser } from 'src/utils/types';
+import {
+  NewUser,
+  SecureUserWithoutOrganization,
+} from 'src/utils/types';
 
 export interface IAddUserPayload {
   user: NewUser;
@@ -29,4 +32,9 @@ export interface IExistAndFindByEmailPayload {
 
 export interface IFindUserWithOrganizationPayload {
   email: string;
+}
+
+export interface IUpdateOwnerEnabled {
+  id: number;
+  user: SecureUserWithoutOrganization;
 }

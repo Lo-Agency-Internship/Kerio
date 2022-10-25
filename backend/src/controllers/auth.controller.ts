@@ -93,6 +93,12 @@ export class AuthController {
       role: roleId,
     });
 
+    if (resultUser.role.name === 'Owner') {
+      resultUser.enabled = true;
+      const { organization, role, ...rest } = resultUser;
+      this.userService.updateOwnerEnabled({ id: resultUser.id, user: rest });
+    }
+
     return resultUser;
   }
   @Post('duplicateEmail')
@@ -106,7 +112,16 @@ export class AuthController {
 
   @Get('enable')
   async activeAccount(@Query() { email }) {
-    console.log(email);
-    return this.authService.activeAccount(email);
+    try {
+      return this.authService.activeAccount(email);
+    } catch (err) {
+      if (err instanceof NotAcceptableException) {
+        throw new HttpException(
+          `user with email ${email} does not exists`,
+          HttpStatus.FORBIDDEN,
+        );
+      }
+      throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+    }
   }
 }

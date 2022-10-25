@@ -9,6 +9,8 @@ export type SecureUserWithOrganization = Omit<SecureUser, 'organization'> & {
   role: Role | null;
 };
 
+export type SecureUserWithoutOrganization = Omit<SecureUser, 'organization'>;
+
 export type UserWithOrganization = Omit<User, 'organization'> & {
   organization: Organization;
   role: Role | null;

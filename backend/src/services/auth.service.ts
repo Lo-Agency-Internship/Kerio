@@ -100,6 +100,9 @@ export class AuthService {
 
   async activeAccount(email) {
     const getUser = await this.userService.findOneUserByEmail(email);
+    if (!getUser) {
+      throw new NotFoundException();
+    }
     getUser.enabled = true;
     await this.userService.updateUserById({ id: getUser.id, user: getUser });
   }
@@ -119,9 +122,9 @@ export class AuthService {
       throw new NotFoundException();
     }
 
-    // if (!user.enabled){
-    //   throw new UnauthorizedException()
-    // }
+    if (!user.enabled) {
+      throw new UnauthorizedException();
+    }
 
     const hashedPassword = hashSync(payload.password, user.salt);
 

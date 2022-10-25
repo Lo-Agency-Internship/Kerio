@@ -1,8 +1,7 @@
-POST http://localhost:3001/invites/0a1776feeeba175b041f16c113b091d7eba33bc95b54086c4822e92ed9c7dba9b250475194d8663c2b5a1274d2b3af1b  HTTP/1.1
+POST http://localhost:3001/invites/2a5eb3412a7f58b1b0b868076e587d1e780e3b16f802455ec157b449656a9d308cf225797ac24938e40d2b5deab7351a  HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZGQuY29tIiwic3ViIjozLCJuYW1lIjoicmV6YSIsImlhdCI6MTY2NjUyNzY1MywiZXhwIjoxNjY5MTE5NjUzfQ.KQEJm1Svaoi-mbYRy7DKF-GnAvxttDFfL3eChA70_w0
 
 {
-	"name": "mary pourganji",
+	"name": "mahsa abadian",
     "password": "0000"
 }

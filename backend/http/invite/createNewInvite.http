@@ -1,12 +1,12 @@
 POST http://localhost:3001/invites HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZGQuY29tIiwic3ViIjozLCJuYW1lIjoicmV6YSIsImlhdCI6MTY2NjUyNzY1MywiZXhwIjoxNjY5MTE5NjUzfQ.KQEJm1Svaoi-mbYRy7DKF-GnAvxttDFfL3eChA70_w0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yZXphQGQuY29tIiwic3ViIjo5LCJuYW1lIjoicmV6IERvZSIsImlhdCI6MTY2NjY4NjgzNSwiZXhwIjoxNjY5Mjc4ODM1fQ.gX3xHuq2ck5CDOyUGOR9iIH61yBRvXQyHcfRUPfdCHQ
 
 {
 	"invites": [
 		{ 
-			"name": "mary ganji",
-			"email": "marygnji@gmail.com"
+			"name": "mahsa abadian",
+			"email": "abadian.ma@gmail.com"
 		}
 	]
 }

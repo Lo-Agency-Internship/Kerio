@@ -9,6 +9,7 @@ import {
   IExistAndFindByEmailPayload,
   IFindOneUserByEmailPayload,
   IFindOneUserByIdPayload,
+  IUpdateOwnerEnabled,
   IUpdateUserByEmailPayload,
   IUpdateUserByIdPayload,
 } from 'src/interfaces/user.service.interface';
@@ -74,5 +75,9 @@ export class UserService {
   ): Promise<[boolean, User]> {
     const user = await this.findOneUserByEmail(payload);
     return [user !== null, user];
+  }
+
+  async updateOwnerEnabled(payload: IUpdateOwnerEnabled) {
+    await this.userRepository.update(payload.id, payload.user);
   }
 }
