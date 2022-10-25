@@ -22,7 +22,7 @@ export default function Activation() {
 	}, []);
 	return (
 		<div className="bg-white p-9 h-screen w-screen flex flex-col items-center justify-center space-y-4">
-			{message && (
+			{message ? (
 				<>
 					<p className="text-green-700 font-bold">Your account activated successfully!</p>
 					<Button
@@ -31,9 +31,9 @@ export default function Activation() {
 						onClick={() => navigate(`/Auth`)}
 					/>
 				</>
+			) : (
+				<>{error && <p className="text-red-700 font-bold">{error}</p>}</>
 			)}
-
-			{error && <p className="text-red-700 font-bold">{error}</p>}
 		</div>
 	);
 }
