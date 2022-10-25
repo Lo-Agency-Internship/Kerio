@@ -50,6 +50,7 @@ export class UserController {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
+    console.log({ organization });
 
     return this.userService.readAllByOrganization({ organization });
   }
