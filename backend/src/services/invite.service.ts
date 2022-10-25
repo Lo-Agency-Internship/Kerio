@@ -80,7 +80,7 @@ export class InviteService {
       token: payload.token,
     });
 
-    return {res: invite !== null, email: invite.email };
+    return { res: invite !== null, email: invite.email };
   }
 
   async getInviteByToken(token: string): Promise<Invite> {

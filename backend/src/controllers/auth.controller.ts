@@ -95,11 +95,10 @@ export class AuthController {
 
     if (resultUser.role.name === 'Owner') {
       resultUser.enabled = true;
-      const { organization, role, ...rest } = resultUser;
-      // const user = {...resultUser};
-      // delete user.organization
-      // delete user.role
-      this.userService.updateOwnerEnabled({ id: resultUser.id, user: rest });
+      const user = { ...resultUser };
+      delete user.organization;
+      delete user.role;
+      this.userService.updateOwnerEnabled({ id: resultUser.id, user });
     }
 
     return resultUser;

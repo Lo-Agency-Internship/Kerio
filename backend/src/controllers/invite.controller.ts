@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
-import { CreateInvitesDto } from 'src/dtos/invite.dto';
+import { CreateInvitesDto, InviteTokenDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
 import {
   EEntityTypeLog,
@@ -63,7 +63,7 @@ export class InviteController {
   }
 
   @Get('/:token')
-  async checkTokenValidation(@Param() { token }: any) {
+  async checkTokenValidation(@Param() { token }: InviteTokenDto) {
     return await this.inviteService.isInviteValid({ token });
   }
 
