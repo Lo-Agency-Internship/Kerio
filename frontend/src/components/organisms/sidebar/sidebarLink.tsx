@@ -2,14 +2,15 @@ import * as React from 'react';
 import classNames from 'classnames';
 
 export interface SidebarLinkProps {
-	href: string;
+	href?: string;
 	icon?: React.ReactNode;
 	anchor: string;
 	isGroupLink?: boolean;
 	active?: boolean;
+	onClick?: any;
 }
 
-export const SidebarLink: React.FC<SidebarLinkProps> = ({ href, anchor, icon, isGroupLink, active }) => {
+export const SidebarLink: React.FC<SidebarLinkProps> = ({ href, anchor, icon, isGroupLink, active, onClick }) => {
 	const linkClassnames = classNames('last:mb-0', {
 		'px-3 py-2 rounded-sm mb-0.5': !isGroupLink,
 		'mb-1': isGroupLink,
@@ -23,7 +24,7 @@ export const SidebarLink: React.FC<SidebarLinkProps> = ({ href, anchor, icon, is
 	});
 
 	return (
-		<li className={linkClassnames}>
+		<li onClick={onClick} className={linkClassnames}>
 			<a href={href} className={`block text-slate-200 hover:text-white truncate transition duration-150`}>
 				<div className="flex items-center justify-between">
 					<div className="grow flex items-center">
