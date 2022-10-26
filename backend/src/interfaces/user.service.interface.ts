@@ -36,7 +36,6 @@ export interface IFindUserWithOrganizationPayload {
 export interface IUpdateOwnerEnabled {
   id: number;
   user: SecureUserWithoutOrganization;
-
 }
 
 export interface IReadAllByOrganization {

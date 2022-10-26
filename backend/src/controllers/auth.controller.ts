@@ -95,10 +95,8 @@ export class AuthController {
 
     if (resultUser.role.name === 'Owner') {
       resultUser.enabled = true;
-      const user = { ...resultUser };
-      delete user.organization;
-      delete user.role;
-      this.userService.updateOwnerEnabled({ id: resultUser.id, user });
+      const { organization, role, ...rest } = resultUser;
+      this.userService.updateOwnerEnabled({ id: resultUser.id, user: rest });
     }
 
     return resultUser;
@@ -114,6 +112,7 @@ export class AuthController {
 
   @Get('enable')
   async activeAccount(@Query() { email }) {
+    console.log(email);
     try {
       return this.authService.activeAccount(email);
     } catch (err) {
@@ -125,6 +124,5 @@ export class AuthController {
       }
       throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
     }
-    
   }
 }

@@ -104,7 +104,11 @@ export class AuthService {
       throw new NotFoundException();
     }
     getUser.enabled = true;
-    await this.userService.updateUserById({ id: getUser.id, user: getUser });
+    console.log({ getUser });
+    return await this.userService.updateUserById({
+      id: getUser.id,
+      user: getUser,
+    });
   }
 
   //login

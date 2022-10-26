@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   BasicInviteDto,
@@ -79,6 +79,9 @@ export class InviteService {
     const invite = await this.inviteRepository.findOneBy({
       token: payload.token,
     });
+    if (!invite) {
+      throw new NotFoundException();
+    }
 
     return { res: invite !== null, email: invite.email };
   }
