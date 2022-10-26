@@ -4,12 +4,16 @@ import Sidebar from '../components/organisms/sidebar/sidebar';
 import { SidebarGroup } from '../components/organisms/sidebar/sidebarGroup';
 import { SidebarLink } from '../components/organisms/sidebar/sidebarLink';
 import { SidebarLinkGroup } from '../components/organisms/sidebar/sidebarLinkGroup';
+import NewContactModal from '../components/templates/newContactModal';
+import NewEmployeeModal from '../components/templates/newEmployeeModal';
 
 interface ILayout {
 	children: ReactNode;
 }
 export default function Layout({ children }: ILayout) {
 	const [sidebarOpen, setSidebarOpen] = useState(true);
+	const [showContactModal, setShowContactModal] = useState(false);
+	const [showEmployeeModal, setShowEmployeeModal] = useState(false);
 	const location = useLocation();
 	const { pathname } = location;
 	const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
@@ -87,7 +91,7 @@ export default function Layout({ children }: ILayout) {
 								<SidebarLink href="/contacts" anchor="Contact Table" />
 							</li>
 							<li className="mb-1 last:mb-0">
-								<SidebarLink href="/contacts" anchor="Add Contact" />
+								<SidebarLink onClick={() => setShowContactModal(true)} anchor="Add Contact" href={'#'} />
 							</li>
 						</SidebarLinkGroup>
 						<SidebarLinkGroup
@@ -109,7 +113,7 @@ export default function Layout({ children }: ILayout) {
 								<SidebarLink href="/Employees" anchor="Employee Table" />
 							</li>
 							<li className="mb-1 last:mb-0">
-								<SidebarLink href="/Employees" anchor="Add Employee" />
+								<SidebarLink onClick={() => setShowEmployeeModal(true)} anchor="Add Employee" href={'#'} />
 							</li>
 						</SidebarLinkGroup>
 					</SidebarGroup>
@@ -117,6 +121,15 @@ export default function Layout({ children }: ILayout) {
 						<SidebarLink href="/" anchor="Profile" />
 					</SidebarGroup>
 				</Sidebar>
+				<NewContactModal
+					open={showContactModal}
+					setOpen={setShowContactModal}
+					setContact={undefined}
+					fetchData={undefined}
+					totalRows={0}
+					perPage={0}
+				/>
+				<NewEmployeeModal open={showEmployeeModal} setOpen={setShowEmployeeModal} />
 				{children}
 			</div>
 		</>
