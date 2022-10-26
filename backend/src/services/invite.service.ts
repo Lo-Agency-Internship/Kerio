@@ -1,10 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  BasicInviteDto,
-  CreateInviteDto,
-  InviteTokenDto,
-} from 'src/dtos/invite.dto';
+import { BasicInviteDto, CreateInviteDto } from 'src/dtos/invite.dto';
 import { Invite } from 'src/entities/invite.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { OrganizationService } from './organization.service';
@@ -63,7 +59,7 @@ export class InviteService {
       }`,
       email: inviteData.email,
     });
-    const response = await this.mailerService.send({
+    await this.mailerService.send({
       to: inviteData.email,
       subject: 'Invitation Email',
       html: mailTemplate,
@@ -71,8 +67,6 @@ export class InviteService {
         inviteData.token
       }`,
     });
-
-    console.log(response);
   }
 
   async isInviteValid(payload: IIsInviteValid) {
@@ -112,7 +106,7 @@ export class InviteService {
       },
     );
 
-    const response = await this.mailerService.send({
+    await this.mailerService.send({
       to: email,
       subject: 'active your account',
       html: activeTemplate,

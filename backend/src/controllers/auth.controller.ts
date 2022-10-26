@@ -95,6 +95,7 @@ export class AuthController {
 
     if (resultUser.role.name === 'Owner') {
       resultUser.enabled = true;
+      // eslint-disable-next-line
       const { organization, role, ...rest } = resultUser;
       this.userService.updateOwnerEnabled({ id: resultUser.id, user: rest });
     }
@@ -112,17 +113,24 @@ export class AuthController {
 
   @Get('enable')
   async activeAccount(@Query() { email }) {
-    console.log(email);
     try {
-      return this.authService.activeAccount(email);
+      return await this.authService.activeAccount(email);
     } catch (err) {
-      if (err instanceof NotAcceptableException) {
+      if (err instanceof NotFoundException) {
         throw new HttpException(
-          `user with email ${email} does not exists`,
+          `user with email ${email} does not exist`,
           HttpStatus.FORBIDDEN,
         );
       }
       throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
     }
+    // try {
+    //   return await this.inviteService.isInviteValid({ token });
+    // } catch (err) {
+    //   if (err instanceof NotFoundException) {
+    //     throw new HttpException('token does not exist', HttpStatus.FORBIDDEN);
+    //   }
+    //   throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+    // }
   }
 }

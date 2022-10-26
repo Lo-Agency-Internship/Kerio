@@ -1,8 +1,8 @@
-POST http://localhost:3001/invites/362e5a0545df19df170cd83bec2f2aec02220543d2f3444956addbb96ccda36cac3dd3dcad4ccb9f71aa208c38581a0a  HTTP/1.1
+POST http://localhost:3001/invites/16b859f2d39d41103890d82f99895e90902f95d047baaa005ac5aa7b24ddbd6fe6078041d62d574498478607f91b2272  HTTP/1.1
 Content-Type: application/json
 
 
 {
-	"name": "happy doe",
+	"name": "will smith",
     "password": "0000"
 }

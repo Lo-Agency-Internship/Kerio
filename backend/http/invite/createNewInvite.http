@@ -1,13 +1,14 @@
 POST http://localhost:3001/invites HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYWRpQGQuY29tIiwic3ViIjoyMCwibmFtZSI6InNoYWQgRG9lIiwicm9sZSI6eyJpZCI6MSwibmFtZSI6Ik93bmVyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMC0yNVQwMjozMDo0Ny40OThaIiwidXBkYXRlZEF0IjoiMjAyMi0xMC0yNVQwMjozMDo0Ny40OThaIn0sImlhdCI6MTY2Njc2NDI0OCwiZXhwIjoxNjY5MzU2MjQ4fQ.IE2eaaqZUJ29uxkE81_dZDGvZUzcrSab7C-wy7CHmXM
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjEsIm5hbWUiOiJnb2xpIERvZSIsInJvbGUiOnsiaWQiOjEsIm5hbWUiOiJPd25lciIsImNyZWF0ZWRBdCI6IjIwMjItMTAtMjZUMDQ6MTQ6MjkuMjA3WiIsInVwZGF0ZWRBdCI6IjIwMjItMTAtMjZUMDQ6MTQ6MjkuMjA3WiJ9LCJpYXQiOjE2NjY3NzAzNjksImV4cCI6MTY2OTM2MjM2OX0.clmfzs0ZPnKYYUI5eVjy6Bt0vme_Y_8w2hWv4tL5wk8
 
 
 {
 	"invites": [
 		{ 
-			"name": "wonderwoman",
-			"email": "freewoman@gmail.com"
+			"name": "will smith",
+			"email": "will@gmail.com"
+
 		}
 	]
 }

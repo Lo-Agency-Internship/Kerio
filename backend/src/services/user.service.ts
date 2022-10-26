@@ -51,11 +51,9 @@ export class UserService {
   async findOneUserByEmail(
     payload: IFindOneUserByEmailPayload,
   ): Promise<User | null> {
-    const weird = await this.userRepository.findOne({
-      where: { email: payload.email },
+    return await this.userRepository.findOneBy({
+      email: payload.email,
     });
-    console.log('test', weird);
-    return weird;
   }
 
   async exists(email: string): Promise<boolean> {

@@ -12,13 +12,7 @@ import {
 import { InviteService } from 'src/services/invite.service';
 import { CreateInvitesDto, InviteTokenDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
-import {
-  EEntityTypeLog,
-  ERole,
-  SecureUserWithOrganization,
-} from 'src/utils/types';
-import { TemplateEngineService } from 'src/services/templateEngine.service';
-import { LogService } from 'src/services/log.service';
+import { ERole, SecureUserWithOrganization } from 'src/utils/types';
 import { RequestContextService } from 'src/services/requestContext.service';
 import { Organization } from 'src/entities/organization.entity';
 import { JwtGuard } from 'src/utils/jwt.guard';
@@ -28,8 +22,6 @@ export class InviteController {
   constructor(
     private readonly inviteService: InviteService,
     private readonly authService: AuthService,
-    private readonly logService: LogService,
-    private readonly templateService: TemplateEngineService,
     private readonly contextService: RequestContextService,
   ) {}
 
@@ -61,7 +53,7 @@ export class InviteController {
       return await this.inviteService.isInviteValid({ token });
     } catch (err) {
       if (err instanceof NotFoundException) {
-        throw new HttpException('token does not exists', HttpStatus.FORBIDDEN);
+        throw new HttpException('token does not exist', HttpStatus.FORBIDDEN);
       }
       throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
     }
