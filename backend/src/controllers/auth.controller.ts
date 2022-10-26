@@ -124,13 +124,5 @@ export class AuthController {
       }
       throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
     }
-    // try {
-    //   return await this.inviteService.isInviteValid({ token });
-    // } catch (err) {
-    //   if (err instanceof NotFoundException) {
-    //     throw new HttpException('token does not exist', HttpStatus.FORBIDDEN);
-    //   }
-    //   throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
-    // }
   }
 }
