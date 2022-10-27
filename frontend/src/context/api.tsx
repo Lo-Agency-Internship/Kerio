@@ -15,14 +15,13 @@ import {
 	IUpdateContactInfo,
 	IDeleteContact,
 } from '../utils/interfaces/api/api.interface';
+import { IGetContacts } from '../utils/interfaces/api/data.interface';
 
 interface IApiProvider {
 	children: ReactNode;
 }
 
 interface IApiContext {
-	user?: IUser;
-	setUser?: (value: IUser) => void;
 	change?: any;
 	setChange?: any;
 	checkToken?: any;
@@ -32,22 +31,22 @@ interface IApiContext {
 	employee?: any;
 	setEmployee?: any;
 	setContacts?: any;
-	getAllContacts(payload: IApiPaginationParams): Promise<any>;
+	getAllContacts(payload: IApiPaginationParams): Promise<IGetContacts>;
 	getAllUsers?: any;
-	getContactsInfoById?: any;
-	getAllTimelines?: any;
+	getContactsInfoById(payload: IGetContactsInfoById): Promise<IGetContactsInfoById>;
+	getTimelines?: any;
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
 	getAllEmployees?: any;
-	postContactInfo?: any;
-	postNoteInfo?: any;
+	postContactInfo(payload: IPostContactInfo): Promise<void>;
+	postNoteInfo(payload: IPostNoteInfo): Promise<void>;
 	getNoteInfo?: any;
 	getAllNotes?: any;
-	updateContactInfo?: any;
-	deleteContact?: any;
-	postLogin?: any;
-	postSignUp?: any;
-	postInviteEmployee?: any;
+	updateContactInfo(payload: IUpdateContactInfo): Promise<void>;
+	deleteContact(payload: IDeleteContact): Promise<void>;
+	postLogin(payload: IPostLogin): Promise<void>;
+	postSignUp(payload: IPostSignUp): Promise<void>;
+	postInviteEmployee(payload: IPostInviteEmployee): Promise<void>;
 }
 
 const ApiContext = createContext<IApiContext | null>(null);
@@ -62,9 +61,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 		},
 	};
-	const [contacts, setContacts] = useState([]);
 	const getAllContacts = async (payload: IApiPaginationParams) => {
-		console.log(payload);
 		const { data } = await axios.get(uri(`contacts`), {
 			params: {
 				page: payload.pagination.page,
@@ -72,11 +69,10 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			},
 			...headerAuth,
 		});
-
 		return data;
 	};
 
-	// get users(employees)
+	// we must fix it
 	const getAllUsers = async () => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri('users'), headerAuth);
@@ -84,20 +80,15 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
-	// get contacts info by ID
 	const getContactsInfoById = async (payload: IGetContactsInfoById) => {
 		setIsLoading(true);
-		const { data } = await axios.get(uri(`contacts/${payload.id}`), {
-			params: {
-				id: payload.id,
-			},
-			...headerAuth,
-		});
+		const { data } = await axios.get(uri(`contacts/${payload.id}`), headerAuth);
 		setIsLoading(false);
+		console.log(data);
 		return data;
 	};
 
-	// get Users info by ID
+	// we must fix it
 	const getUsersInfoById = async (payload: IGetUsersInfoById) => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri(`employees/${payload.id}`), headerAuth);
@@ -105,14 +96,14 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
-	const getAllTimelines = async (payload: IGetAllTimelines) => {
+	// we must fix it
+	const getTimelines = async (payload: IGetAllTimelines) => {
 		const { data } = await axios.get(uri(`notes/timeline/${payload.id}`), headerAuth);
 		return data;
 	};
 
 	/// //////////////// POST
 
-	// post info for signup
 	const postSignUp = async (payload: IPostSignUp) => {
 		await axios.post(uri('auth/register'), {
 			params: {
@@ -125,14 +116,12 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		});
 	};
 
-	// post info for Login
 	const postLogin = async (payload: IPostLogin) => {
 		await axios.post(uri('auth/login'), payload).then((response: any) => {
 			localStorage.setItem('access_token', response.data.access_token);
 		});
 	};
 
-	// post data for add a new contact
 	const postContactInfo = async (payload: IPostContactInfo) => {
 		await axios.post(uri('contacts'), {
 			params: {
@@ -145,7 +134,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		});
 	};
 
-	// post data for add a employee
 	const postInviteEmployee = async (payload: IPostInviteEmployee) => {
 		await axios.post(uri('invites'), {
 			params: {
@@ -155,7 +143,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			...headerAuth,
 		});
 	};
-	// post data for add note
+
 	const postNoteInfo = async (payload: IPostNoteInfo) => {
 		await axios.post(uri(`notes/${payload.id}`), {
 			params: {
@@ -169,9 +157,8 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			...headerAuth,
 		});
 	};
-	/// //////////////// PUT
 
-	// update contact info
+	/// //////////////// PUT
 	const updateContactInfo = async (payload: IUpdateContactInfo) => {
 		axios.put(uri(`contacts/${payload.id}`), {
 			params: {
@@ -182,6 +169,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			...headerAuth,
 		});
 	};
+
 	// ///////delete contact
 	const deleteContact = async (payload: IDeleteContact) => {
 		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
@@ -193,11 +181,9 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				change,
 				setChange,
 				isLoading,
-				contacts,
-				setContacts,
 				getAllUsers,
 				getAllContacts,
-				getAllTimelines,
+				getTimelines,
 				getContactsInfoById,
 				getUsersInfoById,
 				postContactInfo,

@@ -6,7 +6,7 @@ export interface IApiPaginationParams {
 	};
 }
 export interface IGetContactsInfoById {
-	id: string;
+	id?: string;
 }
 export interface IGetUsersInfoById {
 	id: string;
@@ -17,22 +17,22 @@ export interface IGetAllTimelines {
 }
 
 export interface IPostLogin {
-	email: string;
-	password: string;
+	email?: string;
+	password?: string;
 }
 
 export interface IPostSignUp {
-	name: string;
-	email: string;
-	password: string;
-	organizationSlug: string;
+	name?: string;
+	email?: string;
+	password?: string;
+	organizationSlug?: string;
 }
 
 export interface IPostContactInfo {
-	name: string;
-	phone: string;
-	email: string;
-	status: string;
+	name?: string;
+	phone: FormDataEntryValue | null;
+	email?: string;
+	status: FormDataEntryValue  | null;
 }
 
 export interface IPostInviteEmployee {

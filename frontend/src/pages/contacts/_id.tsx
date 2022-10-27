@@ -10,6 +10,7 @@ import NewNoteModal from '../../components/templates/newNoteModal';
 import Roadmap from '../../components/organisms/roadMap';
 import { ITimeline } from '../../utils/interfaces/user/timeline.interface';
 import { Account } from './account';
+import Timeline from '../../components/molecules/timeline';
 
 export default function ContactPage() {
 	const [contact, setContact] = useState<IUser>();
@@ -20,7 +21,7 @@ export default function ContactPage() {
 	const navigate = useNavigate();
 	async function fetchData() {
 		try {
-			await getContactsInfoById(id as string).then((res: any) => setContact(res));
+			await getContactsInfoById({ id }).then((res: any) => setContact(res));
 		} catch (err: any) {
 			if (err.response.data.message === 'contact not found') {
 				navigate('/404');
@@ -54,7 +55,6 @@ export default function ContactPage() {
 						{/* {showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />} */}
 					</div>
 					<Account user={contact} setUser={setContact} />
-
 					<div className="flex justify-center w-12/12 border">
 						{roadMap &&
 							roadMap.map((element, index) => (
