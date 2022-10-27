@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginatedNoteResponse } from 'src/dtos/note.dto';
 import { Note } from 'src/entities/note.entity';
 
 import {
@@ -32,11 +33,25 @@ export class NoteService {
     return await this.noteRepository.softDelete(payload.id);
   }
 
-  async readAllByContactId(payload: IFindByContactIdPayload): Promise<Note[]> {
-    return await this.noteRepository.find({
+  async readAllByContactId(
+    payload: IFindByContactIdPayload,
+  ): Promise<IPaginatedNoteResponse> {
+    const [notes, total] = await this.noteRepository.findAndCount({
       where: { contact: { id: payload.id } },
       relations: ['contact'],
+      order: { createdAt: payload.sort },
+      skip: (payload.page - 1) * payload.size,
+      take: payload.size,
     });
+
+    return {
+      notes,
+      metadata: {
+        total,
+        size: payload.size,
+        page: payload.page,
+      },
+    };
   }
 
   createNewNoteObject(note: DeepPartial<Note>) {

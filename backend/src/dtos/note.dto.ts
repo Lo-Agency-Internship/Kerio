@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Note } from 'src/entities/note.entity';
+import { PaginationDto } from '.';
 
 export class AddNotetDto {
   @IsNotEmpty()
@@ -30,7 +31,7 @@ export class UpdateNoteBodyDto {
 }
 
 export class IPaginatedNoteResponse {
-  note: Note[];
+  notes: Note[];
   metadata: {
     total: number;
     page: number;

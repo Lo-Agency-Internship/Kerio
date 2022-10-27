@@ -9,11 +9,17 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { AddNotetDto, UpdateNoteBodyDto } from 'src/dtos/note.dto';
+import { PaginationDto } from 'src/dtos';
+import {
+  AddNotetDto,
+  IPaginatedNoteResponse,
+  UpdateNoteBodyDto,
+} from 'src/dtos/note.dto';
 import { Note } from 'src/entities/note.entity';
 import { ContactService } from 'src/services/contact/contact.service';
 import { NoteService } from 'src/services/note.service';
@@ -32,9 +38,11 @@ export class NoteController {
   ) {}
 
   @Get(':contactId')
-  readAll(@Param('contactId', ParseIntPipe) id: number): Promise<Note[]> {
-    const notes = this.noteService.readAllByContactId({ id });
-    return notes;
+  readAll(
+    @Param('contactId', ParseIntPipe) id: number,
+    @Query() { page, size, sort }: PaginationDto,
+  ): Promise<IPaginatedNoteResponse> {
+    return this.noteService.readAllByContactId({ id, page, size, sort });
   }
 
   @Post(':contactId')
