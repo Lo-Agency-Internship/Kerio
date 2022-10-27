@@ -151,4 +151,12 @@ export class ContactController {
   delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
     return this.contactService.delete({ id });
   }
+
+  @Delete(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  deleteMulti(
+    @Param('ids', ParseIntPipe) ids: number[],
+  ): Promise<DeleteResult> {
+    return this.contactService.deleteMulti({ ids });
+  }
 }

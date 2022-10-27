@@ -7,6 +7,7 @@ import {
   IDeletePayload,
   IFindOneByIdPayload,
   IFindPayload,
+  IMultiDeletePayload,
   IPaginatedContacts,
   IUpdateOneByIdPayload,
   IUpdateStatusPayload,
@@ -136,6 +137,14 @@ export class ContactService {
   async delete(payload: IDeletePayload): Promise<DeleteResult> {
     const deletedContact = await this.contactRepository.softDelete(payload.id);
     this.searchService.deleteDocument(payload.id);
+    return deletedContact;
+  }
+
+  async deleteMulti(payload: IMultiDeletePayload): Promise<DeleteResult> {
+    const deletedContact = await this.contactRepository.softDelete(payload.ids);
+    payload.ids.map((item) => {
+      this.searchService.deleteDocument(payload.ids[item]);
+    });
     return deletedContact;
   }
 
