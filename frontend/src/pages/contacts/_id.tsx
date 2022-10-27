@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Note from '../../components/molecules/note';
 import { useApiContext } from '../../context/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IUser } from '../../utils/interfaces/user';
@@ -55,22 +54,21 @@ export default function ContactPage() {
 						{/* {showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />} */}
 					</div>
 					<Account user={contact} setUser={setContact} />
-					<div className="flex justify-center w-12/12 border">
-						{roadMap &&
-							roadMap.map((element, index) => (
-								<Roadmap
-									records={[
-										{
-											items: [{ description: element.description, title: element.title, completed: false }],
-											createdAt: element.createdAt,
-											date: element.date,
-										},
-									]}
-									key={index}
-								/>
-							))}
-						<Note />
-					</div>
+
+					{/* <div className="flex justify-center w-12/12 border"> */}
+					{roadMap &&
+						roadMap.map((element, index) => (
+							<Roadmap
+								records={[
+									{
+										items: [{ description: element.description, title: element.title, completed: false }],
+										createdAt: element.createdAt,
+										date: element.date,
+									},
+								]}
+								key={index}
+							/>
+						))}
 				</>
 			)}
 		</Page>
