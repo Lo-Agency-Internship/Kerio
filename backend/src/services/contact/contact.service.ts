@@ -142,8 +142,8 @@ export class ContactService {
 
   async deleteMulti(payload: IMultiDeletePayload): Promise<DeleteResult> {
     const deletedContact = await this.contactRepository.softDelete(payload.ids);
-    payload.ids.map((item) => {
-      this.searchService.deleteDocument(payload.ids[item]);
+    payload.ids.map(async (item) => {
+      await this.searchService.deleteDocument(payload.ids[item]);
     });
     return deletedContact;
   }
