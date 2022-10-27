@@ -37,13 +37,7 @@ const columns: TableColumn<IEmployee>[] = [
 		selector: (row) => row.email as string,
 		sortable: true,
 	},
-	{
-		name: 'Phone',
-		selector: (row) => row.phone as string,
-		sortable: true,
-	},
 ];
-
 const EmployeeTable: React.FC<IEmployeeTable> = () => {
 	const [error] = useState(null);
 	const [isLoaded, setIsLoaded] = useState(false);
