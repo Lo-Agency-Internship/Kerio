@@ -9,6 +9,7 @@ import {
   IFindByContactIdPayload,
   IUpdateOneByIdPayload,
 } from 'src/interfaces/note.service.interface';
+import { getPaginationOffset } from 'src/utils/functions';
 import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
@@ -40,7 +41,7 @@ export class NoteService {
       where: { contact: { id: payload.id } },
       relations: ['contact'],
       order: { createdAt: payload.sort },
-      skip: (payload.page - 1) * payload.size,
+      skip: getPaginationOffset(payload),
       take: payload.size,
     });
 
