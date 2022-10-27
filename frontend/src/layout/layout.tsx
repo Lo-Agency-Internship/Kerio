@@ -88,7 +88,7 @@ export default function Layout({ children }: ILayout) {
 								</svg>
 							}>
 							<li className="mb-1 last:mb-0">
-								<SidebarLink href="/contacts" anchor="Contact Table" />
+								<SidebarLink href="/contacts" anchor="Contacts" />
 							</li>
 							<li className="mb-1 last:mb-0">
 								<SidebarLink onClick={() => setShowContactModal(true)} anchor="Add Contact" href={'#'} />
@@ -110,7 +110,7 @@ export default function Layout({ children }: ILayout) {
 								</svg>
 							}>
 							<li className="mb-1 last:mb-0">
-								<SidebarLink href="/Employees" anchor="Employee Table" />
+								<SidebarLink href="/Employees" anchor="Employees" />
 							</li>
 							<li className="mb-1 last:mb-0">
 								<SidebarLink onClick={() => setShowEmployeeModal(true)} anchor="Add Employee" href={'#'} />
