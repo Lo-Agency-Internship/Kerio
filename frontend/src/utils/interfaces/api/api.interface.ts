@@ -1,3 +1,5 @@
+import Employee from '../../../components/molecules/employee';
+
 export interface IApiPaginationParams {
 	pagination: {
 		page?: number;
@@ -32,7 +34,7 @@ export interface IPostContactInfo {
 	name?: string;
 	phone: FormDataEntryValue | null;
 	email?: string;
-	status: FormDataEntryValue  | null;
+	status: FormDataEntryValue | null;
 }
 
 export interface IPostInviteEmployee {
@@ -41,19 +43,28 @@ export interface IPostInviteEmployee {
 }
 
 export interface IPostNoteInfo {
-	title: string;
-	description: string;
-	date: string;
-	status: string;
-	score: string;
-	id: string;
+	title?: FormDataEntryValue | null;
+	description?: FormDataEntryValue | null;
+	date?: FormDataEntryValue | null;
+	status?: FormDataEntryValue | null;
+	score?: FormDataEntryValue | null;
+	id?: string;
 }
 
 export interface IUpdateContactInfo {
-	name: string;
-	email: string;
-	phone: string;
-	id: string;
+	name?: string;
+	email?: string;
+	phone?: FormDataEntryValue | null;
+	id?: string;
+}
+
+export interface IUpdateContactNoteById {
+	date?: string;
+	title?: string;
+	description?: string;
+	score?: string;
+	status?: string;
+	id?: string;
 }
 
 export interface IDeleteContact {

@@ -14,6 +14,7 @@ import {
 	IPostNoteInfo,
 	IUpdateContactInfo,
 	IDeleteContact,
+	IUpdateContactNoteById,
 } from '../utils/interfaces/api/api.interface';
 import { IGetContacts } from '../utils/interfaces/api/data.interface';
 
@@ -43,10 +44,11 @@ interface IApiContext {
 	getNoteInfo?: any;
 	getAllNotes?: any;
 	updateContactInfo(payload: IUpdateContactInfo): Promise<void>;
+	updateContactNoteById(payload: IUpdateContactNoteById): Promise<void>;
 	deleteContact(payload: IDeleteContact): Promise<void>;
 	postLogin(payload: IPostLogin): Promise<void>;
 	postSignUp(payload: IPostSignUp): Promise<void>;
-	postInviteEmployee(payload: IPostInviteEmployee): Promise<void>;
+	postInviteEmployee(payload: IPostInviteEmployee[]): Promise<void>;
 }
 
 const ApiContext = createContext<IApiContext | null>(null);
@@ -134,11 +136,11 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		});
 	};
 
-	const postInviteEmployee = async (payload: IPostInviteEmployee) => {
+	const postInviteEmployee = async (payload: IPostInviteEmployee[]) => {
+		console.log(payload);
 		await axios.post(uri('invites'), {
 			params: {
-				email: payload.email,
-				name: payload.name,
+				invites: payload,
 			},
 			...headerAuth,
 		});
@@ -170,6 +172,19 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		});
 	};
 
+	const updateContactNoteById = async (payload: IUpdateContactNoteById) => {
+		await axios.put(uri(`notes/${payload.id}`), {
+			params: {
+				date: payload.date,
+				title: payload.title,
+				description: payload.description,
+				score: payload.score,
+				status: payload.status,
+			},
+			...headerAuth,
+		});
+	};
+
 	// ///////delete contact
 	const deleteContact = async (payload: IDeleteContact) => {
 		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
@@ -191,6 +206,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				postSignUp,
 				postNoteInfo,
 				updateContactInfo,
+				updateContactNoteById,
 				deleteContact,
 				postInviteEmployee,
 			}}>
