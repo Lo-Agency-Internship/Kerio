@@ -71,11 +71,11 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 	// get employees
 	// const getAllEmployees = async () => {
-	//     setIsLoading(true);
-	//     const { data } = await axios.get(uri('???'), headerAuth);
-	//     console.log(data);
-	//     setIsLoading(false);
-	//     return data;
+	// 	setIsLoading(true);
+	// 	const { data } = await axios.get(uri('users'), headerAuth);
+	// 	console.log(data);
+	// 	setIsLoading(false);
+	// 	return data;
 	// };
 
 	// get users(employees)
