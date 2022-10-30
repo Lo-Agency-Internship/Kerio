@@ -19,6 +19,7 @@ import { ContactService } from '../services/contact/contact.service';
 import {
   CreateBodyDto,
   IPaginatedContactResponse,
+  MultiDeleteContactBodyDto,
   ReadAllQueryDto,
   UpdateContactBodyDto,
 } from '../dtos/contact.dto';
@@ -146,17 +147,9 @@ export class ContactController {
     });
   }
 
-  @Delete(':id')
+  @Delete()
   @UsePipes(new ValidationPipe({ transform: true }))
-  delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
-    return this.contactService.delete({ id });
-  }
-
-  @Delete(':id')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  deleteMulti(
-    @Param('ids', ParseIntPipe) ids: number[],
-  ): Promise<DeleteResult> {
-    return this.contactService.deleteMulti({ ids });
+  deleteMulti(@Body() ids: MultiDeleteContactBodyDto): Promise<DeleteResult> {
+    return this.contactService.deleteMulti(ids);
   }
 }
