@@ -108,13 +108,10 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 
 	const postSignUp = async (payload: IPostSignUp) => {
 		await axios.post(uri('auth/register'), {
-			params: {
-				email: payload.email,
-				name: payload.name,
-				password: payload.password,
-				organizationSlug: payload.organizationSlug,
-			},
-			...headerAuth,
+			email: payload.email,
+			name: payload.name,
+			password: payload.password,
+			organizationSlug: payload.organizationSlug,
 		});
 	};
 
