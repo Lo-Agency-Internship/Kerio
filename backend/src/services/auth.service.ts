@@ -90,8 +90,16 @@ export class AuthService {
       organization,
       role,
     );
+    const result =
+      await this.orgUserService.findUserWithOrganizationByUserEmail(email);
+    if (result.role.name === 'Owner') {
+      result.enabled = true;
+      // eslint-disable-next-line
+      const { organization, role, ...rest } = result;
+      this.userService.updateOwnerEnabled({ id: result.id, user: rest });
+    }
 
-    return await this.orgUserService.findUserWithOrganizationByUserEmail(email);
+    return result;
   }
 
   async activeAccount(email) {
