@@ -14,7 +14,6 @@ export default function NotePannel() {
 	const getNotes = async () => {
 		try {
 			const data = await getAllNotes(id as string);
-			console.log(data);
 			setNote(data.notes);
 		} catch (e: any) {
 			setError(e.response.data.message);
