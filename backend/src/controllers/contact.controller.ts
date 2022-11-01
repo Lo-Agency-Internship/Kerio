@@ -149,7 +149,7 @@ export class ContactController {
 
   @Delete('/batch')
   @UsePipes(new ValidationPipe({ transform: true }))
-  deleteMulti(@Body() ids: MultiDeleteContactBodyDto): Promise<DeleteResult> {
+  batchDelete(@Body() ids: MultiDeleteContactBodyDto): Promise<DeleteResult> {
     return this.contactService.batchDelete(ids);
   }
 }
