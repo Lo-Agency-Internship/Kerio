@@ -2,7 +2,6 @@ import {
   Injectable,
   NotAcceptableException,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
@@ -99,7 +98,7 @@ export class AuthService {
   }
 
   async activeAccount(email) {
-    const getUser = await this.userService.findOneUserByEmail(email);
+    const getUser = await this.userService.findOneUserByEmail({ email });
     getUser.enabled = true;
     await this.userService.updateUserById({ id: getUser.id, user: getUser });
   }

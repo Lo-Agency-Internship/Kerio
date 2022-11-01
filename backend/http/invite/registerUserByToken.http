@@ -1,8 +1,8 @@
-POST http://localhost:3001/invites/beb56505c1ea4a99d7887f986391f46728015b7674206cb75d1c036c47d4aaa77db7343f8c99100501cad02415671d23  HTTP/1.1
+POST http://localhost:3001/invites/9ff72c809c2a884ea10cea12969c442c83442b8aa424447728bf6ffa023423a6e8c95e1e0e00dbaf19b321957f3c5b35  HTTP/1.1
 Content-Type: application/json
 
 
 {
-	"name": "banana doe",
+	"name": "taktak doe",
     "password": "0000"
 }

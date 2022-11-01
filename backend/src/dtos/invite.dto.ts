@@ -37,7 +37,7 @@ export class CreateInvitesDto {
   invites: CreateInviteDto[];
 }
 
-export class RegisterUserByInviteDto {
+export class RegisterUserByTokenDto {
   @IsNotEmpty()
   name: string;
 

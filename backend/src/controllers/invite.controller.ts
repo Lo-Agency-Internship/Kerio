@@ -9,15 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
-import { CreateInvitesDto } from 'src/dtos/invite.dto';
+import { CreateInvitesDto, RegisterUserByTokenDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
-import {
-  EEntityTypeLog,
-  ERole,
-  SecureUserWithOrganization,
-} from 'src/utils/types';
-import { TemplateEngineService } from 'src/services/templateEngine.service';
-import { LogService } from 'src/services/log.service';
+import { ERole, SecureUserWithOrganization } from 'src/utils/types';
 import { RequestContextService } from 'src/services/requestContext.service';
 import { Organization } from 'src/entities/organization.entity';
 import { JwtGuard } from 'src/utils/jwt.guard';
@@ -27,8 +21,6 @@ export class InviteController {
   constructor(
     private readonly inviteService: InviteService,
     private readonly authService: AuthService,
-    private readonly logService: LogService,
-    private readonly templateService: TemplateEngineService,
     private readonly contextService: RequestContextService,
   ) {}
 
@@ -48,28 +40,23 @@ export class InviteController {
       invite = { ...invite, invitedByUserEmail, orgSlug };
 
       await this.inviteService.createInvite(invite);
-      await this.inviteService.sendEmailToInvite(invite);
-
-      this.logService.addLog({
-        title: 'Send Invite Successfully',
-        description: `Send Invite to ${invite.email}  Successfully`,
-        entityType: 'Send Invite',
-        entityId: EEntityTypeLog.Invite,
-        event: 'Invite',
-      });
+      await this.inviteService.sendEmailToInvite(invite.email);
     }
 
     return;
   }
 
   @Get('/:token')
-  async checkTokenValidation(@Param() { token }: any) {
-    return await this.inviteService.isInviteValid({ token });
+  async checkTokenValidation(@Param('token') token: string) {
+    return await this.inviteService.isInviteValid(token);
   }
 
   @Post('/:token')
-  async registerUserByToken(@Param() { token }: any, @Body() body: any) {
-    const isTokenValid = await this.inviteService.isInviteValid({ token });
+  async registerUserByToken(
+    @Param('token') token: string,
+    @Body() body: RegisterUserByTokenDto,
+  ) {
+    const isTokenValid = await this.inviteService.isInviteValid(token);
 
     if (!isTokenValid)
       throw new HttpException(`token is not valid`, HttpStatus.BAD_REQUEST);
@@ -86,7 +73,7 @@ export class InviteController {
     });
 
     // TODO: send email to user to activate the account
-    this.inviteService.sendEmailToActiveAccount({ email: invite.email });
+    this.inviteService.sendEmailToActiveAccount(invite.email);
 
     await this.inviteService.invalidateInviteByToken(token);
     return resultUser;
