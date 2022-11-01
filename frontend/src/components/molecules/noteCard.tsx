@@ -12,7 +12,6 @@ const NoteCard: React.FC<INoteCards> = ({ data }) => {
 
 	return (
 		<>
-			{/* {showNoteModal && <ShowNoteModal setOpen={setShowNoteModal} note={note} setNote={setNote} />} */}
 			{editNoteModal && <EditNoteModal setOpen={setEditNoteModal} open={editNoteModal} note={note} setNote={setNote} />}
 
 			<div onClick={() => setEditNoteModal(true)}>
