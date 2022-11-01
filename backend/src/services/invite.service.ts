@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Invite } from 'src/entities/invite.entity';
@@ -24,6 +24,12 @@ export class InviteService {
   ) {}
 
   async createInvite(payload: ICreateInvite): Promise<Invite> {
+    const isExist = await this.userService.exists(payload.email);
+
+    if (isExist) {
+      throw new UnauthorizedException();
+    }
+
     const invitedBy = await this.userService.findOneUserByEmail({
       email: payload.invitedByUserEmail,
     });

@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
@@ -38,8 +39,16 @@ export class InviteController {
 
     for await (let invite of invites) {
       invite = { ...invite, invitedByUserEmail, orgSlug };
-
-      await this.inviteService.createInvite(invite);
+      try {
+        await this.inviteService.createInvite(invite);
+      } catch (err) {
+        if (err instanceof UnauthorizedException) {
+          throw new HttpException(
+            'This email already exists ',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+      }
       await this.inviteService.sendEmailToInvite(invite.email);
     }
 
