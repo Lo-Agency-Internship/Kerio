@@ -41,4 +41,9 @@ export class SearchService {
     const index = this.getIndex();
     return await index.deleteDocument(id);
   }
+
+  async deleteDocuments(ids: string[] | number[]) {
+    const index = this.getIndex();
+    return await index.deleteDocuments(ids);
+  }
 }
