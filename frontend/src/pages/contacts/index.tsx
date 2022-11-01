@@ -30,9 +30,7 @@ export default function ContactsPage() {
 		<Page
 			header={{
 				actions: [
-					() => (
-						<Button label="New Contact" type="submit" style="" onClick={() => setShowAddConactModal(true)}></Button>
-					),
+					() => <Button label="New Contact" type="submit" onClick={() => setShowAddConactModal(true)}></Button>,
 				],
 			}}>
 			<NewContactModal
