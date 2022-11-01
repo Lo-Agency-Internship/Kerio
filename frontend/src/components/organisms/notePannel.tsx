@@ -17,7 +17,7 @@ export default function NotePannel() {
 			},
 		});
 		const data = res.data;
-		setNote(data);
+		setNote(data.notes);
 	};
 	useEffect(() => {
 		getAllNotes();

@@ -86,7 +86,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri(`contacts/${payload.id}`), headerAuth);
 		setIsLoading(false);
-		console.log(data);
 		return data;
 	};
 
@@ -122,30 +121,32 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	const postContactInfo = async (payload: IPostContactInfo) => {
-		await axios.post(uri('contacts'), {
-			params: {
+		await axios.post(
+			uri('contacts'),
+			{
 				email: payload.email,
 				name: payload.name,
 				status: payload.status,
 				phone: payload.phone,
 			},
-			...headerAuth,
-		});
+			headerAuth,
+		);
 	};
 
 	const postInviteEmployee = async (payload: IPostInviteEmployee[]) => {
-		console.log(payload);
-		await axios.post(uri('invites'), {
-			params: {
+		await axios.post(
+			uri('invites'),
+			{
 				invites: payload,
 			},
-			...headerAuth,
-		});
+			headerAuth,
+		);
 	};
 
 	const postNoteInfo = async (payload: IPostNoteInfo) => {
-		await axios.post(uri(`notes/${payload.id}`), {
-			params: {
+		await axios.post(
+			uri(`notes/${payload.id}`),
+			{
 				title: payload.title,
 				description: payload.description,
 				date: payload.date,
@@ -153,33 +154,35 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				score: payload.score,
 				id: payload.id,
 			},
-			...headerAuth,
-		});
+			headerAuth,
+		);
 	};
 
 	/// //////////////// PUT
 	const updateContactInfo = async (payload: IUpdateContactInfo) => {
-		axios.put(uri(`contacts/${payload.id}`), {
-			params: {
+		axios.put(
+			uri(`contacts/${payload.id}`),
+			{
 				name: payload.name,
 				phone: payload.phone,
 				email: payload.email,
 			},
-			...headerAuth,
-		});
+			headerAuth,
+		);
 	};
 
 	const updateContactNoteById = async (payload: IUpdateContactNoteById) => {
-		await axios.put(uri(`notes/${payload.id}`), {
-			params: {
+		await axios.put(
+			uri(`notes/${payload.id}`),
+			{
 				date: payload.date,
 				title: payload.title,
 				description: payload.description,
 				score: payload.score,
 				status: payload.status,
 			},
-			...headerAuth,
-		});
+			headerAuth,
+		);
 	};
 
 	// ///////delete contact

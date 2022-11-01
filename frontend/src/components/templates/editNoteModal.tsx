@@ -1,7 +1,5 @@
 import { FC, useState } from 'react';
 import Modal from '../organisms/modal';
-import axios from 'axios';
-import { uri } from '../../utils';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';

@@ -29,7 +29,6 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 				email: emails[index],
 			};
 		});
-		console.log(data);
 		postInviteEmployee(data).then(() => {
 			setOpen(false);
 		});
@@ -61,7 +60,6 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (err: any) {
 			setError(err.response.data.message);
-			console.log(err.response.data.message);
 		}
 	};
 	return (

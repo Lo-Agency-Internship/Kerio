@@ -54,8 +54,8 @@ export interface IPostNoteInfo {
 export interface IUpdateContactInfo {
 	name?: string;
 	email?: string;
-	phone?: FormDataEntryValue | null;
-	id?: string;
+	phone?: string;
+	id?: number;
 }
 
 export interface IUpdateContactNoteById {
@@ -68,5 +68,5 @@ export interface IUpdateContactNoteById {
 }
 
 export interface IDeleteContact {
-	id: string;
+	id: number;
 }
