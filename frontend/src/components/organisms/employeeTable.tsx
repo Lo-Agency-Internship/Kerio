@@ -37,41 +37,29 @@ const columns: TableColumn<IEmployee>[] = [
 		selector: (row) => row.email as string,
 		sortable: true,
 	},
-	{
-		name: 'Phone',
-		selector: (row) => row.phone as string,
-		sortable: true,
-	},
 ];
 
 const EmployeeTable: React.FC<IEmployeeTable> = () => {
 	const [error] = useState(null);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [items, setItems] = useState([]);
-	const [totalRows, setTotalRows] = useState(0);
-	const [perPage, setPerPage] = useState(10);
 	const { getAllEmployees } = useApiContext();
-	const fetchData = async (page: number, size: number) => {
-		const result = await getAllEmployees(page, size);
+	const fetchData = async () => {
+		const result = await getAllEmployees();
 		setIsLoaded(true);
 		setItems(result);
-		setTotalRows(13);
+		// setTotalRows(13);
 	};
 
 	useEffect(() => {
-		fetchData(1, perPage);
-	}, [perPage]);
+		fetchData();
+	}, []);
 
-	const handlePageChange = (page: any) => {
-		fetchData(page, perPage);
-	};
-
-	const handlePerRowsChange = async (newPerPage: React.SetStateAction<number>) => {
-		setPerPage(newPerPage);
-	};
 	const navigate = useNavigate();
 	const handleRowClicked = (row: any) => {
 		navigate(`/employees/${row.id}`);
+		console.log('hi');
+		console.log(handleRowClicked);
 	};
 	if (error) {
 		return <div>Error</div>;
@@ -83,11 +71,8 @@ const EmployeeTable: React.FC<IEmployeeTable> = () => {
 				<DataTable
 					columns={columns}
 					data={items}
-					pagination
-					paginationServer
-					paginationTotalRows={totalRows}
-					onChangePage={handlePageChange}
-					onChangeRowsPerPage={handlePerRowsChange}
+					// onChangePage={handlePageChange}
+					// onChangeRowsPerPage={handlePerRowsChange}
 					onRowClicked={handleRowClicked}
 					highlightOnHover
 					pointerOnHover

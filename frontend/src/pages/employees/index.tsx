@@ -12,33 +12,28 @@ export default function EmployeesPage() {
 	// const [showAddConactModal, setShowAddConactModal] = useState(false);
 	const [showAddEmployModal, setAddEmployModal] = useState<boolean>(false);
 
-	const data: IEmployee[] = [
-		{
-			name: 'Mohamadreza',
-			phone: '092356565',
-			email: 'mohamadreza@loagency.de',
-		},
-		{
-			name: 'maryam',
-			phone: '092356565',
-			email: 'maryam@loagency.de',
-		},
-		{
-			name: 'hutan',
-			phone: '092356565',
-			email: 'hutan@loagency.de',
-		},
-		{
-			name: 'samira',
-			phone: '092356565',
-			email: 'samira@loagency.de',
-		},
-		{
-			name: 'farzaneh',
-			phone: '092356565',
-			email: 'farzaneh@loagency.de',
-		},
-	];
+	// const data: IEmployee[] = [
+	// 	{
+	// 		name: 'Mohamadreza',
+	// 		email: 'mohamadreza@loagency.de',
+	// 	},
+	// 	{
+	// 		name: 'maryam',
+	// 		email: 'maryam@loagency.de',
+	// 	},
+	// 	{
+	// 		name: 'hutan',
+	// 		email: 'hutan@loagency.de',
+	// 	},
+	// 	{
+	// 		name: 'samira',
+	// 		email: 'samira@loagency.de',
+	// 	},
+	// 	{
+	// 		name: 'farzaneh',
+	// 		email: 'farzaneh@loagency.de',
+	// 	},
+	// ];
 	useEffect(() => {
 		getAllEmployees(1, 5).then(setEmployee);
 	}, []);
@@ -51,9 +46,9 @@ export default function EmployeesPage() {
 				],
 			}}>
 			{showAddEmployModal && <NewEmployeeModal setOpen={setAddEmployModal} open={showAddEmployModal} />}
-			{data.map((element: any, index: any) => (
+			{/* {data.map((element: any, index: any) => (
 				<EmployeeCard employee={element} key={index} />
-			))}{' '}
+			))}{' '} */}
 			<EmployeeTable employee={[]} />
 		</Page>
 	);
