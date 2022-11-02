@@ -93,13 +93,6 @@ export class AuthController {
       role,
     });
 
-    // if (resultUser.role.name === 'Owner') {
-    //   resultUser.enabled = true;
-    //   // eslint-disable-next-line
-    //   const { organization, role, ...rest } = resultUser;
-    //   this.userService.updateOwnerEnabled({ id: resultUser.id, user: rest });
-    // }
-
     return resultUser;
   }
   @Post('duplicateEmail')

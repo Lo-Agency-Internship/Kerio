@@ -102,9 +102,9 @@ export class AuthService {
     return result;
   }
 
-  async activeAccount(email) {
-    //const getUser = await this.userService.findOneUserByEmail(email);
-    const getUser = await this.userRepository.findOne({ where: { email } });
+  async activeAccount(email: string) {
+    const getUser = await this.userService.findOneUserByEmail({ email });
+
     if (!getUser) {
       throw new NotFoundException();
     }
