@@ -33,11 +33,11 @@ interface IApiContext {
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
 	getAllEmployees?: any;
+	getAllNotes?: any;
 	postContactInfo?: any;
 	postUserInfo?: any;
 	postNoteInfo?: any;
 	getNoteInfo?: any;
-	getAllNotes?: any;
 	updateContactInfo?: any;
 	deleteContact?: any;
 	postLogin?: any;
@@ -87,12 +87,16 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	// get notes(employees)
-	// const getAllNotes = async () => {
-	// 	setIsLoading(true);
-	// 	const { data } = await axios.get(uri('note'), headerAuth);
-	// 	setIsLoading(false);
-	// 	return data;
-	// };
+	const getAllNotes = async (id: string) => {
+		const { data } = await axios.get(uri(`notes/${id}`), {
+			params: {
+				sort: 'asc',
+			},
+			...headerAuth,
+		});
+		return data;
+	};
+
 	// get contacts info by ID
 	const getContactsInfoById = async (id: string) => {
 		setIsLoading(true);
@@ -176,6 +180,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				getAllTimelines,
 				getContactsInfoById,
 				getUsersInfoById,
+				getAllNotes,
 				postContactInfo,
 				postUserInfo,
 				postLogin,
