@@ -45,7 +45,6 @@ function App() {
 				<Route path="employees/:id" element={<EmployeesProfile />} />
 
 				{role === 'owner' && <Route path="employees" element={<EmployeesPage />} />}
-				{/* {role === 'owner' && <Route path="employeeProfile" element={<EmployeeProfile />} />} */}
 			</Route>
 			<Route path="*" element={<NotFoundPage />} />
 		</Routes>

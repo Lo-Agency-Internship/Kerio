@@ -38,7 +38,6 @@ const columns: TableColumn<IEmployee>[] = [
 		sortable: true,
 	},
 ];
-
 const EmployeeTable: React.FC<IEmployeeTable> = () => {
 	const [error] = useState(null);
 	const [isLoaded, setIsLoaded] = useState(false);

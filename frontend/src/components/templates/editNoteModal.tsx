@@ -48,7 +48,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 		e.preventDefault();
 
 		const formData = new FormData(e.currentTarget);
-		const date = formData.get('date') as string;
+		const date = contactDate;
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
 		const score = formData.get('score') as string;
@@ -85,11 +85,14 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 				<Input
 					disabled={inputDisabled}
 					id={'date'}
-					defaultValue={format(new Date(note.date as string), 'dd/MM/yyyy')}
+					defaultValue={format(new Date(contactDate as string), 'dd/MM/yyyy')}
 					name="date"
 					className={background}
-					onChange={(e) => setContactDate(e.target.value)}
-					value={contactDate}
+					onChange={(e) => {
+						e.preventDefault();
+						setContactDate(e.target.value);
+					}}
+					// value={contactDate}
 				/>
 				<div>
 					<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Title</label>

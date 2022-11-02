@@ -59,12 +59,6 @@ const Header: React.FC<IHeaderProps> = ({ sidebarOpen, setSidebarOpen, actions }
 							</svg>
 						</Button>
 						<SearchModal setOpen={setSearchModalOpen} open={searchModalOpen} />
-						{/* <Notifications align="right" />
-			  <Help align="right" /> */}
-						{/*  Divider */}
-						{/* <hr className="w-px h-6 bg-slate-200 mx-3" />
-			  <UserMenu align="right" /> */}
-
 						<DropdownProfile align="right" />
 					</div>
 				</div>
