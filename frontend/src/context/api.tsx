@@ -49,6 +49,7 @@ interface IApiContext {
 	postLogin(payload: IPostLogin): Promise<void>;
 	postSignUp(payload: IPostSignUp): Promise<void>;
 	postInviteEmployee(payload: IPostInviteEmployee[]): Promise<void>;
+
 }
 
 const ApiContext = createContext<IApiContext | null>(null);
@@ -81,8 +82,20 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		setIsLoading(false);
 		return data;
 	};
+  
+	// get notes(employees)
+	const getAllNotes = async (id: string) => {
+		const { data } = await axios.get(uri(`notes/${id}`), {
+			params: {
+				sort: 'asc',
+			},
+			...headerAuth,
+		});
+		return data;
+	};
 
-	const getContactsInfoById = async (payload: IGetContactsInfoById) => {
+	// get contacts info by ID
+	const getContactsInfoById = async (id: string) => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri(`contacts/${payload.id}`), headerAuth);
 		setIsLoading(false);
@@ -201,6 +214,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				getTimelines,
 				getContactsInfoById,
 				getUsersInfoById,
+				getAllNotes,
 				postContactInfo,
 				postLogin,
 				postSignUp,
