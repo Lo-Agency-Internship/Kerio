@@ -1,12 +1,12 @@
 POST http://localhost:3001/invites HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhbmlAcC5jb20iLCJzdWIiOjExLCJuYW1lIjoiUGFuaXoiLCJpYXQiOjE2NjUyMjAwNTAsImV4cCI6MTY2NzgxMjA1MH0.rpTOntYNwCMjlpzDCv4IoFRbeNeYPaGbq9r1Rb6JXoQ
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjEsIm5hbWUiOiJnb2xpIERvZSIsInJvbGUiOnsiaWQiOjEsIm5hbWUiOiJPd25lciIsImNyZWF0ZWRBdCI6IjIwMjItMTAtMjVUMDI6MzA6NDcuNDk4WiIsInVwZGF0ZWRBdCI6IjIwMjItMTAtMjVUMDI6MzA6NDcuNDk4WiJ9LCJpYXQiOjE2NjY2Nzc3NDEsImV4cCI6MTY2OTI2OTc0MX0.SBD1bhrD3fA2uIT9rWvgxuaMxmihaCItnUlibyxcuM8
 
 {
 	"invites": [
-		{ mahsa/eng-551-reimplement-status-seeding
-			"name": "mahsa",
-			"email": "abadian.ma@gmail.com"
+		{ 
+			"name": "banana",
+			"email": "banana@gmail.com"
 		}
 	]
 }

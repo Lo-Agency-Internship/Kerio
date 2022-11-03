@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
-import { useApiContext } from '../../context/api';
 import { IUser } from '../../utils/interfaces/user';
-import differenceBy from 'lodash/differenceBy';
 import { Button } from '../atoms/button';
 
 interface IContactTable {
@@ -85,8 +83,8 @@ const ContactTable: React.FC<IContactTable> = ({
 	showDeleteModal,
 	setShowDeleteModal,
 }) => {
-	const [error, setError] = useState(null);
-	const [toggleCleared, setToggleCleared] = useState(false);
+	const [error] = useState(null);
+	const [toggleCleared] = useState(false);
 	useEffect(() => {
 		fetchData(1, perPage);
 	}, [perPage]);
@@ -95,7 +93,7 @@ const ContactTable: React.FC<IContactTable> = ({
 		fetchData(page, perPage);
 	};
 
-	const handlePerRowsChange = async (newPerPage: React.SetStateAction<number>, page: any) => {
+	const handlePerRowsChange = async (newPerPage: React.SetStateAction<number>) => {
 		setPerPage(newPerPage);
 	};
 	const navigate = useNavigate();
@@ -115,7 +113,7 @@ const ContactTable: React.FC<IContactTable> = ({
 				}}
 				label="Delete"
 				type="button"
-				style="bg-rose-500 text-gray-900 border-slate-200"
+				style="mt-3 inline-flex w-full flex items-center justify-center rounded-md border bg-rose-500 px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-rose-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
 			/>
 		);
 	}, [contact, selectedRows, toggleCleared]);

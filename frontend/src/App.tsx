@@ -10,7 +10,6 @@ import Invite from './pages/invite';
 import { useState } from 'react';
 import EmployeesPage from './pages/employees/index';
 import NotFoundPage from './pages/notFoundPage';
-import EmployeeProfile from './pages/employeeProfile';
 import ContactPage from './pages/contacts/_id';
 import ContactsPage from './pages/contacts';
 import Activation from './pages/activation';
@@ -28,6 +27,7 @@ function App() {
 				}
 			/>
 			<Route path="/invite" element={<Invite />} />
+			<Route path="/active" element={<Activation />} />
 
 			<Route
 				path="/"
@@ -41,10 +41,8 @@ function App() {
 				<Route index element={<Index />} />
 				<Route path="contacts" element={<ContactsPage />} />
 				<Route path="contacts/:id" element={<ContactPage />} />
-				<Route path="active?email" element={<Activation />} />
 
 				{role === 'owner' && <Route path="employees" element={<EmployeesPage />} />}
-				{role === 'owner' && <Route path="employeeProfile" element={<EmployeeProfile />} />}
 			</Route>
 			<Route path="*" element={<NotFoundPage />} />
 		</Routes>

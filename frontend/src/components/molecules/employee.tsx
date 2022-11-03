@@ -37,8 +37,7 @@ export default function Employee({ user, setUser }: any) {
 		const formData = new FormData(e.currentTarget);
 		const name = formData.get('name');
 		const email = formData.get('email');
-		const phone = formData.get('phone');
-		const body = { name, email, phone };
+		const body = { name, email };
 		await updateContactInfo(user.id, body);
 		setUser({ ...body, id: user.id });
 		setInputDisabled(true);

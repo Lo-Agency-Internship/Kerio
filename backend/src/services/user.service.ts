@@ -1,10 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
-import { NewUser, SecureUser, UserWithOrganization } from '../utils/types';
-import { Organization } from 'src/entities/organization.entity';
-import { Role } from 'src/entities/role.entity';
+import { SecureUser, UserWithOrganization } from '../utils/types';
+
+import {
+  IAddUserPayload,
+  IDeleteOneByIdPayload,
+  IExistAndFindByEmailPayload,
+  IFindOneUserByEmailPayload,
+  IFindOneUserByIdPayload,
+  IFindUserWithOrganizationPayload,
+  IReadAllByOrganization,
+  IReadOneById,
+  IUpdateOneByIdPayload,
+  IUpdateUserByEmailPayload,
+  IUpdateUserByIdPayload,
+} from 'src/interfaces/user.service.interface';
+import { OrganizationUser } from 'src/entities/organizationUser.entity';
 
 @Injectable()
 export class UserService {
@@ -12,42 +25,33 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
 
-    @InjectRepository(Organization)
-    private readonly orgRepository: Repository<Organization>,
-
-    @InjectRepository(Role)
-    private readonly roleRepository: Repository<Role>,
+    @InjectRepository(OrganizationUser)
+    private readonly orgUserRepository: Repository<OrganizationUser>,
   ) {}
 
-  async addUser(user: NewUser): Promise<User> {
-    return await this.userRepository.save(user);
+  async addUser(payload: IAddUserPayload): Promise<User> {
+    return await this.userRepository.save(payload.user);
   }
 
-  async updateUserById(id: number, user: User): Promise<UpdateResult> {
-    return await this.userRepository.update(id, user);
+  async updateUserById(payload: IUpdateUserByIdPayload): Promise<UpdateResult> {
+    return await this.userRepository.update(payload.id, payload.user);
   }
 
-  async updateUserByEmail(email: string, user: User): Promise<UpdateResult> {
-    return await this.userRepository.update(email, user);
+  async updateUserByEmail(
+    payload: IUpdateUserByEmailPayload,
+  ): Promise<UpdateResult> {
+    return await this.userRepository.update(payload.email, payload.user);
   }
 
-  async findOneUserById(id: number): Promise<User> {
-    return await this.userRepository.findOneBy({ id });
+  async findOneUserById(payload: IFindOneUserByIdPayload): Promise<User> {
+    return await this.userRepository.findOneBy({ id: payload.id });
   }
 
-  async findOneUserByEmail(email: string): Promise<User | null> {
+  async findOneUserByEmail(
+    payload: IFindOneUserByEmailPayload,
+  ): Promise<User | null> {
     return await this.userRepository.findOneBy({
-      email,
-    });
-  }
-
-  async findAll(): Promise<SecureUser[]> {
-    const users = await this.userRepository.find();
-
-    return users.map((user) => {
-      // eslint-disable-next-line
-      const { password, salt, ...rest } = user;
-      return rest;
+      email: payload.email,
     });
   }
 
@@ -61,34 +65,74 @@ export class UserService {
     return count > 0;
   }
 
-  async existsAndFindByEmail(email: string): Promise<[boolean, User]> {
-    const user = await this.findOneUserByEmail(email);
+  async existsAndFindByEmail(
+    payload: IExistAndFindByEmailPayload,
+  ): Promise<[boolean, User]> {
+    const user = await this.findOneUserByEmail(payload);
     return [user !== null, user];
   }
 
   async findUserWithOrganizationByUserEmail(
-    email: string,
+    payload: IFindUserWithOrganizationPayload,
   ): Promise<[boolean, UserWithOrganization]> {
     const user = await this.userRepository.findOne({
       where: {
-        email,
+        email: payload.email,
       },
-      relations: ['organization'],
+      relations: ['organization', 'organization.role', 'organization.org'],
       loadEagerRelations: true,
       relationLoadStrategy: 'join',
-    });
-
-    const org = await this.orgRepository.findOneBy({
-      id: user.organization.orgId,
     });
 
     return [
       user !== null,
       {
         ...user,
-        organization: org,
+        organization: user.organization.org,
         role: user.organization.role,
       },
     ];
+  }
+
+  async readAllByOrganization(
+    payload: IReadAllByOrganization,
+  ): Promise<SecureUser[]> {
+    const results = await this.orgUserRepository.find({
+      where: { org: { id: payload.organization.id }, role: { id: 2 } },
+      relations: ['user'],
+    });
+
+    const empolyees = results.map((item) => {
+      delete item.user.password;
+      delete item.user.salt;
+      return item.user;
+    });
+
+    return empolyees;
+  }
+
+  async readOneById(payload: IReadOneById): Promise<SecureUser> {
+    const user = await this.userRepository.findOne({
+      where: { id: payload.id },
+    });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+    delete user.password;
+    delete user.salt;
+    return user;
+  }
+
+  async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
+    return await this.userRepository.update(payload.id, payload.employee);
+  }
+
+  async delete(payload: IDeleteOneByIdPayload): Promise<DeleteResult> {
+    const orgUser = await this.orgUserRepository.findOne({
+      where: { user: { id: payload.id } },
+    });
+    await this.orgUserRepository.softDelete(orgUser.id);
+    return await this.userRepository.softDelete(payload.id);
   }
 }

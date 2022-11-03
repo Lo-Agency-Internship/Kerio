@@ -33,11 +33,11 @@ interface IApiContext {
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
 	getAllEmployees?: any;
+	getAllNotes?: any;
 	postContactInfo?: any;
 	postUserInfo?: any;
 	postNoteInfo?: any;
 	getNoteInfo?: any;
-	getAllNotes?: any;
 	updateContactInfo?: any;
 	deleteContact?: any;
 	postLogin?: any;
@@ -60,7 +60,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const [contacts, setContacts] = useState([]);
 	type IGetContactsPayload = IApiPaginationParams;
 	const getAllContacts = async (page: number, size: number) => {
-		const { data, status } = await axios.get(uri(`contacts`), {
+		const { data } = await axios.get(uri(`contacts`), {
 			params: {
 				page,
 				size,
@@ -71,11 +71,11 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 	// get employees
 	// const getAllEmployees = async () => {
-	//     setIsLoading(true);
-	//     const { data } = await axios.get(uri('???'), headerAuth);
-	//     console.log(data);
-	//     setIsLoading(false);
-	//     return data;
+	// 	setIsLoading(true);
+	// 	const { data } = await axios.get(uri('users'), headerAuth);
+	// 	console.log(data);
+	// 	setIsLoading(false);
+	// 	return data;
 	// };
 
 	// get users(employees)
@@ -87,12 +87,16 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	// get notes(employees)
-	const getAllNotes = async () => {
-		setIsLoading(true);
-		const { data } = await axios.get(uri('note'), headerAuth);
-		setIsLoading(false);
+	const getAllNotes = async (id: string) => {
+		const { data } = await axios.get(uri(`notes/${id}`), {
+			params: {
+				sort: 'asc',
+			},
+			...headerAuth,
+		});
 		return data;
 	};
+
 	// get contacts info by ID
 	const getContactsInfoById = async (id: string) => {
 		setIsLoading(true);
@@ -176,6 +180,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				getAllTimelines,
 				getContactsInfoById,
 				getUsersInfoById,
+				getAllNotes,
 				postContactInfo,
 				postUserInfo,
 				postLogin,

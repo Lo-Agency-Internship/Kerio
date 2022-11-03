@@ -37,15 +37,9 @@ const columns: TableColumn<IEmployee>[] = [
 		selector: (row) => row.email as string,
 		sortable: true,
 	},
-	{
-		name: 'Phone',
-		selector: (row) => row.phone as string,
-		sortable: true,
-	},
 ];
-
-const EmployeeTable: React.FC<IEmployeeTable> = ({ employee }) => {
-	const [error, setError] = useState(null);
+const EmployeeTable: React.FC<IEmployeeTable> = () => {
+	const [error] = useState(null);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [items, setItems] = useState([]);
 	const [totalRows, setTotalRows] = useState(0);
@@ -66,7 +60,7 @@ const EmployeeTable: React.FC<IEmployeeTable> = ({ employee }) => {
 		fetchData(page, perPage);
 	};
 
-	const handlePerRowsChange = async (newPerPage: React.SetStateAction<number>, page: any) => {
+	const handlePerRowsChange = async (newPerPage: React.SetStateAction<number>) => {
 		setPerPage(newPerPage);
 	};
 	const navigate = useNavigate();

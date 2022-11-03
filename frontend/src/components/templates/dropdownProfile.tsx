@@ -69,7 +69,7 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 				<div ref={dropdown} onFocus={() => setDropdownOpen(true)} onBlur={() => setDropdownOpen(false)}>
 					<div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
 						<div className="font-medium text-sm text-slate-800">{email}</div>
-						<div className="text-xs text-slate-500 italic">{role}</div>
+						<div className="text-xs text-slate-500 italic">{role.name}</div>
 					</div>
 					<ul>
 						<li>

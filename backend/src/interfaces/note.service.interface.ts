@@ -1,3 +1,4 @@
+import { PaginationDto } from 'src/dtos';
 import { Contact } from 'src/entities/contact/contact.entity';
 import { Note } from 'src/entities/note.entity';
 import { DeepPartial, FindOperator } from 'typeorm';
@@ -21,7 +22,7 @@ export interface IDeleteByIdPayload {
   id: number;
 }
 
-export interface IFindByContactIdPayload {
+export interface IFindByContactIdPayload extends PaginationDto {
   id: number | FindOperator<number>;
 }
 

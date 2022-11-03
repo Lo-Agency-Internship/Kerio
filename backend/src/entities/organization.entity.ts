@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Contact } from './contact/contact.entity';
+import { OrganizationUser } from './organizationUser.entity';
 
 @Entity()
 export class Organization {
@@ -34,4 +35,7 @@ export class Organization {
 
   @OneToMany(() => Contact, (contact) => contact.organization)
   contacts: Contact[];
+
+  @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.org)
+  OrgUser: OrganizationUser;
 }

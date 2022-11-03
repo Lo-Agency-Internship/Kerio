@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { SidebarLinkGroup } from './sidebarLinkGroup';
+import { NavLink } from 'react-router-dom';
 
 export interface SidebarProps {
 	children: React.ReactNode;
@@ -8,9 +7,7 @@ export interface SidebarProps {
 	setSidebarOpen: any;
 	logo?: React.ReactNode;
 }
-export const Sidebar: React.FC<SidebarProps> = ({ children, sidebarOpen, setSidebarOpen, logo }) => {
-	const location = useLocation();
-	const { pathname } = location;
+export const Sidebar: React.FC<SidebarProps> = ({ children, sidebarOpen, setSidebarOpen }) => {
 	const trigger = React.useRef<any>(null);
 	const sidebar = React.useRef<any>(null);
 
