@@ -43,6 +43,8 @@ interface IApiContext {
 	postLogin?: any;
 	postSignUp?: any;
 	postInviteEmployee?: any;
+	postIsLoading?: boolean;
+	setPostIsLoading?: any;
 }
 
 const ApiContext = createContext<IApiContext>({});
@@ -52,6 +54,7 @@ export const useApiContext = () => useContext(ApiContext);
 export const ApiProvider = ({ children }: IApiProvider) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [change, setChange] = useState(false);
+	const [postIsLoading, setPostIsLoading] = useState<boolean>(false);
 	const headerAuth = {
 		headers: {
 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
@@ -170,6 +173,8 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	return (
 		<ApiContext.Provider
 			value={{
+				setPostIsLoading,
+				postIsLoading,
 				change,
 				setChange,
 				isLoading,

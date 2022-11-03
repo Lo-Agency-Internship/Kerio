@@ -17,12 +17,12 @@ interface IProps {
 const ADDCONTACT_FORM_ID = 'ADDCONTACT_FORM_ID';
 
 const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perPage }) => {
-	const { postContactInfo } = useApiContext();
+	const { postContactInfo, postIsLoading, setPostIsLoading } = useApiContext();
 	const [error, setError] = useState<string[] | null>(null);
 	const handleSubmit = async (event: any) => {
+		setPostIsLoading(true);
 		setError(null);
 		event.preventDefault();
-
 		const formData = new FormData(event.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const phone = formData.get('phone-number');
@@ -43,6 +43,8 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
+
+		setPostIsLoading(false);
 	};
 
 	return (
@@ -55,6 +57,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 					label: 'Submit',
 					type: 'submit',
 					form: ADDCONTACT_FORM_ID,
+					loading: postIsLoading,
 				},
 			]}>
 			{error && (

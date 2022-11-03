@@ -5,6 +5,7 @@ interface IDeleteContatctsProps {
 	setOpen: any;
 	title: string;
 	handleDelete: () => void;
+	loading?: boolean;
 	children: any;
 }
 
@@ -18,6 +19,7 @@ const DeleteModal: FC<IDeleteContatctsProps> = (props) => {
 			title={props.title}
 			actions={[
 				{
+					loading: props.loading,
 					label: 'Delete',
 					type: 'submit',
 					form: DELETE_FORM_ID,

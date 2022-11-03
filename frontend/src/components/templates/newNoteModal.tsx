@@ -15,10 +15,11 @@ const ADDNOTE_FORM_ID = 'ADDNOTE_FORM_ID';
 
 const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 	const { id } = useParams();
-	const { change, setChange, postNoteInfo } = useApiContext();
+	const { change, setChange, postNoteInfo, postIsLoading, setPostIsLoading } = useApiContext();
 	// const navigate = useNavigate();
 	const [error, setError] = useState<string[] | null>(null);
 	const handleSubmit = async (event: any) => {
+		setPostIsLoading(true);
 		setError(null);
 		event.preventDefault();
 
@@ -43,6 +44,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
+		setPostIsLoading(false);
 	};
 
 	return (
@@ -52,6 +54,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 			title={'New Note'}
 			actions={[
 				{
+					loading: postIsLoading,
 					label: 'Submit',
 					type: 'submit',
 					form: ADDNOTE_FORM_ID,

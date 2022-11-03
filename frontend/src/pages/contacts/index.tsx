@@ -8,7 +8,7 @@ import { IUser } from '../../utils/interfaces/user';
 import DeleteModal from '../../components/molecules/deleteModal';
 
 export default function ContactsPage() {
-	const { getAllContacts } = useApiContext();
+	const { getAllContacts, postIsLoading, setPostIsLoading } = useApiContext();
 	const [showAddConactModal, setShowAddConactModal] = useState(false);
 	const [contacts, setContacts] = useState<IUser[]>([]);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -28,7 +28,9 @@ export default function ContactsPage() {
 	};
 
 	const handleDelete = () => {
+		setPostIsLoading(true);
 		console.log(selectedRows);
+		setPostIsLoading(false);
 	};
 	return (
 		<Page
@@ -62,7 +64,8 @@ export default function ContactsPage() {
 				open={showDeleteModal}
 				setOpen={setShowDeleteModal}
 				title={'Delete Modal'}
-				handleDelete={handleDelete}>
+				handleDelete={handleDelete}
+				loading={postIsLoading}>
 				{selectedRows.length !== 1 ? (
 					<p>Are you sure that you want Delete these contacts ?</p>
 				) : (

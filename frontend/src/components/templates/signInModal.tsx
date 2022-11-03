@@ -15,9 +15,10 @@ const SIGNIN_FORM_ID = 'SIGNIN_FORM_ID';
 const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
-	const { postLogin } = useApiContext();
+	const { postLogin, postIsLoading, setPostIsLoading } = useApiContext();
 
 	const handleSubmit = async (event: any) => {
+		setPostIsLoading(true);
 		event.preventDefault();
 		setError(null);
 		const formData = new FormData(event.currentTarget);
@@ -37,6 +38,7 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
+		setPostIsLoading(false);
 	};
 
 	return (
@@ -46,6 +48,7 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			title={'SignIn Form'}
 			actions={[
 				{
+					loading: postIsLoading,
 					label: 'Submit',
 					type: 'submit',
 					form: SIGNIN_FORM_ID,
