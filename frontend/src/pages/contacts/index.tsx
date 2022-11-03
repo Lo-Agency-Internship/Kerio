@@ -8,7 +8,7 @@ import { IUser } from '../../utils/interfaces/user';
 import DeleteModal from '../../components/molecules/deleteModal';
 
 export default function ContactsPage() {
-	const { getAllContacts } = useApiContext();
+	const { getAllContacts, deleteContacts } = useApiContext();
 	const [showAddConactModal, setShowAddConactModal] = useState(false);
 	const [contacts, setContacts] = useState<IUser[]>([]);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -16,6 +16,9 @@ export default function ContactsPage() {
 	const [perPage, setPerPage] = useState(10);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [selectedRows, setSelectedRows] = useState<IUser[]>([]);
+	const [toggleCleared] = useState(false);
+
+	const [error, setError] = useState(0);
 
 	useEffect(() => {
 		getAllContacts(1, 5).then(setContacts);
@@ -27,8 +30,15 @@ export default function ContactsPage() {
 		setTotalRows(result.metadata.total);
 	};
 
-	const handleDelete = () => {
-		console.log(selectedRows);
+	const handleDelete = async () => {
+		try {
+			await deleteContacts(selectedRows);
+		} catch (err: any) {
+			setError(err.response.data.message);
+		}
+		const pageNumber = Math.ceil((totalRows + 1) / perPage);
+		await fetchData(pageNumber, perPage);
+		setShowDeleteModal(false);
 	};
 	return (
 		<Page
@@ -46,6 +56,7 @@ export default function ContactsPage() {
 				perPage={perPage}
 			/>
 			<ContactTable
+				toggleCleared={toggleCleared}
 				contact={contacts}
 				setContacts={setContacts}
 				fetchData={fetchData}
