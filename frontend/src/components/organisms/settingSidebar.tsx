@@ -30,7 +30,7 @@ const SettingsSidebar: React.FC<IProps> = (props) => {
 							<li key={idx} className="mr-0.5 md:mr-0 md:mb-0.5">
 								<button
 									onClick={() => props.setActive(itemId)}
-									className={`flex items-center px-2.5 py-2 block w-full rounded whitespace-nowrap ${
+									className={`flex items-center px-2.5 py-2 w-full rounded whitespace-nowrap ${
 										isActive && 'bg-indigo-50'
 									}`}>
 									{item.icon(props)}
