@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -44,6 +45,11 @@ export class UpdateContactBodyDto {
 
   @IsString()
   phone: string;
+}
+
+export class MultiDeleteContactBodyDto {
+  @IsArray()
+  ids: number[];
 }
 
 export class IPaginatedContactResponse {

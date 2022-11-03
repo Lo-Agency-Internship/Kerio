@@ -19,6 +19,7 @@ import { ContactService } from '../services/contact/contact.service';
 import {
   CreateBodyDto,
   IPaginatedContactResponse,
+  MultiDeleteContactBodyDto,
   ReadAllQueryDto,
   UpdateContactBodyDto,
 } from '../dtos/contact.dto';
@@ -146,9 +147,9 @@ export class ContactController {
     });
   }
 
-  @Delete(':id')
+  @Delete('/batch')
   @UsePipes(new ValidationPipe({ transform: true }))
-  delete(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
-    return this.contactService.delete({ id });
+  batchDelete(@Body() ids: MultiDeleteContactBodyDto): Promise<DeleteResult> {
+    return this.contactService.batchDelete(ids);
   }
 }
