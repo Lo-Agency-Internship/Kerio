@@ -40,19 +40,18 @@ export default function AccountPanelUser() {
 		const email = formData.get('email')?.toString().toLowerCase();
 
 		const body = { name, email };
-		console.log(body);
+
 		const isValid = await editUserValidation.isValid(body);
 
 		if (isValid) {
 			updateUserInfo(sub, body);
 			setError(!error);
-			console.log(isValid);
 		} else {
 			editUserValidation.validate(body).catch((event) => {
 				setError(event.message);
 			});
 		}
-		console.log(sub);
+
 		setInputDisabled(true);
 		setInputsShow(false);
 		setBackground('bg-transparent');
@@ -89,7 +88,8 @@ export default function AccountPanelUser() {
 								inputProps={{
 									type: 'text',
 									placeholder: 'Name',
-									disabled: inputDisabled,
+									// disabled: inputDisabled,
+									disabled: true,
 									onChange: (e) => setUserName(e.target.value),
 									value: userName,
 									defaultValue: usersName,
@@ -104,7 +104,8 @@ export default function AccountPanelUser() {
 								inputProps={{
 									type: 'text',
 									placeholder: 'Email',
-									disabled: inputDisabled,
+									// disabled: inputDisabled,
+									disabled: true,
 									onChange: (e) => setUserEmail(e.target.value),
 									value: userEmail,
 									defaultValue: usersEmail,

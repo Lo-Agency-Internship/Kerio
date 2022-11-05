@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Loading from '../components/molecules/loading';
 import AccountPanelUser from '../components/organisms/accountPannelUser';
 import SettingsSidebar from '../components/organisms/settingSidebar';
 import { useAuthContext } from '../context/auth';
@@ -8,7 +7,7 @@ import { Page } from '../layout/page';
 export const ProfileUser = () => {
 	const [sidebarActiveItem, setSidebarActiveItem] = useState('account');
 	const { userMetadata } = useAuthContext();
-	const { name, email } = userMetadata();
+	const { name } = userMetadata();
 	return (
 		<Page header={{}}>
 			<>
