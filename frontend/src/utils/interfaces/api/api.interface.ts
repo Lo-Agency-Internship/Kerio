@@ -70,3 +70,6 @@ export interface IUpdateContactNoteById {
 export interface IDeleteContact {
 	id: number;
 }
+export interface IGetAllNotes {
+	id?: string;
+}

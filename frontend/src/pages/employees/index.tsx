@@ -7,6 +7,7 @@ import NewEmployeeModal from '../../components/templates/newEmployeeModal';
 // import { IEmployee } from '../../utils/interfaces/user/employee.interface';
 import axios from 'axios';
 import { uri } from '../../utils';
+import AccountEmployee from './accountEmployee';
 
 export default function EmployeesPage() {
 	// const { getAllEmployees, setEmployee } = useApiContext();
@@ -36,9 +37,10 @@ export default function EmployeesPage() {
 			{showAddEmployModal && <NewEmployeeModal setOpen={setAddEmployModal} open={showAddEmployModal} />}
 			{/* {data.map((element: any, index: any) => (
 				<EmployeeCard employee={element} key={index} />
+			
 			))}{' '} */}
 			{/* <EmployeeTable employee={[]} /> */}
-			<h1>Employee Page</h1>
+			<AccountEmployee />
 		</Page>
 	);
 }

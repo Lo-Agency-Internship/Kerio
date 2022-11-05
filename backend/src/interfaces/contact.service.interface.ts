@@ -35,6 +35,10 @@ export interface IDeletePayload {
   id: number;
 }
 
+export interface IMultiDeletePayload {
+  ids: number[];
+}
+
 export interface IPaginatedContacts {
   contacts: Contact[];
   metadata: {

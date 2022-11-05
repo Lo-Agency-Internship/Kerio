@@ -15,6 +15,7 @@ import {
 	IUpdateContactInfo,
 	IDeleteContact,
 	IUpdateContactNoteById,
+	IGetAllNotes,
 } from '../utils/interfaces/api/api.interface';
 import { IGetContacts } from '../utils/interfaces/api/data.interface';
 
@@ -39,10 +40,10 @@ interface IApiContext {
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
 	getAllEmployees?: any;
+	getAllNotes(payload: IGetAllNotes): Promise<any>;
 	postContactInfo(payload: IPostContactInfo): Promise<void>;
 	postNoteInfo(payload: IPostNoteInfo): Promise<void>;
 	getNoteInfo?: any;
-	getAllNotes?: any;
 	updateContactInfo(payload: IUpdateContactInfo): Promise<void>;
 	updateContactNoteById(payload: IUpdateContactNoteById): Promise<void>;
 	deleteContact(payload: IDeleteContact): Promise<void>;
@@ -82,6 +83,18 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
+	// get notes(employees)
+	const getAllNotes = async (payload: IGetAllNotes) => {
+		const { data } = await axios.get(uri(`notes/${payload.id}`), {
+			params: {
+				sort: 'asc',
+			},
+			...headerAuth,
+		});
+		return data;
+	};
+
+	// get contacts info by ID
 	const getContactsInfoById = async (payload: IGetContactsInfoById) => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri(`contacts/${payload.id}`), headerAuth);
@@ -201,6 +214,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				getTimelines,
 				getContactsInfoById,
 				getUsersInfoById,
+				getAllNotes,
 				postContactInfo,
 				postLogin,
 				postSignUp,
