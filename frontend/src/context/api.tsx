@@ -82,7 +82,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		setIsLoading(false);
 		return data;
 	};
-
 	// get notes(employees)
 	const getAllNotes = async (payload: IGetAllNotes) => {
 		const { data } = await axios.get(uri(`notes/${payload.id}`), {

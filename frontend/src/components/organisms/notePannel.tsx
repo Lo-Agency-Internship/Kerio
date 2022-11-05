@@ -11,6 +11,7 @@ export default function NotePannel() {
 	const { change, getAllNotes } = useApiContext();
 	const [error, setError] = useState<string[] | null>(null);
 	const { id } = useParams();
+
 	const getNotes = async () => {
 		try {
 			const data = await getAllNotes({ id });
