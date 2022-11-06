@@ -71,13 +71,13 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 	// get employees
-	// const getAllEmployees = async () => {
-	// 	setIsLoading(true);
-	// 	const { data } = await axios.get(uri('users'), headerAuth);
-	// 	console.log(data);
-	// 	setIsLoading(false);
-	// 	return data;
-	// };
+	const getAllEmployees = async () => {
+		setIsLoading(true);
+		const { data } = await axios.get(uri('users'), headerAuth);
+		console.log('data');
+		setIsLoading(false);
+		return data;
+	};
 
 	// get users(employees)
 	const getAllUsers = async () => {
@@ -187,6 +187,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				getContactsInfoById,
 				getUsersInfoById,
 				getAllNotes,
+				getAllEmployees,
 				postContactInfo,
 				postUserInfo,
 				postLogin,

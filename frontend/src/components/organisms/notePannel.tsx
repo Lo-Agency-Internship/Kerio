@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { uri } from '../../utils';
 import NoteCard from '../molecules/noteCard';
 import { useParams } from 'react-router-dom';
 import { INote } from '../../utils/interfaces/user/note.interface';
