@@ -4,7 +4,3 @@ export interface ICreateInvite {
   name: string;
   invitedByUserEmail: string;
 }
-
-export interface IIsInviteValid {
-  token: string;
-}

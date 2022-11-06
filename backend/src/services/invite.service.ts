@@ -1,6 +1,10 @@
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Invite } from 'src/entities/invite.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { UserService } from './user.service';
@@ -9,7 +13,6 @@ import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
 import { TemplateEngineService } from './templateEngine.service';
 import { ICreateInvite } from 'src/interfaces/invite.service.interface';
-import { IIsInviteValid } from 'src/interfaces/invite.service.interface';
 import { OrganizationService } from './organization.service';
 
 @Injectable()
@@ -76,9 +79,9 @@ export class InviteService {
     });
   }
 
-  async isInviteValid(payload: IIsInviteValid) {
+  async isInviteValid(token) {
     const invite = await this.inviteRepository.findOneBy({
-      token: payload.token,
+      token,
     });
     if (!invite) {
       throw new NotFoundException();
