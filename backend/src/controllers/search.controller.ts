@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param } from '@nestjs/common';
+import { Controller, Delete, Get, Query } from '@nestjs/common';
 import { SearchService } from 'src/services/search.service';
 
 @Controller('search')
@@ -11,8 +11,8 @@ export class SearchController {
     this.searchService.deleteIndex();
   }
 
-  @Get(":query")
-  async find(@Param('query') query: string) {
+  @Get("?")
+  async find(@Query('search') query: string) {
     return this.searchService.search(query)
   }
 }

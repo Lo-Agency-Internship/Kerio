@@ -24,7 +24,7 @@ export class SearchService {
     const index = this.getIndex()
     return await index.search(query)
   }
-
+ 
   async addDocument(documents: Document<IContactMeilisearch>[]) {
     const index = this.getIndex();
 
