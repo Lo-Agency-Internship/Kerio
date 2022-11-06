@@ -201,6 +201,11 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const deleteContact = async (payload: IDeleteContact) => {
 		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
 	};
+	// update user info
+	const updateUserInfo = async (sub: string, body: object) => {
+		console.log(headerAuth);
+		axios.put(uri(`users/${sub}`), body, headerAuth);
+	};
 
 	return (
 		<ApiContext.Provider
@@ -221,6 +226,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				updateContactInfo,
 				updateContactNoteById,
 				deleteContact,
+				updateUserInfo,
 				postInviteEmployee,
 			}}>
 			{children}
