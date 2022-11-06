@@ -33,16 +33,17 @@ interface IApiContext {
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
 	getAllEmployees?: any;
+	getAllNotes?: any;
 	postContactInfo?: any;
 	postUserInfo?: any;
 	postNoteInfo?: any;
 	getNoteInfo?: any;
-	getAllNotes?: any;
 	updateContactInfo?: any;
 	deleteContact?: any;
 	postLogin?: any;
 	postSignUp?: any;
 	postInviteEmployee?: any;
+	updateUserInfo?: any;
 }
 
 const ApiContext = createContext<IApiContext>({});
@@ -87,12 +88,16 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	// get notes(employees)
-	// const getAllNotes = async () => {
-	// 	setIsLoading(true);
-	// 	const { data } = await axios.get(uri('note'), headerAuth);
-	// 	setIsLoading(false);
-	// 	return data;
-	// };
+	const getAllNotes = async (id: string) => {
+		const { data } = await axios.get(uri(`notes/${id}`), {
+			params: {
+				sort: 'asc',
+			},
+			...headerAuth,
+		});
+		return data;
+	};
+
 	// get contacts info by ID
 	const getContactsInfoById = async (id: string) => {
 		setIsLoading(true);
@@ -162,6 +167,11 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const deleteContact = async (id: string) => {
 		axios.delete(uri(`contacts/${id}`), headerAuth);
 	};
+	// update user info
+	const updateUserInfo = async (sub: string, body: object) => {
+		console.log(headerAuth);
+		axios.put(uri(`users/${sub}`), body, headerAuth);
+	};
 
 	return (
 		<ApiContext.Provider
@@ -176,6 +186,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				getAllTimelines,
 				getContactsInfoById,
 				getUsersInfoById,
+				getAllNotes,
 				postContactInfo,
 				postUserInfo,
 				postLogin,
@@ -183,6 +194,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				postNoteInfo,
 				updateContactInfo,
 				deleteContact,
+				updateUserInfo,
 				postInviteEmployee,
 			}}>
 			{children}

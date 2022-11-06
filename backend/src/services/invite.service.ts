@@ -1,15 +1,16 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Invite } from 'src/entities/invite.entity';
 import { DeleteResult, Repository } from 'typeorm';
-import { OrganizationService } from './organization.service';
 import { UserService } from './user.service';
 import { randomBytes } from 'crypto';
 import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
 import { TemplateEngineService } from './templateEngine.service';
 import { ICreateInvite } from 'src/interfaces/invite.service.interface';
+import { IIsInviteValid } from 'src/interfaces/invite.service.interface';
+import { OrganizationService } from './organization.service';
 
 @Injectable()
 export class InviteService {
@@ -65,7 +66,7 @@ export class InviteService {
       }`,
       email: inviteData.email,
     });
-    const response = await this.mailerService.send({
+    await this.mailerService.send({
       to: inviteData.email,
       subject: 'Invitation Email',
       html: mailTemplate,
@@ -73,16 +74,17 @@ export class InviteService {
         inviteData.token
       }`,
     });
-
-    console.log(response);
   }
 
-  async isInviteValid(token: string): Promise<boolean> {
+  async isInviteValid(payload: IIsInviteValid) {
     const invite = await this.inviteRepository.findOneBy({
-      token,
+      token: payload.token,
     });
+    if (!invite) {
+      throw new NotFoundException();
+    }
 
-    return invite !== null;
+    return { ok: invite !== null, email: invite.email };
   }
 
   async getInviteByToken(token: string): Promise<Invite> {
@@ -111,7 +113,7 @@ export class InviteService {
       },
     );
 
-    const response = await this.mailerService.send({
+    await this.mailerService.send({
       to: email,
       subject: 'active your account',
       html: activeTemplate,
