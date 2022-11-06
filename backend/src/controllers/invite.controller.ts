@@ -58,14 +58,14 @@ export class InviteController {
 
   @Get('/:token')
   async checkTokenValidation(@Param('token') token: string) {
-      try {
-        return await this.inviteService.isInviteValid({ token });
-      } catch (err) {
-        if (err instanceof NotFoundException) {
-          throw new HttpException('token does not exist', HttpStatus.FORBIDDEN);
-        }
-        throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+    try {
+      return await this.inviteService.isInviteValid(token);
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new HttpException('token does not exist', HttpStatus.FORBIDDEN);
       }
+      throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Post('/:token')
@@ -73,14 +73,14 @@ export class InviteController {
     @Param('token') token: string,
     @Body() body: RegisterUserByTokenDto,
   ) {
-      try {
-        await this.inviteService.isInviteValid({ token });
-      } catch (err) {
-        if (err instanceof NotFoundException) {
-          throw new HttpException(`token is not valid`, HttpStatus.BAD_REQUEST);
-        }
-        throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+    try {
+      await this.inviteService.isInviteValid(token);
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new HttpException(`token is not valid`, HttpStatus.BAD_REQUEST);
       }
+      throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+    }
 
     const invite = await this.inviteService.getInviteByToken(token);
 

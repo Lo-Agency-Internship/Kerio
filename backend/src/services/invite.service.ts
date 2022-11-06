@@ -79,10 +79,11 @@ export class InviteService {
     });
   }
 
-  async isInviteValid(token) {
+  async isInviteValid(token: string) {
     const invite = await this.inviteRepository.findOneBy({
       token,
     });
+
     if (!invite) {
       throw new NotFoundException();
     }

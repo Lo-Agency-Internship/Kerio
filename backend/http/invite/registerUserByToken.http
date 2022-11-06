@@ -1,8 +1,8 @@
-POST http://localhost:3001/invites/3be880b408fe5404b62a7b41c4b68491a522db77ee6ac19a031fe3831ca84ea28a07c5e701469f2fd4a050b3018e615d  HTTP/1.1
+POST http://localhost:3001/invites/0db13083c4e9230213dbace08fc4dcf55614f5b07ee3af4625d26aed9fe0d9caf5fee624c2852b6bdd8eee05d24a37f8  HTTP/1.1
 Content-Type: application/json
 
 
 {
-	"name": "aien1 saedi",
+	"name": "aien22 saedi",
     "password": "0000"
 }
