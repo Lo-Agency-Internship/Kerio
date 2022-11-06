@@ -2,8 +2,8 @@ POST http://localhost:3001/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-	"email": "gina22@d.com",
+	"email": "wakifax587@fgvod.com",
     "password": "0000",
-    "name": "gina22 Doe",
-    "organizationSlug": "hi gina22's Company"
+    "name": "wax2 Doe",
+    "organizationSlug": "hi wax2's Company"
 }

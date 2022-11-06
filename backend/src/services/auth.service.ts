@@ -122,9 +122,9 @@ export class AuthService {
       throw new NotFoundException();
     }
 
-    if (!user.enabled) {
-      throw new UnauthorizedException();
-    }
+    // if (!user.enabled) {
+    //   throw new UnauthorizedException();
+    // }
 
     const hashedPassword = hashSync(payload.password, user.salt);
 
