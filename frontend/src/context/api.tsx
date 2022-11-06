@@ -170,7 +170,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 	// update user info
 	const updateUserInfo = async (sub: string, body: object) => {
-		console.log(headerAuth);
 		axios.put(uri(`users/${sub}`), body, headerAuth);
 	};
 

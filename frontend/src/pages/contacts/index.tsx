@@ -26,8 +26,6 @@ export default function ContactsPage() {
 	const fetchData = async (page: number, size: number) => {
 		const result = await getAllContacts(page, size);
 		setIsLoaded(true);
-		console.log(result);
-		console.log({ size });
 		setContacts(result.contacts);
 		setTotalRows(result.metadata.total);
 	};
