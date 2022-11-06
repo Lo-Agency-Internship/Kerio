@@ -16,8 +16,8 @@ export default function ContactsPage() {
 	const [perPage, setPerPage] = useState(10);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [selectedRows, setSelectedRows] = useState<IUser[]>([]);
-	const [toggleCleared] = useState(false);
-
+	const [toggleCleared, setToggleCleared] = useState(false);
+	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [error, setError] = useState(0);
 
 	useEffect(() => {
@@ -26,18 +26,20 @@ export default function ContactsPage() {
 	const fetchData = async (page: number, size: number) => {
 		const result = await getAllContacts(page, size);
 		setIsLoaded(true);
+		console.log(result);
+		console.log({ size });
 		setContacts(result.contacts);
 		setTotalRows(result.metadata.total);
 	};
-
 	const handleDelete = async () => {
 		try {
 			await deleteContacts(selectedRows);
+			setToggleCleared(!toggleCleared);
+			await fetchData(currentPage, perPage);
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
-		const pageNumber = Math.ceil((totalRows + 1) / perPage);
-		await fetchData(pageNumber, perPage);
+
 		setShowDeleteModal(false);
 	};
 	return (
@@ -68,6 +70,7 @@ export default function ContactsPage() {
 				selectedRows={selectedRows}
 				showDeleteModal={showDeleteModal}
 				setShowDeleteModal={setShowDeleteModal}
+				setCurrentPage={setCurrentPage}
 			/>
 			<DeleteModal
 				open={showDeleteModal}

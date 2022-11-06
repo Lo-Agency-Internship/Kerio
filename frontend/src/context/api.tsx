@@ -43,6 +43,7 @@ interface IApiContext {
 	postLogin?: any;
 	postSignUp?: any;
 	postInviteEmployee?: any;
+	deleteContacts?: any;
 	updateUserInfo?: any;
 }
 
@@ -203,6 +204,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				postNoteInfo,
 				updateContactInfo,
 				deleteContact,
+				deleteContacts,
 				updateUserInfo,
 				postInviteEmployee,
 			}}>

@@ -17,6 +17,7 @@ interface IContactTable {
 	showDeleteModal: boolean;
 	setShowDeleteModal: any;
 	toggleCleared: any;
+	setCurrentPage: any;
 }
 
 const customStyles = {
@@ -84,6 +85,7 @@ const ContactTable: React.FC<IContactTable> = ({
 	showDeleteModal,
 	setShowDeleteModal,
 	toggleCleared,
+	setCurrentPage,
 }) => {
 	const [error] = useState(null);
 	useEffect(() => {
@@ -92,6 +94,7 @@ const ContactTable: React.FC<IContactTable> = ({
 
 	const handlePageChange = (page: any) => {
 		fetchData(page, perPage);
+		setCurrentPage(page);
 	};
 
 	const handlePerRowsChange = async (newPerPage: React.SetStateAction<number>) => {
