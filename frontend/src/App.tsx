@@ -13,6 +13,7 @@ import NotFoundPage from './pages/notFoundPage';
 import ContactPage from './pages/contacts/_id';
 import ContactsPage from './pages/contacts';
 import Activation from './pages/activation';
+import { ProfileUser } from './pages/profileUser';
 
 function App() {
 	const [role] = useState<string>('owner');
@@ -41,6 +42,7 @@ function App() {
 				<Route index element={<Index />} />
 				<Route path="contacts" element={<ContactsPage />} />
 				<Route path="contacts/:id" element={<ContactPage />} />
+				<Route path="profile" element={<ProfileUser />} />
 
 				{role === 'owner' && <Route path="employees" element={<EmployeesPage />} />}
 			</Route>

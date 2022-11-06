@@ -43,6 +43,7 @@ interface IApiContext {
 	postLogin?: any;
 	postSignUp?: any;
 	postInviteEmployee?: any;
+	updateUserInfo?: any;
 }
 
 const ApiContext = createContext<IApiContext>({});
@@ -166,6 +167,11 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const deleteContact = async (id: string) => {
 		axios.delete(uri(`contacts/${id}`), headerAuth);
 	};
+	// update user info
+	const updateUserInfo = async (sub: string, body: object) => {
+		console.log(headerAuth);
+		axios.put(uri(`users/${sub}`), body, headerAuth);
+	};
 
 	return (
 		<ApiContext.Provider
@@ -188,6 +194,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				postNoteInfo,
 				updateContactInfo,
 				deleteContact,
+				updateUserInfo,
 				postInviteEmployee,
 			}}>
 			{children}
