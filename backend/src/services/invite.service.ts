@@ -77,7 +77,7 @@ export class InviteService {
       throw new NotFoundException();
     }
 
-    return { res: invite !== null, email: invite.email };
+    return { ok: invite !== null, email: invite.email };
   }
 
   async getInviteByToken(token: string): Promise<Invite> {
