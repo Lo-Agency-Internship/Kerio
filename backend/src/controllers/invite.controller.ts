@@ -73,10 +73,14 @@ export class InviteController {
     @Param('token') token: string,
     @Body() body: RegisterUserByTokenDto,
   ) {
-    const isTokenValid = await this.inviteService.isInviteValid(token);
-
-    if (!isTokenValid)
-      throw new HttpException(`token is not valid`, HttpStatus.BAD_REQUEST);
+      try {
+        await this.inviteService.isInviteValid({ token });
+      } catch (err) {
+        if (err instanceof NotFoundException) {
+          throw new HttpException(`token is not valid`, HttpStatus.BAD_REQUEST);
+        }
+        throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+      }
 
     const invite = await this.inviteService.getInviteByToken(token);
 
