@@ -29,8 +29,7 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 				email: emails[index],
 			};
 		});
-
-		postInviteEmployee({ invites: data }).then(() => {
+		postInviteEmployee(data).then(() => {
 			setOpen(false);
 		});
 	};
@@ -42,24 +41,25 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 	};
 	const handleAddClick = async (event: any) => {
 		event.preventDefault();
-
 		const body = {
 			name: nameValue,
 			email: emailValue,
 		};
-		const isValid = await modalEmployeeValidation.isValid(body);
-		const exists = employees.find((employee: { email: string }) => employee.email === body.email);
-		if (isValid && !exists) {
-			setEmployees([...employees, body]);
-			setNameValue('');
-			setEmailValue('');
-		} else {
-			if (exists) {
+		try {
+			await modalEmployeeValidation.isValid(body);
+			const exists = employees.find((employee: { email: string }) => employee.email === body.email);
+			if (!exists) {
+				setEmployees([...employees, body]);
+				setNameValue('');
+				setEmailValue('');
+			} else {
 				setError(['This email is already exists']);
 			}
 			modalEmployeeValidation.validate(body).catch((e) => {
 				setError(e.message);
 			});
+		} catch (err: any) {
+			setError(err.response.data.message);
 		}
 	};
 	return (
@@ -74,16 +74,7 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 					form: ADDEMPLOYEE_FORM_ID,
 				},
 			]}>
-			{error && (
-				<p>
-					{error.map((element, index) => (
-						<p className="text-red-500 block" key={index}>
-							{element}
-							<br />
-						</p>
-					))}
-				</p>
-			)}
+			{error && <p>{error}</p>}
 
 			<div className="flex gap-1">
 				<div>

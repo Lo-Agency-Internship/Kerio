@@ -2,21 +2,28 @@ import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
 import { uri } from '../utils/index';
 import { createContext, ReactNode, useContext, useState } from 'react';
-interface IApiPaginationParams {
-	pagination: {
-		page?: number;
-		size?: number;
-		sort?: 'asc' | 'desc';
-	};
-}
+import {
+	IApiPaginationParams,
+	IGetAllTimelines,
+	IGetContactsInfoById,
+	IGetUsersInfoById,
+	IPostLogin,
+	IPostSignUp,
+	IPostContactInfo,
+	IPostInviteEmployee,
+	IPostNoteInfo,
+	IUpdateContactInfo,
+	IDeleteContact,
+	IUpdateContactNoteById,
+	IGetAllNotes,
+} from '../utils/interfaces/api/api.interface';
+import { IGetContacts } from '../utils/interfaces/api/data.interface';
 
 interface IApiProvider {
 	children: ReactNode;
 }
 
 interface IApiContext {
-	user?: IUser;
-	setUser?: (value: IUser) => void;
 	change?: any;
 	setChange?: any;
 	checkToken?: any;
@@ -26,29 +33,28 @@ interface IApiContext {
 	employee?: any;
 	setEmployee?: any;
 	setContacts?: any;
-	getAllContacts?: any;
+	getAllContacts(payload: IApiPaginationParams): Promise<IGetContacts>;
 	getAllUsers?: any;
-	getContactsInfoById?: any;
-	getAllTimelines?: any;
+	getContactsInfoById(payload: IGetContactsInfoById): Promise<IGetContactsInfoById>;
+	getTimelines?: any;
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
 	getAllEmployees?: any;
-	getAllNotes?: any;
-	postContactInfo?: any;
-	postUserInfo?: any;
-	postNoteInfo?: any;
+	getAllNotes(payload: IGetAllNotes): Promise<any>;
+	postContactInfo(payload: IPostContactInfo): Promise<void>;
+	postNoteInfo(payload: IPostNoteInfo): Promise<void>;
 	getNoteInfo?: any;
-	updateContactInfo?: any;
-	deleteContact?: any;
-	postLogin?: any;
-	postSignUp?: any;
-	postInviteEmployee?: any;
-	updateUserInfo?: any;
+	updateContactInfo(payload: IUpdateContactInfo): Promise<void>;
+	updateContactNoteById(payload: IUpdateContactNoteById): Promise<void>;
+	deleteContact(payload: IDeleteContact): Promise<void>;
+	postLogin(payload: IPostLogin): Promise<void>;
+	postSignUp(payload: IPostSignUp): Promise<void>;
+	postInviteEmployee(payload: IPostInviteEmployee[]): Promise<void>;
 }
 
-const ApiContext = createContext<IApiContext>({});
+const ApiContext = createContext<IApiContext | null>(null);
 
-export const useApiContext = () => useContext(ApiContext);
+export const useApiContext = () => useContext(ApiContext) as IApiContext;
 
 export const ApiProvider = ({ children }: IApiProvider) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -58,38 +64,27 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 		},
 	};
-	const [contacts, setContacts] = useState([]);
-	type IGetContactsPayload = IApiPaginationParams;
-	const getAllContacts = async (page: number, size: number) => {
+	const getAllContacts = async (payload: IApiPaginationParams) => {
 		const { data } = await axios.get(uri(`contacts`), {
 			params: {
-				page,
-				size,
+				page: payload.pagination.page,
+				size: payload.pagination.size,
 			},
 			...headerAuth,
 		});
 		return data;
 	};
-	// get employees
-	// const getAllEmployees = async () => {
-	// 	setIsLoading(true);
-	// 	const { data } = await axios.get(uri('users'), headerAuth);
-	// 	console.log(data);
-	// 	setIsLoading(false);
-	// 	return data;
-	// };
 
-	// get users(employees)
+	// we must fix it
 	const getAllUsers = async () => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri('users'), headerAuth);
 		setIsLoading(false);
 		return data;
 	};
-
 	// get notes(employees)
-	const getAllNotes = async (id: string) => {
-		const { data } = await axios.get(uri(`notes/${id}`), {
+	const getAllNotes = async (payload: IGetAllNotes) => {
+		const { data } = await axios.get(uri(`notes/${payload.id}`), {
 			params: {
 				sort: 'asc',
 			},
@@ -99,73 +94,112 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	// get contacts info by ID
-	const getContactsInfoById = async (id: string) => {
+	const getContactsInfoById = async (payload: IGetContactsInfoById) => {
 		setIsLoading(true);
-		const { data } = await axios.get(uri(`contacts/${id}`), headerAuth);
-		setIsLoading(false);
-		return data;
-	};
-	// get employees info by ID
-	// const getEmployeesInfoById = async (id: string) => {
-	//     setIsLoading(true);
-	//     const { data } = await axios.get(uri(`???/${id}`), headerAuth);
-	//     setIsLoading(false);
-	//     return data;
-	// };
-
-	// get Users info by ID
-	const getUsersInfoById = async (id: string) => {
-		setIsLoading(true);
-		const { data } = await axios.get(uri(`employees/${id}`), headerAuth);
+		const { data } = await axios.get(uri(`contacts/${payload.id}`), headerAuth);
 		setIsLoading(false);
 		return data;
 	};
 
-	const getAllTimelines = async (id: string) => {
-		const { data } = await axios.get(uri(`notes/timeline/${id}`), headerAuth);
+	// we must fix it
+	const getUsersInfoById = async (payload: IGetUsersInfoById) => {
+		setIsLoading(true);
+		const { data } = await axios.get(uri(`employees/${payload.id}`), headerAuth);
+		setIsLoading(false);
+		return data;
+	};
+
+	// we must fix it
+	const getTimelines = async (payload: IGetAllTimelines) => {
+		const { data } = await axios.get(uri(`notes/timeline/${payload.id}`), headerAuth);
 		return data;
 	};
 
 	/// //////////////// POST
 
-	// post info for signup
-	const postSignUp = async (body: any) => {
-		await axios.post(uri('auth/register'), body);
+	const postSignUp = async (payload: IPostSignUp) => {
+		await axios.post(uri('auth/register'), {
+			email: payload.email,
+			name: payload.name,
+			password: payload.password,
+			organizationSlug: payload.organizationSlug,
+		});
 	};
 
-	// post info for Login
-	const postLogin = async (body: any) => {
-		await axios.post(uri('auth/login'), body).then((response: any) => {
+	const postLogin = async (payload: IPostLogin) => {
+		await axios.post(uri('auth/login'), payload).then((response: any) => {
 			localStorage.setItem('access_token', response.data.access_token);
 		});
 	};
 
-	// post data for add a new contact
-	const postContactInfo = async (body: object) => {
-		await axios.post(uri('contacts'), body, headerAuth);
+	const postContactInfo = async (payload: IPostContactInfo) => {
+		await axios.post(
+			uri('contacts'),
+			{
+				email: payload.email,
+				name: payload.name,
+				status: payload.status,
+				phone: payload.phone,
+			},
+			headerAuth,
+		);
 	};
 
-	// post data for add a new user
-	const postUserInfo = async (body: object) => {
-		await axios.post(uri('user'), body, headerAuth);
+	const postInviteEmployee = async (payload: IPostInviteEmployee[]) => {
+		await axios.post(
+			uri('invites'),
+			{
+				invites: payload,
+			},
+			headerAuth,
+		);
 	};
-	// post data for add a employee
-	const postInviteEmployee = async (body: object) => {
-		await axios.post(uri('invites'), body, headerAuth);
+
+	const postNoteInfo = async (payload: IPostNoteInfo) => {
+		await axios.post(
+			uri(`notes/${payload.id}`),
+			{
+				title: payload.title,
+				description: payload.description,
+				date: payload.date,
+				status: payload.status,
+				score: payload.score,
+				id: payload.id,
+			},
+			headerAuth,
+		);
 	};
-	// post data for add note
-	const postNoteInfo = async (body: object, id: string) => {
-		await axios.post(uri(`notes/${id}`), body, headerAuth);
-	};
+
 	/// //////////////// PUT
-
-	// update contact info
-	const updateContactInfo = async (id: string, body: object) => {
-		axios.put(uri(`contacts/${id}`), body, headerAuth);
+	const updateContactInfo = async (payload: IUpdateContactInfo) => {
+		axios.put(
+			uri(`contacts/${payload.id}`),
+			{
+				name: payload.name,
+				phone: payload.phone,
+				email: payload.email,
+			},
+			headerAuth,
+		);
 	};
+
+	const updateContactNoteById = async (payload: IUpdateContactNoteById) => {
+		await axios.put(
+			uri(`notes/${payload.id}`),
+			{
+				date: payload.date,
+				title: payload.title,
+				description: payload.description,
+				score: payload.score,
+				status: payload.status,
+			},
+			headerAuth,
+		);
+	};
+
 	// ///////delete contact
-	const deleteContact = async (id: string) => {
-		axios.delete(uri(`contacts/${id}`), headerAuth);
+	const deleteContact = async (payload: IDeleteContact) => {
+		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
 	};
 	// update user info
 	const updateUserInfo = async (sub: string, body: object) => {
@@ -179,20 +213,18 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				change,
 				setChange,
 				isLoading,
-				contacts,
-				setContacts,
 				getAllUsers,
 				getAllContacts,
-				getAllTimelines,
+				getTimelines,
 				getContactsInfoById,
 				getUsersInfoById,
 				getAllNotes,
 				postContactInfo,
-				postUserInfo,
 				postLogin,
 				postSignUp,
 				postNoteInfo,
 				updateContactInfo,
+				updateContactNoteById,
 				deleteContact,
 				updateUserInfo,
 				postInviteEmployee,

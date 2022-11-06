@@ -4,24 +4,18 @@ import { uri } from '../../utils';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ITimeline } from '../../utils/interfaces/user/timeline.interface';
+import { useApiContext } from '../../context/api';
 
 export default function Timeline() {
+	const { getTimelines } = useApiContext();
 	const [timelineNotes, setTimlineNote] = useState<ITimeline[] | null>();
 	const [timelineStatus, setTimlineSatatus] = useState<ITimeline[] | null>();
 	const { id } = useParams();
-	const getAllTimelines = async () => {
-		const res = await axios.get(uri(`notes/timeline/${id}`), {
-			headers: {
-				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-			},
-		});
-		const data = res.data;
 
+	useEffect(() => {
+		const { data } = getTimelines({ id });
 		setTimlineNote(data.newNotes);
 		setTimlineSatatus(data.newStatus);
-	};
-	useEffect(() => {
-		getAllTimelines();
 	}, []);
 	return (
 		<>
