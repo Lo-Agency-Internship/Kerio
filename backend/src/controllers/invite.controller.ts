@@ -58,7 +58,14 @@ export class InviteController {
 
   @Get('/:token')
   async checkTokenValidation(@Param('token') token: string) {
-    return await this.inviteService.isInviteValid(token);
+      try {
+        return await this.inviteService.isInviteValid({ token });
+      } catch (err) {
+        if (err instanceof NotFoundException) {
+          throw new HttpException('token does not exist', HttpStatus.FORBIDDEN);
+        }
+        throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+      }
   }
 
   @Post('/:token')
