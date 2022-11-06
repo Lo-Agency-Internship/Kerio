@@ -9,3 +9,14 @@ export class MaliciousUserRequestException extends Error {
     super(message);
   }
 }
+
+export class AuthEmailAlreadyExistsException extends Error {
+  constructor(msg: string) {
+    super(msg);
+  }
+}
+export class AuthOrganizationAlreadyExistsException extends Error {
+  constructor(msg: string) {
+    super(msg);
+  }
+}

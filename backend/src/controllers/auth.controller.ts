@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -12,18 +13,20 @@ import {
 } from '@nestjs/common';
 import { UserLoginDto, UserRegisterDto } from '../dtos/user.dto';
 import { UserService } from '../services/user.service';
-import { ERole, JwtResponse, SecureUserWithOrganization } from '../utils/types';
+import { JwtResponse, SecureUserWithOrganization } from '../utils/types';
 
 import { AuthService } from '../services/auth.service';
-import { OrganizationService } from '../services/organization.service';
-import { kebab } from 'case';
 import { InviteService } from 'src/services/invite.service';
+import {
+  AuthEmailAlreadyExistsException,
+  AuthOrganizationAlreadyExistsException,
+  NotExistException,
+} from 'src/utils/exceptions';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly userService: UserService,
-    private readonly orgService: OrganizationService,
     private readonly authService: AuthService,
     private readonly inviteService: InviteService,
   ) {}
@@ -59,43 +62,31 @@ export class AuthController {
 
   @Post('register')
   async register(
-    @Body() { password, name, email, organizationSlug }: UserRegisterDto,
+    @Body() { email, name, password, organizationSlug }: UserRegisterDto,
   ): Promise<SecureUserWithOrganization> {
-    const pipedOrgSlug = kebab(organizationSlug);
-    const userExists = await this.userService.exists(email);
+    try {
+      const resultUser = await this.authService.registerUser({
+        email,
+        name,
+        password,
+        organizationSlug,
+      });
+      this.inviteService.sendEmailToActiveAccount({ email: resultUser.email });
 
-    if (userExists)
-      throw new HttpException(
-        `user with email ${email} already exists`,
-        HttpStatus.BAD_REQUEST,
-      );
-
-    const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
-
-    if (orgExists)
-      throw new HttpException(
-        `organization already exists`,
-        HttpStatus.BAD_REQUEST,
-      );
-
-    const newOrg = await this.orgService.addOrganization({
-      name: `${name}'s Organization`,
-      address: '',
-      slug: pipedOrgSlug,
-    });
-
-    const role = ERole.Owner;
-    const resultUser = await this.authService.registerUser({
-      email,
-      name,
-      organizationSlug: newOrg.slug,
-      password,
-      role,
-    });
-    this.inviteService.sendEmailToActiveAccount({ email: resultUser.email });
-
-    return resultUser;
+      return resultUser;
+    } catch (error) {
+      if (error instanceof AuthEmailAlreadyExistsException) {
+        throw new BadRequestException('Email already exists');
+      } else if (error instanceof AuthOrganizationAlreadyExistsException) {
+        throw new BadRequestException('Organization already exists');
+      } else if (error instanceof NotExistException) {
+        throw new BadRequestException("Organization doesn't exists");
+      } else {
+        throw new BadRequestException('Something went wrong');
+      }
+    }
   }
+
   @Post('duplicateEmail')
   async emailExist(@Body() body) {
     const isExist = await this.userService.exists(body.email);

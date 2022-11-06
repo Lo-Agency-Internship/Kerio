@@ -1,11 +1,12 @@
 import {
+  BadRequestException,
   Injectable,
   NotAcceptableException,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
+  ERole,
   JwtPayload,
   JwtResponse,
   SecureUser,
@@ -21,6 +22,11 @@ import { NotExistException } from '../utils/exceptions';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IFindUserToCheckForLogin } from 'src/interfaces/auth.service.interface';
+import { kebab } from 'case';
+import {
+  AuthEmailAlreadyExistsException,
+  AuthOrganizationAlreadyExistsException,
+} from 'src/utils/exceptions';
 
 @Injectable()
 export class AuthService {
@@ -64,17 +70,38 @@ export class AuthService {
     name,
     password,
     organizationSlug,
-    role,
   }: UserRegisterDto): Promise<SecureUserWithOrganization> {
-    const [orgExists, organization] = await this.orgService.existsAndFindBySlug(
-      organizationSlug,
+    const pipedOrgSlug = kebab(organizationSlug);
+    const userExists = await this.userService.exists(email);
+
+    if (userExists) {
+      throw new AuthEmailAlreadyExistsException('Email aleady exist');
+    }
+
+    const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
+
+    if (orgExists) {
+      throw new AuthOrganizationAlreadyExistsException(
+        'organization already exists',
+      );
+    }
+
+    const newOrg = await this.orgService.addOrganization({
+      name: `${name}'s Organization`,
+      address: '',
+      slug: pipedOrgSlug,
+    });
+    const [orgExist, organization] = await this.orgService.existsAndFindBySlug(
+      newOrg.slug,
     );
 
-    if (!orgExists) throw new NotExistException(`organization doesn't exist`);
+    if (!orgExist) throw new NotExistException(`Organization doesn't exists`);
 
     const salt = genSaltSync(10);
 
     const hashedPass = hashSync(password, salt);
+
+    const role = ERole.Owner;
 
     const createdUser: User = await this.userService.addUser({
       user: {
