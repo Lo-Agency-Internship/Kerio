@@ -10,7 +10,6 @@ import {
   IExistAndFindByEmailPayload,
   IFindOneUserByEmailPayload,
   IFindOneUserByIdPayload,
-  IUpdateOwnerEnabled,
   IFindUserWithOrganizationPayload,
   IReadAllByOrganization,
   IReadOneById,
@@ -73,10 +72,6 @@ export class UserService {
   ): Promise<[boolean, User]> {
     const user = await this.findOneUserByEmail(payload);
     return [user !== null, user];
-  }
-
-  async updateOwnerEnabled(payload: IUpdateOwnerEnabled) {
-    await this.userRepository.update(payload.id, payload.user);
   }
 
   async findUserWithOrganizationByUserEmail(

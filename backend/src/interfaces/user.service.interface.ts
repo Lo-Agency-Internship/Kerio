@@ -1,6 +1,6 @@
 import { Organization } from 'src/entities/organization.entity';
 import { User } from 'src/entities/user.entity';
-import { NewUser, SecureUserWithoutOrganization } from 'src/utils/types';
+import { NewUser } from 'src/utils/types';
 import { DeepPartial } from 'typeorm';
 
 export interface IAddUserPayload {
@@ -31,11 +31,6 @@ export interface IExistAndFindByEmailPayload {
 
 export interface IFindUserWithOrganizationPayload {
   email: string;
-}
-
-export interface IUpdateOwnerEnabled {
-  id: number;
-  user: SecureUserWithoutOrganization;
 }
 
 export interface IReadAllByOrganization {
