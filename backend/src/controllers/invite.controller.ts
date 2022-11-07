@@ -7,10 +7,11 @@ import {
   NotFoundException,
   Param,
   Post,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { InviteService } from 'src/services/invite.service';
-import { CreateInvitesDto, InviteTokenDto } from 'src/dtos/invite.dto';
+import { CreateInvitesDto, RegisterUserByTokenDto } from 'src/dtos/invite.dto';
 import { AuthService } from 'src/services/auth.service';
 import { ERole, SecureUserWithOrganization } from 'src/utils/types';
 import { RequestContextService } from 'src/services/requestContext.service';
@@ -39,18 +40,26 @@ export class InviteController {
 
     for await (let invite of invites) {
       invite = { ...invite, invitedByUserEmail, orgSlug };
-
-      await this.inviteService.createInvite(invite);
-      await this.inviteService.sendEmailToInvite(invite);
+      try {
+        await this.inviteService.createInvite(invite);
+      } catch (err) {
+        if (err instanceof UnauthorizedException) {
+          throw new HttpException(
+            'This email already exists ',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+      }
+      await this.inviteService.sendEmailToInvite(invite.email);
     }
 
     return;
   }
 
   @Get('/:token')
-  async checkTokenValidation(@Param() { token }: InviteTokenDto) {
+  async checkTokenValidation(@Param('token') token: string) {
     try {
-      return await this.inviteService.isInviteValid({ token });
+      return await this.inviteService.isInviteValid(token);
     } catch (err) {
       if (err instanceof NotFoundException) {
         throw new HttpException('token does not exist', HttpStatus.FORBIDDEN);
@@ -60,9 +69,12 @@ export class InviteController {
   }
 
   @Post('/:token')
-  async registerUserByToken(@Param() { token }: any, @Body() body: any) {
+  async registerUserByToken(
+    @Param('token') token: string,
+    @Body() body: RegisterUserByTokenDto,
+  ) {
     try {
-      await this.inviteService.isInviteValid({ token });
+      await this.inviteService.isInviteValid(token);
     } catch (err) {
       if (err instanceof NotFoundException) {
         throw new HttpException(`token is not valid`, HttpStatus.BAD_REQUEST);
@@ -82,7 +94,7 @@ export class InviteController {
     });
 
     // TODO: send email to user to activate the account
-    this.inviteService.sendEmailToActiveAccount({ email: invite.email });
+    this.inviteService.sendEmailToActiveAccount(invite.email);
 
     await this.inviteService.invalidateInviteByToken(token);
     return resultUser;
