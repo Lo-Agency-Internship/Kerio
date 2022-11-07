@@ -1,5 +1,5 @@
 import { useApiContext } from '../../context/api';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Page } from '../../layout/page';
 import { Button } from '../../components/atoms/button';
 import NewContactModal from '../../components/templates/newContactModal';

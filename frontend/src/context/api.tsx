@@ -1,4 +1,3 @@
-import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
 import { uri } from '../utils/index';
 import { createContext, ReactNode, useContext, useState } from 'react';
@@ -40,6 +39,7 @@ interface IApiContext {
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
 	getAllEmployees?: any;
+	updateUserInfo?: any;
 	getAllNotes(payload: IGetAllNotes): Promise<any>;
 	postContactInfo(payload: IPostContactInfo): Promise<void>;
 	postNoteInfo(payload: IPostNoteInfo): Promise<void>;
@@ -74,7 +74,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		});
 		return data;
 	};
-<<<<<<< HEAD
 	// get employees
 	const getAllEmployees = async () => {
 		setIsLoading(true);
@@ -83,8 +82,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		setIsLoading(false);
 		return data;
 	};
-=======
->>>>>>> e91e757029059e428068e98c2877ee6a51febb04
 
 	// we must fix it
 	const getAllUsers = async () => {
