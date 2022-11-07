@@ -72,7 +72,6 @@ export class AuthController {
         organizationSlug,
       });
       this.inviteService.sendEmailToActiveAccount({ email: resultUser.email });
-
       return resultUser;
     } catch (error) {
       if (error instanceof AuthEmailAlreadyExistsException) {

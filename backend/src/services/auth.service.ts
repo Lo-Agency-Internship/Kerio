@@ -75,7 +75,7 @@ export class AuthService {
     const userExists = await this.userService.exists(email);
 
     if (userExists) {
-      throw new AuthEmailAlreadyExistsException('Email aleady exist');
+      throw new AuthEmailAlreadyExistsException('Email already exist');
     }
 
     const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
@@ -98,7 +98,6 @@ export class AuthService {
     if (!orgExist) throw new NotExistException(`Organization doesn't exists`);
 
     const salt = genSaltSync(10);
-
     const hashedPass = hashSync(password, salt);
 
     const role = ERole.Owner;
