@@ -5,13 +5,12 @@ import { SearchService } from 'src/services/search.service';
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
-  @Get()
   @Delete()
   deleteIndex() {
     this.searchService.deleteIndex();
   }
 
-  @Get("?")
+  @Get()
   async find(@Query('search') query: string) {
     return this.searchService.search(query)
   }
