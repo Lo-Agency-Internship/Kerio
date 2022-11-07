@@ -50,8 +50,10 @@ export class UserService {
   async findOneUserByEmail(
     payload: IFindOneUserByEmailPayload,
   ): Promise<User | null> {
-    return await this.userRepository.findOneBy({
-      email: payload.email,
+    return await this.userRepository.findOne({
+      where: {
+        email: payload.email,
+      },
     });
   }
 
