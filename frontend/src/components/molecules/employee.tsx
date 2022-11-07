@@ -1,4 +1,13 @@
-export default function Employee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
+import { IEmployee } from '../../utils/interfaces/user/employee.interface';
+
+import { useState } from 'react';
+
+interface IEmployeeSideBar {
+	data: IEmployee;
+}
+const Employee: React.FC<IEmployeeSideBar> = ({ data }) => {
+	const [profileSidebarOpen, setProfileSidebarOpen] = useState(false);
+	const [employees, setEmployees] = useState<IEmployee>(data);
 	return (
 		<>
 			{/* Team members */}
@@ -16,11 +25,12 @@ export default function Employee({ profileSidebarOpen, setProfileSidebarOpen }: 
 							<div className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></div>
 						</div>
 						<div className="truncate">
-							<span className="text-sm font-medium text-slate-800">{Employee.name}</span>
+							<span className="text-sm font-medium text-slate-800">{employees.name}</span>
 						</div>
 					</div>
 				</button>
 			</li>
 		</>
 	);
-}
+};
+export default Employee;

@@ -26,14 +26,6 @@ function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
 	useEffect(() => {
 		getAllEmployees();
 	}, [change]);
-	// const getAllEmployees = async () => {
-	// 	try {
-	// 		const data = await getAllEmployees(id as string);
-	// 		setEmployees(data.employees);
-	// 	} catch (e: any) {
-	// 		setError(e.response.data.message);
-	// 	}
-	// };
 
 	return (
 		<div
