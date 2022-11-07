@@ -16,16 +16,16 @@ import { ERole, JwtResponse, SecureUserWithOrganization } from '../utils/types';
 
 import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
-import { OrganizationUserService } from '../services/organizationUser.service';
 import { kebab } from 'case';
+import { InviteService } from 'src/services/invite.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly userService: UserService,
     private readonly orgService: OrganizationService,
-    private readonly orgUserService: OrganizationUserService,
     private readonly authService: AuthService,
+    private readonly inviteService: InviteService,
   ) {}
 
   //@UseGuards(AuthGuard('local'))
@@ -92,6 +92,7 @@ export class AuthController {
       password,
       role,
     });
+    this.inviteService.sendEmailToActiveAccount(email);
 
     return resultUser;
   }
@@ -106,6 +107,16 @@ export class AuthController {
 
   @Get('enable')
   async activeAccount(@Query() { email }) {
-    return this.authService.activeAccount(email);
+    try {
+      return await this.authService.activeAccount(email);
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new HttpException(
+          `user with email ${email} does not exist`,
+          HttpStatus.FORBIDDEN,
+        );
+      }
+      throw new HttpException('something went wrong', HttpStatus.BAD_REQUEST);
+    }
   }
 }

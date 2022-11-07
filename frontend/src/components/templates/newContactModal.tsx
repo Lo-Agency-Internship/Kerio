@@ -60,7 +60,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 					loading: postIsLoading,
 				},
 			]}>
-			{error && (
+			{/* {error && (
 				<p>
 					{error.map((element, index) => (
 						<p className="text-red-500 block" key={index}>
@@ -69,7 +69,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 						</p>
 					))}
 				</p>
-			)}
+			)} */}
 			<form id={ADDCONTACT_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 				<InputFormControl
 					label={'Name'}

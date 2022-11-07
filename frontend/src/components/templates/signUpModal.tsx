@@ -1,7 +1,6 @@
 /* eslint-disable */
-import { Button } from '../atoms/button';
 import { modalUserValidation } from '../../validation/userValidation';
-import { SetStateAction, useEffect, useState, FC } from 'react';
+import { useEffect, useState, FC } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { uri } from '../../utils';
