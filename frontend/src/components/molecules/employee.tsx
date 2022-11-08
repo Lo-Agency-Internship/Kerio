@@ -1,13 +1,14 @@
 import { IEmployee } from '../../utils/interfaces/user/employee.interface';
 
 import { useState } from 'react';
+import { IGetEmployees } from '../../utils/interfaces/api/data.interface';
 
 interface IEmployeeSideBar {
-	data: IEmployee;
+	data: IGetEmployees;
 }
 const Employee: React.FC<IEmployeeSideBar> = ({ data }) => {
 	const [profileSidebarOpen, setProfileSidebarOpen] = useState(false);
-	const [employees, setEmployees] = useState<IEmployee>(data);
+	const [employees, setEmployees] = useState<IGetEmployees>(data);
 	return (
 		<>
 			{/* Team members */}

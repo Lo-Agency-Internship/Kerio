@@ -16,7 +16,7 @@ import {
 	IUpdateContactNoteById,
 	IGetAllNotes,
 } from '../utils/interfaces/api/api.interface';
-import { IGetContacts } from '../utils/interfaces/api/data.interface';
+import { IGetContacts, IGetEmployees } from '../utils/interfaces/api/data.interface';
 
 interface IApiProvider {
 	children: ReactNode;
@@ -33,12 +33,11 @@ interface IApiContext {
 	setEmployee?: any;
 	setContacts?: any;
 	getAllContacts(payload: IApiPaginationParams): Promise<IGetContacts>;
-	getAllUsers?: any;
 	getContactsInfoById(payload: IGetContactsInfoById): Promise<IGetContactsInfoById>;
 	getTimelines?: any;
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
-	getAllEmployees?: any;
+	getAllEmployees(): Promise<IGetEmployees[]>;
 	updateUserInfo?: any;
 	getAllNotes(payload: IGetAllNotes): Promise<any>;
 	postContactInfo(payload: IPostContactInfo): Promise<void>;
@@ -77,16 +76,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	// get employees
 	const getAllEmployees = async () => {
 		setIsLoading(true);
-		const { data } = await axios.get(uri('users'), headerAuth);
-		console.log('data');
-		setIsLoading(false);
-		return data;
-	};
-
-	// we must fix it
-	const getAllUsers = async () => {
-		setIsLoading(true);
-		const { data } = await axios.get(uri('users'), headerAuth);
+		const { data } = await axios.get(uri(`users`), headerAuth);
 		setIsLoading(false);
 		return data;
 	};
@@ -221,7 +211,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				change,
 				setChange,
 				isLoading,
-				getAllUsers,
 				getAllContacts,
 				getTimelines,
 				getContactsInfoById,

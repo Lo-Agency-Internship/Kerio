@@ -2,29 +2,23 @@ import Employee from '../molecules/employee';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useApiContext } from '../../context/api';
-import { uri } from '../../utils';
-import { IEmployee } from '../../utils/interfaces/user/employee.interface';
+import { IGetEmployees } from '../../utils/interfaces/api/data.interface';
 
 function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
-	const [employees, setEmployees] = useState<IEmployee[] | null>();
-	const { change } = useApiContext();
+	const [employees, setEmployees] = useState<IGetEmployees[] | null>();
+	const { change, getAllEmployees } = useApiContext();
 	const [error, setError] = useState<string[] | null>(null);
 
-	const getAllEmployees = async () => {
+	const getEmployees = async () => {
 		try {
-			const res = await axios.get(uri(`users`), {
-				headers: {
-					Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-				},
-			});
-			const data = res.data;
+			const data = await getAllEmployees();
 			setEmployees(data);
 		} catch (e: any) {
 			setError(e.response.data.message);
 		}
 	};
 	useEffect(() => {
-		getAllEmployees();
+		getEmployees();
 	}, [change]);
 
 	return (
