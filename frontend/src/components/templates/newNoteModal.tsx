@@ -16,7 +16,6 @@ const ADDNOTE_FORM_ID = 'ADDNOTE_FORM_ID';
 const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 	const { id } = useParams();
 	const { change, setChange, postNoteInfo } = useApiContext();
-	// const navigate = useNavigate();
 	const [error, setError] = useState<string[] | null>(null);
 	const handleSubmit = async (event: any) => {
 		setError(null);
@@ -37,7 +36,14 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 		};
 		try {
 			await modalNoteValidation.isValid(body);
-			await postNoteInfo(body, id);
+			await postNoteInfo({
+				date: body.date,
+				description: body.description,
+				score: body.score,
+				status: body.status,
+				title: body.title,
+				id: id,
+			});
 			setOpen(false);
 			setChange(!change);
 		} catch (err: any) {

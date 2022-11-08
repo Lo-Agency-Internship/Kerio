@@ -92,7 +92,7 @@ export class AuthController {
       password,
       role,
     });
-    this.inviteService.sendEmailToActiveAccount({ email: resultUser.email });
+    this.inviteService.sendEmailToActiveAccount(email);
 
     return resultUser;
   }

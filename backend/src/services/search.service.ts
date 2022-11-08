@@ -20,6 +20,11 @@ export class SearchService {
     return this.client.index<IContactMeilisearch>(String(organization.id));
   }
 
+  public async search(query : string) {
+    const index = this.getIndex()
+    return await index.search(query)
+  }
+ 
   async addDocument(documents: Document<IContactMeilisearch>[]) {
     const index = this.getIndex();
 

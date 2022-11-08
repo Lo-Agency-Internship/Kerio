@@ -1,4 +1,26 @@
+import Employee from '../molecules/employee';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useApiContext } from '../../context/api';
+import { IGetEmployees } from '../../utils/interfaces/api/data.interface';
+
 function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
+	const [employees, setEmployees] = useState<IGetEmployees[] | null>();
+	const { change, getAllEmployees } = useApiContext();
+	const [error, setError] = useState<string[] | null>(null);
+
+	const getEmployees = async () => {
+		try {
+			const data = await getAllEmployees();
+			setEmployees(data);
+		} catch (e: any) {
+			setError(e.response.data.message);
+		}
+	};
+	useEffect(() => {
+		getEmployees();
+	}, [change]);
+
 	return (
 		<div
 			id="profile-sidebar"
@@ -63,131 +85,15 @@ function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
 						<div className="mt-4">
 							<div className="text-xs font-semibold text-slate-400 uppercase mb-3">Team members</div>
 							<ul className="mb-6">
-								<li className="-mx-2">
-									<button className="w-full p-2 rounded bg-indigo-100" onClick={() => setProfileSidebarOpen(false)}>
-										<div className="flex items-center">
-											<div className="relative mr-2">
-												<img
-													className="w-8 h-8 rounded-full"
-													src={'https://unsplash.it/70/71'}
-													width="32"
-													height="32"
-													alt="User"
-												/>
-											</div>
-											<div className="truncate">
-												<span className="text-sm font-medium text-slate-800">Samira</span>
-											</div>
-										</div>
-									</button>
-								</li>
-								<li className="-mx-2">
+								{/* Team members */}
+
+								<li>
 									<button className="w-full p-2 rounded" onClick={() => setProfileSidebarOpen(false)}>
-										<div className="flex items-center truncate">
+										<div className="flex items-start truncate ">
 											<div className="relative mr-2">
-												<img
-													className="w-8 h-8 rounded-full"
-													src={'https://unsplash.it/70/71'}
-													width="32"
-													height="32"
-													alt="User"
-												/>
-											</div>
-											<div className="truncate">
-												<span className="text-sm font-medium text-slate-800">Maryam</span>
-											</div>
-										</div>
-									</button>
-								</li>
-								<li className="-mx-2">
-									<button className="w-full p-2 rounded" onClick={() => setProfileSidebarOpen(false)}>
-										<div className="flex items-center truncate">
-											<div className="relative mr-2">
-												<img
-													className="w-8 h-8 rounded-full"
-													src={'https://unsplash.it/70/71'}
-													width="32"
-													height="32"
-													alt="User"
-												/>
-											</div>
-											<div className="truncate">
-												<span className="text-sm font-medium text-slate-800">Mohamadreza</span>
-											</div>
-										</div>
-									</button>
-								</li>
-								<li className="-mx-2">
-									<button className="w-full p-2 rounded" onClick={() => setProfileSidebarOpen(false)}>
-										<div className="flex items-center truncate">
-											<div className="relative mr-2">
-												<img
-													className="w-8 h-8 rounded-full"
-													src={'https://unsplash.it/70/71'}
-													width="32"
-													height="32"
-													alt="User"
-												/>
-												<div className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></div>
-											</div>
-											<div className="truncate">
-												<span className="text-sm font-medium text-slate-800">Helia</span>
-											</div>
-										</div>
-									</button>
-								</li>
-								<li className="-mx-2">
-									<button className="w-full p-2 rounded" onClick={() => setProfileSidebarOpen(false)}>
-										<div className="flex items-center truncate">
-											<div className="relative mr-2">
-												<img
-													className="w-8 h-8 rounded-full"
-													src={'https://unsplash.it/70/71'}
-													width="32"
-													height="32"
-													alt="User"
-												/>
-												<div className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></div>
-											</div>
-											<div className="truncate">
-												<span className="text-sm font-medium text-slate-800">Farzaneh</span>
-											</div>
-										</div>
-									</button>
-								</li>
-								<li className="-mx-2">
-									<button className="w-full p-2 rounded" onClick={() => setProfileSidebarOpen(false)}>
-										<div className="flex items-center truncate">
-											<div className="relative mr-2">
-												<img
-													className="w-8 h-8 rounded-full"
-													src={'https://unsplash.it/70/71'}
-													width="32"
-													height="32"
-													alt="User"
-												/>
-											</div>
-											<div className="truncate">
-												<span className="text-sm font-medium text-slate-800">Houtan</span>
-											</div>
-										</div>
-									</button>
-								</li>
-								<li className="-mx-2">
-									<button className="w-full p-2 rounded" onClick={() => setProfileSidebarOpen(false)}>
-										<div className="flex items-center truncate">
-											<div className="relative mr-2">
-												<img
-													className="w-8 h-8 rounded-full"
-													src={'https://unsplash.it/70/71'}
-													width="32"
-													height="32"
-													alt="User"
-												/>
-												<div className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></div>
-											</div>
-											<div className="truncate">
-												<span className="text-sm font-medium text-slate-800">Mahsa</span>
+												<div className="py-1 px-1">
+													{employees && employees.map((element, index) => <Employee data={element} key={index} />)}
+												</div>
 											</div>
 										</div>
 									</button>
