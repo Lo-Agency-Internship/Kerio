@@ -7,6 +7,7 @@ import SubmitDelete from '../molecules/submitDelete';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
+import DeleteModal from '../molecules/deleteModal';
 
 interface IProps {
 	setNote: (note: INote) => void;
@@ -18,7 +19,7 @@ interface IProps {
 const EditNoteFormID = 'EditNoteFORMID';
 
 const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
-	const { updateContactNoteById } = useApiContext();
+	const { updateContactNoteById, postIsLoading, setPostIsLoading, deleteNote, getAllNotes } = useApiContext();
 	const params = useParams();
 	const [error, setError] = useState<string[] | null>(null);
 	const [inputDisabled, setInputDisabled] = useState(true);
@@ -29,12 +30,13 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 	const [contactDescription, setContactDescription] = useState(note?.description);
 	const [contactScore, setContactScore] = useState(note?.score);
 	const [contactStatus, setContactStatus] = useState(note?.status);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
 		setBackground('bg-gray-300');
 	};
-	const [showsubmitDelete, setShowsubmitDelete] = useState(false);
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
@@ -47,7 +49,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
-
 		const formData = new FormData(e.currentTarget);
 		const date = contactDate;
 		const title = formData.get('title') as string;
@@ -74,6 +75,18 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 			setError(err.response.data.message);
 		}
 	};
+
+	const handleDelete = async () => {
+		try {
+			await deleteNote({ id: note.id });
+			const { data } = await getAllNotes({ id: params.id });
+			setNote({ ...data, id: params.id as string });
+			setShowDeleteModal(false);
+			setOpen(false);
+		} catch (err: any) {
+			setError(err.response.data.message);
+		}
+	};
 	return (
 		<Modal
 			show={open}
@@ -96,7 +109,16 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 					))}
 				</p>
 			)}
-			{showsubmitDelete && <SubmitDelete setOpen={setShowsubmitDelete} note={note} />}
+			{showDeleteModal && (
+				<DeleteModal
+					open={showDeleteModal}
+					setOpen={setShowDeleteModal}
+					title={'Delete Modal'}
+					handleDelete={handleDelete}
+					loading={postIsLoading}>
+					{<p>Are you sure that you want Delete these contacts ?</p>}
+				</DeleteModal>
+			)}
 			<form id={EditNoteFormID} onSubmit={submitHandler} className="relative w-full mt-6 space-y-8">
 				<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
 				<Input
@@ -173,7 +195,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 						label="Delete"
 						style="focus:outline-none mx-3 text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
 						type="button"
-						onClick={() => setShowsubmitDelete(true)}
+						onClick={() => setShowDeleteModal(!showDeleteModal)}
 					/>
 
 					<button

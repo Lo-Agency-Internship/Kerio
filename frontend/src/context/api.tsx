@@ -16,6 +16,7 @@ import {
 	IDeleteContact,
 	IUpdateContactNoteById,
 	IGetAllNotes,
+	IDeleteNote,
 } from '../utils/interfaces/api/api.interface';
 import { IGetContacts } from '../utils/interfaces/api/data.interface';
 
@@ -53,6 +54,7 @@ interface IApiContext {
 	postSignUp(payload: IPostSignUp): Promise<void>;
 	postInviteEmployee(payload: IPostInviteEmployee[]): Promise<void>;
 	updateUserInfo: any;
+	deleteNote(payload: IDeleteNote): Promise<void>;
 }
 
 const ApiContext = createContext<IApiContext | null>(null);
@@ -201,16 +203,21 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		);
 	};
 
-	// ///////delete contact
-	const deleteContact = async (payload: IDeleteContact) => {
-		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
-	};
 	// update user info
 	const updateUserInfo = async (sub: string, body: object) => {
 		console.log(headerAuth);
 		axios.put(uri(`users/${sub}`), body, headerAuth);
 	};
 
+	// ///////delete contact
+	const deleteContact = async (payload: IDeleteContact) => {
+		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
+	};
+
+	const deleteNote = async (payload: IDeleteNote) => {
+		console.log('dsaf');
+		await axios.delete(uri(`notes/${payload.id}`), headerAuth);
+	};
 	return (
 		<ApiContext.Provider
 			value={{
@@ -234,6 +241,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				deleteContact,
 				updateUserInfo,
 				postInviteEmployee,
+				deleteNote,
 			}}>
 			{children}
 		</ApiContext.Provider>

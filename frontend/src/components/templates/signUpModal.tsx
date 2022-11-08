@@ -45,13 +45,13 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (err: any) {
 			setError(err.response.data.message);
-			setPostIsLoading(false)
+			setPostIsLoading(false);
 		}
 	};
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
-		setPostIsLoading(true)
+		setPostIsLoading(true);
 		setError(null);
 
 		const formData = new FormData(event.currentTarget);
@@ -63,7 +63,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 
 		if (password !== rePassword) {
 			setError('passwords do not matched');
-			setPostIsLoading(false)
+			setPostIsLoading(false);
 			return;
 		}
 
@@ -88,7 +88,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 		} catch (e: any) {
 			setError(e.message);
 		}
-		setPostIsLoading(false)
+		setPostIsLoading(false);
 	};
 
 	return (
