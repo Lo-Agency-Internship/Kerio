@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Contact } from '../../entities/contact/contact.entity';
 import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
 import {
+  AbstractContact,
   ICreatePayload,
   IDeletePayload,
   IFindOneByIdPayload,
@@ -28,6 +29,36 @@ export class ContactService {
     private readonly searchService: SearchService,
   ) {}
 
+  async caculateContactScore(contacts: Contact[]): Promise<AbstractContact[]> {
+    const contactsWithScore = contacts.map((contact) => {
+      //const {notes} = contact;
+      if (contact.notes.length === 0) {
+        return { ...contact, totalScore: 0 };
+      }
+      //console.log(notes)
+
+      const lastStatus =
+        contact.statuses[contact.statuses.length - 1].status.status;
+
+      const notesUsedForScoreCalculation = contact.notes.filter(
+        (note) => note.score && note.status.status === lastStatus,
+      );
+      const scores = notesUsedForScoreCalculation.map((note) => {
+        return note.score;
+      });
+
+      //console.log(lastStatus,noteUsedForScoreCalculation)
+      const sumScores = scores.reduce((acc, s) => {
+        return acc + s;
+      }, 0);
+      //console.log(sum/scores.length)
+      return { ...contact, totalScore: sumScores / scores.length };
+    });
+
+    //console.log('mahsa',contactWithScore)
+    return contactsWithScore;
+  }
+
   async find(payload: IFindPayload): Promise<IPaginatedContacts> {
     const [result, total] = await this.contactRepository.findAndCount({
       where: {
@@ -36,7 +67,8 @@ export class ContactService {
       relations: [
         'statuses',
         'statuses.status',
-        'statuses.status',
+        'notes',
+        'notes.status',
         'organization',
       ],
       order: { createdAt: payload.sort },
@@ -44,8 +76,10 @@ export class ContactService {
       skip: getPaginationOffset(payload),
     });
 
+    const contactsWithScore = await this.caculateContactScore(result);
+
     if (!payload.status) {
-      const contacts = result.map((contact) => ({
+      const contacts = contactsWithScore.map((contact) => ({
         ...contact,
         statuses: undefined,
         lastStatus:
@@ -62,7 +96,7 @@ export class ContactService {
       };
     }
 
-    const contacts = result.filter((contact) => {
+    const contacts = contactsWithScore.filter((contact) => {
       const lastStatus = contact.statuses[contact.statuses.length - 1];
       return lastStatus.status.status === payload.status;
     });

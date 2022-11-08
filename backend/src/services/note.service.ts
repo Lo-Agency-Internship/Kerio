@@ -23,6 +23,7 @@ export class NoteService {
     return await this.noteRepository.save({
       ...payload.note,
       contact: payload.contact,
+      status: payload.status,
     });
   }
 
@@ -55,7 +56,7 @@ export class NoteService {
     };
   }
 
-  createNewNoteObject(note: DeepPartial<Note>) {
-    return this.noteRepository.create(note);
+  createNewNoteObject(payload: DeepPartial<Note>) {
+    return this.noteRepository.create(payload);
   }
 }

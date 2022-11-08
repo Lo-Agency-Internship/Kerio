@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Note } from 'src/entities/note.entity';
+import { EContactStatus } from 'src/utils/types';
 import { PaginationDto } from '.';
 
 export class AddNotetDto {
@@ -17,6 +18,13 @@ export class AddNotetDto {
 
   @IsOptional()
   contactId: number;
+
+  @IsNotEmpty()
+  @IsEnum(EContactStatus)
+  status: EContactStatus;
+
+  @IsOptional()
+  score: number;
 }
 
 export class UpdateNoteBodyDto {
