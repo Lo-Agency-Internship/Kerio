@@ -99,13 +99,6 @@ function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
 											<div className="relative mr-2">
 												<div className="py-1 px-1">
 													{employees && employees.map((element, index) => <Employee data={element} key={index} />)}
-													<img
-														className="w-8 h-8 rounded-full"
-														src={'https://unsplash.it/70/71'}
-														width="32"
-														height="32"
-														alt="User"
-													/>
 												</div>
 											</div>
 										</div>
