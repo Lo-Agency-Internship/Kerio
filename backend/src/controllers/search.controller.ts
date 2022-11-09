@@ -12,6 +12,6 @@ export class SearchController {
 
   @Get()
   async find(@Query('search') query: string) {
-    return this.searchService.search(query)
+    return this.searchService.search(query);
   }
 }
