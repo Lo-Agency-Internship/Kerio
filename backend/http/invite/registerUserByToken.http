@@ -1,8 +1,8 @@
-POST http://localhost:3001/invites/16b859f2d39d41103890d82f99895e90902f95d047baaa005ac5aa7b24ddbd6fe6078041d62d574498478607f91b2272  HTTP/1.1
+POST http://localhost:3001/invites/0db13083c4e9230213dbace08fc4dcf55614f5b07ee3af4625d26aed9fe0d9caf5fee624c2852b6bdd8eee05d24a37f8  HTTP/1.1
 Content-Type: application/json
 
 
 {
-	"name": "will smith",
+	"name": "aien22 saedi",
     "password": "0000"
 }

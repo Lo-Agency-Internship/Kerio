@@ -9,7 +9,6 @@ import NewNoteModal from '../../components/templates/newNoteModal';
 import Roadmap from '../../components/organisms/roadMap';
 import { ITimeline } from '../../utils/interfaces/user/timeline.interface';
 import { Account } from './account';
-import Timeline from '../../components/molecules/timeline';
 
 export default function ContactPage() {
 	const [contact, setContact] = useState<IUser>();

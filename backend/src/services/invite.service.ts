@@ -1,15 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BasicInviteDto, CreateInviteDto } from 'src/dtos/invite.dto';
+
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Invite } from 'src/entities/invite.entity';
 import { DeleteResult, Repository } from 'typeorm';
-import { OrganizationService } from './organization.service';
 import { UserService } from './user.service';
 import { randomBytes } from 'crypto';
 import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
 import { TemplateEngineService } from './templateEngine.service';
-import { IIsInviteValid } from 'src/interfaces/invite.service.interface';
+import { ICreateInvite } from 'src/interfaces/invite.service.interface';
+import { OrganizationService } from './organization.service';
 
 @Injectable()
 export class InviteService {
@@ -23,21 +27,27 @@ export class InviteService {
     private readonly templateService: TemplateEngineService,
   ) {}
 
-  async createInvite(invite: CreateInviteDto): Promise<Invite> {
+  async createInvite(payload: ICreateInvite): Promise<Invite> {
+    const isExist = await this.userService.exists(payload.email);
+
+    if (isExist) {
+      throw new UnauthorizedException();
+    }
+
     const invitedBy = await this.userService.findOneUserByEmail({
-      email: invite.invitedByUserEmail,
+      email: payload.invitedByUserEmail,
     });
 
     const invitedOrganization = await this.orgService.findOneOrganizationBySlug(
-      invite.orgSlug,
+      payload.orgSlug,
     );
 
     const token = randomBytes(48).toString('hex');
 
     const newInvite = await this.inviteRepository.save({
-      email: invite.email,
+      email: payload.email,
       invitedBy,
-      name: invite.name,
+      name: payload.name,
       invitedOrganization,
       token,
     });
@@ -45,9 +55,9 @@ export class InviteService {
     return newInvite;
   }
 
-  async sendEmailToInvite(invite: BasicInviteDto): Promise<void> {
+  async sendEmailToInvite(email: string): Promise<void> {
     const inviteData = await this.inviteRepository.findOneBy({
-      email: invite.email,
+      email,
     });
 
     if (!inviteData)
@@ -69,10 +79,11 @@ export class InviteService {
     });
   }
 
-  async isInviteValid(payload: IIsInviteValid) {
+  async isInviteValid(token: string) {
     const invite = await this.inviteRepository.findOneBy({
-      token: payload.token,
+      token,
     });
+
     if (!invite) {
       throw new NotFoundException();
     }
@@ -97,7 +108,7 @@ export class InviteService {
     });
   }
 
-  async sendEmailToActiveAccount({ email }: BasicInviteDto) {
+  async sendEmailToActiveAccount(email: string) {
     const activeTemplate = await this.templateService.render(
       'activeEmailTemplate',
       {
