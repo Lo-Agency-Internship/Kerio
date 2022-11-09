@@ -5,7 +5,6 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Organization } from 'src/entities/organization.entity';
 import { ERole } from 'src/utils/types';
 
 export class UserLoginDto {
@@ -34,6 +33,7 @@ export class UpdateEmployeeBodyDto {
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @IsBoolean()
   enabled: boolean;
 }

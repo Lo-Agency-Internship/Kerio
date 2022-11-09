@@ -33,12 +33,7 @@ export class ContactService {
       where: {
         organization: { id: payload.organization.id },
       },
-      relations: [
-        'statuses',
-        'statuses.status',
-        'statuses.status',
-        'organization',
-      ],
+      relations: ['statuses', 'statuses.status', 'organization'],
       order: { createdAt: payload.sort },
       take: payload.size,
       skip: getPaginationOffset(payload),
@@ -91,10 +86,12 @@ export class ContactService {
       ...payload.contact,
       organization: payload.organization,
     });
-
+    // eslint-disable-next-line
+    const { organization, statuses, ...rest } = result;
+    // question why typescrip dose not tell us this type does not need extra information
     this.searchService.addDocument([
       {
-        ...result,
+        ...rest,
         lastStatus: payload.contact.statuses[0].status.status,
       },
     ]);

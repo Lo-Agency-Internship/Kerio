@@ -48,19 +48,17 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 		const formData = new FormData(e.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
-		const phone = formData.get('phone');
-
+		const phone = formData.get('phone')?.toString();
 		const body = { name, email, phone };
 		const isValid = await editContactValidation.isValid(body);
 		if (isValid) {
-			updateContactInfo(user.id, body);
+			updateContactInfo({ email: body.email, name: body.name, phone: body.phone, id: user.id });
 			setError(!error);
 		} else {
 			editContactValidation.validate(body).catch((event) => {
 				setError(event.message);
 			});
 		}
-		await updateContactInfo(user.id, body);
 		setUser({ ...body, id: user.id });
 		setInputDisabled(true);
 		setInputsShow(false);
@@ -68,7 +66,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 	};
 
 	const submitDelete = async () => {
-		await deleteContact(user.id);
+		await deleteContact({ id: user.id });
 		setShowDeleteModal(false);
 		setInputsShow(false);
 		navigate('/contacts');

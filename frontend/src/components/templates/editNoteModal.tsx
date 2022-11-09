@@ -1,13 +1,12 @@
 import { FC, useState } from 'react';
 import Modal from '../organisms/modal';
-import axios from 'axios';
-import { uri } from '../../utils';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
 import SubmitDelete from '../molecules/submitDelete';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
+import { useApiContext } from '../../context/api';
 
 interface IProps {
 	setNote: (note: INote) => void;
@@ -19,7 +18,9 @@ interface IProps {
 const EditNoteFormID = 'EditNoteFORMID';
 
 const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
+	const { updateContactNoteById } = useApiContext();
 	const params = useParams();
+	const [error, setError] = useState<string[] | null>(null);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
@@ -56,17 +57,23 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 
 		const body = { date, title, description, score, status };
 
-		await axios.put(uri(`notes/${note.id}`), body, {
-			headers: {
-				Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-			},
-		});
-		setNote({ ...body, id: params.id as string });
-		setInputDisabled(true);
-		setInputsShow(false);
-		setBackground('bg-transparent');
+		try {
+			await updateContactNoteById({
+				date: body.date,
+				description: body.description,
+				id: params.id,
+				score: body.score,
+				status: body.status,
+				title: body.title,
+			});
+			setNote({ ...body, id: params.id as string });
+			setInputDisabled(true);
+			setInputsShow(false);
+			setBackground('bg-transparent');
+		} catch (err: any) {
+			setError(err.response.data.message);
+		}
 	};
-	// const { getAllNotes } = useApiContext();
 	return (
 		<Modal
 			show={open}
@@ -79,6 +86,16 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 					form: EditNoteFormID,
 				},
 			]}>
+			{error && (
+				<p>
+					{error.map((element, index) => (
+						<p className="text-red-500 block" key={index}>
+							{element}
+							<br />
+						</p>
+					))}
+				</p>
+			)}
 			{showsubmitDelete && <SubmitDelete setOpen={setShowsubmitDelete} note={note} />}
 			<form id={EditNoteFormID} onSubmit={submitHandler} className="relative w-full mt-6 space-y-8">
 				<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
