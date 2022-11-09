@@ -1,4 +1,4 @@
-GET http://localhost:3001/auth/enable?email=abadian.ma@gmail.com HTTP/1.1
+GET http://localhost:3001/auth/enable?email=aien2@gmail.com HTTP/1.1
 Content-Type: application/json
-Authorization: bearer http://localhost:3001/invites/1360fcde1787e1d1dbdca52068277a46892ec9c00583e3a70908d933a7a030943a613d6e3809ff1ba50b353e996ac69e HTTP/1.1
+
 
