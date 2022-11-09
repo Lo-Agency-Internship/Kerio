@@ -65,37 +65,34 @@ export class AuthService {
     };
   }
 
-  async registerUser({
-    email,
-    name,
-    password,
-    organizationSlug,
-  }: UserRegisterDto): Promise<SecureUserWithOrganization> {
+  async createOrganizationByOwner(organizationSlug: string, name: string) {
     const pipedOrgSlug = kebab(organizationSlug);
-    const userExists = await this.userService.exists(email);
-
-    if (userExists) {
-      throw new AuthEmailAlreadyExistsException('Email already exist');
-    }
-
     const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
-
     if (orgExists) {
       throw new AuthOrganizationAlreadyExistsException(
         'organization already exists',
       );
     }
-
     const newOrg = await this.orgService.addOrganization({
       name: `${name}'s Organization`,
       address: '',
       slug: pipedOrgSlug,
     });
-    const [orgExist, organization] = await this.orgService.existsAndFindBySlug(
-      newOrg.slug,
-    );
 
-    if (!orgExist) throw new NotExistException(`Organization doesn't exists`);
+    return newOrg;
+  }
+
+  async registerUser({
+    email,
+    name,
+    password,
+    organizationSlug,
+  }): Promise<SecureUserWithOrganization> {
+    const userExists = await this.userService.exists(email);
+
+    if (userExists) {
+      throw new AuthEmailAlreadyExistsException('Email already exist');
+    }
 
     const salt = genSaltSync(10);
     const hashedPass = hashSync(password, salt);
@@ -110,6 +107,10 @@ export class AuthService {
         name,
       },
     });
+    const organization = await this.createOrganizationByOwner(
+      organizationSlug,
+      name,
+    );
 
     await this.orgUserService.assignUserToOrganization(
       createdUser,

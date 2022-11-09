@@ -1,4 +1,11 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { Organization } from 'src/entities/organization.entity';
 import { ERole } from 'src/utils/types';
 
 export class UserLoginDto {

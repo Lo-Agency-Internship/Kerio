@@ -75,13 +75,20 @@ export class AuthController {
       return resultUser;
     } catch (error) {
       if (error instanceof AuthEmailAlreadyExistsException) {
-        throw new BadRequestException('Email already exists');
+        throw new HttpException(`Email already exists`, HttpStatus.BAD_REQUEST);
       } else if (error instanceof AuthOrganizationAlreadyExistsException) {
-        throw new BadRequestException('Organization already exists');
+        throw new HttpException(
+          `Organization already exists`,
+          HttpStatus.BAD_REQUEST,
+        );
       } else if (error instanceof NotExistException) {
-        throw new BadRequestException("Organization doesn't exists");
+        throw new HttpException(
+          `Organization doesn't exists`,
+          HttpStatus.BAD_REQUEST,
+        );
       } else {
-        throw new BadRequestException('Something went wrong');
+        console.log(error);
+        throw new HttpException(`Something went wrong`, HttpStatus.BAD_REQUEST);
       }
     }
   }
