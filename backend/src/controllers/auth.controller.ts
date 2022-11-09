@@ -16,7 +16,6 @@ import { ERole, JwtResponse, SecureUserWithOrganization } from '../utils/types';
 
 import { AuthService } from '../services/auth.service';
 import { OrganizationService } from '../services/organization.service';
-import { kebab } from 'case';
 import { InviteService } from 'src/services/invite.service';
 
 @Controller('auth')
@@ -56,46 +55,40 @@ export class AuthController {
       }
     }
   }
-
+  //owner register
   @Post('register')
   async register(
     @Body() { password, name, email, organizationSlug }: UserRegisterDto,
   ): Promise<SecureUserWithOrganization> {
-    const pipedOrgSlug = kebab(organizationSlug);
-    const userExists = await this.userService.exists(email);
+    try {
+      const role = ERole.Owner;
+      const resultUser = await this.authService.registerUser({
+        email,
+        name,
+        //organizationSlug: newOrg.slug,  just to remind organizationslug is cpome from the body but organization
+        //organizationslug for registering employee come from dataBase so it is kebab shode
+        organizationSlug, //not kebab
+        password,
+        role,
+      });
+      this.inviteService.sendEmailToActiveAccount(email);
 
-    if (userExists)
-      throw new HttpException(
-        `user with email ${email} already exists`,
-        HttpStatus.BAD_REQUEST,
-      );
-
-    const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
-
-    if (orgExists)
-      throw new HttpException(
-        `organization already exists`,
-        HttpStatus.BAD_REQUEST,
-      );
-
-    const newOrg = await this.orgService.addOrganization({
-      name: `${name}'s Organization`,
-      address: '',
-      slug: pipedOrgSlug,
-    });
-
-    const role = ERole.Owner;
-    const resultUser = await this.authService.registerUser({
-      email,
-      name,
-      organizationSlug: newOrg.slug,
-      password,
-      role,
-    });
-    this.inviteService.sendEmailToActiveAccount(email);
-
-    return resultUser;
+      return resultUser;
+    } catch (err) {
+      if (err instanceof UnauthorizedException) {
+        throw new HttpException(
+          `user with email ${email} already exists`,
+          HttpStatus.BAD_REQUEST,
+        );
+      } else if (err instanceof NotFoundException) {
+        throw new HttpException(
+          'organization does not exist',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
   }
+
   @Post('duplicateEmail')
   async emailExist(@Body() body) {
     const isExist = await this.userService.exists(body.email);
