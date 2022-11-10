@@ -125,10 +125,12 @@ export class ContactService {
       ...payload.contact,
       organization: payload.organization,
     });
-
+    // eslint-disable-next-line
+    const { organization, statuses, ...rest } = result;
+    // question why typescrip dose not tell us this type does not need extra information
     this.searchService.addDocument([
       {
-        ...result,
+        ...rest,
         lastStatus: payload.contact.statuses[0].status.status,
       },
     ]);

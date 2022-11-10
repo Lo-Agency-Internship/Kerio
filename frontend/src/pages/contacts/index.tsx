@@ -1,12 +1,11 @@
 import { useApiContext } from '../../context/api';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Page } from '../../layout/page';
 import { Button } from '../../components/atoms/button';
 import NewContactModal from '../../components/templates/newContactModal';
 import ContactTable from '../../components/organisms/contactTable';
 import { IUser } from '../../utils/interfaces/user';
 import DeleteModal from '../../components/molecules/deleteModal';
-
 export default function ContactsPage() {
 	const { getAllContacts } = useApiContext();
 	const [showAddConactModal, setShowAddConactModal] = useState(false);
@@ -17,11 +16,8 @@ export default function ContactsPage() {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [selectedRows, setSelectedRows] = useState<IUser[]>([]);
 
-	useEffect(() => {
-		getAllContacts(1, 5).then(setContacts);
-	}, []);
 	const fetchData = async (page: number, size: number) => {
-		const result = await getAllContacts(page, size);
+		const result = await getAllContacts({ pagination: { page, size } });
 		setIsLoaded(true);
 		setContacts(result.contacts);
 		setTotalRows(result.metadata.total);

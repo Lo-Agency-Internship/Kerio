@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsOptional,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 
@@ -37,10 +38,12 @@ export class CreateInvitesDto {
   invites: CreateInviteDto[];
 }
 
-export class RegisterUserByInviteDto {
+export class RegisterUserByTokenDto {
   @IsNotEmpty()
+  @IsString()
   name: string;
 
   @IsNotEmpty()
+  @IsString()
   password: string;
 }
