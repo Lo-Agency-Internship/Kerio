@@ -1,13 +1,13 @@
-POST http://localhost:3001/notes/186 HTTP/1.1
+POST http://localhost:3001/notes/18 HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjE3LCJuYW1lIjoiYmFoYXJHb2wgRG9lIiwicm9sZSI6eyJpZCI6MSwibmFtZSI6Ik93bmVyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMC0yMlQwNzowMjoxNS41NjRaIiwidXBkYXRlZEF0IjoiMjAyMi0xMC0yMlQwNzowMjoxNS41NjRaIn0sImlhdCI6MTY2NzkxMDgyNywiZXhwIjoxNjcwNTAyODI3fQ.Sb406ZIcEjj-Z1voWtOTGdvRBDxhqSiW-8WnwbbMZ8Y
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1yQGQuY29tIiwic3ViIjo3MiwibmFtZSI6ImlibSBEb2UiLCJyb2xlIjp7ImlkIjoxLCJuYW1lIjoiT3duZXIiLCJjcmVhdGVkQXQiOiIyMDIyLTEwLTIzVDAzOjEyOjUyLjkwMVoiLCJ1cGRhdGVkQXQiOiIyMDIyLTEwLTIzVDAzOjEyOjUyLjkwMVoifSwiaWF0IjoxNjY4MDUzNTAxLCJleHAiOjE2NzA2NDU1MDF9.EuKbRudtl-3O1dYQdoH3PLbwFli90BLNpEr6bit1c7E
 
 {
-	"title": "huhuh",
+	"title": "c2",
     "description": "coming soon",
     "date": "2022-09-27",
-    "status":"Lead",
-    "score":-10
+    "status":"PotentialCustomer",
+    "score":null
     
 }
     

@@ -31,31 +31,28 @@ export class ContactService {
 
   async caculateContactScore(contacts: Contact[]): Promise<AbstractContact[]> {
     const contactsWithScore = contacts.map((contact) => {
-      //const {notes} = contact;
       if (contact.notes.length === 0) {
         return { ...contact, totalScore: 0 };
       }
-      //console.log(notes)
 
       const lastStatus =
         contact.statuses[contact.statuses.length - 1].status.status;
 
       const notesUsedForScoreCalculation = contact.notes.filter(
-        (note) => note.score && note.status.status === lastStatus,
+        (note) => note.score !== null && note.status.status === lastStatus,
       );
       const scores = notesUsedForScoreCalculation.map((note) => {
         return note.score;
       });
 
-      //console.log(lastStatus,noteUsedForScoreCalculation)
+    
       const sumScores = scores.reduce((acc, s) => {
         return acc + s;
       }, 0);
-      //console.log(sum/scores.length)
+      
       return { ...contact, totalScore: sumScores / scores.length };
     });
 
-    //console.log('mahsa',contactWithScore)
     return contactsWithScore;
   }
 
