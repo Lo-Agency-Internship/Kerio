@@ -2,7 +2,6 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Note } from 'src/entities/note.entity';
 import { EContactStatus } from 'src/utils/types';
 
-
 export class AddNotetDto {
   @IsNotEmpty()
   @IsString()
