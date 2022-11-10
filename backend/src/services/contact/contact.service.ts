@@ -45,11 +45,10 @@ export class ContactService {
         return note.score;
       });
 
-    
       const sumScores = scores.reduce((acc, s) => {
         return acc + s;
       }, 0);
-      
+
       return { ...contact, totalScore: sumScores / scores.length };
     });
 
