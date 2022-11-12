@@ -42,15 +42,18 @@ export class ContactService {
         (note) => note.score !== null && note.status.status === lastStatus,
       );
 
-      if (notesUsedForScoreCalculation.length === 0){
-        return { ...contact, totalScore:0}
+      if (notesUsedForScoreCalculation.length === 0) {
+        return { ...contact, totalScore: 0 };
       }
 
-      const sumScores = notesUsedForScoreCalculation.reduce((acc,note)=>{
-        return acc + note.score
-      },0)
+      const sumScores = notesUsedForScoreCalculation.reduce((acc, note) => {
+        return acc + note.score;
+      }, 0);
 
-      return { ...contact, totalScore: sumScores / notesUsedForScoreCalculation.length };
+      return {
+        ...contact,
+        totalScore: sumScores / notesUsedForScoreCalculation.length,
+      };
     });
 
     return contactsWithScore;
