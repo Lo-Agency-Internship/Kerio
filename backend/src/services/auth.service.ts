@@ -2,7 +2,6 @@ import {
   Injectable,
   NotAcceptableException,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
@@ -19,7 +18,6 @@ import { OrganizationUserService } from './organizationUser.service';
 import { OrganizationService } from './organization.service';
 import { NotExistException } from '../utils/exceptions';
 import { Repository } from 'typeorm';
-import { Organization } from 'src/entities/organization.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IFindUserToCheckForLogin } from 'src/interfaces/auth.service.interface';
 
@@ -28,9 +26,6 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-
-    @InjectRepository(Organization)
-    private readonly orgRepository: Repository<Organization>,
     private readonly userService: UserService,
     private readonly orgService: OrganizationService,
     private readonly orgUserService: OrganizationUserService,
@@ -98,10 +93,17 @@ export class AuthService {
     return await this.orgUserService.findUserWithOrganizationByUserEmail(email);
   }
 
-  async activeAccount(email) {
-    const getUser = await this.userService.findOneUserByEmail(email);
+  async activeAccount(email: string) {
+    const getUser = await this.userService.findOneUserByEmail({ email });
+
+    if (!getUser) {
+      throw new NotFoundException();
+    }
     getUser.enabled = true;
-    await this.userService.updateUserById({ id: getUser.id, user: getUser });
+    return await this.userService.updateUserById({
+      id: getUser.id,
+      user: getUser,
+    });
   }
 
   //login
@@ -119,8 +121,8 @@ export class AuthService {
       throw new NotFoundException();
     }
 
-    // if (!user.enabled){
-    //   throw new UnauthorizedException()
+    // if (!user.enabled) {
+    //   throw new UnauthorizedException();
     // }
 
     const hashedPassword = hashSync(payload.password, user.salt);

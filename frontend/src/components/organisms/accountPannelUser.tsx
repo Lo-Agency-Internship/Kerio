@@ -1,30 +1,21 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useApiContext } from '../../context/api';
 import { Button } from '../atoms/button';
-import { editContactValidation } from '../../validation/editContactValidation';
-import { IUser } from '../../utils/interfaces/user';
-import DeleteModal from '../molecules/deleteModal';
+import { editUserValidation } from '../../validation/editUserValidation';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
-export interface AccountPanelProps {
-	user?: IUser;
-	setUser?: (value: IUser) => void;
-}
-export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any) => {
+import { useAuthContext } from '../../context/auth';
+
+export default function AccountPanelUser() {
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [background, setBackground] = useState('bg-transparent');
-	const { updateContactInfo, deleteContact } = useApiContext();
-	const [contactName, setContactName] = useState(user?.name);
-	const [contactEmail, setContactEmail] = useState(user?.email);
-	const [contactPhone, setContactPhone] = useState(user?.phone);
+	const { userMetadata } = useAuthContext();
+	const { name: usersName, email: usersEmail, sub } = userMetadata();
+	const { updateUserInfo } = useApiContext();
+	const [userName, setUserName] = useState(usersName);
+	const [userEmail, setUserEmail] = useState(usersEmail);
 	const [error, setError] = useState<string | null | boolean>(null);
-	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const navigate = useNavigate();
 
-	useEffect(() => {
-		setUser(user);
-	}, [user]);
 	// after ckick it we can see 2 new buttons ( yes & no)
 	const editHandler = () => {
 		setInputDisabled(false);
@@ -35,11 +26,10 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
-		setUser(user);
+		// setUser(user);
 		setBackground('bg-transparent');
-		setContactName(user?.name);
-		setContactEmail(user?.email);
-		setContactPhone(user?.phone);
+		setUserName(usersName);
+		setUserEmail(usersEmail);
 	};
 
 	const submitHandler = async (e: any) => {
@@ -48,35 +38,30 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 		const formData = new FormData(e.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
-		const phone = formData.get('phone')?.toString();
-		const body = { name, email, phone };
-		const isValid = await editContactValidation.isValid(body);
+
+		const body = { name, email };
+
+		const isValid = await editUserValidation.isValid(body);
+
 		if (isValid) {
-			updateContactInfo({ email: body.email, name: body.name, phone: body.phone, id: user.id });
+			updateUserInfo(sub, body);
 			setError(!error);
 		} else {
-			editContactValidation.validate(body).catch((event) => {
+			editUserValidation.validate(body).catch((event) => {
 				setError(event.message);
 			});
 		}
-		setUser({ ...body, id: user.id });
+
 		setInputDisabled(true);
 		setInputsShow(false);
 		setBackground('bg-transparent');
-	};
-
-	const submitDelete = async () => {
-		await deleteContact({ id: user.id });
-		setShowDeleteModal(false);
-		setInputsShow(false);
-		navigate('/contacts');
 	};
 
 	return (
 		<div className="grow">
 			{/* Panel body */}
 			<div className="p-6 space-y-6">
-				<h2 className="text-2xl text-slate-800 font-bold mb-5">{user?.name}</h2>
+				<h2 className="text-2xl text-slate-800 font-bold mb-5">{usersName}</h2>
 				{/* Picture */}
 				<section>
 					<div className="flex items-center">
@@ -103,11 +88,13 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 								inputProps={{
 									type: 'text',
 									placeholder: 'Name',
-									disabled: inputDisabled,
-									onChange: (e) => setContactName(e.target.value),
-									value: contactName,
-									defaultValue: user?.name,
+									// disabled: inputDisabled,
+									disabled: true,
+									onChange: (e) => setUserName(e.target.value),
+									value: userName,
+									defaultValue: usersName,
 									className: background,
+									name: 'name',
 								}}
 							/>
 						</div>
@@ -117,28 +104,17 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 								inputProps={{
 									type: 'text',
 									placeholder: 'Email',
-									disabled: inputDisabled,
-									onChange: (e) => setContactEmail(e.target.value),
-									value: contactEmail,
-									defaultValue: user?.email,
+									// disabled: inputDisabled,
+									disabled: true,
+									onChange: (e) => setUserEmail(e.target.value),
+									value: userEmail,
+									defaultValue: usersEmail,
 									className: background,
+									name: 'email',
 								}}
 							/>
 						</div>
-						<div className="sm:w-1/3">
-							<InputFormControl
-								label={'Phone'}
-								inputProps={{
-									type: 'text',
-									placeholder: 'Phone',
-									disabled: inputDisabled,
-									onChange: (e) => setContactPhone(e.target.value),
-									value: contactPhone,
-									defaultValue: user?.phone,
-									className: background,
-								}}
-							/>
-						</div>
+						<div className="sm:w-1/3"></div>
 					</div>
 					<div className="flex flex-col px-6 py-5 border-t mt-4 border-slate-200">
 						<div className="flex self-end">
@@ -164,28 +140,11 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 									type="button"
 								/>
 							)}
-							{showDeleteModal ? (
-								<>
-									<DeleteModal
-										open={showDeleteModal}
-										setOpen={setShowDeleteModal}
-										title={'Delete Modal'}
-										handleDelete={submitDelete}>
-										<p>Do you want to delete this contact?</p>
-									</DeleteModal>
-								</>
-							) : (
-								<Button
-									label="Delete"
-									style="focus:outline-none mx-3 text-black  border-solid border-2 border-red-500 hover:border-red-400 hover:bg-red-500 hover:text-white focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
-									type="button"
-									onClick={() => setShowDeleteModal(true)}
-								/>
-							)}
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
 	);
-};
+}
+// }

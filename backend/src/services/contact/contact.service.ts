@@ -7,6 +7,7 @@ import {
   IDeletePayload,
   IFindOneByIdPayload,
   IFindPayload,
+  IMultiDeletePayload,
   IPaginatedContacts,
   IUpdateOneByIdPayload,
   IUpdateStatusPayload,
@@ -32,12 +33,7 @@ export class ContactService {
       where: {
         organization: { id: payload.organization.id },
       },
-      relations: [
-        'statuses',
-        'statuses.status',
-        'statuses.status',
-        'organization',
-      ],
+      relations: ['statuses', 'statuses.status', 'organization'],
       order: { createdAt: payload.sort },
       take: payload.size,
       skip: getPaginationOffset(payload),
@@ -90,10 +86,12 @@ export class ContactService {
       ...payload.contact,
       organization: payload.organization,
     });
-
+    // eslint-disable-next-line
+    const { organization, statuses, ...rest } = result;
+    // question why typescrip dose not tell us this type does not need extra information
     this.searchService.addDocument([
       {
-        ...result,
+        ...rest,
         lastStatus: payload.contact.statuses[0].status.status,
       },
     ]);
@@ -136,6 +134,12 @@ export class ContactService {
   async delete(payload: IDeletePayload): Promise<DeleteResult> {
     const deletedContact = await this.contactRepository.softDelete(payload.id);
     this.searchService.deleteDocument(payload.id);
+    return deletedContact;
+  }
+
+  async batchDelete(payload: IMultiDeletePayload): Promise<DeleteResult> {
+    const deletedContact = await this.contactRepository.softDelete(payload.ids);
+    await this.searchService.deleteDocuments(payload.ids);
     return deletedContact;
   }
 

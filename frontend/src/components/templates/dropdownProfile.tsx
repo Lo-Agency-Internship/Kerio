@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Transition from '../../utils/component/transition';
 import { useAuthContext } from '../../context/auth';
 interface DropdownProfileProps {
@@ -13,6 +13,7 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 	const dropdown = useRef<any>(null);
 	const { userMetadata } = useAuthContext();
 	const { name, role, email } = userMetadata();
+	const navigate = useNavigate();
 	// close on click outside
 	useEffect(() => {
 		const clickHandler = ({ target }: any) => {
@@ -36,6 +37,9 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 
 	function handleSignOut() {
 		localStorage.removeItem('access_token');
+	}
+	function handleProfile() {
+		navigate('/profile');
 	}
 	return (
 		<div className="relative inline-flex">
@@ -70,6 +74,9 @@ function DropdownProfile({ align }: DropdownProfileProps) {
 					<div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200">
 						<div className="font-medium text-sm text-slate-800">{email}</div>
 						<div className="text-xs text-slate-500 italic">{role.name}</div>
+						<Link className="font-medium text-sm text-slate-800" to="/profile" onClick={() => handleProfile()}>
+							Profile
+						</Link>
 					</div>
 					<ul>
 						<li>

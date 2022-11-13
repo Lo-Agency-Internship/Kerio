@@ -1,3 +1,7 @@
-DELETE http://localhost:3001/contacts/32 HTTP/1.1
+DELETE http://localhost:3001/contacts/batch HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFpZW4rdGVzdDFAbG8uYWdlbmN5Iiwic3ViIjoxLCJuYW1lIjoiZ29sIERvZSIsImlhdCI6MTY2NDM3OTg2MSwiZXhwIjoxNjY2OTcxODYxfQ.YXFco9imWLau2zEa-qb_0hET3tHOilPu8iryDD6wsPs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjEsIm5hbWUiOiJnb2xpIERvZSIsImlhdCI6MTY2NzI5ODUwNiwiZXhwIjoxNjY5ODkwNTA2fQ.812rDB0R5pRr_Injb5bfB1fitafdAYdfsmqeJz6rIL4
+
+{
+    "ids": [4]
+}
