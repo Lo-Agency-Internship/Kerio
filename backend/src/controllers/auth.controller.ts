@@ -65,8 +65,6 @@ export class AuthController {
       const resultUser = await this.authService.registerUser({
         email,
         name,
-        // organizationSlug: newOrg.slug,  just to remind organizationslug is cpome from the body but organization
-        // organizationslug for registering employee come from dataBase so it is kebab shode
         organizationSlug, // not kebab
         password,
         role,
