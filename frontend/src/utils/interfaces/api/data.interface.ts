@@ -73,12 +73,12 @@ export interface IGetContactsInfoById {
 	];
 }
 
-export interface IGetEmployees {
-	id: number;
-	name: string;
-	email: string;
-	createdAt: string;
-	deletedAt: string | null;
-	updatedAt: string;
-	enabled: boolean;
-}
+// export interface IGetEmployees {
+// 	id: String;
+// 	name: string;
+// 	email: string;
+// 	createdAt: string;
+// 	deletedAt: string | null;
+// 	updatedAt: string;
+// 	enabled: boolean;
+// }

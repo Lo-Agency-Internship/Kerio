@@ -15,8 +15,11 @@ import {
 	IDeleteContact,
 	IUpdateContactNoteById,
 	IGetAllNotes,
+	IUpdateEmployeeInfo,
+	IDeleteEmployee,
 } from '../utils/interfaces/api/api.interface';
-import { IGetContacts, IGetEmployees } from '../utils/interfaces/api/data.interface';
+import { IGetContacts } from '../utils/interfaces/api/data.interface';
+import { IEmployee } from '../utils/interfaces/user/employee.interface';
 
 interface IApiProvider {
 	children: ReactNode;
@@ -37,15 +40,17 @@ interface IApiContext {
 	getTimelines?: any;
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
-	getAllEmployees(): Promise<IGetEmployees[]>;
+	getAllEmployees(): Promise<IEmployee[]>;
 	updateUserInfo?: any;
 	getAllNotes(payload: IGetAllNotes): Promise<any>;
 	postContactInfo(payload: IPostContactInfo): Promise<void>;
 	postNoteInfo(payload: IPostNoteInfo): Promise<void>;
 	getNoteInfo?: any;
 	updateContactInfo(payload: IUpdateContactInfo): Promise<void>;
+	updateEmployeeInfo(payload: IUpdateEmployeeInfo): Promise<void>;
 	updateContactNoteById(payload: IUpdateContactNoteById): Promise<void>;
 	deleteContact(payload: IDeleteContact): Promise<void>;
+	deleteEmployee(payload: IDeleteEmployee): Promise<void>;
 	postLogin(payload: IPostLogin): Promise<void>;
 	postSignUp(payload: IPostSignUp): Promise<void>;
 	postInviteEmployee(payload: IPostInviteEmployee[]): Promise<void>;
@@ -194,10 +199,23 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			headerAuth,
 		);
 	};
-
+	const updateEmployeeInfo = async (payload: IUpdateEmployeeInfo) => {
+		axios.put(
+			uri(`users/${payload.id}`),
+			{
+				name: payload.name,
+				email: payload.email,
+			},
+			headerAuth,
+		);
+	};
 	// ///////delete contact
 	const deleteContact = async (payload: IDeleteContact) => {
 		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
+	};
+	// ///////delete employee
+	const deleteEmployee = async (payload: IDeleteEmployee) => {
+		axios.delete(uri(`users/${payload.id}`), headerAuth);
 	};
 	// update user info
 	const updateUserInfo = async (sub: string, body: object) => {
@@ -224,6 +242,8 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				updateContactInfo,
 				updateContactNoteById,
 				deleteContact,
+				updateEmployeeInfo,
+				deleteEmployee,
 				updateUserInfo,
 				postInviteEmployee,
 			}}>

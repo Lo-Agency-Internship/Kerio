@@ -9,14 +9,14 @@ import { IEmployee } from '../../utils/interfaces/user/employee.interface';
 import { editEmployeeValidation } from '../../validation/editEmployeeValidation';
 
 export interface EmployeeAccountProps {
-	employee?: IEmployee;
-	setEmployee?: (value: IEmployee) => void;
+	employee: IEmployee;
+	setEmployee: (value: IEmployee) => void;
 }
-export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, setEmployee }: any) => {
+export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, setEmployee }: EmployeeAccountProps) => {
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [background, setBackground] = useState('bg-transparent');
-	const { updateContactInfo, deleteContact } = useApiContext();
+	const { updateEmployeeInfo, deleteEmployee } = useApiContext();
 	const [employeeName, setEmployeeName] = useState(employee?.name);
 	const [employeeEmail, setEmployeeEmail] = useState(employee?.email);
 	const [error, setError] = useState<string | null | boolean>(null);
@@ -26,7 +26,7 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 	useEffect(() => {
 		setEmployee(employee);
 	}, [employee]);
-	// after ckick it we can see 2 new buttons ( yes & no)
+	// // after ckick it we can see 2 new buttons ( yes & no)
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
@@ -52,14 +52,14 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 		const body = { name, email };
 		const isValid = await editEmployeeValidation.isValid(body);
 		if (isValid) {
-			updateContactInfo(employee.id, body);
+			updateEmployeeInfo({ id: employee.id });
 			setError(!error);
 		} else {
 			editEmployeeValidation.validate(body).catch((event) => {
 				setError(event.message);
 			});
 		}
-		await updateContactInfo(employee.id, body);
+		await updateEmployeeInfo({ id: employee.id });
 		setEmployee({ ...body, id: employee.id });
 		setInputDisabled(true);
 		setInputsShow(false);
@@ -67,7 +67,7 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 	};
 
 	const submitDelete = async () => {
-		await deleteContact(employee.id);
+		await deleteEmployee({ id: employee.id });
 		setShowDeleteModal(false);
 		setInputsShow(false);
 		// navigate('/contacts');

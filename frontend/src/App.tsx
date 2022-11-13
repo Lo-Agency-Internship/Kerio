@@ -43,7 +43,6 @@ function App() {
 				<Route index element={<Index />} />
 				<Route path="contacts" element={<ContactsPage />} />
 				<Route path="contacts/:id" element={<ContactPage />} />
-				<Route path="employees/:id" element={<EmployeesProfile />} />
 				<Route path="profile" element={<ProfileUser />} />
 
 				{role === 'owner' && <Route path="employees" element={<EmployeesPage />} />}
