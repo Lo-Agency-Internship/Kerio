@@ -27,7 +27,10 @@ export default function ContactsPage() {
 	};
 	const handleDelete = async () => {
 		try {
-			await deleteContacts(selectedRows);
+			const ids = selectedRows.map((element) => {
+				return element.id;
+			});
+			await deleteContacts(ids);
 			setToggleCleared(!toggleCleared);
 			await fetchData(currentPage, perPage);
 		} catch (err: any) {
