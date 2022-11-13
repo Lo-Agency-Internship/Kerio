@@ -19,7 +19,7 @@ export default function ContactPage() {
 	const navigate = useNavigate();
 	async function fetchData() {
 		try {
-			await getContactsInfoById(id as string).then((res: any) => setContact(res));
+			await getContactsInfoById({ id }).then((res: any) => setContact(res));
 		} catch (err: any) {
 			if (err.response.data.message === 'contact not found') {
 				navigate('/404');
