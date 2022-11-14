@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import AccountPanelUser from '../components/organisms/accountPannelUser';
 import SettingsSidebar from '../components/organisms/settingSidebar';
 import { useAuthContext } from '../context/auth';
 import { Page } from '../layout/page';
 
-export const ProfileUser = () => {
+const ProfileUser: React.FC<any> = () => {
 	const [sidebarActiveItem, setSidebarActiveItem] = useState('account');
 	const { userMetadata } = useAuthContext();
 	const { name } = userMetadata();
@@ -75,3 +75,5 @@ export const ProfileUser = () => {
 		</Page>
 	);
 };
+
+export default ProfileUser;
