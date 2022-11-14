@@ -41,9 +41,9 @@ export class UpdateUserBodyDto {
 
   @IsOptional()
   @IsString()
-  oldPassword:string;
+  oldPassword: string;
 
   @IsOptional()
   @IsString()
-  newPassword:string;
+  newPassword: string;
 }

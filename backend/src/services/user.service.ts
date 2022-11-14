@@ -15,7 +15,6 @@ import {
   IReadOneById,
   IUpdateOneByIdPayload,
   IUpdateUserByEmailPayload,
-  
 } from 'src/interfaces/user.service.interface';
 import { OrganizationUser } from 'src/entities/organizationUser.entity';
 import { hashSync } from 'bcrypt';
@@ -28,13 +27,11 @@ export class UserService {
 
     @InjectRepository(OrganizationUser)
     private readonly orgUserRepository: Repository<OrganizationUser>,
-  ) { }
+  ) {}
 
   async addUser(payload: IAddUserPayload): Promise<User> {
     return await this.userRepository.save(payload.user);
   }
-
-  
 
   async updateUserByEmail(
     payload: IUpdateUserByEmailPayload,
@@ -124,15 +121,17 @@ export class UserService {
     delete user.salt;
     return user;
   }
-  
+
   async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
     if (payload.user.oldPassword) {
-      const user = await this.userRepository.findOneBy({ id: payload.id })
+      const user = await this.userRepository.findOneBy({ id: payload.id });
       const hashedPassword = hashSync(payload.user.oldPassword, user.salt);
       const areEqual = user.password === hashedPassword;
       if (areEqual) {
-        const hashedNewPassword = hashSync(payload.user.newPassword, user.salt)
-        return await this.userRepository.update(payload.id, { password: hashedNewPassword })
+        const hashedNewPassword = hashSync(payload.user.newPassword, user.salt);
+        return await this.userRepository.update(payload.id, {
+          password: hashedNewPassword,
+        });
       }
     }
     return await this.userRepository.update(payload.id, payload.user);

@@ -7,8 +7,6 @@ export interface IAddUserPayload {
   user: NewUser;
 }
 
-
-
 export interface IUpdateUserByEmailPayload {
   email: string;
   user: User;
@@ -41,7 +39,6 @@ export interface IReadOneById {
 export interface IUpdateOneByIdPayload {
   id: number;
   user: DeepPartial<UserUpdate>;
-  
 }
 
 export interface IDeleteOneByIdPayload {

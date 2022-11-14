@@ -3,7 +3,6 @@ import { Organization } from '../entities/organization.entity';
 import { Invite } from 'src/entities/invite.entity';
 import { Role } from 'src/entities/role.entity';
 
-
 export type SecureUser = Omit<User, 'password' | 'salt'>;
 export type SecureUserWithOrganization = Omit<SecureUser, 'organization'> & {
   organization: Organization;
@@ -43,9 +42,7 @@ export enum ERole {
   Employee = 'Employee',
 }
 
-
-export type UserUpdate = User & {oldPassword:string,newPassword:string}
-
+export type UserUpdate = User & { oldPassword: string; newPassword: string };
 
 export enum EContactStatus {
   Lead = 'Lead',
