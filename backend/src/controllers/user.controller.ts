@@ -18,7 +18,7 @@ import { SecureUser } from '../utils/types';
 import { JwtGuard } from '../utils/jwt.guard';
 import { RequestContextService } from 'src/services/requestContext.service';
 import { Organization } from 'src/entities/organization.entity';
-import { UpdateEmployeeBodyDto } from 'src/dtos/user.dto';
+import {UpdateUserBodyDto } from 'src/dtos/user.dto';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 @UseGuards(JwtGuard)
@@ -50,7 +50,7 @@ export class UserController {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
-    console.log({ organization });
+    
 
     return this.userService.readAllByOrganization({ organization });
   }
@@ -59,11 +59,11 @@ export class UserController {
   @UsePipes(new ValidationPipe({ transform: true }))
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() employee: UpdateEmployeeBodyDto,
+    @Body() user: UpdateUserBodyDto,
   ): Promise<UpdateResult> {
     return this.userService.updateOneById({
       id,
-      employee,
+      user,
     });
   }
 

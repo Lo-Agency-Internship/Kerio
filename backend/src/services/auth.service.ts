@@ -64,8 +64,9 @@ export class AuthService {
   async createOrganizationByOwner(organizationSlug: string, name: string) {
     const pipedOrgSlug = kebab(organizationSlug);
     const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
+  
     if (orgExists) {
-      throw new Error('organization already exists');
+      throw new NotAcceptableException();
     }
     const newOrg = await this.orgService.addOrganization({
       name: `${name}'s Organization`,
@@ -137,10 +138,11 @@ export class AuthService {
       throw new NotFoundException();
     }
     getUser.enabled = true;
-    return await this.userService.updateUserById({
+    return await this.userService.updateOneById({
       id: getUser.id,
-      user: getUser,
-    });
+      user: getUser
+
+    })
   }
 
   //login

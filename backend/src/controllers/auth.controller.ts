@@ -83,7 +83,17 @@ export class AuthController {
           'organization does not exist',
           HttpStatus.BAD_REQUEST,
         );
+      }else if (err instanceof NotAcceptableException){
+        throw new HttpException(
+          'organization already exists',HttpStatus.BAD_REQUEST
+        )
+      }else {
+        throw new HttpException(
+          'something went wrong',HttpStatus.BAD_REQUEST)
+        
+
       }
+
     }
   }
 
