@@ -1,5 +1,3 @@
-import Employee from '../../../components/molecules/employee';
-
 export interface IApiPaginationParams {
 	pagination: {
 		page?: number;
