@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Contact } from '../../entities/contact/contact.entity';
 import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
 import {
+  AbstractContact,
   ICreatePayload,
   IDeletePayload,
   IFindOneByIdPayload,
@@ -28,19 +29,57 @@ export class ContactService {
     private readonly searchService: SearchService,
   ) {}
 
+  async caculateContactScore(contacts: Contact[]): Promise<AbstractContact[]> {
+    const contactsWithScore = contacts.map((contact) => {
+      if (contact.notes.length === 0) {
+        return { ...contact, totalScore: 0 };
+      }
+
+      const lastStatus =
+        contact.statuses[contact.statuses.length - 1].status.status;
+
+      const notesUsedForScoreCalculation = contact.notes.filter(
+        (note) => note.score !== null && note.status.status === lastStatus,
+      );
+
+      if (notesUsedForScoreCalculation.length === 0) {
+        return { ...contact, totalScore: 0 };
+      }
+
+      const sumScores = notesUsedForScoreCalculation.reduce((acc, note) => {
+        return acc + note.score;
+      }, 0);
+
+      return {
+        ...contact,
+        totalScore: sumScores / notesUsedForScoreCalculation.length,
+      };
+    });
+
+    return contactsWithScore;
+  }
+
   async find(payload: IFindPayload): Promise<IPaginatedContacts> {
     const [result, total] = await this.contactRepository.findAndCount({
       where: {
         organization: { id: payload.organization.id },
       },
-      relations: ['statuses', 'statuses.status', 'organization'],
+      relations: [
+        'statuses',
+        'statuses.status',
+        'notes',
+        'notes.status',
+        'organization',
+      ],
       order: { createdAt: payload.sort },
       take: payload.size,
       skip: getPaginationOffset(payload),
     });
 
+    const contactsWithScore = await this.caculateContactScore(result);
+
     if (!payload.status) {
-      const contacts = result.map((contact) => ({
+      const contacts = contactsWithScore.map((contact) => ({
         ...contact,
         statuses: undefined,
         lastStatus:
@@ -57,7 +96,7 @@ export class ContactService {
       };
     }
 
-    const contacts = result.filter((contact) => {
+    const contacts = contactsWithScore.filter((contact) => {
       const lastStatus = contact.statuses[contact.statuses.length - 1];
       return lastStatus.status.status === payload.status;
     });

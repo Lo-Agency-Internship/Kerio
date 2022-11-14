@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 
 import { Contact } from './contact/contact.entity';
+import { Status } from './contact/status.entity';
 
 @Entity()
 export class Note {
@@ -25,9 +26,6 @@ export class Note {
   @Column({ nullable: true })
   score: number;
 
-  @Column()
-  status: string;
-
   @Column({ nullable: true })
   date: Date;
 
@@ -39,6 +37,9 @@ export class Note {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @ManyToOne(() => Status)
+  status: Status;
 
   @ManyToOne(() => Contact, (contact) => contact.notes)
   @JoinColumn()

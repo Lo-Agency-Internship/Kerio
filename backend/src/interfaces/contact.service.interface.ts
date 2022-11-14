@@ -40,10 +40,14 @@ export interface IMultiDeletePayload {
 }
 
 export interface IPaginatedContacts {
-  contacts: Contact[];
+  contacts: AbstractContact[];
   metadata: {
     total: number;
     size: number;
     page: number;
   };
+}
+
+export interface AbstractContact extends Contact {
+  totalScore: number;
 }
