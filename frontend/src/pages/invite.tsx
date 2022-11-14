@@ -18,6 +18,16 @@ export default function Invite() {
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
 		await axios.post(uri(`invites/${token}`), {});
+		toast.success('Thanks for the registration. Please check your email!', {
+			position: 'top-center',
+			autoClose: 8000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: 'light',
+		});
 	};
 	const active = async () => {
 		try {
@@ -26,16 +36,6 @@ export default function Invite() {
 
 			setResponse(email);
 			setMessage(true);
-			toast.success('Please check your email!', {
-				position: 'top-center',
-				autoClose: 8000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			});
 		} catch (err: any) {
 			setError(err.response.data.message);
 			toast.error('Something went wrong! :((', {
@@ -122,18 +122,6 @@ export default function Invite() {
 									label="submit"
 									style="inline-block w-11/12 px-4 py-3 text-xl font-medium text-center text-white transition duration-200 bg-gray-500 rounded-lg hover:bg-gray-900 ease"
 								/>
-								<ToastContainer
-									position="top-right"
-									autoClose={8000}
-									hideProgressBar={false}
-									newestOnTop={false}
-									closeOnClick
-									rtl={false}
-									pauseOnFocusLoss
-									draggable
-									pauseOnHover
-									theme="light"
-								/>
 							</div>
 						</form>
 					</div>
@@ -141,6 +129,18 @@ export default function Invite() {
 			) : (
 				<>{error && <p className="text-red-700 font-bold">{error}</p>}</>
 			)}
+			<ToastContainer
+				position="top-right"
+				autoClose={8000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
 		</>
 	);
 }
