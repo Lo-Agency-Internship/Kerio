@@ -1,13 +1,15 @@
 import Employee from '../molecules/employee';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useApiContext } from '../../context/api';
 import { IGetEmployees } from '../../utils/interfaces/api/data.interface';
+import { Button } from '../atoms/button';
+import NewEmployeeModal from '../templates/newEmployeeModal';
 
 function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
 	const [employees, setEmployees] = useState<IGetEmployees[] | null>();
 	const { change, getAllEmployees } = useApiContext();
 	const [error, setError] = useState<string[] | null>(null);
+	const [openNewEmployeeMoldal, setOpenNewEmployeeMoldal] = useState(false);
 
 	const getEmployees = async () => {
 		try {
@@ -50,11 +52,19 @@ function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
 									</div>
 								</div>
 								{/* Add button */}
-								<button className="p-1.5 shrink-0 rounded border border-slate-200 hover:border-slate-300 shadow-sm ml-2">
+								<Button
+									type="submit"
+									onClick={(e: any) => {
+										setOpenNewEmployeeMoldal(true);
+									}}
+									style={`p-1.5 shrink-0 rounded border border-slate-200 hover:border-slate-300 shadow-sm ml-2 ${
+										openNewEmployeeMoldal && 'bg-slate-200'
+									}`}>
 									<svg className="w-4 h-4 fill-current text-indigo-500" viewBox="0 0 16 16">
 										<path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1Z" />
 									</svg>
-								</button>
+								</Button>
+								<NewEmployeeModal setOpen={setOpenNewEmployeeMoldal} open={openNewEmployeeMoldal} />
 							</div>
 						</div>
 					</div>
