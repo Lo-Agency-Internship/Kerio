@@ -4,8 +4,6 @@ import { signInValidation } from '../../validation/userValidation';
 import { useApiContext } from '../../context/api';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import Modal from '../organisms/modal';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 interface IProps {
 	setOpen: (close: boolean) => void;
@@ -34,30 +32,11 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			await signInValidation.isValid({ email });
 			await postLogin(body);
 			setOpen(false);
-			toast.success('Registration has been successful! :D', {
-				position: 'top-center',
-				autoClose: 8000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			});
+
 			// getContacts().then(setContacts);
 			navigate(`/`);
 		} catch (err: any) {
 			setError(err.response.data.message);
-			toast.error('Something went wrong! :((', {
-				position: 'top-right',
-				autoClose: 8000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			});
 		}
 	};
 
@@ -92,18 +71,6 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 					/>
 				</form>
 			</Modal>
-			<ToastContainer
-				position="top-right"
-				autoClose={8000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-				theme="light"
-			/>
 		</>
 	);
 };

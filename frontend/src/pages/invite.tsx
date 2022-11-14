@@ -4,6 +4,8 @@ import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/atoms/button';
 import { InputFormControl } from '../components/molecules/formControls/inputFormControl';
 import { uri } from '../utils';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Invite() {
 	const [error, setError] = useState<string | null>(null);
@@ -24,8 +26,28 @@ export default function Invite() {
 
 			setResponse(email);
 			setMessage(true);
+			toast.success('Please check your email!', {
+				position: 'top-center',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		} catch (err: any) {
 			setError(err.response.data.message);
+			toast.error('Something went wrong! :((', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
 	};
 	useEffect(() => {
@@ -99,6 +121,18 @@ export default function Invite() {
 									type="submit"
 									label="submit"
 									style="inline-block w-11/12 px-4 py-3 text-xl font-medium text-center text-white transition duration-200 bg-gray-500 rounded-lg hover:bg-gray-900 ease"
+								/>
+								<ToastContainer
+									position="top-right"
+									autoClose={8000}
+									hideProgressBar={false}
+									newestOnTop={false}
+									closeOnClick
+									rtl={false}
+									pauseOnFocusLoss
+									draggable
+									pauseOnHover
+									theme="light"
 								/>
 							</div>
 						</form>

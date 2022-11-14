@@ -79,14 +79,13 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			password,
 			organizationSlug,
 		};
-		console.log(body);
 		try {
 			setRegisterSuccess(true);
 			await modalUserValidation.validate(body);
 			await postSignUp(body);
-			toast.success('Registration has been successful!', {
+			toast.success('Registration has been successful! Please signIn!', {
 				position: 'top-center',
-				autoClose: 8000,
+				autoClose: 5000,
 				hideProgressBar: false,
 				closeOnClick: true,
 				pauseOnHover: true,
