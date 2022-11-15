@@ -2,9 +2,11 @@ import {
   Injectable,
   NotAcceptableException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
+  ERole,
   JwtPayload,
   JwtResponse,
   SecureUser,
@@ -16,10 +18,11 @@ import { genSaltSync, hashSync } from 'bcrypt';
 import { User } from 'src/entities/user.entity';
 import { OrganizationUserService } from './organizationUser.service';
 import { OrganizationService } from './organization.service';
-import { NotExistException } from '../utils/exceptions';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IFindUserToCheckForLogin } from 'src/interfaces/auth.service.interface';
+import { kebab } from 'case';
+import { Organization } from 'src/entities/organization.entity';
 
 @Injectable()
 export class AuthService {
@@ -58,6 +61,21 @@ export class AuthService {
     };
   }
 
+  async createOrganizationByOwner(organizationSlug: string, name: string) {
+    const pipedOrgSlug = kebab(organizationSlug);
+    const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
+    if (orgExists) {
+      throw new Error('organization already exists');
+    }
+    const newOrg = await this.orgService.addOrganization({
+      name: `${name}'s Organization`,
+      address: '',
+      slug: pipedOrgSlug,
+    });
+
+    return newOrg;
+  }
+
   async registerUser({
     email,
     name,
@@ -65,11 +83,30 @@ export class AuthService {
     organizationSlug,
     role,
   }: UserRegisterDto): Promise<SecureUserWithOrganization> {
-    const [orgExists, organization] = await this.orgService.existsAndFindBySlug(
-      organizationSlug,
-    );
+    let orgExists: boolean, organization: Organization;
 
-    if (!orgExists) throw new NotExistException(`organization doesn't exist`);
+    if (role === ERole.Owner) {
+      const userExists = await this.userService.exists(email);
+
+      if (userExists) throw new UnauthorizedException();
+
+      const newOrg = await this.createOrganizationByOwner(
+        name,
+        organizationSlug,
+      );
+
+      [orgExists, organization] = await this.orgService.existsAndFindBySlug(
+        newOrg.slug,
+      );
+
+      if (!orgExists) throw new NotFoundException();
+    } else {
+      [orgExists, organization] = await this.orgService.existsAndFindBySlug(
+        organizationSlug,
+      );
+
+      if (!orgExists) throw new NotFoundException();
+    }
 
     const salt = genSaltSync(10);
 

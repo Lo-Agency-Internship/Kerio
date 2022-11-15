@@ -4,6 +4,7 @@ import { Button } from '../atoms/button';
 import { editUserValidation } from '../../validation/editUserValidation';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import { useAuthContext } from '../../context/auth';
+import ChangePasswordModal from '../templates/changePasswordModal';
 
 export default function AccountPanelUser() {
 	const [inputsShow, setInputsShow] = useState(false);
@@ -15,6 +16,7 @@ export default function AccountPanelUser() {
 	const [userName, setUserName] = useState(usersName);
 	const [userEmail, setUserEmail] = useState(usersEmail);
 	const [error, setError] = useState<string | null | boolean>(null);
+	const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
 
 	// after ckick it we can see 2 new buttons ( yes & no)
 	const editHandler = () => {
@@ -113,6 +115,18 @@ export default function AccountPanelUser() {
 									name: 'email',
 								}}
 							/>
+						</div>
+						<div>
+							<Button
+								label="Set New Password"
+								type="button"
+								onClick={(e: any) => {
+									setChangePasswordModalOpen(true);
+								}}
+								style={`btn border-slate-200 shadow-sm text-indigo-500 ${
+									changePasswordModalOpen && 'bg-slate-200'
+								}`}></Button>
+							<ChangePasswordModal setOpen={setChangePasswordModalOpen} open={changePasswordModalOpen} />
 						</div>
 						<div className="sm:w-1/3"></div>
 					</div>

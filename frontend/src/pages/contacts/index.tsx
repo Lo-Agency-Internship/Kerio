@@ -7,7 +7,7 @@ import ContactTable from '../../components/organisms/contactTable';
 import { IUser } from '../../utils/interfaces/user';
 import DeleteModal from '../../components/molecules/deleteModal';
 export default function ContactsPage() {
-	const { getAllContacts } = useApiContext();
+	const { getAllContacts, deleteContacts } = useApiContext();
 	const [showAddConactModal, setShowAddConactModal] = useState(false);
 	const [contacts, setContacts] = useState<IUser[]>([]);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -15,6 +15,9 @@ export default function ContactsPage() {
 	const [perPage, setPerPage] = useState(10);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [selectedRows, setSelectedRows] = useState<IUser[]>([]);
+	const [toggleCleared, setToggleCleared] = useState(false);
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [error, setError] = useState(0);
 
 	const fetchData = async (page: number, size: number) => {
 		const result = await getAllContacts({ pagination: { page, size } });
@@ -22,9 +25,19 @@ export default function ContactsPage() {
 		setContacts(result.contacts);
 		setTotalRows(result.metadata.total);
 	};
+	const handleDelete = async () => {
+		try {
+			const ids = selectedRows.map((element) => {
+				return element.id;
+			});
+			await deleteContacts(ids);
+			setToggleCleared(!toggleCleared);
+			await fetchData(currentPage, perPage);
+		} catch (err: any) {
+			setError(err.response.data.message);
+		}
 
-	const handleDelete = () => {
-		console.log(selectedRows);
+		setShowDeleteModal(false);
 	};
 	return (
 		<Page
@@ -42,6 +55,7 @@ export default function ContactsPage() {
 				perPage={perPage}
 			/>
 			<ContactTable
+				toggleCleared={toggleCleared}
 				contact={contacts}
 				setContacts={setContacts}
 				fetchData={fetchData}
@@ -53,6 +67,7 @@ export default function ContactsPage() {
 				selectedRows={selectedRows}
 				showDeleteModal={showDeleteModal}
 				setShowDeleteModal={setShowDeleteModal}
+				setCurrentPage={setCurrentPage}
 			/>
 			<DeleteModal
 				open={showDeleteModal}
