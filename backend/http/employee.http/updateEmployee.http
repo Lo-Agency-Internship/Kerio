@@ -1,11 +1,11 @@
-PUT http://localhost:3001/users/33 HTTP/1.1
+PUT http://localhost:3001/users/1 HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYi5jb20iLCJzdWIiOjMzLCJuYW1lIjoiYmFuZG0iLCJyb2xlIjp7ImlkIjoxLCJuYW1lIjoiT3duZXIiLCJjcmVhdGVkQXQiOiIyMDIyLTExLTEzVDA1OjE0OjM1LjMzNloiLCJ1cGRhdGVkQXQiOiIyMDIyLTExLTEzVDA1OjE0OjM1LjMzNloifSwiaWF0IjoxNjY4Mzk1MDc0LCJleHAiOjE2NzA5ODcwNzR9.Z5TBg_B1BaZdtykuioCzvzem-QupbOdTcQYXUzL8t0E
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjEsIm5hbWUiOiJnb2xpIiwicm9sZSI6eyJpZCI6MSwibmFtZSI6Ik93bmVyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMS0xNFQxMDowMToxNy4xOTNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMS0xNFQxMDowMToxNy4xOTNaIn0sImlhdCI6MTY2ODQ4MzE4NSwiZXhwIjoxNjcxMDc1MTg1fQ.6K51opl5qUVyiTDaOP5YZ8NKzOprUKnV5thQ0yYjx60
 
 {
 
     "oldPassword": "0000",
-    "newPassword": "3333"
+    "newPassword": "7777"
     
     
 }
