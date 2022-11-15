@@ -11,6 +11,7 @@ import {
   IFindOneUserByEmailPayload,
   IFindOneUserByIdPayload,
   IFindUserWithOrganizationPayload,
+  IPaginatedUserResponse,
   IReadAllByOrganization,
   IReadOneById,
   IUpdateOneByIdPayload,
@@ -18,6 +19,7 @@ import {
   IUpdateUserByIdPayload,
 } from 'src/interfaces/user.service.interface';
 import { OrganizationUser } from 'src/entities/organizationUser.entity';
+import { getPaginationOffset } from 'src/utils/functions';
 
 @Injectable()
 export class UserService {
@@ -98,19 +100,30 @@ export class UserService {
 
   async readAllByOrganization(
     payload: IReadAllByOrganization,
-  ): Promise<SecureUser[]> {
-    const results = await this.orgUserRepository.find({
+  ): Promise<IPaginatedUserResponse> {
+    const [results,total] = await this.orgUserRepository.findAndCount({
       where: { org: { id: payload.organization.id }, role: { id: 2 } },
       relations: ['user'],
-    });
+      order: { createdAt: payload.sort },
+      skip: getPaginationOffset(payload),
+      take: payload.size,
+    })
+    
 
-    const empolyees = results.map((item) => {
+    const users = results.map((item) => {
       delete item.user.password;
       delete item.user.salt;
       return item.user;
     });
 
-    return empolyees;
+    return {
+      users,
+      metaData:{
+        total,
+        page:payload.page,
+        size:payload.size
+      }
+    };
   }
 
   async readOneById(payload: IReadOneById): Promise<SecureUser> {

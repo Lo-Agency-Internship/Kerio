@@ -1,12 +1,12 @@
 POST http://localhost:3001/invites HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyMEB0ZXN0LmNvbSIsInN1YiI6MjUsIm5hbWUiOiJ0ZXN0IHVzZXIwIiwicm9sZSI6eyJpZCI6MSwibmFtZSI6Ik93bmVyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMS0xM1QwNToxNDozNS4zMzZaIiwidXBkYXRlZEF0IjoiMjAyMi0xMS0xM1QwNToxNDozNS4zMzZaIn0sImlhdCI6MTY2ODM0MzU1NywiZXhwIjoxNjcwOTM1NTU3fQ.k4x2RgS5yAsW-P9Uf_kpzEOc7sdrymEbIno8oFgMI6I
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjEsIm5hbWUiOiJnb2xpIiwicm9sZSI6eyJpZCI6MSwibmFtZSI6Ik93bmVyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMS0xNFQxMDowMToxNy4xOTNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMS0xNFQxMDowMToxNy4xOTNaIn0sImlhdCI6MTY2ODUzMTY4MiwiZXhwIjoxNjcxMTIzNjgyfQ.o1fXqqrQWKEKdZUCL2kiJeQjXB5xiUdP-XCwkvmYiuk
 
 {
 	"invites": [
 		{ 
-			"name": "aien0 saedi",
-			"email": "aien0@gmail.com"
+			"name": "sina3",
+			"email": "sina3@gmail.com"
 		}
 	]
 }
