@@ -58,6 +58,12 @@ export interface IUpdateContactInfo {
 	id?: number;
 }
 
+export interface IUpdateEmployeeInfo {
+	name?: string;
+	email?: string;
+	id: string;
+}
+
 export interface IUpdateContactNoteById {
 	date?: string;
 	title?: string;
@@ -70,6 +76,11 @@ export interface IUpdateContactNoteById {
 export interface IDeleteContact {
 	id: number;
 }
+
+export interface IDeleteEmployee {
+	id: string;
+}
+
 export interface IGetAllNotes {
 	id?: string;
 }

@@ -9,9 +9,7 @@ export default function Invite() {
 	const [error, setError] = useState<string | null>(null);
 	const [message, setMessage] = useState<boolean>(false);
 	const [response, setResponse] = useState<any>();
-	// const params = useParams();
 	const [searchParams] = useSearchParams();
-	// const location = useLocation();
 	const token = searchParams.get('token');
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
