@@ -101,14 +101,13 @@ export class UserService {
   async readAllByOrganization(
     payload: IReadAllByOrganization,
   ): Promise<IPaginatedUserResponse> {
-    const [results,total] = await this.orgUserRepository.findAndCount({
+    const [results, total] = await this.orgUserRepository.findAndCount({
       where: { org: { id: payload.organization.id }, role: { id: 2 } },
       relations: ['user'],
       order: { createdAt: payload.sort },
       skip: getPaginationOffset(payload),
       take: payload.size,
-    })
-    
+    });
 
     const users = results.map((item) => {
       delete item.user.password;
@@ -118,11 +117,11 @@ export class UserService {
 
     return {
       users,
-      metaData:{
+      metaData: {
         total,
-        page:payload.page,
-        size:payload.size
-      }
+        page: payload.page,
+        size: payload.size,
+      },
     };
   }
 

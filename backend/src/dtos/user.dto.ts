@@ -6,7 +6,6 @@ import {
   IsString,
 } from 'class-validator';
 import { ERole } from 'src/utils/types';
-import { PaginationDto } from '.';
 
 export class UserLoginDto {
   @IsNotEmpty()
@@ -38,4 +37,3 @@ export class UpdateEmployeeBodyDto {
   @IsBoolean()
   enabled: boolean;
 }
-

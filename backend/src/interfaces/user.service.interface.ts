@@ -53,9 +53,9 @@ export interface IDeleteOneByIdPayload {
 
 export interface IPaginatedUserResponse {
   users: SecureUser[];
-  metaData:{
-    total:number;
-    page:number;
-    size:number;
-  }
+  metaData: {
+    total: number;
+    page: number;
+    size: number;
+  };
 }
