@@ -22,6 +22,7 @@ import {
 } from 'src/dtos/note.dto';
 import { Note } from 'src/entities/note.entity';
 import { ContactService } from 'src/services/contact/contact.service';
+import { StatusService } from 'src/services/contact/status.service';
 import { NoteService } from 'src/services/note.service';
 import { RequestContextService } from 'src/services/requestContext.service';
 import { JwtGuard } from 'src/utils/jwt.guard';
@@ -35,6 +36,7 @@ export class NoteController {
     private readonly noteService: NoteService,
     private readonly contactService: ContactService,
     private readonly contextService: RequestContextService,
+    private readonly statusService: StatusService,
   ) {}
 
   @Get(':contactId')
@@ -61,8 +63,19 @@ export class NoteController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const note = this.noteService.createNewNoteObject(body);
-    return this.noteService.create({ note, contact });
+
+    const status = await this.statusService.findOneByTitle({
+      title: body.status,
+    });
+
+    const note = this.noteService.createNewNoteObject({
+      title: body.title,
+      description: body.description,
+      date: body.date,
+      score: body.score,
+    });
+
+    return this.noteService.create({ note, contact, status });
   }
   @Put(':noteId')
   update(
