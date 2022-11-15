@@ -57,7 +57,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 		const status = formData.get('status') as string;
 
 		const body = { date, title, description, score, status };
-		console.log(body);
 		try {
 			await updateContactNoteById({
 				date: body.date,

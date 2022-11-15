@@ -4,9 +4,13 @@ import { useApiContext } from '../../context/api';
 import { IGetEmployees } from '../../utils/interfaces/api/data.interface';
 import { Button } from '../atoms/button';
 import NewEmployeeModal from '../templates/newEmployeeModal';
-
-function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
-	const [employees, setEmployees] = useState<IGetEmployees[] | null>();
+import { IEmployee } from '../../utils/interfaces/user/employee.interface';
+// export interface EmployeeProps {
+// 	employee: IEmployee;
+// 	setEmployee: (value: IEmployee) => void;
+// }
+function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen, employee, setEmployee }: any) {
+	const [employees, setEmployees] = useState<IEmployee[] | null>();
 	const { change, getAllEmployees } = useApiContext();
 	const [error, setError] = useState<string[] | null>(null);
 	const [openNewEmployeeMoldal, setOpenNewEmployeeMoldal] = useState(false);
@@ -19,6 +23,7 @@ function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
 			setError(e.response.data.message);
 		}
 	};
+
 	useEffect(() => {
 		getEmployees();
 	}, [change]);
@@ -102,7 +107,10 @@ function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen }: any) {
 										<div className="flex items-start truncate ">
 											<div className="relative mr-2">
 												<div className="py-1 px-1">
-													{employees && employees.map((element, index) => <Employee data={element} key={index} />)}
+													{employees &&
+														employees.map((element, index) => (
+															<Employee data={element} key={index} employee={employee} setEmployee={setEmployee} />
+														))}
 												</div>
 											</div>
 										</div>

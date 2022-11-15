@@ -1,19 +1,25 @@
 import { IEmployee } from '../../utils/interfaces/user/employee.interface';
 
 import { useState } from 'react';
-import { IGetEmployees } from '../../utils/interfaces/api/data.interface';
 
 interface IEmployeeSideBar {
-	data: IGetEmployees;
+	data: IEmployee;
+	employee: IEmployee;
+	setEmployee: (value: IEmployee) => void;
 }
-const Employee: React.FC<IEmployeeSideBar> = ({ data }) => {
+const Employee: React.FC<IEmployeeSideBar> = ({ data, employee, setEmployee }) => {
 	const [profileSidebarOpen, setProfileSidebarOpen] = useState(false);
-	const [employees, setEmployees] = useState<IGetEmployees>(data);
+	const [employees, setEmployees] = useState<IEmployee>(data);
 	return (
 		<>
 			{/* Team members */}
 			<li className="-mx-2">
-				<button className="w-full p-2 rounded" onClick={() => setProfileSidebarOpen(false)}>
+				<button
+					className="w-full p-2 rounded"
+					onClick={() => {
+						setProfileSidebarOpen(false);
+						setEmployee(data);
+					}}>
 					<div className="flex items-center truncate">
 						<div className="relative mr-2">
 							<img
