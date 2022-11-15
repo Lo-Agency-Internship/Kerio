@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Button } from '../components/atoms/button';
 import { InputFormControl } from '../components/molecules/formControls/inputFormControl';
 import { uri } from '../utils';
