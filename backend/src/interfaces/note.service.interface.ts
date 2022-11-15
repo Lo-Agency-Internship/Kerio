@@ -1,5 +1,6 @@
 import { PaginationDto } from 'src/dtos';
 import { Contact } from 'src/entities/contact/contact.entity';
+import { Status } from 'src/entities/contact/status.entity';
 import { Note } from 'src/entities/note.entity';
 import { DeepPartial, FindOperator } from 'typeorm';
 import { IPaginationParams } from './index';
@@ -29,6 +30,7 @@ export interface IFindByContactIdPayload extends PaginationDto {
 export interface ICreatePayload {
   contact: Contact;
   note: DeepPartial<Note>;
+  status: Status;
 }
 
 export interface IPaginatedNotes {
