@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
@@ -18,7 +22,6 @@ import {
 } from 'src/interfaces/user.service.interface';
 import { OrganizationUser } from 'src/entities/organizationUser.entity';
 import { hashSync } from 'bcrypt';
-
 
 @Injectable()
 export class UserService {
@@ -124,20 +127,17 @@ export class UserService {
   }
 
   async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
-
-  
-    
-    if (payload.user.oldPassword ) {
+    if (payload.user.oldPassword) {
       const user = await this.userRepository.findOneBy({ id: payload.id });
       const hashedPassword = hashSync(payload.user.oldPassword, user.salt);
       const areEqual = user.password === hashedPassword;
       if (!areEqual) {
         throw new UnauthorizedException('user is unathorized');
-      } 
+      }
       const hashedNewPassword = hashSync(payload.user.newPassword, user.salt);
-        return await this.userRepository.update(payload.id, {
-          password: hashedNewPassword,
-        });
+      return await this.userRepository.update(payload.id, {
+        password: hashedNewPassword,
+      });
     }
     return await this.userRepository.update(payload.id, payload.user);
   }

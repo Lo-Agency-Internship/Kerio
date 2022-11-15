@@ -61,24 +61,20 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @Body() user: UpdateUserBodyDto,
   ): Promise<UpdateResult> {
-    try{
-      const {id:userId} = this.contextService.get('userData');
-      if(userId === id){return this.userService.updateOneById({
-        id,
-        user,
-      })
-    } 
-    throw new Error('not allowed')
-
-      }catch(error){
-      if (error instanceof UnauthorizedException){
-        throw new HttpException(
-          `user is unathorized`,
-          HttpStatus.BAD_REQUEST,
-        );
-      }else {
-        
-      throw new HttpException(' user not authorized',HttpStatus.BAD_REQUEST)
+    try {
+      const { id: userId } = this.contextService.get('userData');
+      if (userId === id) {
+        return this.userService.updateOneById({
+          id,
+          user,
+        });
+      }
+      throw new Error('not allowed');
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new HttpException(`user is unathorized`, HttpStatus.BAD_REQUEST);
+      } else {
+        throw new HttpException(' user not authorized', HttpStatus.BAD_REQUEST);
       }
     }
   }
