@@ -16,11 +16,11 @@ interface IProps {
 	open: boolean;
 }
 const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
-	const { postSignUp, postIsLoading, setPostIsLoading } = useApiContext();
+	const { postSignUp } = useApiContext();
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 	const [emailValue, setemailValue] = useState('');
-	const [loading, setLoading] = useState<boolean>(false);
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 	const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -45,13 +45,13 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (err: any) {
 			setError(err.response.data.message);
-			setPostIsLoading(false);
+			setIsLoadingSubmit(false);
 		}
 	};
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
-		setPostIsLoading(true);
+		setIsLoadingSubmit(true);
 		setError(null);
 
 		const formData = new FormData(event.currentTarget);
@@ -63,7 +63,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 
 		if (password !== rePassword) {
 			setError('passwords do not matched');
-			setPostIsLoading(false);
+			setIsLoadingSubmit(false);
 			return;
 		}
 
@@ -88,7 +88,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 		} catch (e: any) {
 			setError(e.message);
 		}
-		setPostIsLoading(false);
+		setIsLoadingSubmit(false);
 	};
 
 	return (
@@ -101,7 +101,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 					label: 'Submit',
 					type: 'submit',
 					form: SIGNUP_FORM_ID,
-					loading: postIsLoading,
+					loading: isLoadingSubmit,
 					success: registerSuccess,
 				},
 			]}>

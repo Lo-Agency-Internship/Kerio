@@ -19,7 +19,7 @@ interface IProps {
 const EditNoteFormID = 'EditNoteFORMID';
 
 const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
-	const { updateContactNoteById, postIsLoading, setPostIsLoading, deleteNote, getAllNotes } = useApiContext();
+	const { updateContactNoteById, deleteNote, getAllNotes } = useApiContext();
 	const params = useParams();
 	const [error, setError] = useState<string[] | null>(null);
 	const [inputDisabled, setInputDisabled] = useState(true);
@@ -31,6 +31,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 	const [contactScore, setContactScore] = useState(note?.score);
 	const [contactStatus, setContactStatus] = useState(note?.status);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
 	const editHandler = () => {
 		setInputDisabled(false);
@@ -77,6 +78,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 	};
 
 	const handleDelete = async () => {
+		setIsLoadingSubmit(true);
 		try {
 			await deleteNote({ id: note.id });
 			const { data } = await getAllNotes({ id: params.id });
@@ -86,6 +88,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
+		setIsLoadingSubmit(false);
 	};
 	return (
 		<Modal
@@ -115,7 +118,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 					setOpen={setShowDeleteModal}
 					title={'Delete Modal'}
 					handleDelete={handleDelete}
-					loading={postIsLoading}>
+					loading={isLoadingSubmit}>
 					{<p>Are you sure that you want Delete these contacts ?</p>}
 				</DeleteModal>
 			)}

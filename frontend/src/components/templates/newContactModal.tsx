@@ -17,10 +17,12 @@ interface IProps {
 const ADDCONTACT_FORM_ID = 'ADDCONTACT_FORM_ID';
 
 const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perPage }) => {
-	const { postContactInfo, postIsLoading, setPostIsLoading } = useApiContext();
+	const { postContactInfo } = useApiContext();
 	const [error, setError] = useState<string[] | null>(null);
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+
 	const handleSubmit = async (event: any) => {
-		setPostIsLoading(true);
+		setIsLoadingSubmit(true);
 		setError(null);
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
@@ -44,7 +46,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 			setError(err.response.data.message);
 		}
 
-		setPostIsLoading(false);
+		setIsLoadingSubmit(false);
 	};
 
 	return (
@@ -57,19 +59,9 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 					label: 'Submit',
 					type: 'submit',
 					form: ADDCONTACT_FORM_ID,
-					loading: postIsLoading,
+					loading: isLoadingSubmit,
 				},
 			]}>
-			{/* {error && (
-				<p>
-					{error.map((element, index) => (
-						<p className="text-red-500 block" key={index}>
-							{element}
-							<br />
-						</p>
-					))}
-				</p>
-			)} */}
 			<form id={ADDCONTACT_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 				<InputFormControl
 					label={'Name'}

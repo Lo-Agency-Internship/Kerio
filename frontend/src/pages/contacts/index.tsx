@@ -7,7 +7,7 @@ import ContactTable from '../../components/organisms/contactTable';
 import { IUser } from '../../utils/interfaces/user';
 import DeleteModal from '../../components/molecules/deleteModal';
 export default function ContactsPage() {
-	const { getAllContacts, postIsLoading, setPostIsLoading ,deleteContacts} = useApiContext();
+	const { getAllContacts, deleteContacts } = useApiContext();
 	const [showAddConactModal, setShowAddConactModal] = useState(false);
 	const [contacts, setContacts] = useState<IUser[]>([]);
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -18,6 +18,7 @@ export default function ContactsPage() {
 	const [toggleCleared, setToggleCleared] = useState(false);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [error, setError] = useState(0);
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
 	const fetchData = async (page: number, size: number) => {
 		const result = await getAllContacts({ pagination: { page, size } });
@@ -26,6 +27,7 @@ export default function ContactsPage() {
 		setTotalRows(result.metadata.total);
 	};
 	const handleDelete = async () => {
+		setIsLoadingSubmit(true);
 		try {
 			const ids = selectedRows.map((element) => {
 				return element.id;
@@ -37,6 +39,7 @@ export default function ContactsPage() {
 			setError(err.response.data.message);
 		}
 		setShowDeleteModal(false);
+		setIsLoadingSubmit(false);
 	};
 	return (
 		<Page
@@ -73,7 +76,7 @@ export default function ContactsPage() {
 				setOpen={setShowDeleteModal}
 				title={'Delete Modal'}
 				handleDelete={handleDelete}
-				loading={postIsLoading}>
+				loading={isLoadingSubmit}>
 				{selectedRows.length !== 1 ? (
 					<p>Are you sure that you want Delete these contacts ?</p>
 				) : (

@@ -20,6 +20,8 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 	const [contactPhone, setContactPhone] = useState(user?.phone);
 	const [error, setError] = useState<string | null | boolean>(null);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -66,10 +68,17 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 	};
 
 	const submitDelete = async () => {
-		await deleteContact({ id: user.id });
-		setShowDeleteModal(false);
-		setInputsShow(false);
-		navigate('/contacts');
+		setIsLoadingSubmit(true);
+		try {
+			await deleteContact({ id: user.id });
+			setShowDeleteModal(false);
+			setInputsShow(false);
+			navigate('/contacts');
+		} catch (e: any) {
+			setError(e.response.data.message);
+		}
+
+		setIsLoadingSubmit(false);
 	};
 
 	return (
@@ -167,6 +176,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 							{showDeleteModal ? (
 								<>
 									<DeleteModal
+										loading={isLoadingSubmit}
 										open={showDeleteModal}
 										setOpen={setShowDeleteModal}
 										title={'Delete Modal'}

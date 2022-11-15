@@ -47,8 +47,6 @@ interface IApiContext {
 	postContactInfo(payload: IPostContactInfo): Promise<void>;
 	postNoteInfo(payload: IPostNoteInfo): Promise<void>;
 	getNoteInfo?: any;
-	postIsLoading?: boolean;
-	setPostIsLoading?: any;
 	updateContactInfo(payload: IUpdateContactInfo): Promise<void>;
 	updateEmployeeInfo(payload: IUpdateEmployeeInfo): Promise<void>;
 	updateContactNoteById(payload: IUpdateContactNoteById): Promise<void>;
@@ -68,7 +66,6 @@ export const useApiContext = () => useContext(ApiContext) as IApiContext;
 export const ApiProvider = ({ children }: IApiProvider) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [change, setChange] = useState(false);
-	const [postIsLoading, setPostIsLoading] = useState<boolean>(false);
 	const headerAuth = {
 		headers: {
 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
@@ -245,8 +242,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	return (
 		<ApiContext.Provider
 			value={{
-				setPostIsLoading,
-				postIsLoading,
 				change,
 				setChange,
 				isLoading,
