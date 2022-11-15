@@ -34,7 +34,6 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			await signInValidation.isValid({ email });
 			await postLogin(body);
 			setOpen(false);
-			// getContacts().then(setContacts);
 			navigate(`/`);
 		} catch (err: any) {
 			setError(err.response.data.message);

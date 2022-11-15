@@ -10,7 +10,6 @@ export default function Activation() {
 	const [searchParams] = useSearchParams();
 	const email = searchParams.get('email');
 	const navigate = useNavigate();
-	console.log(email);
 	const active = async () => {
 		try {
 			await axios.get(uri(`auth/enable?email=${email}`), {});
