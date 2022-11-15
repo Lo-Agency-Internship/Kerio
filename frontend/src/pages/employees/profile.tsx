@@ -1,19 +1,85 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Images from '../../assets/images/user.png';
 import { Button } from '../../components/atoms/button';
+import DeleteModal from '../../components/molecules/deleteModal';
+import { InputFormControl } from '../../components/molecules/formControls/inputFormControl';
+import { useApiContext } from '../../context/api';
+import { IEmployee } from '../../utils/interfaces/user/employee.interface';
+import { editEmployeeValidation } from '../../validation/editEmployeeValidation';
 
-function ProfileBody() {
+export interface EmployeeAccountProps {
+	employee: IEmployee;
+	setEmployee: (value: IEmployee) => void;
+}
+export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, setEmployee }: EmployeeAccountProps) => {
+	const [inputsShow, setInputsShow] = useState(false);
+	const [inputDisabled, setInputDisabled] = useState(true);
+	const [background, setBackground] = useState('bg-transparent');
+	const { updateEmployeeInfo, deleteEmployee } = useApiContext();
+	const [employeeName, setEmployeeName] = useState(employee?.name);
+	const [employeeEmail, setEmployeeEmail] = useState(employee?.email);
+	const [error, setError] = useState<string | null | boolean>(null);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		setEmployee(employee);
+	}, [employee]);
+	// // after ckick it we can see 2 new buttons ( yes & no)
+	const editHandler = () => {
+		setInputDisabled(false);
+		setInputsShow(true);
+		setBackground('bg-gray-200');
+	};
+
+	const cancelHandler = () => {
+		setInputDisabled(true);
+		setInputsShow(false);
+		setEmployee(employee);
+		setBackground('bg-transparent');
+		setEmployeeName(employee?.name);
+		setEmployeeEmail(employee?.email);
+	};
+
+	const submitHandler = async (e: any) => {
+		e.preventDefault();
+
+		const formData = new FormData(e.currentTarget);
+		const name = formData.get('name')?.toString().toLowerCase();
+		const email = formData.get('email')?.toString().toLowerCase();
+		const body = { name, email };
+		console.log('salam farmande', body);
+
+		const isValid = await editEmployeeValidation.isValid(body);
+		if (isValid) {
+			updateEmployeeInfo({ id: employee.id, email: body.email, name: body.name });
+			setError(!error);
+		} else {
+			editEmployeeValidation.validate(body).catch((event) => {
+				setError(event.message);
+			});
+		}
+		setEmployee({ ...body, id: employee.id });
+		setInputDisabled(true);
+		setInputsShow(false);
+		setBackground('bg-transparent');
+	};
+
+	const submitDelete = async () => {
+		await deleteEmployee({ id: employee.id });
+		setShowDeleteModal(false);
+		setInputsShow(false);
+		// navigate('/contacts');
+	};
+
 	return (
 		<div className={`grow flex flex-col md:translate-x-0'}`}>
 			{/* Profile background */}
 			<div className="relative h-56 bg-slate-200">
-				{/* <img className="object-cover h-full w-full" src={ProfileBg} width="979" height="220" alt="Profile background" /> */}
-				{/* Close button */}
 				<button
 					className="md:hidden absolute top-4 left-4 sm:left-6 text-white opacity-80 hover:opacity-100"
-					//   onClick={() => setProfileSidebarOpen(!profileSidebarOpen)}
-					aria-controls="profile-sidebar"
-					//   aria-expanded={profileSidebarOpen}
-				>
+					aria-controls="profile-sidebar">
 					<span className="sr-only">Close sidebar</span>
 					<svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 						<path d="M10.7 18.7l1.4-1.4L7.8 13H20v-2H7.8l4.3-4.3-1.4-1.4L4 12z" />
@@ -38,37 +104,85 @@ function ProfileBody() {
 					{/* Main content */}
 					<div className="space-y-5 mb-8 xl:mb-0">
 						<section>
-							<h2 className="text-xl leading-snug text-slate-800 font-bold mb-1">Employee Profile</h2>
-							<div className="text-sm"></div>
-							<div className="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5 pb-4">
-								<div className="sm:w-1/3">
-									<label className="block text-sm font-medium mb-1" htmlFor="name">
-										Name
-									</label>
-									<input id="name" className="form-input w-full" type="text" />
+							<form onSubmit={submitHandler} className="flex flex-col w-full">
+								<h2 className="text-xl leading-snug text-slate-800 font-bold mb-1">Employee Profile</h2>
+								<div className="text-sm"></div>
+								<div className="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5 pb-4">
+									<div className="sm:w-1/3">
+										<InputFormControl
+											label={'Name'}
+											inputProps={{
+												type: 'text',
+												placeholder: 'Name',
+												disabled: inputDisabled,
+												onChange: (e) => setEmployeeName(e.target.value),
+												value: employeeName,
+												defaultValue: employee?.name,
+												className: background,
+											}}
+										/>
+									</div>
+									<div className="sm:w-1/3">
+										<InputFormControl
+											label={'Email'}
+											inputProps={{
+												type: 'text',
+												placeholder: 'Email',
+												disabled: inputDisabled,
+												onChange: (e) => setEmployeeEmail(e.target.value),
+												value: employeeEmail,
+												defaultValue: employee?.email,
+												className: background,
+											}}
+										/>
+									</div>
 								</div>
-								<div className="sm:w-1/3">
-									<label className="block text-sm font-medium mb-1" htmlFor="business-id">
-										Email
-									</label>
-									<input id="business-id" className="form-input w-full" type="text" />
+								<hr />
+								<div className="flex flex-col px-6 py-5 border-t border-slate-200">
+									<div className="flex self-end">
+										{inputsShow ? (
+											<>
+												<Button
+													label="No"
+													style="focus:outline-none mx-3 text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+													onClick={cancelHandler}
+													type="reset"
+												/>
+												<Button
+													label="Yes"
+													style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+													type="submit"
+												/>
+											</>
+										) : (
+											<Button
+												label="Edit"
+												style="focus:outline-none mx-3 text-black border-solid border-2 border-yellow-500 hover:border-yellow-400 hover:bg-yellow-400 hover:text-white shadow-md focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+												onClick={editHandler}
+												type="button"
+											/>
+										)}
+										{showDeleteModal ? (
+											<>
+												<DeleteModal
+													open={showDeleteModal}
+													setOpen={setShowDeleteModal}
+													title={'Delete Modal'}
+													handleDelete={submitDelete}>
+													<p>Do you want to delete this contact?</p>
+												</DeleteModal>
+											</>
+										) : (
+											<Button
+												label="Delete"
+												style="focus:outline-none mx-3 text-black  border-solid border-2 border-red-500 hover:border-red-400 hover:bg-red-500 hover:text-white focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
+												type="button"
+												onClick={() => setShowDeleteModal(true)}
+											/>
+										)}
+									</div>
 								</div>
-							</div>
-							<hr />
-							<div className="flex flex-col px-6 py-5 border-t border-slate-200">
-								<div className="flex self-end">
-									<Button
-										label="Edit"
-										style="focus:outline-none mx-3 text-black border-solid border-2 border-yellow-500 hover:border-yellow-400 hover:bg-yellow-400 hover:text-white shadow-md focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
-										type="button"
-									/>
-									<Button
-										label="Delete"
-										style="focus:outline-none mx-3 text-black  border-solid border-2 border-red-500 hover:border-red-400 hover:bg-red-500 hover:text-white focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
-										type="button"
-									/>
-								</div>
-							</div>
+							</form>
 						</section>
 						{/* Work History */}
 						<div>
@@ -205,6 +319,4 @@ function ProfileBody() {
 			</div>
 		</div>
 	);
-}
-
-export default ProfileBody;
+};

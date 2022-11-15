@@ -1,4 +1,3 @@
-import { IUser } from '../utils/interfaces/user/user.interface';
 import axios from 'axios';
 import { uri } from '../utils/index';
 import { createContext, ReactNode, useContext, useState } from 'react';
@@ -17,8 +16,11 @@ import {
 	IUpdateContactNoteById,
 	IGetAllNotes,
 	IDeleteNote,
+	IUpdateEmployeeInfo,
+	IDeleteEmployee,
 } from '../utils/interfaces/api/api.interface';
 import { IGetContacts } from '../utils/interfaces/api/data.interface';
+import { IEmployee } from '../utils/interfaces/user/employee.interface';
 
 interface IApiProvider {
 	children: ReactNode;
@@ -35,12 +37,12 @@ interface IApiContext {
 	setEmployee?: any;
 	setContacts?: any;
 	getAllContacts(payload: IApiPaginationParams): Promise<IGetContacts>;
-	getAllUsers?: any;
 	getContactsInfoById(payload: IGetContactsInfoById): Promise<IGetContactsInfoById>;
 	getTimelines?: any;
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
-	getAllEmployees?: any;
+	getAllEmployees(): Promise<IEmployee[]>;
+	updateUserInfo?: any;
 	getAllNotes(payload: IGetAllNotes): Promise<any>;
 	postContactInfo(payload: IPostContactInfo): Promise<void>;
 	postNoteInfo(payload: IPostNoteInfo): Promise<void>;
@@ -48,13 +50,15 @@ interface IApiContext {
 	postIsLoading?: boolean;
 	setPostIsLoading?: any;
 	updateContactInfo(payload: IUpdateContactInfo): Promise<void>;
+	updateEmployeeInfo(payload: IUpdateEmployeeInfo): Promise<void>;
 	updateContactNoteById(payload: IUpdateContactNoteById): Promise<void>;
 	deleteContact(payload: IDeleteContact): Promise<void>;
+	deleteEmployee(payload: IDeleteEmployee): Promise<void>;
 	postLogin(payload: IPostLogin): Promise<void>;
 	postSignUp(payload: IPostSignUp): Promise<void>;
 	postInviteEmployee(payload: IPostInviteEmployee[]): Promise<void>;
-	updateUserInfo: any;
 	deleteNote(payload: IDeleteNote): Promise<void>;
+	deleteContacts(payload: any): Promise<void>;
 }
 
 const ApiContext = createContext<IApiContext | null>(null);
@@ -80,11 +84,10 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		});
 		return data;
 	};
-
-	// we must fix it
-	const getAllUsers = async () => {
+	// get employees
+	const getAllEmployees = async () => {
 		setIsLoading(true);
-		const { data } = await axios.get(uri('users'), headerAuth);
+		const { data } = await axios.get(uri(`users`), headerAuth);
 		setIsLoading(false);
 		return data;
 	};
@@ -202,22 +205,43 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			headerAuth,
 		);
 	};
-
-	// update user info
-	const updateUserInfo = async (sub: string, body: object) => {
-		console.log(headerAuth);
-		axios.put(uri(`users/${sub}`), body, headerAuth);
+	const updateEmployeeInfo = async (payload: IUpdateEmployeeInfo) => {
+		axios.put(
+			uri(`users/${payload.id}`),
+			{
+				name: payload.name,
+				email: payload.email,
+			},
+			headerAuth,
+		);
 	};
-
 	// ///////delete contact
 	const deleteContact = async (payload: IDeleteContact) => {
 		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
 	};
+	// ///////delete employee
+	const deleteEmployee = async (payload: IDeleteEmployee) => {
+		axios.delete(uri(`users/${payload.id}`), headerAuth);
+	};
+	// update user info
+	const updateUserInfo = async (sub: string, body: object) => {
+		axios.put(uri(`users/${sub}`), body, headerAuth);
+	};
 
+	// ///////delete contact
 	const deleteNote = async (payload: IDeleteNote) => {
 		console.log('dsaf');
 		await axios.delete(uri(`notes/${payload.id}`), headerAuth);
 	};
+	const deleteContacts = async (payload: IDeleteContact[]) => {
+		axios.delete(uri(`contacts/batch`), {
+			data: {
+				ids: payload,
+			},
+			...headerAuth,
+		});
+	};
+
 	return (
 		<ApiContext.Provider
 			value={{
@@ -226,12 +250,12 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				change,
 				setChange,
 				isLoading,
-				getAllUsers,
 				getAllContacts,
 				getTimelines,
 				getContactsInfoById,
 				getUsersInfoById,
 				getAllNotes,
+				getAllEmployees,
 				postContactInfo,
 				postLogin,
 				postSignUp,
@@ -239,6 +263,9 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				updateContactInfo,
 				updateContactNoteById,
 				deleteContact,
+				updateEmployeeInfo,
+				deleteEmployee,
+				deleteContacts,
 				updateUserInfo,
 				postInviteEmployee,
 				deleteNote,

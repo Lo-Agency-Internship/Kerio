@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { EContactStatus } from '../../utils/types';
+import { Note } from '../note.entity';
 import { ContactStatus } from './contactStatus.entity';
 
 @Entity()
@@ -26,4 +27,7 @@ export class Status {
 
   @OneToMany(() => ContactStatus, (c) => c.status)
   contacts: ContactStatus[];
+
+  @OneToMany(() => Note, (note) => note.status)
+  notes: Note[];
 }
