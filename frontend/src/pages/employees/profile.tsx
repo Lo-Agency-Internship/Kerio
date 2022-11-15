@@ -48,18 +48,18 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 		const formData = new FormData(e.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
-
 		const body = { name, email };
+		console.log('salam farmande', body);
+
 		const isValid = await editEmployeeValidation.isValid(body);
 		if (isValid) {
-			updateEmployeeInfo({ id: employee.id });
+			updateEmployeeInfo({ id: employee.id, email: body.email, name: body.name });
 			setError(!error);
 		} else {
 			editEmployeeValidation.validate(body).catch((event) => {
 				setError(event.message);
 			});
 		}
-		await updateEmployeeInfo({ id: employee.id });
 		setEmployee({ ...body, id: employee.id });
 		setInputDisabled(true);
 		setInputsShow(false);
