@@ -48,11 +48,10 @@ export class UserController {
   }
 
   @Get()
-  async readAllByOrganization(@Query() query: PaginationDto) {
+  async readAllByOrganization(@Query() { page, size, sort }: PaginationDto) {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
-    const { size, sort, page } = query;
 
     return this.userService.readAllByOrganization({
       organization,
