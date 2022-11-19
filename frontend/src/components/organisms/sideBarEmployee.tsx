@@ -1,7 +1,6 @@
 import Employee from '../molecules/employee';
 import { useEffect, useState } from 'react';
 import { useApiContext } from '../../context/api';
-import { IGetEmployees } from '../../utils/interfaces/api/data.interface';
 import { Button } from '../atoms/button';
 import NewEmployeeModal from '../templates/newEmployeeModal';
 import { IEmployee } from '../../utils/interfaces/user/employee.interface';

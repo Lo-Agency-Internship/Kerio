@@ -1,9 +1,5 @@
-// import { useApiContext } from '../../context/api';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Page } from '../../layout/page';
-// import { Button } from '../../components/atoms/button';
-// import NewEmployeeModal from '../../components/templates/newEmployeeModal';
-// import { IEmployee } from '../../utils/interfaces/user/employee.interface';
 import axios from 'axios';
 import { uri } from '../../utils';
 import AccountEmployee from './accountEmployee';
