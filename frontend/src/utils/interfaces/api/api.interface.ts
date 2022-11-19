@@ -84,3 +84,6 @@ export interface IDeleteEmployee {
 export interface IGetAllNotes {
 	id?: string;
 }
+export interface IDeleteNote {
+	id?: string;
+}

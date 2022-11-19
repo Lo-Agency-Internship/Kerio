@@ -17,6 +17,7 @@ import {
 	IGetAllNotes,
 	IUpdateEmployeeInfo,
 	IDeleteEmployee,
+	IDeleteNote,
 } from '../utils/interfaces/api/api.interface';
 import { IGetContacts } from '../utils/interfaces/api/data.interface';
 import { IEmployee } from '../utils/interfaces/user/employee.interface';
@@ -55,6 +56,7 @@ interface IApiContext {
 	postSignUp(payload: IPostSignUp): Promise<void>;
 	postInviteEmployee(payload: IPostInviteEmployee[]): Promise<void>;
 	deleteContacts(payload: any): Promise<void>;
+	deleteNote(payload: IDeleteNote): Promise<void>;
 }
 
 const ApiContext = createContext<IApiContext | null>(null);
@@ -232,6 +234,14 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		});
 	};
 
+	const deleteNote = async (payload: IDeleteNote) => {
+		axios.delete(uri(`notes/${payload.id}`), {
+			data: {
+				id: payload,
+			},
+			...headerAuth,
+		});
+	};
 	return (
 		<ApiContext.Provider
 			value={{
@@ -254,6 +264,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				updateEmployeeInfo,
 				deleteEmployee,
 				deleteContacts,
+				deleteNote,
 				updateUserInfo,
 				postInviteEmployee,
 			}}>

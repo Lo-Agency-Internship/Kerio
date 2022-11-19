@@ -14,7 +14,7 @@ import ContactPage from './pages/contacts/_id';
 import ContactsPage from './pages/contacts';
 import Activation from './pages/activation';
 import { EmployeesProfile } from './pages/employees/profile';
-import { ProfileUser } from './pages/profileUser';
+import ProfileUser from './pages/profileUser';
 function App() {
 	const [role] = useState<string>('owner');
 	return (
