@@ -3,9 +3,9 @@ Content-Type: application/json
 
 {
 
-	"email": "mr@d.com",
+	"email": "rad@d.com",
     "password": "0000",
-    "name": "ibm Doe",
-    "organizationSlug": "hi ibm's Company"
+    "name": "rad Doe",
+    "organizationSlug": "hi rad's Company"
 
 }
