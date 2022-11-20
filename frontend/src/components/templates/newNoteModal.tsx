@@ -45,7 +45,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 				score: body.score,
 				status: body.status,
 				title: body.title,
-				id: id,
+				id,
 			});
 			setOpen(false);
 			setChange(!change);

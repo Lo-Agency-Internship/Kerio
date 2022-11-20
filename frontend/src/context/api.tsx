@@ -216,7 +216,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		axios.put(uri(`users/${sub}`), body, headerAuth);
 	};
 
-	/////////delete
+	/// //////delete
 	const deleteContact = async (payload: IDeleteContact) => {
 		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
 	};

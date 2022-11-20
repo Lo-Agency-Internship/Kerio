@@ -124,7 +124,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 						label: 'Submit',
 						type: 'submit',
 						form: SIGNUP_FORM_ID,
-						loading: isLoadingSubmit,			
+						loading: isLoadingSubmit,
 						success: registerSuccess,
 					},
 				]}>
