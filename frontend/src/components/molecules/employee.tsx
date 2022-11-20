@@ -7,7 +7,7 @@ interface IEmployeeSideBar {
 	employee: IEmployee;
 	setEmployee: (value: IEmployee) => void;
 }
-const Employee: React.FC<IEmployeeSideBar> = ({ data, employee, setEmployee }) => {
+const Employee: React.FC<IEmployeeSideBar> = ({ data, setEmployee }) => {
 	const [profileSidebarOpen, setProfileSidebarOpen] = useState(false);
 	const [employees, setEmployees] = useState<IEmployee>(data);
 	return (
