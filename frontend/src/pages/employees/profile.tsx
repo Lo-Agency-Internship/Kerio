@@ -21,7 +21,6 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 	const [employeeEmail, setEmployeeEmail] = useState(employee?.email);
 	const [error, setError] = useState<string | null | boolean>(null);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		setEmployee(employee);
