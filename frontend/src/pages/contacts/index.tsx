@@ -4,17 +4,17 @@ import { Page } from '../../layout/page';
 import { Button } from '../../components/atoms/button';
 import NewContactModal from '../../components/templates/newContactModal';
 import ContactTable from '../../components/organisms/contactTable';
-import { IUser } from '../../utils/interfaces/user';
+import { IUsers } from '../../utils/interfaces/user';
 import DeleteModal from '../../components/molecules/deleteModal';
 export default function ContactsPage() {
 	const { getAllContacts, deleteContacts } = useApiContext();
 	const [showAddConactModal, setShowAddConactModal] = useState(false);
-	const [contacts, setContacts] = useState<IUser[]>([]);
+	const [contacts, setContacts] = useState<IUsers[]>([]);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [totalRows, setTotalRows] = useState(0);
 	const [perPage, setPerPage] = useState(10);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const [selectedRows, setSelectedRows] = useState<IUser[]>([]);
+	const [selectedRows, setSelectedRows] = useState<IUsers[]>([]);
 	const [toggleCleared, setToggleCleared] = useState(false);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [error, setError] = useState(0);
@@ -54,6 +54,7 @@ export default function ContactsPage() {
 				totalRows={totalRows}
 				perPage={perPage}
 			/>
+
 			<ContactTable
 				toggleCleared={toggleCleared}
 				contact={contacts}
@@ -69,6 +70,7 @@ export default function ContactsPage() {
 				setShowDeleteModal={setShowDeleteModal}
 				setCurrentPage={setCurrentPage}
 			/>
+
 			<DeleteModal
 				open={showDeleteModal}
 				setOpen={setShowDeleteModal}

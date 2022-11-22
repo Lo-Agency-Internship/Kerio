@@ -1,5 +1,5 @@
 export interface IInputProps {
-	disabled?: any;
+	disabled?: boolean;
 	type?: string;
 	id?: string;
 	defaultValue?: any;
@@ -8,6 +8,9 @@ export interface IInputProps {
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	value?: string;
 	placeholder?: string;
+	max?: string;
+	min?: string;
+	step?: string;
 }
 
 export const Input: React.FC<IInputProps> = (props) => {
@@ -26,6 +29,9 @@ export const Input: React.FC<IInputProps> = (props) => {
 					? 'px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative rounded text-sm outline-none focus:outline-none focus:shadow-outline'
 					: props.className
 			}
+			max={props.max}
+			min={props.min}
+			step={props.step}
 		/>
 	);
 };

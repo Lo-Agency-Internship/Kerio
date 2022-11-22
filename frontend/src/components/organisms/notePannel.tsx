@@ -5,7 +5,11 @@ import { INote } from '../../utils/interfaces/user/note.interface';
 import { useApiContext } from '../../context/api';
 import EditNoteModal from '../templates/editNoteModal';
 
-export default function NotePannel() {
+interface IProps {
+	statuses: any;
+}
+
+const NotePannel: React.FC<IProps> = ({ statuses }) => {
 	const [notes, setNotes] = useState<INote[] | null>();
 	const { change, getAllNotes } = useApiContext();
 	const [error, setError] = useState<string[] | null>(null);
@@ -34,6 +38,7 @@ export default function NotePannel() {
 					note={note}
 					setNote={setNote}
 					setNotes={setNotes}
+					statuses={statuses}
 				/>
 			)}
 			{error}
@@ -45,4 +50,6 @@ export default function NotePannel() {
 			</div>
 		</>
 	);
-}
+};
+
+export default NotePannel;

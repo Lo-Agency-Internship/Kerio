@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
-import { IUser } from '../../utils/interfaces/user';
+import { IUsers } from '../../utils/interfaces/user';
 import { Button } from '../atoms/button';
 
 interface IContactTable {
-	contact: IUser[];
+	contact: IUsers[];
 	setContacts: any;
 	fetchData: any;
 	isLoaded: boolean;
@@ -13,7 +13,7 @@ interface IContactTable {
 	perPage: number;
 	setPerPage: (page: React.SetStateAction<number>) => void;
 	setSelectedRows: any;
-	selectedRows: IUser[];
+	selectedRows: IUsers[];
 	showDeleteModal: boolean;
 	setShowDeleteModal: any;
 	toggleCleared: any;
@@ -45,7 +45,7 @@ const customStyles = {
 		},
 	},
 };
-const columns: TableColumn<IUser>[] = [
+const columns: TableColumn<IUsers>[] = [
 	{
 		name: 'Name',
 		selector: (row) => row.name as string,
@@ -63,7 +63,7 @@ const columns: TableColumn<IUser>[] = [
 	},
 	{
 		name: 'Status',
-		selector: (row) => row.lastStatus.status.status as any,
+		selector: (row) => row.lastStatus.status.status,
 		sortable: true,
 	},
 	{

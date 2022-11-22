@@ -10,17 +10,20 @@ import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import DeleteModal from '../molecules/deleteModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { SelectFormControl } from '../molecules/formControls/selectFormControl';
 interface IProps {
 	setNote: (note: INote) => void;
 	open: boolean;
 	note: any;
 	setOpen: (open: boolean) => void;
 	setNotes: any;
+	statuses: any;
 }
 
 const EditNoteFormID = 'EditNoteFORMID';
 
-const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) => {
+const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, statuses }) => {
+	console.log(statuses);
 	const { updateContactNoteById, deleteNote, getAllNotes } = useApiContext();
 	const params = useParams();
 	const [error, setError] = useState<string[] | null>(null);
@@ -33,7 +36,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) =
 	const [contactScore, setContactScore] = useState(note?.score);
 	const [handleType, setHandleType] = useState<string>('text');
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
@@ -72,7 +74,8 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) =
 			setNote({ ...body, id: params.id as string });
 			setInputDisabled(true);
 			setInputsShow(false);
-			setBackground('bg-transparent');
+			setOpen(false);
+			setBackground('bg-transparent border-2');
 			toast.success('Your note has been changed!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -131,14 +134,14 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) =
 					</p>
 				)}
 				{showsubmitDelete && <SubmitDelete setOpen={setShowsubmitDelete} note={note} />}
-				<form id={EditNoteFormID} onSubmit={submitHandler} className="relative w-full mt-6 space-y-8">
+				<form id={EditNoteFormID} onSubmit={submitHandler} className="relative w-full mt-10 space-y-8">
 					<InputFormControl
 						label={'Date'}
 						inputProps={{
+							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
 							type: handleType,
 							placeholder: 'Date',
 							defaultValue: format(new Date(contactDate as string), 'dd/MM/yyyy'),
-							className: background,
 							onChange: (e) => {
 								e.preventDefault();
 								setContactDate(e.target.value);
@@ -149,10 +152,10 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) =
 					<InputFormControl
 						label={'title'}
 						inputProps={{
+							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
 							type: 'text',
 							placeholder: 'Title',
 							defaultValue: note?.title,
-							className: background,
 							onChange: (e) => setContactTitle(e.target.value),
 							value: contactTitle,
 							disabled: inputDisabled,
@@ -161,10 +164,10 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) =
 					<InputFormControl
 						label={'Description'}
 						inputProps={{
+							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
 							type: 'text',
 							placeholder: 'Description',
 							defaultValue: note?.description,
-							className: `text-gray-600 focus:outline-none font-normal w-full h-24 flex items-center pl-3 text-sm ${background}`,
 							onChange: (e) => setContactDescription(e.target.value),
 							value: contactDescription,
 							disabled: inputDisabled,
@@ -173,29 +176,32 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) =
 					<InputFormControl
 						label={'Score'}
 						inputProps={{
-							type: 'text',
+							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
+							type: 'number',
 							placeholder: 'Score',
 							defaultValue: note?.score,
-							className: background,
 							onChange: (e) => setContactScore(e.target.value),
 							value: contactScore,
 							disabled: inputDisabled,
+							max: '5',
+							min: '-5',
 						}}
 					/>
-					<div className="flex items-center justify-start w-full">
-						<Button
-							label="Delete"
-							style="focus:outline-none mx-3 text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
-							type="button"
-							onClick={() => setShowDeleteModal(true)}
-						/>
 
-						<button
-							className="focus:outline-none mx-3 text-white bg-gray-400 hover:bg-gray-500 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-gray-900"
-							type="button"
-							onClick={() => setOpen(false)}>
-							Cancel
-						</button>
+					<SelectFormControl
+						label={'Status'}
+						iSelectProps={{
+							iOptionProps: [
+								{
+									title: statuses[statuses.length - 1].status.status.toString(),
+									value: statuses[statuses.length - 1].status.status.toString(),
+								},
+							],
+							disabled: true,
+						}}
+					/>
+
+					<div className="flex items-center justify-start w-full">
 						{inputsShow ? (
 							<>
 								<Button
@@ -211,12 +217,21 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) =
 								/>
 							</>
 						) : (
-							<Button
-								label="Edit"
-								style="focus:outline-none mx-3 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
-								onClick={editHandler}
-								type="button"
-							/>
+							<>
+								<Button
+									label="Edit"
+									style="focus:outline-none mx-3 text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+									onClick={editHandler}
+									type="button"
+								/>
+
+								<Button
+									label="Delete"
+									style="focus:outline-none mx-3 text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
+									type="button"
+									onClick={() => setShowDeleteModal(true)}
+								/>
+							</>
 						)}
 					</div>
 				</form>
