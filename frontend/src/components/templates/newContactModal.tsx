@@ -11,7 +11,7 @@ interface IProps {
 	setOpen: (close: boolean) => void;
 	open: boolean;
 	setContact: any;
-	fetchData: any;
+	fetchData?: any;
 	totalRows: number;
 	perPage: number;
 }
@@ -42,7 +42,9 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 			await modalContactValidation.isValid(body);
 			await postContactInfo(body);
 			const pageNumber = Math.ceil((totalRows + 1) / perPage);
-			await fetchData(pageNumber, perPage);
+			if (fetchData) {
+				await fetchData(pageNumber, perPage);
+			}
 			setOpen(false);
 			toast.success('Look, you have a new contact in your list!', {
 				position: 'top-center',
@@ -55,7 +57,8 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 				theme: 'light',
 			});
 		} catch (err: any) {
-			setError(err.response.data.message);
+			console.log(err);
+			setError(err?.response?.data?.message);
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
 				autoClose: 8000,
@@ -67,7 +70,6 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 				theme: 'light',
 			});
 		}
-
 		setIsLoadingSubmit(false);
 	};
 

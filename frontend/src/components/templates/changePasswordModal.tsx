@@ -12,7 +12,6 @@ const ChangePassword = 'ChangePassword';
 
 const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 	const [error, setError] = useState<string | null>(null);
-	const [Isloading, setIsLoading] = useState<boolean>(false);
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
