@@ -15,7 +15,6 @@ import {
 	IDeleteContact,
 	IUpdateContactNoteById,
 	IGetAllNotes,
-	IDeleteNote,
 	IUpdateEmployeeInfo,
 	IDeleteEmployee,
 	IDeleteNote,
@@ -58,7 +57,6 @@ interface IApiContext {
 	postInviteEmployee(payload: IPostInviteEmployee[]): Promise<void>;
 	deleteNote(payload: IDeleteNote): Promise<void>;
 	deleteContacts(payload: any): Promise<void>;
-	deleteNote(payload: IDeleteNote): Promise<void>;
 }
 
 const ApiContext = createContext<IApiContext | null>(null);
@@ -225,9 +223,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const deleteEmployee = async (payload: IDeleteEmployee) => {
 		axios.delete(uri(`users/${payload.id}`), headerAuth);
 	};
-	const deleteNote = async (payload: IDeleteNote) => {
-		await axios.delete(uri(`notes/${payload.id}`), headerAuth);
-	};
+
 	const deleteContacts = async (payload: IDeleteContact[]) => {
 		axios.delete(uri(`contacts/batch`), {
 			data: {
@@ -270,7 +266,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				deleteNote,
 				updateUserInfo,
 				postInviteEmployee,
-				deleteNote,
 			}}>
 			{children}
 		</ApiContext.Provider>

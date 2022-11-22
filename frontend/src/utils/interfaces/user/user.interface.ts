@@ -6,7 +6,7 @@ export interface IUsers {
 	email?: string;
 	phone?: string;
 	lastStatus: ILastStatus;
-	score?: string;
+	totalScore?: string;
 }
 export interface IUserById {
 	id?: number;

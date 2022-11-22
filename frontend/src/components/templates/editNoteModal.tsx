@@ -104,11 +104,13 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 	};
 
 	const handleDelete = async () => {
+		setIsLoadingSubmit(true);
 		try {
 			await deleteNote({ id: note.id });
 			const dataa = await getAllNotes({ id: params.id as string });
 			console.log(dataa, params.id);
 			setNotes(dataa.notes);
+			setIsLoadingSubmit(false);
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
@@ -117,18 +119,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 	};
 	return (
 		<>
-			<Modal
-				show={open}
-				onClose={() => setOpen(false)}
-				title={'Edit Note'}
-				actions={[
-					{
-						loading: isLoadingSubmit,
-						label: 'Submit',
-						type: 'submit',
-						form: EditNoteFormID,
-					},
-				]}>
+			<Modal show={open} onClose={() => setOpen(false)} title={'Edit Note'}>
 				{showDeleteModal && (
 					<DeleteModal
 						open={showDeleteModal}
