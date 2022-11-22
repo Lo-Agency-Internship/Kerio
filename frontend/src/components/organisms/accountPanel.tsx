@@ -46,25 +46,23 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
-
+		setIsLoadingSubmit(true);
 		const formData = new FormData(e.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
 		const phone = formData.get('phone')?.toString();
 		const body = { name, email, phone };
-		const isValid = await editContactValidation.isValid(body);
-		if (isValid) {
-			updateContactInfo({ email: body.email, name: body.name, phone: body.phone, id: user.id });
-			setError(!error);
-		} else {
-			editContactValidation.validate(body).catch((event) => {
-				setError(event.message);
-			});
+		try {
+			await editContactValidation.isValid(body);
+			await updateContactInfo({ email: body.email, name: body.name, phone: body.phone, id: user.id });
+			setUser({ ...body, id: user.id });
+			setInputDisabled(true);
+			setInputsShow(false);
+			setBackground('bg-transparent');
+			setIsLoadingSubmit(false);
+		} catch (err: any) {
+			setError(err.response.data.message);
 		}
-		setUser({ ...body, id: user.id });
-		setInputDisabled(true);
-		setInputsShow(false);
-		setBackground('bg-transparent');
 	};
 
 	const submitDelete = async () => {
@@ -163,6 +161,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 										label="Yes"
 										style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
 										type="submit"
+										loading={isLoadingSubmit}
 									/>
 								</>
 							) : (

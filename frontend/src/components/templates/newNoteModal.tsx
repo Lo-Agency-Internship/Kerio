@@ -83,6 +83,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 				title={'New Note'}
 				actions={[
 					{
+						loading: isLoadingSubmit,
 						label: 'Submit',
 						type: 'submit',
 						form: ADDNOTE_FORM_ID,

@@ -49,6 +49,7 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 				title={'SignIn Form'}
 				actions={[
 					{
+						loading: isLoadingSubmit,
 						label: 'Submit',
 						type: 'submit',
 						form: SIGNIN_FORM_ID,

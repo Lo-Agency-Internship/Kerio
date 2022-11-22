@@ -23,7 +23,6 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 	const [error, setError] = useState<string | null>(null);
 	const [emailValue, setemailValue] = useState('');
 	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
-	const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (emailValue !== '') {
@@ -31,10 +30,6 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			return () => clearTimeout(timeoutId);
 		}
 	}, [emailValue]);
-
-	useEffect(() => {
-		if (registerSuccess) navigate('/');
-	}, [registerSuccess]);
 
 	const inputChanged = (e: any) => {
 		setemailValue(e.target.value);
@@ -83,10 +78,9 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			organizationSlug,
 		};
 		try {
-			setRegisterSuccess(true);
 			await modalUserValidation.validate(body);
 			await postSignUp(body);
-			setRegisterSuccess(true);
+			setOpen(false);
 			toast.success('Registration has been successful! Please signIn!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -125,7 +119,6 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 						type: 'submit',
 						form: SIGNUP_FORM_ID,
 						loading: isLoadingSubmit,
-						success: registerSuccess,
 					},
 				]}>
 				{error && <p className="text-red-500">{error}</p>}

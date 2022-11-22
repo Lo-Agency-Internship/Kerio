@@ -79,6 +79,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 				title={'New Contact'}
 				actions={[
 					{
+						loading: isLoadingSubmit,
 						label: 'Submit',
 						type: 'submit',
 						form: ADDCONTACT_FORM_ID,

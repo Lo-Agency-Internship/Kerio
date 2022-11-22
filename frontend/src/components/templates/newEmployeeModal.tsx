@@ -96,6 +96,7 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 				title={'New Employee'}
 				actions={[
 					{
+						loading: isLoadingSubmit,
 						label: 'Invite',
 						type: 'submit',
 						form: ADDEMPLOYEE_FORM_ID,
