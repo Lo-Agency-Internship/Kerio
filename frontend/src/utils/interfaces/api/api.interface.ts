@@ -75,6 +75,9 @@ export interface IDeleteContact {
 	id: number;
 }
 
+export interface IDeleteNote {
+	id?: string;
+}
 export interface IDeleteEmployee {
 	id: string;
 }

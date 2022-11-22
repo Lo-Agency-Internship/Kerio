@@ -18,7 +18,10 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 	const [employees, setEmployees] = useState<any>([]);
 	const [nameValue, setNameValue] = useState<string>('');
 	const [emailValue, setEmailValue] = useState<string>('');
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+
 	const handleSubmit = async (event: any) => {
+		setIsLoadingSubmit(true);
 		event.preventDefault();
 		const formData = new FormData(event.currentTarget);
 		const name = formData.getAll('name')?.toString().toLowerCase();
@@ -34,6 +37,7 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 		postInviteEmployee(data).then(() => {
 			setOpen(false);
 		});
+		setIsLoadingSubmit(false);
 	};
 	const handleRemoveClick = (index: number) => {
 		const list = [...employees];
@@ -92,6 +96,7 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 				title={'New Employee'}
 				actions={[
 					{
+						loading: isLoadingSubmit,
 						label: 'Invite',
 						type: 'submit',
 						form: ADDEMPLOYEE_FORM_ID,

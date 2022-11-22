@@ -21,7 +21,6 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 	const [employeeEmail, setEmployeeEmail] = useState(employee?.email);
 	const [error, setError] = useState<string | null | boolean>(null);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		setEmployee(employee);
@@ -49,8 +48,6 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
 		const body = { name, email };
-		console.log('salam farmande', body);
-
 		const isValid = await editEmployeeValidation.isValid(body);
 		if (isValid) {
 			updateEmployeeInfo({ id: employee.id, email: body.email, name: body.name });
