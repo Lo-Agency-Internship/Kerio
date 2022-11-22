@@ -7,6 +7,7 @@ import SubmitDelete from '../molecules/submitDelete';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
+import DeleteModal from '../molecules/deleteModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 interface IProps {
@@ -19,7 +20,7 @@ interface IProps {
 const EditNoteFormID = 'EditNoteFORMID';
 
 const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
-	const { updateContactNoteById } = useApiContext();
+	const { updateContactNoteById, deleteNote, getAllNotes } = useApiContext();
 	const params = useParams();
 	const [error, setError] = useState<string[] | null>(null);
 	const [inputDisabled, setInputDisabled] = useState(true);
@@ -29,12 +30,14 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 	const [contactTitle, setContactTitle] = useState(note?.title);
 	const [contactDescription, setContactDescription] = useState(note?.description);
 	const [contactScore, setContactScore] = useState(note?.score);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+  
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
 		setBackground('bg-gray-300');
 	};
-	const [showsubmitDelete, setShowsubmitDelete] = useState(false);
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
@@ -47,7 +50,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
-
+		setIsLoadingSubmit(true);
 		const formData = new FormData(e.currentTarget);
 		const date = contactDate;
 		const title = formData.get('title') as string;
@@ -66,6 +69,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 			setInputDisabled(true);
 			setInputsShow(false);
 			setBackground('bg-transparent');
+			setIsLoadingSubmit(false);
 			toast.success('Your note has been changed!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -90,6 +94,20 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 			});
 		}
 	};
+
+	const handleDelete = async () => {
+		setIsLoadingSubmit(true);
+		try {
+			await deleteNote({ id: note.id });
+			const { data } = await getAllNotes({ id: params.id });
+			setNote({ ...data, id: params.id as string });
+			setShowDeleteModal(false);
+			setOpen(false);
+		} catch (err: any) {
+			setError(err.response.data.message);
+		}
+		setIsLoadingSubmit(false);
+	};
 	return (
 		<>
 			<Modal
@@ -98,12 +116,24 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 				title={'Edit Note'}
 				actions={[
 					{
+						loading: isLoadingSubmit,
 						label: 'Submit',
 						type: 'submit',
 						form: EditNoteFormID,
 					},
 				]}>
-				{showsubmitDelete && <SubmitDelete setOpen={setShowsubmitDelete} note={note} />}
+	
+				{showDeleteModal && (
+					<DeleteModal
+						open={showDeleteModal}
+						setOpen={setShowDeleteModal}
+						title={'Delete Modal'}
+						handleDelete={handleDelete}
+						loading={isLoadingSubmit}>
+						{<p>Are you sure that you want Delete these contacts ?</p>}
+					</DeleteModal>
+				)}
+
 				<form id={EditNoteFormID} onSubmit={submitHandler} className="relative w-full mt-6 space-y-8">
 					<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
 					<Input
@@ -117,6 +147,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 							setContactDate(e.target.value);
 						}}
 					/>
+
 					<div>
 						<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Title</label>
 						<div className="relative mb-5 mt-2">
@@ -132,6 +163,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 							/>
 						</div>
 					</div>
+
 					<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Description</label>
 					<div className="relative mb-5 mt-2">
 						<textarea
@@ -144,6 +176,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 							value={contactDescription}
 						/>
 					</div>
+
 					<div>
 						<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Score</label>
 						<div className="relative mb-5 mt-2">
@@ -159,15 +192,13 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 							/>
 						</div>
 					</div>
-					<div>
-						<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Status</label>
-					</div>
+          
 					<div className="flex items-center justify-start w-full">
 						<Button
 							label="Delete"
 							style="focus:outline-none mx-3 text-white bg-red-400 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
 							type="button"
-							onClick={() => setShowsubmitDelete(true)}
+							onClick={() => setShowDeleteModal(!showDeleteModal)}
 						/>
 
 						<button
@@ -188,6 +219,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 									label="Yes"
 									style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
 									type="submit"
+									loading={isLoadingSubmit}
 								/>
 							</>
 						) : (
