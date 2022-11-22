@@ -32,7 +32,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 	const [contactScore, setContactScore] = useState(note?.score);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
-
+  
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
@@ -56,16 +56,13 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
 		const score = formData.get('score') as string;
-		const status = formData.get('status') as string;
-
-		const body = { date, title, description, score, status };
+		const body = { date, title, description, score };
 		try {
 			await updateContactNoteById({
 				date: body.date,
 				description: body.description,
-				id: params.id,
+				id: note.id,
 				score: body.score,
-				status: body.status,
 				title: body.title,
 			});
 			setNote({ ...body, id: params.id as string });
@@ -125,16 +122,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 						form: EditNoteFormID,
 					},
 				]}>
-				{error && (
-					<p>
-						{error.map((element, index) => (
-							<p className="text-red-500 block" key={index}>
-								{element}
-								<br />
-							</p>
-						))}
-					</p>
-				)}
+	
 				{showDeleteModal && (
 					<DeleteModal
 						open={showDeleteModal}
@@ -145,6 +133,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 						{<p>Are you sure that you want Delete these contacts ?</p>}
 					</DeleteModal>
 				)}
+
 				<form id={EditNoteFormID} onSubmit={submitHandler} className="relative w-full mt-6 space-y-8">
 					<label className="text-gray-800 text-sm font-bold leading-tight tracking-normal">Date</label>
 					<Input
@@ -203,7 +192,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 							/>
 						</div>
 					</div>
-
+          
 					<div className="flex items-center justify-start w-full">
 						<Button
 							label="Delete"
