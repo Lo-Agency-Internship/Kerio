@@ -3,7 +3,6 @@ import Modal from '../organisms/modal';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { Button } from '../atoms/button';
 import { Input } from '../atoms/input';
-import SubmitDelete from '../molecules/submitDelete';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
@@ -32,7 +31,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 	const [contactScore, setContactScore] = useState(note?.score);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
-  
+
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
@@ -122,7 +121,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 						form: EditNoteFormID,
 					},
 				]}>
-	
 				{showDeleteModal && (
 					<DeleteModal
 						open={showDeleteModal}
@@ -192,7 +190,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote }) => {
 							/>
 						</div>
 					</div>
-          
+
 					<div className="flex items-center justify-start w-full">
 						<Button
 							label="Delete"

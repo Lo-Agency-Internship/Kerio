@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Images from '../../assets/images/user.png';
 import { Button } from '../../components/atoms/button';
 import DeleteModal from '../../components/molecules/deleteModal';
