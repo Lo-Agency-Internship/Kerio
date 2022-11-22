@@ -8,7 +8,8 @@ import { useParams } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import DeleteModal from '../molecules/deleteModal';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface IProps {
 	setNote: (note: INote) => void;
 	open: boolean;
@@ -59,25 +60,41 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) =
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
 		const score = formData.get('score') as string;
-		const status = formData.get('status') as string;
-
-		const body = { date, title, description, score, status };
-
+		const body = { date, title, description, score };
 		try {
 			await updateContactNoteById({
 				date: body.date,
 				description: body.description,
-				id: params.id,
+				id: note.id,
 				score: body.score,
-				status: body.status,
 				title: body.title,
 			});
 			setNote({ ...body, id: params.id as string });
 			setInputDisabled(true);
 			setInputsShow(false);
 			setBackground('bg-transparent');
+			toast.success('Your note has been changed!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		} catch (err: any) {
 			setError(err.response.data.message);
+			toast.error('Something went wrong! ', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
 	};
 
@@ -204,6 +221,18 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes }) =
 					</div>
 				</form>
 			</Modal>
+			<ToastContainer
+				position="top-right"
+				autoClose={8000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
 		</>
 	);
 };
