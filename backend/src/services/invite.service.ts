@@ -28,7 +28,9 @@ export class InviteService {
   ) {}
 
   async createInvite(payload: ICreateInvite): Promise<Invite> {
-    const isExist = await this.userService.exists(payload.email);
+    const isExist = await this.userService.findUserByEmailEvenDeleted(
+      payload.email,
+    );
 
     if (isExist) {
       throw new UnauthorizedException();
