@@ -18,8 +18,10 @@ const ADDNOTE_FORM_ID = 'ADDNOTE_FORM_ID';
 const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 	const { id } = useParams();
 	const { change, setChange, postNoteInfo } = useApiContext();
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 	const [error, setError] = useState<string[] | null>(null);
 	const handleSubmit = async (event: any) => {
+		setIsLoadingSubmit(true);
 		setError(null);
 		event.preventDefault();
 
@@ -71,6 +73,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 				theme: 'light',
 			});
 		}
+		setIsLoadingSubmit(false);
 	};
 
 	return (
@@ -81,6 +84,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 				title={'New Note'}
 				actions={[
 					{
+						loading: isLoadingSubmit,
 						label: 'Submit',
 						type: 'submit',
 						form: ADDNOTE_FORM_ID,

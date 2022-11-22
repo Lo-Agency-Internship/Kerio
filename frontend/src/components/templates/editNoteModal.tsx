@@ -3,10 +3,11 @@ import Modal from '../organisms/modal';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { Button } from '../atoms/button';
 import SubmitDelete from '../molecules/submitDelete';
+import { InputFormControl } from '../molecules/formControls/inputFormControl';
+import { Input } from '../atoms/input';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
-import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import DeleteModal from '../molecules/deleteModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,7 +24,6 @@ interface IProps {
 const EditNoteFormID = 'EditNoteFORMID';
 
 const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, statuses }) => {
-	console.log(statuses);
 	const { updateContactNoteById, deleteNote, getAllNotes } = useApiContext();
 	const params = useParams();
 	const [error, setError] = useState<string[] | null>(null);
@@ -36,13 +36,14 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 	const [contactScore, setContactScore] = useState(note?.score);
 	const [handleType, setHandleType] = useState<string>('text');
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+
 	const editHandler = () => {
 		setInputDisabled(false);
 		setInputsShow(true);
 		setHandleType('date');
 		setBackground('bg-gray-300');
 	};
-	const [showsubmitDelete, setShowsubmitDelete] = useState(false);
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
@@ -56,7 +57,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
-
+		setIsLoadingSubmit(true);
 		const formData = new FormData(e.currentTarget);
 		const date = contactDate;
 		const title = formData.get('title') as string;
@@ -76,6 +77,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 			setInputsShow(false);
 			setOpen(false);
 			setBackground('bg-transparent border-2');
+			setIsLoadingSubmit(false);
 			toast.success('Your note has been changed!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -115,25 +117,29 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 	};
 	return (
 		<>
-			<DeleteModal
-				open={showDeleteModal}
-				setOpen={setShowDeleteModal}
-				title={'Delete Modal'}
-				handleDelete={handleDelete}>
-				<p>are U sure that delete this note ?</p>
-			</DeleteModal>
-			<Modal show={open} onClose={() => setOpen(false)} title={'Edit Note'}>
-				{error && (
-					<p>
-						{error.map((element, index) => (
-							<p className="text-red-500 block" key={index}>
-								{element}
-								<br />
-							</p>
-						))}
-					</p>
+			<Modal
+				show={open}
+				onClose={() => setOpen(false)}
+				title={'Edit Note'}
+				actions={[
+					{
+						loading: isLoadingSubmit,
+						label: 'Submit',
+						type: 'submit',
+						form: EditNoteFormID,
+					},
+				]}>
+				{showDeleteModal && (
+					<DeleteModal
+						open={showDeleteModal}
+						setOpen={setShowDeleteModal}
+						title={'Delete Modal'}
+						handleDelete={handleDelete}
+						loading={isLoadingSubmit}>
+						{<p>Are you sure that you want Delete these contacts ?</p>}
+					</DeleteModal>
 				)}
-				{showsubmitDelete && <SubmitDelete setOpen={setShowsubmitDelete} note={note} />}
+
 				<form id={EditNoteFormID} onSubmit={submitHandler} className="relative w-full mt-10 space-y-8">
 					<InputFormControl
 						label={'Date'}
@@ -214,6 +220,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 									label="Yes"
 									style="focus:outline-none mx-3 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
 									type="submit"
+									loading={isLoadingSubmit}
 								/>
 							</>
 						) : (

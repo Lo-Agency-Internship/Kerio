@@ -15,6 +15,7 @@ import {
 	IDeleteContact,
 	IUpdateContactNoteById,
 	IGetAllNotes,
+	IDeleteNote,
 	IUpdateEmployeeInfo,
 	IDeleteEmployee,
 	IDeleteNote,
@@ -55,6 +56,7 @@ interface IApiContext {
 	postLogin(payload: IPostLogin): Promise<void>;
 	postSignUp(payload: IPostSignUp): Promise<void>;
 	postInviteEmployee(payload: IPostInviteEmployee[]): Promise<void>;
+	deleteNote(payload: IDeleteNote): Promise<void>;
 	deleteContacts(payload: any): Promise<void>;
 	deleteNote(payload: IDeleteNote): Promise<void>;
 }
@@ -71,6 +73,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
 		},
 	};
+
 	const getAllContacts = async (payload: IApiPaginationParams) => {
 		const { data } = await axios.get(uri(`contacts`), {
 			params: {
@@ -81,14 +84,14 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		});
 		return data;
 	};
-	// get employees
+
 	const getAllEmployees = async () => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri(`users`), headerAuth);
 		setIsLoading(false);
 		return data;
 	};
-	// get notes(employees)
+
 	const getAllNotes = async (payload: IGetAllNotes) => {
 		const { data } = await axios.get(uri(`notes/${payload.id}`), {
 			params: {
@@ -99,7 +102,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
-	// get contacts info by ID
 	const getContactsInfoById = async (payload: IGetContactsInfoById) => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri(`contacts/${payload.id}`), headerAuth);
@@ -107,7 +109,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		return data;
 	};
 
-	// we must fix it
 	const getUsersInfoById = async (payload: IGetUsersInfoById) => {
 		setIsLoading(true);
 		const { data } = await axios.get(uri(`employees/${payload.id}`), headerAuth);
@@ -212,19 +213,21 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 			headerAuth,
 		);
 	};
-	// ///////delete contact
-	const deleteContact = async (payload: IDeleteContact) => {
-		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
-	};
-	// ///////delete employee
-	const deleteEmployee = async (payload: IDeleteEmployee) => {
-		axios.delete(uri(`users/${payload.id}`), headerAuth);
-	};
-	// update user info
+
 	const updateUserInfo = async (sub: string, body: object) => {
 		axios.put(uri(`users/${sub}`), body, headerAuth);
 	};
 
+	/// //////delete
+	const deleteContact = async (payload: IDeleteContact) => {
+		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
+	};
+	const deleteEmployee = async (payload: IDeleteEmployee) => {
+		axios.delete(uri(`users/${payload.id}`), headerAuth);
+	};
+	const deleteNote = async (payload: IDeleteNote) => {
+		await axios.delete(uri(`notes/${payload.id}`), headerAuth);
+	};
 	const deleteContacts = async (payload: IDeleteContact[]) => {
 		axios.delete(uri(`contacts/batch`), {
 			data: {
@@ -267,6 +270,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				deleteNote,
 				updateUserInfo,
 				postInviteEmployee,
+				deleteNote,
 			}}>
 			{children}
 		</ApiContext.Provider>
