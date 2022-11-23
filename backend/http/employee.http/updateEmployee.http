@@ -1,11 +1,11 @@
-PUT http://localhost:3001/users/2 HTTP/1.1
+PUT http://localhost:3001/users/1 HTTP/1.1
 Content-Type: application/json
-Authorization: bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjEsIm5hbWUiOiJnb2xpIERvZSIsInJvbGUiOnsiaWQiOjEsIm5hbWUiOiJPd25lciIsImNyZWF0ZWRBdCI6IjIwMjItMTAtMjNUMDM6MTI6NTIuOTAxWiIsInVwZGF0ZWRBdCI6IjIwMjItMTAtMjNUMDM6MTI6NTIuOTAxWiJ9LCJpYXQiOjE2NjY1MDc0NTYsImV4cCI6MTY2OTA5OTQ1Nn0.nKBDHT7LqOwqZtvB1Y2FYZlX9wLk1tiArujMaR4PEzs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjEsIm5hbWUiOiJnb2xpIiwicm9sZSI6eyJpZCI6MSwibmFtZSI6Ik93bmVyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMS0xNFQxMDowMToxNy4xOTNaIiwidXBkYXRlZEF0IjoiMjAyMi0xMS0xNFQxMDowMToxNy4xOTNaIn0sImlhdCI6MTY2ODQ4MzE4NSwiZXhwIjoxNjcxMDc1MTg1fQ.6K51opl5qUVyiTDaOP5YZ8NKzOprUKnV5thQ0yYjx60
 
 {
 
-    "name": "hope abadian",
-    "email": "mahsaabadian@yahoo.com",
-    "enabled":true
+    "oldPassword": "0000",
+    "newPassword": "7777"
+    
     
 }
