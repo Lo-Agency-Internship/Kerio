@@ -68,7 +68,7 @@ const columns: TableColumn<IUser>[] = [
 	},
 	{
 		name: 'Score',
-		selector: (row) => row.score as string,
+		selector: (row) => row.totalScore as string,
 		sortable: true,
 	},
 ];

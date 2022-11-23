@@ -88,7 +88,7 @@ export default function Layout({ children }: ILayout) {
 								</svg>
 							}>
 							<SidebarLink href="/contacts" anchor="Contact Table" />
-							<SidebarLink href="/contacts" anchor="Add Contact" />
+							<SidebarLink onClick={() => setShowContactModal(true)} anchor="Add Contact" href={'#'} />
 						</SidebarLinkGroup>
 						<SidebarLinkGroup
 							activeCondition={pathname.includes('Employees')}
@@ -106,7 +106,7 @@ export default function Layout({ children }: ILayout) {
 								</svg>
 							}>
 							<SidebarLink href="/Employees" anchor="Employee Table" />
-							<SidebarLink href="/Employees" anchor="Add Employee" />
+							<SidebarLink onClick={() => setShowEmployeeModal(true)} anchor="Add Employee" href={'#'} />
 						</SidebarLinkGroup>
 					</SidebarGroup>
 					<SidebarGroup groupTitle="Settings">

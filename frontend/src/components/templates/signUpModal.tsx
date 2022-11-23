@@ -22,8 +22,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 	const [emailValue, setemailValue] = useState('');
-	const [loading, setLoading] = useState<boolean>(false);
-	const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (emailValue !== '') {
@@ -31,10 +30,6 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			return () => clearTimeout(timeoutId);
 		}
 	}, [emailValue]);
-
-	useEffect(() => {
-		if (registerSuccess) navigate('/');
-	}, [registerSuccess]);
 
 	const inputChanged = (e: any) => {
 		setemailValue(e.target.value);
@@ -47,11 +42,13 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (err: any) {
 			setError(err.response.data.message);
+			setIsLoadingSubmit(false);
 		}
 	};
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
+		setIsLoadingSubmit(true);
 		setError(null);
 
 		const formData = new FormData(event.currentTarget);
@@ -63,6 +60,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 
 		if (password !== rePassword) {
 			setError('passwords do not matched');
+			setIsLoadingSubmit(false);
 			return;
 		}
 
@@ -80,9 +78,9 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			organizationSlug,
 		};
 		try {
-			setRegisterSuccess(true);
 			await modalUserValidation.validate(body);
 			await postSignUp(body);
+			setOpen(false);
 			toast.success('Registration has been successful! Please signIn!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -106,8 +104,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 				theme: 'light',
 			});
 		}
-
-		setLoading(false);
+		setIsLoadingSubmit(false);
 	};
 
 	return (
@@ -121,8 +118,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 						label: 'Submit',
 						type: 'submit',
 						form: SIGNUP_FORM_ID,
-						loading,
-						success: registerSuccess,
+						loading: isLoadingSubmit,
 					},
 				]}>
 				{error && <p className="text-red-500">{error}</p>}

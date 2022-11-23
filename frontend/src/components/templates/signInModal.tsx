@@ -16,8 +16,10 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 	const { postLogin } = useApiContext();
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
 	const handleSubmit = async (event: any) => {
+		setIsLoadingSubmit(true);
 		event.preventDefault();
 		setError(null);
 		const formData = new FormData(event.currentTarget);
@@ -32,12 +34,11 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			await signInValidation.isValid({ email });
 			await postLogin(body);
 			setOpen(false);
-
-			// getContacts().then(setContacts);
 			navigate(`/`);
 		} catch (err: any) {
 			setError(err.response.data.message);
 		}
+		setIsLoadingSubmit(false);
 	};
 
 	return (
@@ -48,6 +49,7 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 				title={'SignIn Form'}
 				actions={[
 					{
+						loading: isLoadingSubmit,
 						label: 'Submit',
 						type: 'submit',
 						form: SIGNIN_FORM_ID,
