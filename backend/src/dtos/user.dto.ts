@@ -26,14 +26,24 @@ export class UserRegisterDto extends UserLoginDto {
   role?: ERole | null;
 }
 
-export class UpdateEmployeeBodyDto {
+export class UpdateUserBodyDto {
+  @IsOptional()
   @IsString()
   name: string;
 
+  @IsOptional()
   @IsEmail()
   email: string;
 
   @IsOptional()
   @IsBoolean()
   enabled: boolean;
+
+  @IsOptional()
+  @IsString()
+  oldPassword: string;
+
+  @IsOptional()
+  @IsString()
+  newPassword: string;
 }

@@ -8,6 +8,8 @@ import { kebab } from 'case';
 import { useApiContext } from '../../context/api';
 import Modal from '../organisms/modal';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SIGNUP_FORM_ID = 'SIGNUP_FORM_ID';
 
@@ -20,8 +22,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 	const navigate = useNavigate();
 	const [error, setError] = useState<string | null>(null);
 	const [emailValue, setemailValue] = useState('');
-	const [loading, setLoading] = useState<boolean>(false);
-	const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (emailValue !== '') {
@@ -29,10 +30,6 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			return () => clearTimeout(timeoutId);
 		}
 	}, [emailValue]);
-
-	useEffect(() => {
-		if (registerSuccess) navigate('/');
-	}, [registerSuccess]);
 
 	const inputChanged = (e: any) => {
 		setemailValue(e.target.value);
@@ -45,11 +42,13 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (err: any) {
 			setError(err.response.data.message);
+			setIsLoadingSubmit(false);
 		}
 	};
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
+		setIsLoadingSubmit(true);
 		setError(null);
 
 		const formData = new FormData(event.currentTarget);
@@ -61,6 +60,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 
 		if (password !== rePassword) {
 			setError('passwords do not matched');
+			setIsLoadingSubmit(false);
 			return;
 		}
 
@@ -77,74 +77,104 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			password,
 			organizationSlug,
 		};
-
 		try {
 			await modalUserValidation.validate(body);
 			await postSignUp(body);
-
-			setRegisterSuccess(true);
+			setOpen(false);
+			toast.success('Registration has been successful! Please signIn!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		} catch (e: any) {
 			setError(e.message);
+			toast.error('Something went wrong! :((', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
-
-		setLoading(false);
+		setIsLoadingSubmit(false);
 	};
 
 	return (
-		<Modal
-			show={open}
-			onClose={() => setOpen(false)}
-			title={'SignUp Form'}
-			actions={[
-				{
-					label: 'Submit',
-					type: 'submit',
-					form: SIGNUP_FORM_ID,
-					loading,
-					success: registerSuccess,
-				},
-			]}>
-			{error && <p className="text-red-500">{error}</p>}
-			<form id={SIGNUP_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
-				<InputFormControl
-					label={'Name'}
-					inputProps={{
-						type: 'string',
-						placeholder: 'Your name',
-					}}
-				/>
-				<InputFormControl
-					label={'Organization Name'}
-					inputProps={{
-						type: 'string',
-						placeholder: 'Your organization name',
-					}}
-				/>
-				<InputFormControl
-					label={'Email address'}
-					inputProps={{
-						value: emailValue,
-						onChange: inputChanged,
-						type: 'email',
-						placeholder: 'Your email address',
-					}}
-				/>
-				<InputFormControl
-					label={'Password'}
-					inputProps={{
-						type: 'password',
-						placeholder: 'Your password',
-					}}
-				/>
-				<InputFormControl
-					label={'Repeat Password'}
-					inputProps={{
-						type: 'password',
-						placeholder: 'Repeat the previous password',
-					}}
-				/>
-			</form>
-		</Modal>
+		<>
+			<Modal
+				show={open}
+				onClose={() => setOpen(false)}
+				title={'SignUp Form'}
+				actions={[
+					{
+						label: 'Submit',
+						type: 'submit',
+						form: SIGNUP_FORM_ID,
+						loading: isLoadingSubmit,
+					},
+				]}>
+				{error && <p className="text-red-500">{error}</p>}
+				<form id={SIGNUP_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
+					<InputFormControl
+						label={'Name'}
+						inputProps={{
+							type: 'string',
+							placeholder: 'Your name',
+						}}
+					/>
+					<InputFormControl
+						label={'Organization Name'}
+						inputProps={{
+							type: 'string',
+							placeholder: 'Your organization name',
+						}}
+					/>
+					<InputFormControl
+						label={'Email address'}
+						inputProps={{
+							value: emailValue,
+							onChange: inputChanged,
+							type: 'email',
+							placeholder: 'Your email address',
+						}}
+					/>
+					<InputFormControl
+						label={'Password'}
+						inputProps={{
+							type: 'password',
+							placeholder: 'Your password',
+						}}
+					/>
+					<InputFormControl
+						label={'Repeat Password'}
+						inputProps={{
+							type: 'password',
+							placeholder: 'Repeat the previous password',
+						}}
+					/>
+				</form>
+			</Modal>
+			<ToastContainer
+				position="top-right"
+				autoClose={8000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
+		</>
 	);
 };
 export default SignUpModal;

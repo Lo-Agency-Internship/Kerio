@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { User } from 'src/entities/user.entity';
@@ -16,10 +20,10 @@ import {
   IReadOneById,
   IUpdateOneByIdPayload,
   IUpdateUserByEmailPayload,
-  IUpdateUserByIdPayload,
 } from 'src/interfaces/user.service.interface';
 import { OrganizationUser } from 'src/entities/organizationUser.entity';
 import { getPaginationOffset } from 'src/utils/functions';
+import { hashSync } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -33,10 +37,6 @@ export class UserService {
 
   async addUser(payload: IAddUserPayload): Promise<User> {
     return await this.userRepository.save(payload.user);
-  }
-
-  async updateUserById(payload: IUpdateUserByIdPayload): Promise<UpdateResult> {
-    return await this.userRepository.update(payload.id, payload.user);
   }
 
   async updateUserByEmail(
@@ -139,7 +139,19 @@ export class UserService {
   }
 
   async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
-    return await this.userRepository.update(payload.id, payload.employee);
+    if (payload.user.oldPassword) {
+      const user = await this.userRepository.findOneBy({ id: payload.id });
+      const hashedPassword = hashSync(payload.user.oldPassword, user.salt);
+      const areEqual = user.password === hashedPassword;
+      if (!areEqual) {
+        throw new UnauthorizedException('user is unathorized');
+      }
+      const hashedNewPassword = hashSync(payload.user.newPassword, user.salt);
+      return await this.userRepository.update(payload.id, {
+        password: hashedNewPassword,
+      });
+    }
+    return await this.userRepository.update(payload.id, payload.user);
   }
 
   async delete(payload: IDeleteOneByIdPayload): Promise<DeleteResult> {

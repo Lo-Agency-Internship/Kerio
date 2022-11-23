@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/atoms/button';
 import { uri } from '../utils';
 
@@ -10,7 +10,6 @@ export default function Activation() {
 	const [searchParams] = useSearchParams();
 	const email = searchParams.get('email');
 	const navigate = useNavigate();
-	console.log(email);
 	const active = async () => {
 		try {
 			await axios.get(uri(`auth/enable?email=${email}`), {});

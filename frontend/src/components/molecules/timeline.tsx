@@ -1,6 +1,4 @@
 import CardTimeline from './cardTimeline';
-import axios from 'axios';
-import { uri } from '../../utils';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ITimeline } from '../../utils/interfaces/user/timeline.interface';

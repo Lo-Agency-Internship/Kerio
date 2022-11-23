@@ -1,5 +1,3 @@
-import Employee from '../../../components/molecules/employee';
-
 export interface IApiPaginationParams {
 	pagination: {
 		page?: number;
@@ -77,6 +75,9 @@ export interface IDeleteContact {
 	id: number;
 }
 
+export interface IDeleteNote {
+	id?: string;
+}
 export interface IDeleteEmployee {
 	id: string;
 }

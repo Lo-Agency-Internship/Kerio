@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Button } from '../components/atoms/button';
 import { InputFormControl } from '../components/molecules/formControls/inputFormControl';
 import { uri } from '../utils';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Invite() {
 	const [error, setError] = useState<string | null>(null);
@@ -14,6 +16,16 @@ export default function Invite() {
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
 		await axios.post(uri(`invites/${token}`), {});
+		toast.success('Thanks for the registration. Please check your email!', {
+			position: 'top-center',
+			autoClose: 8000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: 'light',
+		});
 	};
 	const active = async () => {
 		try {
@@ -24,6 +36,16 @@ export default function Invite() {
 			setMessage(true);
 		} catch (err: any) {
 			setError(err.response.data.message);
+			toast.error('Something went wrong! :((', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
 	};
 	useEffect(() => {
@@ -105,6 +127,18 @@ export default function Invite() {
 			) : (
 				<>{error && <p className="text-red-700 font-bold">{error}</p>}</>
 			)}
+			<ToastContainer
+				position="top-right"
+				autoClose={8000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
 		</>
 	);
 }
