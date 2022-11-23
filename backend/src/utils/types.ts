@@ -42,6 +42,8 @@ export enum ERole {
   Employee = 'Employee',
 }
 
+export type UserUpdate = User & { oldPassword: string; newPassword: string };
+
 export enum EContactStatus {
   Lead = 'Lead',
   PotentialCustomer = 'PotentialCustomer',
