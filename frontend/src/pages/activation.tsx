@@ -29,7 +29,7 @@ export default function Activation() {
 					<Button
 						style="w-42 bg-white tracking-wide text-gray-800 font-bold rounded border-b-2 border-solid border-2 border-indigo-600 hover:border-blue-600 hover:bg-blue-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center"
 						label="Click here for Sign In!"
-						onClick={() => navigate(`/Auth`)}
+						onClick={() => navigate(`/auth`)}
 					/>
 				</>
 			) : (
