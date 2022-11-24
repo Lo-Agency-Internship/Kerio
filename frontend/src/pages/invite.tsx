@@ -30,7 +30,7 @@ export default function Invite() {
 			name,
 			password,
 		};
-		console.log(body);
+
 		try {
 			await inviteValidation.validate(body);
 			await axios.post(uri(`invites/${token}`), body);
