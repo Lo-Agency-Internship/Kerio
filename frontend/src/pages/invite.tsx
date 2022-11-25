@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { inviteValidation } from '../validation/inviteValidation';
 
+
 export default function Invite() {
 	const [error, setError] = useState<string | null>(null);
 	const [message, setMessage] = useState<boolean>(false);
