@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
 import { Button } from '../atoms/button';
 import { editContactValidation } from '../../validation/editContactValidation';
-import { IUser } from '../../utils/interfaces/user';
+import { IUserById } from '../../utils/interfaces/user';
 import DeleteModal from '../molecules/deleteModal';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 export interface AccountPanelProps {
-	user?: IUser;
-	setUser?: (value: IUser) => void;
+	user?: IUserById;
+	setUser?: (value: IUserById) => void;
 }
 export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any) => {
 	const [inputsShow, setInputsShow] = useState(false);

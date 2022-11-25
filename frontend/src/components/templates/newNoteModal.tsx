@@ -10,11 +10,12 @@ import 'react-toastify/dist/ReactToastify.css';
 interface IProps {
 	setOpen: (close: boolean) => void;
 	open: boolean;
+	statuses: any;
 }
 
 const ADDNOTE_FORM_ID = 'ADDNOTE_FORM_ID';
 
-const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
+const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 	const { id } = useParams();
 	const { change, setChange, postNoteInfo } = useApiContext();
 	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
@@ -28,7 +29,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 		const title = formData.get('title')?.toString().toLowerCase();
 		const description = formData.get('description');
 		const date = formData.get('date');
-		const status = formData.get('status');
+		const status = statuses[statuses.length - 1].status.status.toString();
 		const score = formData.get('score');
 		const body = {
 			title,
@@ -136,26 +137,11 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open }) => {
 						iSelectProps={{
 							iOptionProps: [
 								{
-									title: 'Lead',
-									value: 'Lead',
-								},
-								{
-									title: 'PotentialCustomer',
-									value: 'PotentialCustomer',
-								},
-								{
-									title: 'LostPotentialCustomer',
-									value: 'LostPotentialCustomer',
-								},
-								{
-									title: 'LostLoyalCustomer',
-									value: 'LostLoyalCustomer',
-								},
-								{
-									title: 'LoyalCustomer',
-									value: 'LoyalCustomer',
+									title: statuses[statuses.length - 1].status.status,
+									value: statuses[statuses.length - 1].status.status,
 								},
 							],
+							disabled: true,
 						}}
 					/>
 				</form>
