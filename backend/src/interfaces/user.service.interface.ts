@@ -1,15 +1,10 @@
 import { Organization } from 'src/entities/organization.entity';
 import { User } from 'src/entities/user.entity';
-import { NewUser } from 'src/utils/types';
+import { NewUser, UserUpdate } from 'src/utils/types';
 import { DeepPartial } from 'typeorm';
 
 export interface IAddUserPayload {
   user: NewUser;
-}
-
-export interface IUpdateUserByIdPayload {
-  id: number;
-  user: User;
 }
 
 export interface IUpdateUserByEmailPayload {
@@ -43,7 +38,7 @@ export interface IReadOneById {
 
 export interface IUpdateOneByIdPayload {
   id: number;
-  employee: DeepPartial<User>;
+  user: DeepPartial<UserUpdate>;
 }
 
 export interface IDeleteOneByIdPayload {

@@ -9,6 +9,7 @@ import {
   Param,
   ParseIntPipe,
   Put,
+  UnauthorizedException,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -18,7 +19,7 @@ import { SecureUser } from '../utils/types';
 import { JwtGuard } from '../utils/jwt.guard';
 import { RequestContextService } from 'src/services/requestContext.service';
 import { Organization } from 'src/entities/organization.entity';
-import { UpdateEmployeeBodyDto } from 'src/dtos/user.dto';
+import { UpdateUserBodyDto } from 'src/dtos/user.dto';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 @UseGuards(JwtGuard)
@@ -57,12 +58,24 @@ export class UserController {
   @UsePipes(new ValidationPipe({ transform: true }))
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() employee: UpdateEmployeeBodyDto,
+    @Body() user: UpdateUserBodyDto,
   ): Promise<UpdateResult> {
-    return this.userService.updateOneById({
-      id,
-      employee,
-    });
+    try {
+      const { id: userId } = this.contextService.get('userData');
+      if (userId === id) {
+        return this.userService.updateOneById({
+          id,
+          user,
+        });
+      }
+      throw new Error('not allowed');
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new HttpException(`user is unathorized`, HttpStatus.BAD_REQUEST);
+      } else {
+        throw new HttpException(' user not authorized', HttpStatus.BAD_REQUEST);
+      }
+    }
   }
 
   @UsePipes(new ValidationPipe({ transform: true }))
