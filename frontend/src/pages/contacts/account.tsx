@@ -3,11 +3,11 @@ import { AccountPanel } from '../../components/organisms/accountPanel';
 import NotePannel from '../../components/organisms/notePannel';
 import SettingsSidebar from '../../components/organisms/settingSidebar';
 
-import { IUser } from '../../utils/interfaces/user';
+import { IUserById } from '../../utils/interfaces/user';
 
 export interface AccountProps {
-	user?: IUser;
-	setUser?: (value: IUser) => void;
+	user?: IUserById;
+	setUser?: (value: IUserById) => void;
 }
 
 export const Account: React.FC<AccountProps> = ({ user, setUser }) => {
@@ -64,7 +64,7 @@ export const Account: React.FC<AccountProps> = ({ user, setUser }) => {
 								)}
 								{sidebarActiveItem === 'notes' && (
 									<>
-										<NotePannel />
+										<NotePannel statuses={user?.statuses} />
 									</>
 								)}
 							</div>
