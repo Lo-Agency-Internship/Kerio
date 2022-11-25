@@ -108,7 +108,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		try {
 			await deleteNote({ id: note.id });
 			const dataa = await getAllNotes({ id: params.id as string });
-			console.log(dataa, params.id);
 			setNotes(dataa.notes);
 			setIsLoadingSubmit(false);
 		} catch (err: any) {
