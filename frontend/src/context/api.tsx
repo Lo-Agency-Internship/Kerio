@@ -50,7 +50,6 @@ interface IApiContext {
 	updateContactInfo(payload: IUpdateContactInfo): Promise<void>;
 	updateEmployeeInfo(payload: IUpdateEmployeeInfo): Promise<void>;
 	updateContactNoteById(payload: IUpdateContactNoteById): Promise<void>;
-	deleteContact(payload: IDeleteContact): Promise<void>;
 	deleteEmployee(payload: IDeleteEmployee): Promise<void>;
 	postLogin(payload: IPostLogin): Promise<void>;
 	postSignUp(payload: IPostSignUp): Promise<void>;
@@ -217,9 +216,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	/// //////delete
-	const deleteContact = async (payload: IDeleteContact) => {
-		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
-	};
 	const deleteEmployee = async (payload: IDeleteEmployee) => {
 		axios.delete(uri(`users/${payload.id}`), headerAuth);
 	};
@@ -259,7 +255,6 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				postNoteInfo,
 				updateContactInfo,
 				updateContactNoteById,
-				deleteContact,
 				updateEmployeeInfo,
 				deleteEmployee,
 				deleteContacts,

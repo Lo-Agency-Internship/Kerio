@@ -102,7 +102,7 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 						form: ADDEMPLOYEE_FORM_ID,
 					},
 				]}>
-				{error && <p>{error}</p>}
+				{error && <p className="text-red-500">{error}</p>}
 
 				<div className="flex gap-1">
 					<div>
