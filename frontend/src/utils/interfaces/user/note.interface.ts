@@ -3,6 +3,6 @@ export interface INote {
 	title?: string;
 	date?: string;
 	description?: string;
-	score?: string;
+	score?: string | null;
 	status?: string;
 }

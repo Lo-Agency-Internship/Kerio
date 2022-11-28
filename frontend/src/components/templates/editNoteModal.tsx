@@ -37,6 +37,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 	const [handleType, setHandleType] = useState<string>('text');
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+	const [selectBoxValue, setSelectBoxValue] = useState<string | null>(null);
 
 	const editHandler = () => {
 		setInputDisabled(false);
@@ -58,12 +59,24 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
 		setIsLoadingSubmit(true);
+		setSelectBoxValue(null);
 		const formData = new FormData(e.currentTarget);
 		const date = contactDate;
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
 		const score = formData.get('score') as string;
-		const body = { date, title, description, score };
+		let body;
+		if (score === '') {
+			body = { title, description, date, score: null };
+		} else {
+			body = {
+				title,
+				description,
+				date,
+
+				score,
+			};
+		}
 		try {
 			await updateContactNoteById({
 				date: body.date,
@@ -169,7 +182,31 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 							disabled: inputDisabled,
 						}}
 					/>
-					<InputFormControl
+					<SelectFormControl
+						label={'Score'}
+						iSelectProps={{
+							iOptionProps: [
+								{
+									title: '+1',
+									value: '+1',
+								},
+								{
+									title: '-1',
+									value: '-1',
+								},
+								{
+									title: '0',
+									value: '0',
+								},
+								{
+									title: 'No score',
+									value: '',
+								},
+							],
+							disabled: inputDisabled,
+						}}
+					/>
+					{/* <InputFormControl
 						label={'Score'}
 						inputProps={{
 							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
@@ -182,7 +219,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 							max: '5',
 							min: '-5',
 						}}
-					/>
+					/> */}
 
 					<SelectFormControl
 						label={'Status'}
