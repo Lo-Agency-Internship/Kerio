@@ -29,11 +29,11 @@ export class Note {
   @Column({ nullable: true })
   date: Date;
 
-  @Column({nullable:true})
+  @Column({ nullable: true })
   testll: string;
 
-  @Column({nullable:true})
-  msgoop:string
+  @Column({ nullable: true })
+  msgoop: string;
 
   @CreateDateColumn()
   createdAt: Date;
