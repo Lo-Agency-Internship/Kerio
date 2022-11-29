@@ -23,7 +23,7 @@ export class AddNotetDto {
   status: EContactStatus;
 
   @IsOptional()
-  score: number;
+  score: number | null;
 }
 
 export class UpdateNoteBodyDto {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useApiContext } from '../../context/api';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IUser } from '../../utils/interfaces/user';
+import { IUserById } from '../../utils/interfaces/user';
 import Loading from '../../components/molecules/loading';
 import { Page } from '../../layout/page';
 import { Button } from '../../components/atoms/button';
@@ -11,7 +11,7 @@ import { ITimeline } from '../../utils/interfaces/user/timeline.interface';
 import { Account } from './account';
 
 export default function ContactPage() {
-	const [contact, setContact] = useState<IUser>();
+	const [contact, setContact] = useState<IUserById>();
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
 	const [roadMap] = useState<ITimeline[] | null>(null);
 	const { getContactsInfoById, isLoading } = useApiContext();
@@ -29,7 +29,6 @@ export default function ContactPage() {
 	useEffect(() => {
 		fetchData();
 	}, []);
-
 	return (
 		<Page
 			header={{
@@ -37,7 +36,7 @@ export default function ContactPage() {
 					() => <Button label="New Note" type="submit" style="" onClick={() => setShowNoteModal(true)}></Button>,
 				],
 			}}>
-			{showNoteModal && <NewNoteModal setOpen={setShowNoteModal} open={showNoteModal} />}
+			{showNoteModal && <NewNoteModal setOpen={setShowNoteModal} open={showNoteModal} statuses={contact?.statuses} />}
 			{isLoading ? (
 				<Loading />
 			) : (
