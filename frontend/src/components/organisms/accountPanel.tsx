@@ -14,7 +14,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [background, setBackground] = useState('bg-transparent');
-	const { updateContactInfo, deleteContact } = useApiContext();
+	const { updateContactInfo, deleteContacts } = useApiContext();
 	const [contactName, setContactName] = useState(user?.name);
 	const [contactEmail, setContactEmail] = useState(user?.email);
 	const [contactPhone, setContactPhone] = useState(user?.phone);
@@ -68,7 +68,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 	const submitDelete = async () => {
 		setIsLoadingSubmit(true);
 		try {
-			await deleteContact({ id: user.id });
+			await deleteContacts([user.id]);
 			setShowDeleteModal(false);
 			setInputsShow(false);
 			navigate('/contacts');

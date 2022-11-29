@@ -57,7 +57,6 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 				theme: 'light',
 			});
 		} catch (err: any) {
-			console.log(err);
 			setError(err?.response?.data?.message);
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
@@ -87,6 +86,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 						form: ADDCONTACT_FORM_ID,
 					},
 				]}>
+				{error && <p className="text-red-500">{error}</p>}
 				<form id={ADDCONTACT_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 					<InputFormControl
 						label={'Name'}
