@@ -5,7 +5,7 @@ Content-Type: application/json
 
 	"email": "goli@d.com",
     "password": "0000",
-    "name": "gol Doe",
-    "organizationSlug": "hi gol's Company"
+    "name": "goli",
+    "organizationSlug": "hi goli's Company"
 
 }

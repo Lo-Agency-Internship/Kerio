@@ -122,11 +122,11 @@ export class AuthService {
       },
     });
 
-    await this.orgUserService.assignUserToOrganization(
-      createdUser,
+    await this.orgUserService.assignUserToOrganization({
+      user: createdUser,
       organization,
       role,
-    );
+    });
 
     return await this.orgUserService.findUserWithOrganizationByUserEmail(email);
   }
