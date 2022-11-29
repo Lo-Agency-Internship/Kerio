@@ -206,8 +206,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 							],
 							disabled: inputDisabled,
 							onChange: (e) => setContactScore(e.target.value),
-							defaultValue: contactScore,
-							value: contactScore,
+							value:  contactScore === null ? '' : contactScore,
 						}}
 					/>
 					<SelectFormControl
