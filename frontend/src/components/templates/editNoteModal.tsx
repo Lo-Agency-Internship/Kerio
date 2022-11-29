@@ -4,7 +4,6 @@ import { INote } from '../../utils/interfaces/user/note.interface';
 import { Button } from '../atoms/button';
 import SubmitDelete from '../molecules/submitDelete';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
-import { Input } from '../atoms/input';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { useApiContext } from '../../context/api';
@@ -53,8 +52,8 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		setContactDate(note?.date);
 		setContactDescription(note?.description);
 		setContactTitle(note?.title);
+		setContactScore(note?.score);
 	};
-
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
 		setIsLoadingSubmit(true);
@@ -63,7 +62,18 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
 		const score = formData.get('score') as string;
-		const body = { date, title, description, score };
+		let body;
+		if (score === '') {
+			body = { title, description, date, score: null };
+		} else {
+			body = {
+				title,
+				description,
+				date,
+				score,
+			};
+		}
+
 		try {
 			await updateContactNoteById({
 				date: body.date,
@@ -169,21 +179,36 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 							disabled: inputDisabled,
 						}}
 					/>
-					<InputFormControl
+					<SelectFormControl
 						label={'Score'}
-						inputProps={{
-							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
-							type: 'number',
-							placeholder: 'Score',
-							defaultValue: note?.score,
-							onChange: (e) => setContactScore(e.target.value),
-							value: contactScore,
+						iSelectProps={{
+							iOptionProps: [
+								{
+									title: '+1',
+									value: '+1',
+									selected: contactScore === '+1' && true,
+								},
+								{
+									title: '-1',
+									value: '-1',
+									selected: contactScore === '-1' && true,
+								},
+								{
+									title: '0',
+									value: '0',
+									selected: contactScore === '0' && true,
+								},
+								{
+									title: 'No score',
+									value: '',
+									selected: contactScore === null && true,
+								},
+							],
 							disabled: inputDisabled,
-							max: '5',
-							min: '-5',
+							onChange: (e) => setContactScore(e.target.value),
+							value:  contactScore === null ? '' : contactScore,
 						}}
 					/>
-
 					<SelectFormControl
 						label={'Status'}
 						iSelectProps={{

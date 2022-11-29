@@ -31,13 +31,18 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 		const date = formData.get('date');
 		const status = statuses[statuses.length - 1].status.status.toString();
 		const score = formData.get('score');
-		const body = {
-			title,
-			description,
-			date,
-			status,
-			score,
-		};
+		let body;
+		if (score === '') {
+			body = { title, description, date, status, score: null };
+		} else {
+			body = {
+				title,
+				description,
+				date,
+				status,
+				score,
+			};
+		}
 		try {
 			await modalNoteValidation.isValid(body);
 			await postNoteInfo({
@@ -128,6 +133,10 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 								{
 									title: '0',
 									value: '0',
+								},
+								{
+									title: 'No score',
+									value: '',
 								},
 							],
 						}}
