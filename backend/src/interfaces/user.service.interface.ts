@@ -1,6 +1,8 @@
+import { PaginationDto } from 'src/dtos';
 import { Organization } from 'src/entities/organization.entity';
 import { User } from 'src/entities/user.entity';
-import { NewUser, UserUpdate } from 'src/utils/types';
+import { NewUser, SecureUser } from 'src/utils/types';
+import { UserUpdate } from 'src/utils/types';
 import { DeepPartial } from 'typeorm';
 
 export interface IAddUserPayload {
@@ -28,7 +30,7 @@ export interface IFindUserWithOrganizationPayload {
   email: string;
 }
 
-export interface IReadAllByOrganization {
+export interface IReadAllByOrganization extends PaginationDto {
   organization: Organization;
 }
 
@@ -43,4 +45,13 @@ export interface IUpdateOneByIdPayload {
 
 export interface IDeleteOneByIdPayload {
   id: number;
+}
+
+export interface IPaginatedUserResponse {
+  users: SecureUser[];
+  metaData: {
+    total: number;
+    page: number;
+    size: number;
+  };
 }

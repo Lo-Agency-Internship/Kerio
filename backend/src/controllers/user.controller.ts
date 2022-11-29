@@ -9,6 +9,7 @@ import {
   Param,
   ParseIntPipe,
   Put,
+  Query,
   UnauthorizedException,
   UseGuards,
   UsePipes,
@@ -21,6 +22,7 @@ import { RequestContextService } from 'src/services/requestContext.service';
 import { Organization } from 'src/entities/organization.entity';
 import { UpdateUserBodyDto } from 'src/dtos/user.dto';
 import { DeleteResult, UpdateResult } from 'typeorm';
+import { PaginationDto } from 'src/dtos';
 
 @UseGuards(JwtGuard)
 @Controller('users')
@@ -47,12 +49,17 @@ export class UserController {
   }
 
   @Get()
-  async readAllByOrganization() {
+  async readAllByOrganization(@Query() { page, size, sort }: PaginationDto) {
     const organization = this.contextService.get(
       'organization',
     ) as Organization;
 
-    return this.userService.readAllByOrganization({ organization });
+    return this.userService.readAllByOrganization({
+      organization,
+      size,
+      sort,
+      page,
+    });
   }
 
   @Put(':id')

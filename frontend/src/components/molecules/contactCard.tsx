@@ -1,8 +1,8 @@
-import { IUser } from '../../utils/interfaces/user';
+import { IUsers } from '../../utils/interfaces/user';
 import { Button } from '../atoms/button';
 import { useNavigate } from 'react-router-dom';
 interface IContactCards {
-	contact: IUser;
+	contact: IUsers;
 }
 const ContactCards: React.FC<IContactCards> = ({ contact }) => {
 	const navigate = useNavigate();
@@ -15,7 +15,7 @@ const ContactCards: React.FC<IContactCards> = ({ contact }) => {
 				</div>
 				<div>
 					<div className="font-mono text-base">{contact.email}</div>
-					<div className="font-mono text-base">{contact.lastStatus.status.status}</div>
+					{contact.lastStatus && <div className="font-mono text-base">{contact.lastStatus.status.status}</div>}
 				</div>
 				<div>
 					<Button

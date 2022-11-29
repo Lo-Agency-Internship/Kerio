@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { toast } from 'react-toastify';
 import { changePasswordValidation } from '../../validation/changePasswordValidation';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import Modal from '../organisms/modal';
@@ -15,10 +16,16 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
-		setError(null);
+
 		const formData = new FormData(event.currentTarget);
-		const oldPassword = formData.get('oldPassword')?.toString().toLowerCase();
-		const newPassword = formData.get('newPassword')?.toString().toLowerCase();
+		const oldPassword = formData.get('old-password');
+		const newPassword = formData.get('new-password');
+		const reNewPassword = formData.get('confirm-new-password');
+		if (newPassword !== reNewPassword) {
+			setError('new password is not match');
+			return;
+		}
+
 		const body = {
 			oldPassword,
 			newPassword,
@@ -27,8 +34,28 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 		try {
 			await changePasswordValidation.isValid({ oldPassword });
 			setOpen(false);
+			toast.success('Your password has been changes successfully!', {
+				position: 'top-center',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		} catch (err: any) {
 			setError(err.response.data.message);
+			toast.error('Something went wrong! :((', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
 	};
 
@@ -47,21 +74,21 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 			{error && <p className="text-red-500">{error}</p>}
 			<form id={ChangePassword} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 				<InputFormControl
-					label={'Old password'}
+					label="Old password"
 					inputProps={{
 						type: 'password',
 						placeholder: 'Your Old password',
 					}}
 				/>
 				<InputFormControl
-					label={'New password'}
+					label="New password"
 					inputProps={{
 						type: 'password',
 						placeholder: 'Your new password',
 					}}
 				/>
 				<InputFormControl
-					label={'Confirm new password'}
+					label="Confirm new password"
 					inputProps={{
 						type: 'password',
 						placeholder: 'Confirm your new password',

@@ -66,7 +66,7 @@ export interface IUpdateContactNoteById {
 	date?: string;
 	title?: string;
 	description?: string;
-	score?: string;
+	score?: string | null;
 	status?: string;
 	id?: string;
 }

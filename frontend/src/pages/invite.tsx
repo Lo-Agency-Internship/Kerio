@@ -6,6 +6,7 @@ import { InputFormControl } from '../components/molecules/formControls/inputForm
 import { uri } from '../utils';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { inviteValidation } from '../validation/inviteValidation';
 
 export default function Invite() {
 	const [error, setError] = useState<string | null>(null);
@@ -13,23 +14,53 @@ export default function Invite() {
 	const [response, setResponse] = useState<any>();
 	const [searchParams] = useSearchParams();
 	const token = searchParams.get('token');
-	const submitHandler = async (e: any) => {
-		e.preventDefault();
-		await axios.post(uri(`invites/${token}`), {});
-		toast.success('Thanks for the registration. Please check your email!', {
-			position: 'top-center',
-			autoClose: 8000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: 'light',
-		});
+
+	const submitHandler = async (event: any) => {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
+		const name = formData.get('name')?.toString().toLowerCase();
+		const password = formData.get('password');
+		const rePassword = formData.get('repassword');
+
+		if (password !== rePassword) {
+			setError('password do not matched');
+			return;
+		}
+		const body = {
+			name,
+			password,
+		};
+
+		try {
+			await inviteValidation.validate(body);
+			await axios.post(uri(`invites/${token}`), body);
+			toast.success('Thanks for the registration. Please check your email!', {
+				position: 'top-center',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
+		} catch (err: any) {
+			setError(err.response.data.message);
+			toast.error('Something went wrong! :((', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
+		}
 	};
 	const active = async () => {
 		try {
-			const data = await axios.get(uri(`invites/${token}`), {});
+			const data = await axios.get(uri(`invites/${token}`));
 			const email = data.data.email;
 
 			setResponse(email);
@@ -76,7 +107,7 @@ export default function Invite() {
 										className:
 											'block w-11/12 px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black',
 										placeholder: 'Mark',
-										type: 'name',
+										type: 'text',
 									}}
 								/>
 							</div>
@@ -105,7 +136,7 @@ export default function Invite() {
 							</div>
 							<div className="relative">
 								<InputFormControl
-									label="rePassword"
+									label="repassword"
 									inputProps={{
 										className:
 											'block w-11/12 px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black',
@@ -120,6 +151,7 @@ export default function Invite() {
 									label="submit"
 									style="inline-block w-11/12 px-4 py-3 text-xl font-medium text-center text-white transition duration-200 bg-gray-500 rounded-lg hover:bg-gray-900 ease"
 								/>
+								{error && <p className="text-red-500 justify-items-end mt-4 ml-40 flex">{error}</p>}
 							</div>
 						</form>
 					</div>

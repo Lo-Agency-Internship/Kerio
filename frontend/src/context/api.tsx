@@ -15,9 +15,9 @@ import {
 	IDeleteContact,
 	IUpdateContactNoteById,
 	IGetAllNotes,
-	IDeleteNote,
 	IUpdateEmployeeInfo,
 	IDeleteEmployee,
+	IDeleteNote,
 } from '../utils/interfaces/api/api.interface';
 import { IGetContacts } from '../utils/interfaces/api/data.interface';
 import { IEmployee } from '../utils/interfaces/user/employee.interface';
@@ -50,7 +50,6 @@ interface IApiContext {
 	updateContactInfo(payload: IUpdateContactInfo): Promise<void>;
 	updateEmployeeInfo(payload: IUpdateEmployeeInfo): Promise<void>;
 	updateContactNoteById(payload: IUpdateContactNoteById): Promise<void>;
-	deleteContact(payload: IDeleteContact): Promise<void>;
 	deleteEmployee(payload: IDeleteEmployee): Promise<void>;
 	postLogin(payload: IPostLogin): Promise<void>;
 	postSignUp(payload: IPostSignUp): Promise<void>;
@@ -217,15 +216,10 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	/// //////delete
-	const deleteContact = async (payload: IDeleteContact) => {
-		axios.delete(uri(`contacts/${payload.id}`), headerAuth);
-	};
 	const deleteEmployee = async (payload: IDeleteEmployee) => {
 		axios.delete(uri(`users/${payload.id}`), headerAuth);
 	};
-	const deleteNote = async (payload: IDeleteNote) => {
-		await axios.delete(uri(`notes/${payload.id}`), headerAuth);
-	};
+
 	const deleteContacts = async (payload: IDeleteContact[]) => {
 		axios.delete(uri(`contacts/batch`), {
 			data: {
@@ -235,6 +229,14 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		});
 	};
 
+	const deleteNote = async (payload: IDeleteNote) => {
+		axios.delete(uri(`notes/${payload.id}`), {
+			data: {
+				id: payload,
+			},
+			...headerAuth,
+		});
+	};
 	return (
 		<ApiContext.Provider
 			value={{
@@ -253,13 +255,12 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 				postNoteInfo,
 				updateContactInfo,
 				updateContactNoteById,
-				deleteContact,
 				updateEmployeeInfo,
 				deleteEmployee,
 				deleteContacts,
+				deleteNote,
 				updateUserInfo,
 				postInviteEmployee,
-				deleteNote,
 			}}>
 			{children}
 		</ApiContext.Provider>

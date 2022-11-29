@@ -1,18 +1,14 @@
 import { useState } from 'react';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { format } from 'date-fns';
-import EditNoteModal from '../templates/editNoteModal';
 interface INoteCards {
 	data: INote;
+	setEditNoteModal: any;
+	setNote: any;
 }
-const NoteCard: React.FC<INoteCards> = ({ data }) => {
-	const [editNoteModal, setEditNoteModal] = useState<boolean>(false);
-	const [note, setNote] = useState<INote>(data);
-
+const NoteCard: React.FC<INoteCards> = ({ data, setEditNoteModal, setNote }) => {
 	return (
 		<>
-			{editNoteModal && <EditNoteModal setOpen={setEditNoteModal} open={editNoteModal} note={note} setNote={setNote} />}
-
 			{/* Post 1 */}
 			<article className="bg-white shadow-md rounded border border-slate-200 p-5">
 				<div className="flex flex-start space-x-4">
@@ -27,21 +23,26 @@ const NoteCard: React.FC<INoteCards> = ({ data }) => {
 						/>
 					</div>
 					{/* Content */}
-					<div className="grow" onClick={() => setEditNoteModal(true)}>
+					<div
+						className="grow"
+						onClick={() => {
+							setEditNoteModal(true);
+							setNote(data);
+						}}>
 						{/* Title */}
 						<h2 className="font-semibold text-slate-700 mb-2 text-lg">
-							<p>{note.title}</p>
+							<p>{data.title}</p>
 						</h2>
 
-						<h3 className="text-sm font-semibold text-slate-600 mb-2">{note.description ? note.description : ''}</h3>
+						<h3 className="text-sm font-semibold text-slate-600 mb-2">{data.description ? data.description : ''}</h3>
 
 						{/* Footer */}
 						<footer className="flex flex-wrap text-sm">
 							<div className="flex items-center after:block after:content-['·'] last:after:content-[''] after:text-sm after:text-slate-400 after:px-2">
-								<h4 className="text-sm text-slate-500">{note.date && format(new Date(note.date), ' dd/MM/yyyy')}</h4>
+								<h4 className="text-sm text-slate-500">{data.date && format(new Date(data.date), ' dd/MM/yyyy')}</h4>
 							</div>
 							<div className="flex items-center after:block after:content-['·'] last:after:content-[''] after:text-sm after:text-slate-400 after:px-2">
-								<span className="text-slate-500">{note.status}</span>
+								<span className="text-slate-500">{data.status}</span>
 							</div>
 						</footer>
 					</div>
@@ -55,7 +56,7 @@ const NoteCard: React.FC<INoteCards> = ({ data }) => {
 								xmlns="http://www.w3.org/2000/svg">
 								<path d="m0 6 6-6 6 6z" />
 							</svg>
-							<div>{note.score}</div>
+							<div>{data.score}</div>
 						</button>
 					</div>
 				</div>
