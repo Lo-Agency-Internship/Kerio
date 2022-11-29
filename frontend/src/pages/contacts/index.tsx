@@ -6,6 +6,7 @@ import NewContactModal from '../../components/templates/newContactModal';
 import ContactTable from '../../components/organisms/contactTable';
 import { IUsers } from '../../utils/interfaces/user';
 import DeleteModal from '../../components/molecules/deleteModal';
+import { ToastContainer, toast } from 'react-toastify';
 export default function ContactsPage() {
 	const { getAllContacts, deleteContacts } = useApiContext();
 	const [showAddConactModal, setShowAddConactModal] = useState(false);
@@ -35,58 +36,95 @@ export default function ContactsPage() {
 			await deleteContacts(ids);
 			setToggleCleared(!toggleCleared);
 			await fetchData(currentPage, perPage);
+			toast.success(
+				selectedRows.length === 1 ? `${selectedRows[0].name} Deleted!` : `${selectedRows.length} Contacts Deleted! `,
+				{
+					position: 'top-center',
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: 'light',
+				},
+			);
 		} catch (err: any) {
 			setError(err.response.data.message);
+			toast.error('Something went wrong! ', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
 		setShowDeleteModal(false);
 		setIsLoadingSubmit(false);
 	};
 	return (
-		<Page
-			header={{
-				actions: [
-					() => <Button label="New Contact" type="submit" onClick={() => setShowAddConactModal(true)}></Button>,
-				],
-			}}>
-			<NewContactModal
-				open={showAddConactModal}
-				setOpen={setShowAddConactModal}
-				setContact={setContacts}
-				fetchData={fetchData}
-				totalRows={totalRows}
-				perPage={perPage}
-			/>
+		<>
+			<Page
+				header={{
+					actions: [
+						() => <Button label="New Contact" type="submit" onClick={() => setShowAddConactModal(true)}></Button>,
+					],
+				}}>
+				<NewContactModal
+					open={showAddConactModal}
+					setOpen={setShowAddConactModal}
+					setContact={setContacts}
+					fetchData={fetchData}
+					totalRows={totalRows}
+					perPage={perPage}
+				/>
 
-			<ContactTable
-				toggleCleared={toggleCleared}
-				contact={contacts}
-				setContacts={setContacts}
-				fetchData={fetchData}
-				isLoaded={isLoaded}
-				totalRows={totalRows}
-				perPage={perPage}
-				setPerPage={setPerPage}
-				setSelectedRows={setSelectedRows}
-				selectedRows={selectedRows}
-				showDeleteModal={showDeleteModal}
-				setShowDeleteModal={setShowDeleteModal}
-				setCurrentPage={setCurrentPage}
-			/>
+				<ContactTable
+					toggleCleared={toggleCleared}
+					contact={contacts}
+					setContacts={setContacts}
+					fetchData={fetchData}
+					isLoaded={isLoaded}
+					totalRows={totalRows}
+					perPage={perPage}
+					setPerPage={setPerPage}
+					setSelectedRows={setSelectedRows}
+					selectedRows={selectedRows}
+					showDeleteModal={showDeleteModal}
+					setShowDeleteModal={setShowDeleteModal}
+					setCurrentPage={setCurrentPage}
+				/>
 
-			<DeleteModal
-				open={showDeleteModal}
-				setOpen={setShowDeleteModal}
-				title={'Delete Modal'}
-				handleDelete={handleDelete}
-				loading={isLoadingSubmit}>
-				{selectedRows.length !== 1 ? (
-					<p>Are you sure that you want Delete these contacts ?</p>
-				) : (
-					<p>
-						Are you sure that you want Delete <span className="text-red-700">{selectedRows[0].name}</span> ?
-					</p>
-				)}
-			</DeleteModal>
-		</Page>
+				<DeleteModal
+					open={showDeleteModal}
+					setOpen={setShowDeleteModal}
+					title={'Delete Modal'}
+					handleDelete={handleDelete}
+					loading={isLoadingSubmit}>
+					{selectedRows.length !== 1 ? (
+						<p>Are you sure that you want Delete these contacts ?</p>
+					) : (
+						<p>
+							Are you sure that you want Delete <span className="text-red-700">{selectedRows[0].name}</span> ?
+						</p>
+					)}
+				</DeleteModal>
+			</Page>
+			<ToastContainer
+				position="top-right"
+				autoClose={8000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
+		</>
 	);
 }

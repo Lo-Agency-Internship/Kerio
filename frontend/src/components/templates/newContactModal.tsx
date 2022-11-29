@@ -57,7 +57,6 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 				theme: 'light',
 			});
 		} catch (err: any) {
-			console.log(err);
 			setError(err?.response?.data?.message);
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
