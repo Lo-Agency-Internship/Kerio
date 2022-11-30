@@ -28,13 +28,6 @@ export class Note {
 
   @Column({ nullable: true })
   date: Date;
-
-  @Column({ nullable: true })
-  testll: string;
-
-  @Column({ nullable: true })
-  msgoop: string;
-
   @CreateDateColumn()
   createdAt: Date;
 
