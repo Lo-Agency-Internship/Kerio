@@ -6,7 +6,7 @@ import { OrganizationUser } from '../entities/organizationUser.entity';
 import { Organization } from '../entities/organization.entity';
 import { SecureUserWithOrganization } from '../utils/types';
 import { Role } from 'src/entities/role.entity';
-import { ERole } from '../utils/types';
+import { IassignUserToOrganization } from 'src/interfaces/organizationUser.service.interface';
 
 @Injectable()
 export class OrganizationUserService {
@@ -25,23 +25,21 @@ export class OrganizationUserService {
   ) {}
 
   async assignUserToOrganization(
-    user: User,
-    organization: Organization,
-    role: ERole,
+    payload: IassignUserToOrganization,
   ): Promise<OrganizationUser> {
     const userRole = await this.roleRepository.findOneByOrFail({
-      name: role,
+      name: payload.role,
     });
 
     const orgUser = await this.orgUserRepository.save({
-      org: organization,
-      user,
+      org: payload.organization,
+      user: payload.user,
       role: userRole,
     });
 
     await this.userRepository.update(
       {
-        id: user.id,
+        id: payload.user.id,
       },
       {
         organization: orgUser,

@@ -28,7 +28,6 @@ export class Note {
 
   @Column({ nullable: true })
   date: Date;
-
   @CreateDateColumn()
   createdAt: Date;
 
