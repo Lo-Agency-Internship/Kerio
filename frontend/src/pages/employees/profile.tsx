@@ -9,20 +9,26 @@ import { editEmployeeValidation } from '../../validation/editEmployeeValidation'
 
 export interface EmployeeAccountProps {
 	employee: IEmployee;
-	setEmployee: (value: IEmployee) => void;
+	setEmployee: (value: IEmployee | null) => void;
+	setEmployees: any;
 }
-export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, setEmployee }: EmployeeAccountProps) => {
+export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
+	employee,
+	setEmployee,
+	setEmployees,
+}: EmployeeAccountProps) => {
 	const [inputsShow, setInputsShow] = useState(false);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [background, setBackground] = useState('bg-transparent');
-	const { updateEmployeeInfo, deleteEmployee } = useApiContext();
+	const { updateEmployeeInfo, deleteEmployee, getAllEmployees } = useApiContext();
 	const [employeeName, setEmployeeName] = useState(employee?.name);
 	const [employeeEmail, setEmployeeEmail] = useState(employee?.email);
 	const [error, setError] = useState<string | null | boolean>(null);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 	useEffect(() => {
-		setEmployee(employee);
+		setEmployeeName(employee?.name);
+		setEmployeeEmail(employee?.email);
 	}, [employee]);
 	// // after ckick it we can see 2 new buttons ( yes & no)
 	const editHandler = () => {
@@ -63,10 +69,17 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 	};
 
 	const submitDelete = async () => {
-		await deleteEmployee({ id: employee.id });
+		try {
+			await deleteEmployee({ id: employee.id });
+			const dataa = await getAllEmployees();
+			setEmployees(dataa);
+			setEmployee(null);
+			setShowDeleteModal(false);
+			setInputsShow(false);
+		} catch (err: any) {
+			setError(err.response.data.message);
+		}
 		setShowDeleteModal(false);
-		setInputsShow(false);
-		// navigate('/contacts');
 	};
 
 	return (
@@ -101,7 +114,8 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 					<div className="space-y-5 mb-8 xl:mb-0">
 						<section>
 							<form onSubmit={submitHandler} className="flex flex-col w-full">
-								<h2 className="text-xl leading-snug text-slate-800 font-bold mb-1">Employee Profile</h2>
+								<h2 className="text-xl leading-snug text-slate-800 font-bold mb-1">{employee.name}</h2>
+								{error && <p className="text-red-500">{error}</p>}
 								<div className="text-sm"></div>
 								<div className="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5 pb-4">
 									<div className="sm:w-1/3">
