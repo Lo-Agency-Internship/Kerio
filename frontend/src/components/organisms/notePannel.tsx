@@ -19,7 +19,14 @@ const NotePannel: React.FC<IProps> = ({ statuses }) => {
 
 	const getNotes = async () => {
 		try {
-			const data = await getAllNotes({ id });
+			const data = await getAllNotes({
+				id,
+				pagination: {
+					page: 1,
+					size: 3,
+					sort: 'asc',
+				},
+			});
 			setNotes(data.notes);
 		} catch (e: any) {
 			setError(e.response.data.message);
@@ -29,6 +36,9 @@ const NotePannel: React.FC<IProps> = ({ statuses }) => {
 		getNotes();
 	}, [change]);
 
+	// const handleNextPage = () => {};
+
+	// const handlePreviousPage = () => {};
 	return (
 		<>
 			{editNoteModal && (
@@ -42,11 +52,27 @@ const NotePannel: React.FC<IProps> = ({ statuses }) => {
 				/>
 			)}
 			{error}
-			<div className="space-y-2 w-full px-12 py-6 block">
+			<div className="space-y-2 w-full px-12 py-4">
 				{notes &&
 					notes.map((element, index) => (
 						<NoteCard data={element} key={index} setEditNoteModal={setEditNoteModal} setNote={setNote} />
 					))}
+				<div className="mt-8 text-right">
+					<nav className="inline-flex" role="navigation" aria-label="Navigation">
+						<ul className="flex justify-center my-4">
+							<li className="ml-3 first:ml-0">
+								<button className="btn bg-gray-200 border-slate-500 text-slate-500 cursor-not-allowed p-2 rounded-md">
+									Previous
+								</button>
+							</li>
+							<li className="ml-3 first:ml-0">
+								<button className="btn bg-gray-100 border-slate-500 hover:border-slate-500 text-indigo-500 p-2 rounded-md">
+									Next
+								</button>
+							</li>
+						</ul>
+					</nav>
+				</div>
 			</div>
 		</>
 	);

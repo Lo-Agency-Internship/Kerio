@@ -117,8 +117,8 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		setIsLoadingSubmit(true);
 		try {
 			await deleteNote({ id: note.id });
-			const dataa = await getAllNotes({ id: params.id as string });
-			setNotes(dataa.notes);
+			// const dataa = await getAllNotes({ id: params.id as string });
+			// setNotes(dataa.notes);
 			setIsLoadingSubmit(false);
 		} catch (err: any) {
 			setError(err.response.data.message);
@@ -206,7 +206,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 							],
 							disabled: inputDisabled,
 							onChange: (e) => setContactScore(e.target.value),
-							value:  contactScore === null ? '' : contactScore,
+							value: contactScore === null ? '' : contactScore,
 						}}
 					/>
 					<SelectFormControl

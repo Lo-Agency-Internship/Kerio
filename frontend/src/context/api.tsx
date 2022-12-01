@@ -92,7 +92,9 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	const getAllNotes = async (payload: IGetAllNotes) => {
 		const { data } = await axios.get(uri(`notes/${payload.id}`), {
 			params: {
-				sort: 'asc',
+				page: payload.pagination.page,
+				size: payload.pagination.size,
+				sort: payload.pagination.sort,
 			},
 			...headerAuth,
 		});
