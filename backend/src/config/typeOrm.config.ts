@@ -12,9 +12,8 @@ import { Role } from '../entities/role.entity';
 import { Note } from '../entities/note.entity';
 import { Log } from '../entities/log.entity';
 
- 
 config();
- 
+
 const configService = new ConfigService();
 const entitiesToAdd = [
   Contact,
@@ -28,7 +27,7 @@ const entitiesToAdd = [
   Note,
   Log,
 ];
- 
+
 export default new DataSource({
   type: 'postgres',
   host: configService.get('POSTGRES_HOST'),

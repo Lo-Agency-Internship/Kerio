@@ -26,6 +26,7 @@ import { PaginationDto } from 'src/dtos';
 
 @UseGuards(JwtGuard)
 @Controller('users')
+@UsePipes(new ValidationPipe({ transform: true }))
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -47,7 +48,7 @@ export class UserController {
       }
     }
   }
-
+  @UsePipes(new ValidationPipe({ transform: true }))
   @Get()
   async readAllByOrganization(@Query() { page, size, sort }: PaginationDto) {
     const organization = this.contextService.get(
