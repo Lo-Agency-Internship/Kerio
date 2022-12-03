@@ -4,7 +4,8 @@ import { Button } from '../../components/atoms/button';
 import DeleteModal from '../../components/molecules/deleteModal';
 import { InputFormControl } from '../../components/molecules/formControls/inputFormControl';
 import { useApiContext } from '../../context/api';
-import { IEmployee } from '../../utils/interfaces/user/employee.interface';
+import { IEmployee } from '../../utils/interfaces/api/employeeData.interface';
+
 import { editEmployeeValidation } from '../../validation/editEmployeeValidation';
 
 export interface EmployeeAccountProps {

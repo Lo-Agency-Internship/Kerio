@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { SidebarEmployee } from '../../components/organisms/sideBarEmployee';
 import { useApiContext } from '../../context/api';
 import { Page } from '../../layout/page';
-import { IEmployee } from '../../utils/interfaces/user/employee.interface';
+import { IEmployee } from '../../utils/interfaces/api/employeeData.interface';
+
 import { EmployeesProfile } from './profile';
 
 export const EmployeesPage = () => {
@@ -13,7 +14,7 @@ export const EmployeesPage = () => {
 	const getEmployees = async () => {
 		try {
 			const data = await getAllEmployees();
-			setEmployees(data);
+			setEmployees(data.users);
 		} catch (e: any) {
 			setError(e.response.data.message);
 		}

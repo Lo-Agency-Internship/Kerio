@@ -1,9 +1,8 @@
 import Employee from '../molecules/employee';
-import { useEffect, useState } from 'react';
-import { useApiContext } from '../../context/api';
+import { useState } from 'react';
 import { Button } from '../atoms/button';
 import NewEmployeeModal from '../templates/newEmployeeModal';
-import { IEmployee } from '../../utils/interfaces/user/employee.interface';
+import { IEmployee } from '../../utils/interfaces/api/employeeData.interface';
 
 export const SidebarEmployee = ({ employee, setEmployee, employees }: any) => {
 	const [openNewEmployeeMoldal, setOpenNewEmployeeMoldal] = useState(false);
@@ -86,7 +85,7 @@ export const SidebarEmployee = ({ employee, setEmployee, employees }: any) => {
 											<div className="py-1 px-1">
 												{employees &&
 													employees.map((element: IEmployee, index: number) => (
-														<Employee data={element} key={index} employee={employee} setEmployee={setEmployee} />
+														<Employee key={index} employee={element} setEmployee={setEmployee} />
 													))}
 											</div>
 										</div>
