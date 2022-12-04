@@ -44,20 +44,23 @@ const NotePannel: React.FC<IProps> = ({ statuses }) => {
 		getNotes(pageCount, sizeCount);
 	}, [change]);
 
-	let number = pageCount;
 	const handleNextPage = () => {
 		setIsLoadingNextPage(true);
-		++number;
-		setPageCount(number);
-		getNotes(pageCount + 1, sizeCount);
+		const newPageCount = pageCount + 1;
+		getNotes(newPageCount, sizeCount);
+		setPageCount(newPageCount);
+		console.log('newPageCount', newPageCount);
+		console.log('pageCount', pageCount);
 		setIsLoadingNextPage(false);
 	};
 
 	const handlePreviousPage = () => {
 		setIsLoadingPreviousPage(true);
-		--number;
-		setPageCount(number);
-		getNotes(pageCount - 1, sizeCount);
+		const newPageCount = pageCount - 1;
+		getNotes(newPageCount, sizeCount);
+		setPageCount(newPageCount);
+		console.log('newPageCount', newPageCount);
+		console.log('pageCount', pageCount);
 		setIsLoadingPreviousPage(false);
 	};
 	return (

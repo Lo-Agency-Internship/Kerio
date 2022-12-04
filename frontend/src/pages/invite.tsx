@@ -119,7 +119,6 @@ export default function Invite() {
 											'block w-11/12 px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black',
 										disabled: true,
 										type: 'email',
-										defaultValue: response,
 									}}
 								/>
 							</div>

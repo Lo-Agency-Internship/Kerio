@@ -94,7 +94,6 @@ export default function AccountPanelUser() {
 									disabled: true,
 									onChange: (e) => setUserName(e.target.value),
 									value: userName,
-									defaultValue: usersName,
 									className: background,
 									name: 'name',
 								}}
@@ -110,7 +109,6 @@ export default function AccountPanelUser() {
 									disabled: true,
 									onChange: (e) => setUserEmail(e.target.value),
 									value: userEmail,
-									defaultValue: usersEmail,
 									className: background,
 									name: 'email',
 								}}

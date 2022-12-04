@@ -128,7 +128,6 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 												disabled: inputDisabled,
 												onChange: (e) => setEmployeeName(e.target.value),
 												value: employeeName,
-												defaultValue: employee?.name,
 												className: background,
 											}}
 										/>
@@ -142,7 +141,6 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 												disabled: inputDisabled,
 												onChange: (e) => setEmployeeEmail(e.target.value),
 												value: employeeEmail,
-												defaultValue: employee?.email,
 												className: background,
 											}}
 										/>
