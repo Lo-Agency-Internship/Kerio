@@ -72,8 +72,8 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 	const submitDelete = async () => {
 		try {
 			await deleteEmployee({ id: employee.id });
-			const dataa = await getAllEmployees();
-			setEmployees(dataa);
+			const data = await getAllEmployees();
+			setEmployees(data.users);
 			setEmployee(null);
 			setShowDeleteModal(false);
 			setInputsShow(false);
