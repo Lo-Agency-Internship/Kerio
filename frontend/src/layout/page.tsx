@@ -9,7 +9,7 @@ export const Page: React.FC<IPage> = (props) => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	return (
-		<div className="w-full flex flex-col overflow-scroll">
+		<div className="w-full flex flex-col overflow-y-scroll">
 			<Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} actions={props.header?.actions} />
 			<div className="flex flex-1 min-h-full flex-col items-center justify-self-stretch  w-full">{props.children}</div>
 		</div>
