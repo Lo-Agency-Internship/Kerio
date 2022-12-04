@@ -120,8 +120,33 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 			const dataa = await getAllNotes({ id: params.id as string });
 			setNotes(dataa.notes);
 			setIsLoadingSubmit(false);
+			toast.success(
+				<p>
+					<span className="text-rose-500">{note.title} </span>Deleted!
+				</p>,
+				{
+					position: 'top-center',
+					autoClose: 5000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: 'light',
+				},
+			);
 		} catch (err: any) {
 			setError(err.response.data.message);
+			toast.error('Something went wrong! ', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
 		setShowDeleteModal(false);
 		setOpen(false);
