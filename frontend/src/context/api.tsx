@@ -20,7 +20,7 @@ import {
 	IDeleteNote,
 } from '../utils/interfaces/api/api.interface';
 import { IGetContacts } from '../utils/interfaces/api/data.interface';
-import { IEmployee } from '../utils/interfaces/user/employee.interface';
+import { IGetEmployees } from '../utils/interfaces/api/employeeData.interface';
 
 interface IApiProvider {
 	children: ReactNode;
@@ -41,7 +41,7 @@ interface IApiContext {
 	getTimelines?: any;
 	getUsersInfoById?: any;
 	getEmployeesInfoById?: any;
-	getAllEmployees(): Promise<IEmployee[]>;
+	getAllEmployees(): Promise<IGetEmployees>;
 	updateUserInfo?: any;
 	getAllNotes(payload: IGetAllNotes): Promise<any>;
 	postContactInfo(payload: IPostContactInfo): Promise<void>;

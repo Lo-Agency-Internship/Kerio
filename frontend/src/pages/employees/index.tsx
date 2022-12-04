@@ -1,43 +1,58 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { SidebarEmployee } from '../../components/organisms/sideBarEmployee';
+import { useApiContext } from '../../context/api';
 import { Page } from '../../layout/page';
-import axios from 'axios';
-import { uri } from '../../utils';
-import AccountEmployee from './accountEmployee';
+import { IEmployee } from '../../utils/interfaces/api/employeeData.interface';
 
-export default function EmployeesPage() {
-	// const { getAllEmployees, setEmployee } = useApiContext();
-	// const [showAddConactModal, setShowAddConactModal] = useState(false);
-	// const [showAddEmployModal, setAddEmployModal] = useState<boolean>(false);
-	const headerAuth = {
-		headers: {
-			Authorization: ` Bearer ${localStorage.getItem('access_token')}`,
-		},
-	};
-	const readEmployee = async () => {
-		const data = await axios.get(uri('users'), headerAuth);
+import { EmployeesProfile } from './profile';
+
+export const EmployeesPage = () => {
+	const [employee, setEmployee] = useState<IEmployee | null>();
+	const { getAllEmployees } = useApiContext();
+	const [employees, setEmployees] = useState<IEmployee[] | null>();
+	const [error, setError] = useState<string[] | null>(null);
+	const getEmployees = async () => {
+		try {
+			const data = await getAllEmployees();
+			setEmployees(data.users);
+		} catch (e: any) {
+			setError(e.response.data.message);
+		}
 	};
 
 	useEffect(() => {
-		// getAllEmployees(readEmployee).then(setEmployee);
-		readEmployee();
-	}, []);
-
+		getEmployees();
+	}, [employees]);
 	return (
-		<Page
-			header={
-				{
-					// actions: [
-					// 	() => <Button label="New Employee" type="submit" style="" onClick={() => setAddEmployModal(true)}></Button>,
-					// ],
-				}
-			}>
-			{/* {showAddEmployModal && <NewEmployeeModal setOpen={setAddEmployModal} open={showAddEmployModal} />} */}
-			{/* {data.map((element: any, index: any) => (
-				<EmployeeCard employee={element} key={index} />
-			
-			))}{' '} */}
-			{/* <EmployeeTable employee={[]} /> */}
-			<AccountEmployee />
+		<Page header={{}}>
+			<div className="flex h-screen overflow-hidden">
+				{/* Content area */}
+				<div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-white">
+					<main>
+						<div className="relative flex">
+							{/* Profile sidebar */}
+							<SidebarEmployee
+								employee={employee}
+								setEmployee={setEmployee}
+								employees={employees}
+								setEmployees={setEmployees}
+							/>
+							{/* Profile body */}
+							{employee ? (
+								<EmployeesProfile employee={employee} setEmployee={setEmployee} setEmployees={setEmployees} />
+							) : (
+								<div className="self-start hidden lg:flex flex-col m-32 text-black">
+									<div className="flex items-center mb-5">
+										<h3 className="text-3xl font-semibold ml-2">Welcome</h3>
+									</div>
+									<h1 className="my-4 font-semibold text-5xl">Please select an employee</h1>
+									<p className="text-sm opacity-75">Then you will see the infomation</p>
+								</div>
+							)}
+						</div>
+					</main>
+				</div>
+			</div>
 		</Page>
 	);
-}
+};
