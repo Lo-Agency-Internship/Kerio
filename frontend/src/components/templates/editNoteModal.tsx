@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import Modal from '../organisms/modal';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { Button } from '../atoms/button';
-import SubmitDelete from '../molecules/submitDelete';
+import { modalNoteValidation } from '../../validation/addNoteModalValidation';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
@@ -25,7 +25,7 @@ const EditNoteFormID = 'EditNoteFORMID';
 const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, statuses }) => {
 	const { updateContactNoteById, deleteNote, getAllNotes } = useApiContext();
 	const params = useParams();
-	const [error, setError] = useState<string[] | null>(null);
+	const [error, setError] = useState<string[] | null | boolean>(null);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
@@ -53,6 +53,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		setContactDescription(note?.description);
 		setContactTitle(note?.title);
 		setContactScore(note?.score);
+		setError(!error);
 	};
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
@@ -75,6 +76,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		}
 
 		try {
+			await modalNoteValidation.validate(body);
 			await updateContactNoteById({
 				date: body.date,
 				description: body.description,
@@ -99,6 +101,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 				theme: 'light',
 			});
 		} catch (err: any) {
+			setError(err.message);
 			setError(err.response.data.message);
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
@@ -164,7 +167,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 						{<p>Are you sure that you want Delete these contacts ?</p>}
 					</DeleteModal>
 				)}
-
+				{error && <p className="text-red-500">{error}</p>}
 				<form id={EditNoteFormID} onSubmit={submitHandler} className="relative w-full mt-10 space-y-8">
 					<InputFormControl
 						label={'Date'}

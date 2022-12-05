@@ -32,6 +32,7 @@ export default function AccountPanelUser() {
 		setBackground('bg-transparent');
 		setUserName(usersName);
 		setUserEmail(usersEmail);
+		setError(!error);
 	};
 
 	const submitHandler = async (e: any) => {

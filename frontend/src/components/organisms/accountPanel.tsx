@@ -43,6 +43,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 		setContactName(user?.name);
 		setContactEmail(user?.email);
 		setContactPhone(user?.phone);
+		setError(!error);
 	};
 
 	const submitHandler = async (e: any) => {
@@ -188,14 +189,22 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 										/>
 									</>
 								) : (
-									<Button
-										label="Edit"
-										style="focus:outline-none mx-3 text-black border-solid border-2 border-yellow-500 hover:border-yellow-400 hover:bg-yellow-400 hover:text-white shadow-md focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
-										onClick={editHandler}
-										type="button"
-									/>
+									<>
+										<Button
+											label="Edit"
+											style="focus:outline-none mx-3 text-black border-solid border-2 border-yellow-500 hover:border-yellow-400 hover:bg-yellow-400 hover:text-white shadow-md focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+											onClick={editHandler}
+											type="button"
+										/>
+										<Button
+											label="Delete"
+											style="focus:outline-none mx-3 text-black  border-solid border-2 border-red-500 hover:border-red-400 hover:bg-red-500 hover:text-white focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
+											type="button"
+											onClick={() => setShowDeleteModal(true)}
+										/>
+									</>
 								)}
-								{showDeleteModal ? (
+								{showDeleteModal && (
 									<>
 										<DeleteModal
 											loading={isLoadingSubmit}
@@ -206,13 +215,6 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 											<p>Do you want to delete this contact?</p>
 										</DeleteModal>
 									</>
-								) : (
-									<Button
-										label="Delete"
-										style="focus:outline-none mx-3 text-black  border-solid border-2 border-red-500 hover:border-red-400 hover:bg-red-500 hover:text-white focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
-										type="button"
-										onClick={() => setShowDeleteModal(true)}
-									/>
 								)}
 							</div>
 						</div>

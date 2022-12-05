@@ -24,7 +24,7 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 	const { updateEmployeeInfo, deleteEmployee, getAllEmployees } = useApiContext();
 	const [employeeName, setEmployeeName] = useState(employee?.name);
 	const [employeeEmail, setEmployeeEmail] = useState(employee?.email);
-	const [error, setError] = useState<string | null | boolean>(null);
+	const [error, setError] = useState<string | null>(null);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 	useEffect(() => {
@@ -57,7 +57,6 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 		try {
 			await editEmployeeValidation.validate(body);
 			await updateEmployeeInfo({ id: employee.id, email: body.email, name: body.name });
-			setError(!error);
 			setEmployee({ ...body, id: employee.id });
 			setInputDisabled(true);
 			setInputsShow(false);
@@ -83,7 +82,7 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 	};
 
 	return (
-		<div className={`grow flex flex-col md:translate-x-0'}`}>
+		<div className={`grow flex flex-col md:translate-x-0`}>
 			{/* Profile background */}
 			<div className="relative h-56 bg-slate-200">
 				<button
@@ -111,12 +110,11 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 					{/* Main content */}
 					<div className="space-y-5 mb-8 xl:mb-0">
 						<section>
-							{error && <p className="text-red-700">{error}</p>}
 							<form onSubmit={submitHandler} className="flex flex-col w-full">
 								<h2 className="text-xl leading-snug text-slate-800 font-bold mb-1">{employee.name}</h2>
 								{error && <p className="text-red-500">{error}</p>}
 								<div className="text-sm"></div>
-								<div className="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5 pb-4">
+								<div className="sm:flex sm:items-center justify-around space-y-4 sm:space-y-0 sm:space-x-4 mt-5 pb-4">
 									<div className="sm:w-1/3">
 										<InputFormControl
 											label={'Name'}
@@ -164,14 +162,22 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 												/>
 											</>
 										) : (
-											<Button
-												label="Edit"
-												style="focus:outline-none mx-3 text-black border-solid border-2 border-yellow-500 hover:border-yellow-400 hover:bg-yellow-400 hover:text-white shadow-md focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
-												onClick={editHandler}
-												type="button"
-											/>
+											<>
+												<Button
+													label="Edit"
+													style="focus:outline-none mx-3 text-black border-solid border-2 border-yellow-500 hover:border-yellow-400 hover:bg-yellow-400 hover:text-white shadow-md focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+													onClick={editHandler}
+													type="button"
+												/>
+												<Button
+													label="Delete"
+													style="focus:outline-none mx-3 text-black  border-solid border-2 border-red-500 hover:border-red-400 hover:bg-red-500 hover:text-white focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
+													type="button"
+													onClick={() => setShowDeleteModal(true)}
+												/>
+											</>
 										)}
-										{showDeleteModal ? (
+										{showDeleteModal && (
 											<>
 												<DeleteModal
 													open={showDeleteModal}
@@ -181,13 +187,6 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 													<p>Do you want to delete this contact?</p>
 												</DeleteModal>
 											</>
-										) : (
-											<Button
-												label="Delete"
-												style="focus:outline-none mx-3 text-black  border-solid border-2 border-red-500 hover:border-red-400 hover:bg-red-500 hover:text-white focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
-												type="button"
-												onClick={() => setShowDeleteModal(true)}
-											/>
 										)}
 									</div>
 								</div>
