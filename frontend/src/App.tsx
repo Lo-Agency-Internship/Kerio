@@ -8,12 +8,12 @@ import PrivateRoute from './utils/auth/privateRoute';
 import PublicRoute from './utils/auth/publicRoute';
 import Invite from './pages/invite';
 import { useState } from 'react';
-import EmployeesPage from './pages/employees/index';
 import NotFoundPage from './pages/notFoundPage';
 import ContactPage from './pages/contacts/_id';
 import ContactsPage from './pages/contacts';
 import Activation from './pages/activation';
 import ProfileUser from './pages/profileUser';
+import { EmployeesPage } from './pages/employees';
 function App() {
 	const [role] = useState<string>('owner');
 	return (

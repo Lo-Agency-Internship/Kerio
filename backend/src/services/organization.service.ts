@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Organization } from 'src/entities/organization.entity';
+import { IupdateOrganization } from 'src/interfaces/organizationUser.service.interface';
 import { NewOrganization } from 'src/utils/types';
 import { Repository } from 'typeorm';
 
@@ -15,11 +16,11 @@ export class OrganizationService {
     return await this.organizationRepository.save(organization);
   }
 
-  async updateOrganization(
-    id: number,
-    organization: Organization,
-  ): Promise<any> {
-    return await this.organizationRepository.update(id, organization);
+  async updateOrganization(payload: IupdateOrganization): Promise<any> {
+    return await this.organizationRepository.update(
+      payload.id,
+      payload.organization,
+    );
   }
 
   async findOneOrganizationById(id: number): Promise<Organization> {

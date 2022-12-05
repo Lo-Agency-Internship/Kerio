@@ -110,7 +110,7 @@ export default function Layout({ children }: ILayout) {
 						</SidebarLinkGroup>
 					</SidebarGroup>
 					<SidebarGroup groupTitle="Settings">
-						<SidebarLink href="/" anchor="Profile" />
+						<SidebarLink href="/profile" anchor="Profile" />
 					</SidebarGroup>
 				</Sidebar>
 				<NewContactModal

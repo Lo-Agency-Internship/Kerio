@@ -92,7 +92,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 				theme: 'light',
 			});
 		} catch (e: any) {
-			setError(e.message);
+			setError(e.response.data.message);
 			toast.error('Something went wrong! :((', {
 				position: 'top-right',
 				autoClose: 8000,

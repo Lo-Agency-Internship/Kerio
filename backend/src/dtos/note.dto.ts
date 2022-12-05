@@ -23,18 +23,24 @@ export class AddNotetDto {
   status: EContactStatus;
 
   @IsOptional()
-  score: number;
+  score: number | null;
 }
 
 export class UpdateNoteBodyDto {
   @IsString()
+  @IsOptional()
   title: string;
 
   @IsString()
+  @IsOptional()
   date: string;
 
   @IsString()
+  @IsOptional()
   description: string;
+
+  @IsOptional()
+  score: number | null;
 }
 
 export class IPaginatedNoteResponse {
