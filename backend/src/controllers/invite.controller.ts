@@ -85,6 +85,7 @@ export class InviteController {
     const invite = await this.inviteService.getInviteByToken(token);
 
     const role = ERole.Employee;
+
     const resultUser = await this.authService.registerUser({
       email: invite.email,
       name: body.name,
