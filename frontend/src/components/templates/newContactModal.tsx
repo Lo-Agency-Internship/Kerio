@@ -92,14 +92,14 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 					<InputFormControl
 						label={'Name'}
 						inputProps={{
-							type: 'string',
+							type: 'text',
 							placeholder: 'Name',
 						}}
 					/>
 					<InputFormControl
 						label={'Phone Number'}
 						inputProps={{
-							type: 'string',
+							type: 'text',
 							placeholder: 'Phone',
 						}}
 					/>

@@ -2,10 +2,17 @@ export interface IEmployee {
 	id: string;
 	name?: string;
 	email?: string;
-	profileSidebarOpen?: boolean;
-	setProfileSidebarOpen?: boolean;
+	enabled?: boolean;
 	createdAt?: string;
 	deletedAt?: string | null;
 	updatedAt?: string;
-	enabled?: boolean;
+}
+export interface IGetEmployees {
+	users: IEmployee[];
+
+	metadata: {
+		page: number;
+		size: number;
+		total: number;
+	};
 }

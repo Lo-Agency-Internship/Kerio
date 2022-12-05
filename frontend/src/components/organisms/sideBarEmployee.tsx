@@ -1,37 +1,16 @@
 import Employee from '../molecules/employee';
-import { useEffect, useState } from 'react';
-import { useApiContext } from '../../context/api';
+import { useState } from 'react';
 import { Button } from '../atoms/button';
 import NewEmployeeModal from '../templates/newEmployeeModal';
-import { IEmployee } from '../../utils/interfaces/user/employee.interface';
-// export interface EmployeeProps {
-// 	employee: IEmployee;
-// 	setEmployee: (value: IEmployee) => void;
-// }
-function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen, employee, setEmployee }: any) {
-	const [employees, setEmployees] = useState<IEmployee[] | null>();
-	const { change, getAllEmployees } = useApiContext();
-	const [error, setError] = useState<string[] | null>(null);
+import { IEmployee } from '../../utils/interfaces/api/employeeData.interface';
+
+export const SidebarEmployee = ({ employee, setEmployee, employees }: any) => {
 	const [openNewEmployeeMoldal, setOpenNewEmployeeMoldal] = useState(false);
-
-	const getEmployees = async () => {
-		try {
-			const data = await getAllEmployees();
-			setEmployees(data);
-		} catch (e: any) {
-			setError(e.response.data.message);
-		}
-	};
-
-	useEffect(() => {
-		getEmployees();
-	}, [change]);
 
 	return (
 		<div
 			id="profile-sidebar"
-			className={`absolute z-20 top-0 bottom-0 w-full md:w-auto md:static md:top-auto md:bottom-auto -mr-px md:translate-x-0 transform transition-transform duration-200 ease-in-out ${
-				profileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+			className={`absolute z-20 top-0 bottom-0 w-full md:w-auto md:static md:top-auto md:bottom-auto -mr-px md:translate-x-0 transform transition-transform duration-200 ease-in-out 
 			}`}>
 			<div className="sticky top-16 bg-white overflow-x-hidden overflow-y-auto no-scrollbar shrink-0 border-r border-slate-200 md:w-72 xl:w-80 h-[calc(100vh-64px)]">
 				{/* Profile group */}
@@ -100,20 +79,17 @@ function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen, employee, 
 							<div className="text-xs font-semibold text-slate-400 uppercase mb-3">Team members</div>
 							<ul className="mb-6">
 								{/* Team members */}
-
 								<li>
-									<button className="w-full p-2 rounded" onClick={() => setProfileSidebarOpen(false)}>
-										<div className="flex items-start truncate ">
-											<div className="relative mr-2">
-												<div className="py-1 px-1">
-													{employees &&
-														employees.map((element, index) => (
-															<Employee data={element} key={index} employee={employee} setEmployee={setEmployee} />
-														))}
-												</div>
+									<div className="flex items-start truncate ">
+										<div className="relative mr-2">
+											<div className="py-1 px-1">
+												{employees &&
+													employees.map((element: IEmployee, index: number) => (
+														<Employee key={index} employee={element} setEmployee={setEmployee} />
+													))}
 											</div>
 										</div>
-									</button>
+									</div>
 								</li>
 							</ul>
 						</div>
@@ -122,6 +98,4 @@ function SidebarEmployee({ profileSidebarOpen, setProfileSidebarOpen, employee, 
 			</div>
 		</div>
 	);
-}
-
-export default SidebarEmployee;
+};
