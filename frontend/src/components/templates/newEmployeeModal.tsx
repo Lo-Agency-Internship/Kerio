@@ -52,7 +52,7 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 			email: emailValue,
 		};
 		try {
-			await modalEmployeeValidation.isValid(body);
+			await modalEmployeeValidation.validate(body);
 			const exists = employees.find((employee: { email: string }) => employee.email === body.email);
 			if (!exists) {
 				setEmployees([...employees, body]);
@@ -75,6 +75,7 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 				theme: 'light',
 			});
 		} catch (err: any) {
+			setError(err.message);
 			setError(err.response.data.message);
 			toast.error('Something went wrong! ', {
 				position: 'top-right',

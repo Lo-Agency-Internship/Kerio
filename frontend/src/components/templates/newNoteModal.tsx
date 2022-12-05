@@ -44,7 +44,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 			};
 		}
 		try {
-			await modalNoteValidation.isValid(body);
+			await modalNoteValidation.validate(body);
 			await postNoteInfo({
 				date: body.date,
 				description: body.description,
@@ -66,6 +66,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 				theme: 'light',
 			});
 		} catch (err: any) {
+			setError(err.message);
 			setError(err.response.data.message);
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
@@ -95,7 +96,7 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 						form: ADDNOTE_FORM_ID,
 					},
 				]}>
-				{error && <p>{error}</p>}
+				{error && <p className="text-red-500">{error}</p>}
 				<form id={ADDNOTE_FORM_ID} onSubmit={handleSubmit} className="relative w-full mt-6 space-y-8">
 					<InputFormControl
 						label={'Title'}

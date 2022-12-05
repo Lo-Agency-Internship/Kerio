@@ -39,7 +39,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 			status,
 		};
 		try {
-			await modalContactValidation.isValid(body);
+			await modalContactValidation.validate(body);
 			await postContactInfo(body);
 			const pageNumber = Math.ceil((totalRows + 1) / perPage);
 			if (fetchData) {
@@ -58,6 +58,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 			});
 		} catch (err: any) {
 			setError(err?.response?.data?.message);
+			setError(err.message);
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
 				autoClose: 8000,

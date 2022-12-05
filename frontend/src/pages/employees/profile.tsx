@@ -47,19 +47,18 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
 		const body = { name, email };
-		const isValid = await editEmployeeValidation.isValid(body);
-		if (isValid) {
-			updateEmployeeInfo({ id: employee.id, email: body.email, name: body.name });
+		try {
+			await editEmployeeValidation.validate(body);
+			await updateEmployeeInfo({ id: employee.id, email: body.email, name: body.name });
 			setError(!error);
-		} else {
-			editEmployeeValidation.validate(body).catch((event) => {
-				setError(event.message);
-			});
+			setEmployee({ ...body, id: employee.id });
+			setInputDisabled(true);
+			setInputsShow(false);
+			setBackground('bg-transparent');
+		} catch (err: any) {
+			setError(err.message);
+			setError(err.response.data.message);
 		}
-		setEmployee({ ...body, id: employee.id });
-		setInputDisabled(true);
-		setInputsShow(false);
-		setBackground('bg-transparent');
 	};
 
 	const submitDelete = async () => {
@@ -82,7 +81,6 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 					</svg>
 				</button>
 			</div>
-
 			{/* Content */}
 			<div className="relative px-4 sm:px-6 pb-8">
 				{/* Pre-header */}
@@ -94,12 +92,12 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({ employee, set
 						</div>
 					</div>
 				</div>
-
 				{/* Profile content */}
 				<div className="flex flex-col xl:flex-row xl:space-x-16">
 					{/* Main content */}
 					<div className="space-y-5 mb-8 xl:mb-0">
 						<section>
+							{error && <p className="text-red-700">{error}</p>}
 							<form onSubmit={submitHandler} className="flex flex-col w-full">
 								<h2 className="text-xl leading-snug text-slate-800 font-bold mb-1">Employee Profile</h2>
 								<div className="text-sm"></div>

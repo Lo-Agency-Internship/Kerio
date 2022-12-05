@@ -31,11 +31,12 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 		};
 
 		try {
-			await signInValidation.isValid({ email });
+			await signInValidation.validate({ email });
 			await postLogin(body);
 			setOpen(false);
 			navigate(`/`);
 		} catch (err: any) {
+			setError(err.message);
 			setError(err.response.data.message);
 		}
 		setIsLoadingSubmit(false);

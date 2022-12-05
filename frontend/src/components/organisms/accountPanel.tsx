@@ -54,7 +54,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 		const phone = formData.get('phone')?.toString();
 		const body = { name, email, phone };
 		try {
-			await editContactValidation.isValid(body);
+			await editContactValidation.validate(body);
 			await updateContactInfo({ email: body.email, name: body.name, phone: body.phone, id: user.id });
 			setUser({ ...body, id: user.id });
 			setInputDisabled(true);
@@ -62,6 +62,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 			setBackground('bg-transparent');
 			setIsLoadingSubmit(false);
 		} catch (err: any) {
+			setError(err.message);
 			setError(err.response.data.message);
 		}
 	};
