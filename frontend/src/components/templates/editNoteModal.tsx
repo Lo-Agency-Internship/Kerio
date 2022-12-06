@@ -117,8 +117,8 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		setIsLoadingSubmit(true);
 		try {
 			await deleteNote({ id: note.id });
-			const dataa = await getAllNotes({ id: params.id as string });
-			setNotes(dataa.notes);
+			// const dataa = await getAllNotes({ id: params.id as string });
+			// setNotes(dataa.notes);
 			setIsLoadingSubmit(false);
 			toast.success(
 				<p>
@@ -186,7 +186,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
 							type: 'text',
 							placeholder: 'Title',
-							defaultValue: note?.title,
 							onChange: (e) => setContactTitle(e.target.value),
 							value: contactTitle,
 							disabled: inputDisabled,
@@ -198,7 +197,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
 							type: 'text',
 							placeholder: 'Description',
-							defaultValue: note?.description,
 							onChange: (e) => setContactDescription(e.target.value),
 							value: contactDescription,
 							disabled: inputDisabled,
@@ -211,22 +209,18 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 								{
 									title: '+1',
 									value: '+1',
-									selected: contactScore === '+1' && true,
 								},
 								{
 									title: '-1',
 									value: '-1',
-									selected: contactScore === '-1' && true,
 								},
 								{
 									title: '0',
 									value: '0',
-									selected: contactScore === '0' && true,
 								},
 								{
 									title: 'No score',
 									value: '',
-									selected: contactScore === null && true,
 								},
 							],
 							disabled: inputDisabled,
