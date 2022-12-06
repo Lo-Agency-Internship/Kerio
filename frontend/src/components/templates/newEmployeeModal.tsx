@@ -4,6 +4,8 @@ import { useApiContext } from '../../context/api';
 import Modal from '../organisms/modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { InputFormControl } from '../molecules/formControls/inputFormControl';
+import { Button } from '../atoms/button';
 
 interface IProps {
 	setOpen: (close: boolean) => void;
@@ -23,48 +25,11 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 	const handleSubmit = async (event: any) => {
 		setIsLoadingSubmit(true);
 		event.preventDefault();
-		const formData = new FormData(event.currentTarget);
-		const name = formData.getAll('name')?.toString().toLowerCase();
-		const email = formData.getAll('email')?.toString().toLowerCase();
-		const names = name.split(',');
-		const emails = email.split(',');
-		const data = names.map((item, index) => {
-			return {
-				name: item,
-				email: emails[index],
-			};
-		});
-		postInviteEmployee(data).then(() => {
-			setOpen(false);
-		});
-		setIsLoadingSubmit(false);
-	};
-	const handleRemoveClick = (index: number) => {
-		const list = [...employees];
-		list.splice(index, 1);
-
-		setEmployees(list);
-	};
-	const handleAddClick = async (event: any) => {
-		event.preventDefault();
-		const body = {
-			name: nameValue,
-			email: emailValue,
-		};
 		try {
-			await modalEmployeeValidation.validate(body);
-			const exists = employees.find((employee: { email: string }) => employee.email === body.email);
-			if (!exists) {
-				setEmployees([...employees, body]);
-				setNameValue('');
-				setEmailValue('');
-			} else {
-				setError(['This email is already exists']);
-			}
-			modalEmployeeValidation.validate(body).catch((e) => {
-				setError(e.message);
-			});
-			toast.success('Here you are! A new employee!', {
+			await postInviteEmployee(employees);
+			setOpen(false);
+			setEmployees([]);
+			toast.success('Here you are! new employee!', {
 				position: 'top-center',
 				autoClose: 5000,
 				hideProgressBar: false,
@@ -88,6 +53,42 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 				theme: 'light',
 			});
 		}
+		setIsLoadingSubmit(false);
+	};
+
+	const handleRemoveClick = (index: number) => {
+		const list = [...employees];
+		list.splice(index, 1);
+		setEmployees(list);
+	};
+
+	const handleAddClick = async (event: any) => {
+		event.preventDefault();
+		const body = {
+			name: nameValue,
+			email: emailValue,
+		};
+		try {
+			const exists = employees.find((employee: { email: string }) => employee.email === body.email);
+			modalEmployeeValidation
+				.validate(body)
+				.then((response) => {
+					console.log(response);
+					if (!exists && response) {
+						setEmployees([...employees, body]);
+						setNameValue('');
+						setEmailValue('');
+						setError(null);
+					} else if (exists) {
+						setError(['This email is already exists']);
+						setNameValue('');
+						setEmailValue('');
+					}
+				})
+				.catch((err) => setError(err.message));
+		} catch (err: any) {
+			setError(err.response.data.message);
+		}
 	};
 	return (
 		<>
@@ -106,83 +107,64 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 				{error && <p className="text-red-500">{error}</p>}
 
 				<div className="flex gap-1">
-					<div>
-						<label htmlFor="title" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
-							Name
-						</label>
-						<input
-							onChange={(e) => setNameValue(e.target.value)}
-							value={nameValue}
-							name="newName"
-							id="title"
-							className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border
-                     focus:border-indigo-700 font-normal w-full h-10 flex items-center 
-                     pl-3 text-sm border-gray-300 rounded border"
-							placeholder="Name"
-						/>
-					</div>
-					<div>
-						<label htmlFor="e-mail" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
-							Email
-						</label>
-						<input
-							onChange={(e) => setEmailValue(e.target.value)}
-							value={emailValue}
-							name="newEmail"
-							id="email"
-							className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border
-                     focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 
-                     text-sm border-gray-300 rounded border"
-							placeholder="X@gmail.com"
-						/>
-					</div>
+					<InputFormControl
+						label={'Name'}
+						inputProps={{
+							type: 'text',
+							value: nameValue,
+							onChange: (e) => setNameValue(e.target.value),
+						}}
+					/>
 
-					<button
+					<InputFormControl
+						label={'Email'}
+						inputProps={{
+							type: 'email',
+							value: emailValue,
+							onChange: (e) => setEmailValue(e.target.value),
+						}}
+					/>
+
+					<Button
 						type="button"
 						onClick={handleAddClick}
-						className="inline-block mb-5 mt-8 p-4 h-10 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
+						style="inline-block mt-9 px-4 py-3 h-10 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
 						Add
-					</button>
+					</Button>
 				</div>
 				<form onSubmit={handleSubmit} id={ADDEMPLOYEE_FORM_ID}>
 					{employees.map((employee: any, index: number) => {
 						return (
 							<Fragment key={index}>
 								<div className="flex gap-1">
-									<div>
-										<label htmlFor="title" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
-											Name
-										</label>
-										<input
-											value={employee.name}
-											name="name"
-											id="title"
-											className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border
-                     focus:border-indigo-700 font-normal w-full h-10 flex items-center 
-                     pl-3 text-sm border-gray-300 rounded border"
-											placeholder="Name"
-										/>
-									</div>
-									<div>
-										<label htmlFor="e-mail" className="text-gray-800 text-sm font-bold leading-tight tracking-normal">
-											Email
-										</label>
-										<input
-											value={employee.email}
-											name="email"
-											id="email"
-											className="mb-5 mt-2 text-gray-600 focus:outline-none focus:border
-                     focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 
-                     text-sm border-gray-300 rounded border"
-											placeholder="X@gmail.com"
-										/>
-									</div>
-									<button
+									<InputFormControl
+										label={''}
+										inputProps={{
+											type: 'text',
+											value: employee.name,
+											onChange: (e) => setNameValue(e.target.value),
+											disabled: true,
+											className:
+												'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-gray-200 border border-gray-400 rounded-md focus:outline-none focus:border-black',
+										}}
+									/>
+									<InputFormControl
+										label={''}
+										inputProps={{
+											type: 'email',
+											value: employee.email,
+											onChange: (e) => setEmailValue(e.target.value),
+											disabled: true,
+											className:
+												'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-gray-200 border border-gray-400 rounded-md focus:outline-none focus:border-black',
+										}}
+									/>
+									<Button
 										type="button"
 										onClick={() => handleRemoveClick(index)}
-										className="inline-block mb-5 mt-8 p-1 py-2 h-10 bg-red-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-900 hover:shadow-lg focus:bg-red-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-900 active:shadow-lg transition duration-150 ease-in-outt">
+										style="inline-block mb-5 mt-9 p-1 py-2 h-10 bg-red-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-900 hover:shadow-lg focus:bg-red-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-900 active:shadow-lg transition duration-150 ease-in-outt">
 										Remove
-									</button>
+									</Button>
 								</div>
 							</Fragment>
 						);

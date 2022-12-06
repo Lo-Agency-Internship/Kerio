@@ -84,4 +84,9 @@ export interface IDeleteEmployee {
 
 export interface IGetAllNotes {
 	id?: string;
+	pagination: {
+		page?: number;
+		size?: number;
+		sort?: 'asc' | 'desc';
+	};
 }

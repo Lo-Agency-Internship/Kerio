@@ -137,7 +137,6 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 										disabled: inputDisabled,
 										onChange: (e) => setContactName(e.target.value),
 										value: contactName,
-										defaultValue: user?.name,
 										className: background,
 									}}
 								/>
@@ -151,7 +150,6 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 										disabled: inputDisabled,
 										onChange: (e) => setContactEmail(e.target.value),
 										value: contactEmail,
-										defaultValue: user?.email,
 										className: background,
 									}}
 								/>
@@ -165,7 +163,6 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 										disabled: inputDisabled,
 										onChange: (e) => setContactPhone(e.target.value),
 										value: contactPhone,
-										defaultValue: user?.phone,
 										className: background,
 									}}
 								/>
