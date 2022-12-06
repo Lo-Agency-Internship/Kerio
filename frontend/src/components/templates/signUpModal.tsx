@@ -93,7 +93,7 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (e: any) {
 			setError(e.message);
-			setError(e.response.data.message);
+			if (e.response) setError(e.response.data.message);
 			toast.error('Something went wrong! :((', {
 				position: 'top-right',
 				autoClose: 8000,

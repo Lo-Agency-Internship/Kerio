@@ -102,7 +102,8 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 			});
 		} catch (err: any) {
 			setError(err.message);
-			setError(err.response.data.message);
+			if (err.response) setError(err.response.data.message);
+
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
 				autoClose: 8000,
@@ -114,6 +115,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 				theme: 'light',
 			});
 		}
+		setIsLoadingSubmit(false);
 	};
 
 	const handleDelete = async () => {
