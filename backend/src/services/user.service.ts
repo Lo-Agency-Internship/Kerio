@@ -24,6 +24,7 @@ import {
 import { OrganizationUser } from 'src/entities/organizationUser.entity';
 import { getPaginationOffset } from 'src/utils/functions';
 import { hashSync } from 'bcrypt';
+import { RequestContextService } from './requestContext.service';
 
 @Injectable()
 export class UserService {
@@ -33,6 +34,8 @@ export class UserService {
 
     @InjectRepository(OrganizationUser)
     private readonly orgUserRepository: Repository<OrganizationUser>,
+
+    private readonly contextService: RequestContextService,
   ) {}
 
   async addUser(payload: IAddUserPayload): Promise<User> {
@@ -139,17 +142,21 @@ export class UserService {
   }
 
   async updateOneById(payload: IUpdateOneByIdPayload): Promise<UpdateResult> {
-    if (payload.user.oldPassword) {
+    const { id: userId } = this.contextService.get('userData');
+
+    if (payload.user.oldPassword && userId === payload.id) {
       const user = await this.userRepository.findOneBy({ id: payload.id });
       const hashedPassword = hashSync(payload.user.oldPassword, user.salt);
       const areEqual = user.password === hashedPassword;
       if (!areEqual) {
-        throw new UnauthorizedException('user is unathorized');
+        throw new UnauthorizedException();
       }
       const hashedNewPassword = hashSync(payload.user.newPassword, user.salt);
       return await this.userRepository.update(payload.id, {
         password: hashedNewPassword,
       });
+    } else if (payload.user.oldPassword && userId !== payload.id) {
+      throw new UnauthorizedException();
     }
     return await this.userRepository.update(payload.id, payload.user);
   }
