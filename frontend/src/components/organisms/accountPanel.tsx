@@ -61,8 +61,28 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 			setInputsShow(false);
 			setBackground('bg-transparent');
 			setIsLoadingSubmit(false);
+			toast.success(' Contact edited!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		} catch (err: any) {
 			setError(err.response.data.message);
+			toast.error('Something went wrong! ', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
 	};
 
