@@ -161,4 +161,13 @@ export class UserService {
     await this.orgUserRepository.softDelete(orgUser.id);
     return await this.userRepository.softDelete(payload.id);
   }
+
+  async findUserByEmailEvenDeleted(email: string) {
+    const user = await this.userRepository.find({
+      where: { email },
+      withDeleted: true,
+    });
+
+    return user.length !== 0;
+  }
 }

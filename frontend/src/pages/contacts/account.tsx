@@ -13,7 +13,7 @@ export interface AccountProps {
 export const Account: React.FC<AccountProps> = ({ user, setUser }) => {
 	const [sidebarActiveItem, setSidebarActiveItem] = useState('account');
 	return (
-		<div className="flex h-screen overflow-hidden w-full">
+		<div className="flex h-screen overflow-y-scroll w-full">
 			{/* Content area */}
 			<div className="relative flex flex-col flex-1 ">
 				<main>

@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import Modal from '../organisms/modal';
 import { INote } from '../../utils/interfaces/user/note.interface';
 import { Button } from '../atoms/button';
-import SubmitDelete from '../molecules/submitDelete';
+import { modalNoteValidation } from '../../validation/addNoteModalValidation';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
@@ -25,7 +25,7 @@ const EditNoteFormID = 'EditNoteFORMID';
 const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, statuses }) => {
 	const { updateContactNoteById, deleteNote, getAllNotes } = useApiContext();
 	const params = useParams();
-	const [error, setError] = useState<string[] | null>(null);
+	const [error, setError] = useState<string[] | null | boolean>(null);
 	const [inputDisabled, setInputDisabled] = useState(true);
 	const [inputsShow, setInputsShow] = useState(false);
 	const [background, setBackground] = useState('bg-transparent');
@@ -53,6 +53,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		setContactDescription(note?.description);
 		setContactTitle(note?.title);
 		setContactScore(note?.score);
+		setError(!error);
 	};
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
@@ -75,6 +76,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		}
 
 		try {
+			await modalNoteValidation.validate(body);
 			await updateContactNoteById({
 				date: body.date,
 				description: body.description,
@@ -99,7 +101,9 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 				theme: 'light',
 			});
 		} catch (err: any) {
-			setError(err.response.data.message);
+			setError(err.message);
+			if (err.response) setError(err.response.data.message);
+
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
 				autoClose: 8000,
@@ -111,14 +115,15 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 				theme: 'light',
 			});
 		}
+		setIsLoadingSubmit(false);
 	};
 
 	const handleDelete = async () => {
 		setIsLoadingSubmit(true);
 		try {
 			await deleteNote({ id: note.id });
-			const dataa = await getAllNotes({ id: params.id as string });
-			setNotes(dataa.notes);
+			// const dataa = await getAllNotes({ id: params.id as string });
+			// setNotes(dataa.notes);
 			setIsLoadingSubmit(false);
 			toast.success(
 				<p>
@@ -164,7 +169,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 						{<p>Are you sure that you want Delete these contacts ?</p>}
 					</DeleteModal>
 				)}
-
+				{error && <p className="text-red-500">{error}</p>}
 				<form id={EditNoteFormID} onSubmit={submitHandler} className="relative w-full mt-10 space-y-8">
 					<InputFormControl
 						label={'Date'}
@@ -186,7 +191,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
 							type: 'text',
 							placeholder: 'Title',
-							defaultValue: note?.title,
 							onChange: (e) => setContactTitle(e.target.value),
 							value: contactTitle,
 							disabled: inputDisabled,
@@ -198,7 +202,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 							className: `'block w-full px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black' ${background}`,
 							type: 'text',
 							placeholder: 'Description',
-							defaultValue: note?.description,
 							onChange: (e) => setContactDescription(e.target.value),
 							value: contactDescription,
 							disabled: inputDisabled,
@@ -211,22 +214,18 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 								{
 									title: '+1',
 									value: '+1',
-									selected: contactScore === '+1' && true,
 								},
 								{
 									title: '-1',
 									value: '-1',
-									selected: contactScore === '-1' && true,
 								},
 								{
 									title: '0',
 									value: '0',
-									selected: contactScore === '0' && true,
 								},
 								{
 									title: 'No score',
 									value: '',
-									selected: contactScore === null && true,
 								},
 							],
 							disabled: inputDisabled,
