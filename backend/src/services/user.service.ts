@@ -149,14 +149,14 @@ export class UserService {
       const hashedPassword = hashSync(payload.user.oldPassword, user.salt);
       const areEqual = user.password === hashedPassword;
       if (!areEqual) {
-        throw new UnauthorizedException();
+        throw new UnauthorizedException('user is unathorized');
       }
       const hashedNewPassword = hashSync(payload.user.newPassword, user.salt);
       return await this.userRepository.update(payload.id, {
         password: hashedNewPassword,
       });
     } else if (payload.user.oldPassword && userId !== payload.id) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('user is unathorized');
     }
     return await this.userRepository.update(payload.id, payload.user);
   }
