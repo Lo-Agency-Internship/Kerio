@@ -32,7 +32,7 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 		};
 
 		try {
-			await changePasswordValidation.isValid({ oldPassword });
+			await changePasswordValidation.validate({ oldPassword });
 			setOpen(false);
 			toast.success('Your password has been changes successfully!', {
 				position: 'top-center',
@@ -45,6 +45,7 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 				theme: 'light',
 			});
 		} catch (err: any) {
+			setError(err.message);
 			setError(err.response.data.message);
 			toast.error('Something went wrong! :((', {
 				position: 'top-right',

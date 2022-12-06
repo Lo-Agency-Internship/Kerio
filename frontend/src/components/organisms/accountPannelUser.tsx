@@ -32,6 +32,7 @@ export default function AccountPanelUser() {
 		setBackground('bg-transparent');
 		setUserName(usersName);
 		setUserEmail(usersEmail);
+		setError(!error);
 	};
 
 	const submitHandler = async (e: any) => {
@@ -40,23 +41,18 @@ export default function AccountPanelUser() {
 		const formData = new FormData(e.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
-
 		const body = { name, email };
-
-		const isValid = await editUserValidation.isValid(body);
-
-		if (isValid) {
-			updateUserInfo(sub, body);
+		try {
+			await editUserValidation.validate(body);
+			await updateUserInfo(sub, body);
 			setError(!error);
-		} else {
-			editUserValidation.validate(body).catch((event) => {
-				setError(event.message);
-			});
+			setInputDisabled(true);
+			setInputsShow(false);
+			setBackground('bg-transparent');
+		} catch (err: any) {
+			setError(err.message);
+			setError(err.response.data.message);
 		}
-
-		setInputDisabled(true);
-		setInputsShow(false);
-		setBackground('bg-transparent');
 	};
 
 	return (

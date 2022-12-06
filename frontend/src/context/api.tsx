@@ -178,7 +178,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 
 	/// //////////////// PUT
 	const updateContactInfo = async (payload: IUpdateContactInfo) => {
-		axios.put(
+		await axios.put(
 			uri(`contacts/${payload.id}`),
 			{
 				name: payload.name,
@@ -203,7 +203,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		);
 	};
 	const updateEmployeeInfo = async (payload: IUpdateEmployeeInfo) => {
-		axios.put(
+		await axios.put(
 			uri(`users/${payload.id}`),
 			{
 				name: payload.name,
@@ -214,16 +214,16 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	const updateUserInfo = async (sub: string, body: object) => {
-		axios.put(uri(`users/${sub}`), body, headerAuth);
+		await axios.put(uri(`users/${sub}`), body, headerAuth);
 	};
 
 	/// //////delete
 	const deleteEmployee = async (payload: IDeleteEmployee) => {
-		axios.delete(uri(`users/${payload.id}`), headerAuth);
+		await axios.delete(uri(`users/${payload.id}`), headerAuth);
 	};
 
 	const deleteContacts = async (payload: IDeleteContact[]) => {
-		axios.delete(uri(`contacts/batch`), {
+		await axios.delete(uri(`contacts/batch`), {
 			data: {
 				ids: payload,
 			},
@@ -232,7 +232,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 	};
 
 	const deleteNote = async (payload: IDeleteNote) => {
-		axios.delete(uri(`notes/${payload.id}`), {
+		await axios.delete(uri(`notes/${payload.id}`), {
 			data: {
 				id: payload,
 			},

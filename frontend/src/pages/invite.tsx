@@ -45,6 +45,7 @@ export default function Invite() {
 				theme: 'light',
 			});
 		} catch (err: any) {
+			setError(err.message);
 			setError(err.response.data.message);
 			toast.error('Something went wrong! :((', {
 				position: 'top-right',
