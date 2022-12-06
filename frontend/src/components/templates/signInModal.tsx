@@ -37,7 +37,7 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			navigate(`/`);
 		} catch (err: any) {
 			setError(err.message);
-			setError(err.response.data.message);
+			if (err.response) setError(err.response.data.message);
 		}
 		setIsLoadingSubmit(false);
 	};
