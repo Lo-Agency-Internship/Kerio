@@ -90,7 +90,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 			setOpen(false);
 			setBackground('bg-transparent border-2');
 			setIsLoadingSubmit(false);
-			toast.success('Your note has been changed!', {
+			toast.success('Your note has been edited!', {
 				position: 'top-center',
 				autoClose: 5000,
 				hideProgressBar: false,

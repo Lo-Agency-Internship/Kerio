@@ -72,6 +72,7 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 				title={'Change password'}
 				actions={[
 					{
+						loading: isLoadingSubmit,
 						label: 'Submit',
 						type: 'submit',
 						form: ChangePassword,
