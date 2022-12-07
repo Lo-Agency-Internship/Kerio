@@ -153,6 +153,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 				theme: 'light',
 			});
 		}
+		setIsLoadingSubmit(false);
 		setShowDeleteModal(false);
 		setOpen(false);
 	};
