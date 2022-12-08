@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 import { changePasswordValidation } from '../../validation/changePasswordValidation';
 import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import Modal from '../organisms/modal';
+import { useApiContext } from '../../context/api';
+import { useAuthContext } from '../../context/auth';
 
 interface IProps {
 	setOpen: (close: boolean) => void;
@@ -13,6 +15,9 @@ const ChangePassword = 'ChangePassword';
 
 const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 	const [error, setError] = useState<string | null>(null);
+	const { userMetadata } = useAuthContext();
+	const { name: usersName, email: usersEmail, sub } = userMetadata();
+	const { updateUserInfo } = useApiContext();
 
 	const handleSubmit = async (event: any) => {
 		event.preventDefault();
@@ -25,14 +30,14 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 			setError('new password is not match');
 			return;
 		}
-
 		const body = {
 			oldPassword,
 			newPassword,
 		};
 
 		try {
-			await changePasswordValidation.validate({ oldPassword });
+			await changePasswordValidation.validate({ newPassword });
+			await updateUserInfo(sub, body);
 			setOpen(false);
 			toast.success('Your password has been changes successfully!', {
 				position: 'top-center',
@@ -46,7 +51,7 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (err: any) {
 			setError(err.message);
-			setError(err.response.data.message);
+			setError(err?.response?.data?.message);
 			toast.error('Something went wrong! :((', {
 				position: 'top-right',
 				autoClose: 8000,

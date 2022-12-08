@@ -127,14 +127,14 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 					<InputFormControl
 						label={'Name'}
 						inputProps={{
-							type: 'string',
+							type: 'text',
 							placeholder: 'Your name',
 						}}
 					/>
 					<InputFormControl
 						label={'Organization Name'}
 						inputProps={{
-							type: 'string',
+							type: 'text',
 							placeholder: 'Your organization name',
 						}}
 					/>

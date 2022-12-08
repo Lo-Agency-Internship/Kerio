@@ -18,6 +18,7 @@ import {
 	IUpdateEmployeeInfo,
 	IDeleteEmployee,
 	IDeleteNote,
+	IUpdateOwnerInfo,
 } from '../utils/interfaces/api/api.interface';
 import { IGetContacts } from '../utils/interfaces/api/data.interface';
 import { IGetEmployees } from '../utils/interfaces/api/employeeData.interface';
@@ -213,8 +214,8 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 		);
 	};
 
-	const updateUserInfo = async (sub: string, body: object) => {
-		await axios.put(uri(`users/${sub}`), body, headerAuth);
+	const updateUserInfo = async (sub: string, payload: IUpdateOwnerInfo) => {
+		await axios.put(uri(`users/${sub}`), payload, headerAuth);
 	};
 
 	/// //////delete

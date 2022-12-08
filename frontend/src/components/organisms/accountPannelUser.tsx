@@ -34,7 +34,6 @@ export default function AccountPanelUser() {
 		setUserEmail(usersEmail);
 		setError(!error);
 	};
-
 	const submitHandler = async (e: any) => {
 		e.preventDefault();
 
@@ -51,7 +50,7 @@ export default function AccountPanelUser() {
 			setBackground('bg-transparent');
 		} catch (err: any) {
 			setError(err.message);
-			setError(err.response.data.message);
+			if (err.message) setError(err.response.data.message);
 		}
 	};
 
@@ -99,7 +98,7 @@ export default function AccountPanelUser() {
 							<InputFormControl
 								label={'Email'}
 								inputProps={{
-									type: 'text',
+									type: 'email',
 									placeholder: 'Email',
 									// disabled: inputDisabled,
 									disabled: true,

@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 export const changePasswordValidation = yup.object().shape({
-	password: yup
+	newPassword: yup
 		.string()
 		.min(8)
 		.max(12)
