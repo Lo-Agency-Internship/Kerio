@@ -51,7 +51,7 @@ export default function AccountPanelUser() {
 			setInputDisabled(true);
 			setInputsShow(false);
 			setBackground('bg-transparent');
-			setIsLoadingSubmit(false);
+
 			toast.success('Your employee information has been changed!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -78,7 +78,6 @@ export default function AccountPanelUser() {
 		}
 		setIsLoadingSubmit(false);
 	};
-
 	return (
 		<>
 			<div className="grow">

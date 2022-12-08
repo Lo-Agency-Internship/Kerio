@@ -36,7 +36,6 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 		try {
 			await changePasswordValidation.validate({ oldPassword });
 			setOpen(false);
-			setIsLoadingSubmit(false);
 			toast.success('Your password has been changes successfully!', {
 				position: 'top-center',
 				autoClose: 8000,

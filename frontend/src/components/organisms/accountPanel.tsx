@@ -61,7 +61,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 			setInputDisabled(true);
 			setInputsShow(false);
 			setBackground('bg-transparent');
-			setIsLoadingSubmit(false);
+
 			toast.success(' Contact edited!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -95,7 +95,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 			await deleteContacts([user.id]);
 			setShowDeleteModal(false);
 			setInputsShow(false);
-			setIsLoadingSubmit(false);
+
 			navigate('/contacts');
 			toast.success(' Contact Deleted!', {
 				position: 'top-center',

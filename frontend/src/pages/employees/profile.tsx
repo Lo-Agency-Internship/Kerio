@@ -62,7 +62,7 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 			setInputDisabled(true);
 			setInputsShow(false);
 			setBackground('bg-transparent');
-			setIsLoadingSubmit(false);
+
 			toast.success('Your employee information has been changed!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -99,7 +99,7 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 			setEmployee(null);
 			setShowDeleteModal(false);
 			setInputsShow(false);
-			setIsLoadingSubmit(false);
+
 			toast.success(
 				<p>
 					<span className="text-rose-500">{employee.name} </span>Deleted!
