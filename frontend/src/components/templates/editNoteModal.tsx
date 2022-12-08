@@ -89,8 +89,8 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 			setInputsShow(false);
 			setOpen(false);
 			setBackground('bg-transparent border-2');
-			setIsLoadingSubmit(false);
-			toast.success('Your note has been changed!', {
+
+			toast.success('Your note has been edited!', {
 				position: 'top-center',
 				autoClose: 5000,
 				hideProgressBar: false,
@@ -124,7 +124,6 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 			await deleteNote({ id: note.id });
 			// const dataa = await getAllNotes({ id: params.id as string });
 			// setNotes(dataa.notes);
-			setIsLoadingSubmit(false);
 			toast.success(
 				<p>
 					<span className="text-rose-500">{note.title} </span>Deleted!
@@ -153,6 +152,7 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 				theme: 'light',
 			});
 		}
+		setIsLoadingSubmit(false);
 		setShowDeleteModal(false);
 		setOpen(false);
 	};
