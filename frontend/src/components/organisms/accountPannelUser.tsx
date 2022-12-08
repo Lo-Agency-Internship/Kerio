@@ -50,7 +50,7 @@ export default function AccountPanelUser() {
 			setBackground('bg-transparent');
 		} catch (err: any) {
 			setError(err.message);
-			if (err.message) setError(err.response.data.message);
+			if (err.response) setError(err.response.data.message);
 		}
 	};
 
@@ -85,8 +85,8 @@ export default function AccountPanelUser() {
 								inputProps={{
 									type: 'text',
 									placeholder: 'Name',
-									// disabled: inputDisabled,
-									disabled: true,
+									disabled: inputDisabled,
+									// disabled: true,
 									onChange: (e) => setUserName(e.target.value),
 									value: userName,
 									className: background,
