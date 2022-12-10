@@ -61,9 +61,30 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 			setInputDisabled(true);
 			setInputsShow(false);
 			setBackground('bg-transparent');
+
+			toast.success(' Contact edited!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		} catch (err: any) {
 			setError(err.message);
 			if (err.response) setError(err.response.data.message);
+			toast.error('Something went wrong! ', {
+				position: 'top-right',
+				autoClose: 8000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			});
 		}
 		setIsLoadingSubmit(false);
 	};
@@ -74,6 +95,7 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 			await deleteContacts([user.id]);
 			setShowDeleteModal(false);
 			setInputsShow(false);
+
 			navigate('/contacts');
 			toast.success(' Contact Deleted!', {
 				position: 'top-center',
