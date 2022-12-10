@@ -41,7 +41,7 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (err: any) {
 			setError(err.message);
-			setError(err.response.data.message);
+			if (err.response) setError(err.response.data.message);
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
 				autoClose: 8000,
@@ -55,7 +55,6 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 		}
 		setIsLoadingSubmit(false);
 	};
-
 	const handleRemoveClick = (index: number) => {
 		const list = [...employees];
 		list.splice(index, 1);

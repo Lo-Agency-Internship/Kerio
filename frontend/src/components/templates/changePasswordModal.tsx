@@ -32,11 +32,14 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 			setError('new password is not match');
 			return;
 		}
+		if (oldPassword === newPassword) {
+			setError('old password and new password should not be the same');
+			return;
+		}
 		const body = {
 			oldPassword,
 			newPassword,
 		};
-
 		try {
 			await changePasswordValidation.validate({ newPassword });
 			await updateUserInfo(sub, body);
@@ -53,7 +56,7 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (err: any) {
 			setError(err.message);
-			setError(err?.response?.data?.message);
+			if (err.response) setError(err?.response?.data?.message);
 			toast.error('Something went wrong! :((', {
 				position: 'top-right',
 				autoClose: 8000,

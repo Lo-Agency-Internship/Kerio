@@ -63,7 +63,7 @@ export default function AccountPanelUser() {
 			});
 		} catch (err: any) {
 			setError(err.message);
-			setError(err.response.data.message);
+			if (err.response) setError(err.response.data.message);
 		}
 		setIsLoadingSubmit(false);
 	};
@@ -112,7 +112,7 @@ export default function AccountPanelUser() {
 								<InputFormControl
 									label={'Email'}
 									inputProps={{
-										type: 'text',
+										type: 'email',
 										placeholder: 'Email',
 										// disabled: inputDisabled,
 										disabled: true,
@@ -133,7 +133,6 @@ export default function AccountPanelUser() {
 									style={`btn border-slate-200 shadow-sm text-indigo-500 ${
 										changePasswordModalOpen && 'bg-slate-200'
 									}`}></Button>
-								<ChangePasswordModal setOpen={setChangePasswordModalOpen} open={changePasswordModalOpen} />
 							</div>
 							<div className="sm:w-1/3"></div>
 						</div>
@@ -165,6 +164,7 @@ export default function AccountPanelUser() {
 							</div>
 						</div>
 					</form>
+					<ChangePasswordModal setOpen={setChangePasswordModalOpen} open={changePasswordModalOpen} />
 				</div>
 			</div>
 			<ToastContainer
