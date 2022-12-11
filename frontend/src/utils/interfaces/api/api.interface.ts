@@ -70,6 +70,12 @@ export interface IUpdateContactNoteById {
 	status?: string;
 	id?: string;
 }
+export interface IUpdateOwnerInfo {
+	name?: string;
+	email?: string;
+	oldPassword?: string;
+	newPassword?: string;
+}
 
 export interface IDeleteContact {
 	id: number;

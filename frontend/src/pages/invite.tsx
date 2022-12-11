@@ -30,7 +30,6 @@ export default function Invite() {
 			name,
 			password,
 		};
-
 		try {
 			await inviteValidation.validate(body);
 			await axios.post(uri(`invites/${token}`), body);
@@ -46,7 +45,7 @@ export default function Invite() {
 			});
 		} catch (err: any) {
 			setError(err.message);
-			setError(err.response.data.message);
+			if (err.response) setError(err.response.data.message);
 			toast.error('Something went wrong! :((', {
 				position: 'top-right',
 				autoClose: 8000,
