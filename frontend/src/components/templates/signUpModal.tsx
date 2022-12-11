@@ -42,7 +42,9 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 			});
 		} catch (err: any) {
 			setError(err.response.data.message);
-			setIsLoadingSubmit(false);
+			setTimeout(() => {
+				setIsLoadingSubmit(false);
+			}, 500);
 		}
 	};
 
@@ -60,7 +62,9 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 
 		if (password !== rePassword) {
 			setError('passwords do not matched');
-			setIsLoadingSubmit(false);
+			setTimeout(() => {
+				setIsLoadingSubmit(false);
+			}, 500);
 			return;
 		}
 
@@ -105,7 +109,9 @@ const SignUpModal: FC<IProps> = ({ setOpen, open }) => {
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	return (

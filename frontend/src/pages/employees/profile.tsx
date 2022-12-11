@@ -87,7 +87,9 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	const submitDelete = async () => {
@@ -99,7 +101,7 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 			setEmployee(null);
 			setShowDeleteModal(false);
 			setInputsShow(false);
-
+			setShowDeleteModal(false);
 			toast.success(
 				<p>
 					<span className="text-rose-500">{employee.name} </span>Deleted!
@@ -128,8 +130,9 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
-		setShowDeleteModal(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	return (
@@ -192,7 +195,7 @@ export const EmployeesProfile: React.FC<EmployeeAccountProps> = ({
 												inputProps={{
 													type: 'text',
 													placeholder: 'Email',
-													disabled: inputDisabled,
+													disabled: true,
 													onChange: (e) => setEmployeeEmail(e.target.value),
 													value: employeeEmail,
 													className: background,

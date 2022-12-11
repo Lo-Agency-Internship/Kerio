@@ -79,7 +79,9 @@ const NewNoteModal: FC<IProps> = ({ setOpen, open, statuses }) => {
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	return (

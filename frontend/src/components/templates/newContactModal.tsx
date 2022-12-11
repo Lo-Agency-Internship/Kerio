@@ -41,6 +41,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 		try {
 			await modalContactValidation.validate(body);
 			await postContactInfo(body);
+			console.log('salam farmande');
 			const pageNumber = Math.ceil((totalRows + 1) / perPage);
 			if (fetchData) {
 				await fetchData(pageNumber, perPage);
@@ -58,7 +59,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 			});
 		} catch (err: any) {
 			setError(err?.response?.data?.message);
-			if (err.response) setError(err.message);
+			if (err.message) setError(err.message);
 			toast.error('Something went wrong! ', {
 				position: 'top-right',
 				autoClose: 8000,
@@ -70,7 +71,9 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	return (

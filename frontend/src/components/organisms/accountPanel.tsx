@@ -86,7 +86,9 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	const submitDelete = async () => {
@@ -121,7 +123,9 @@ export const AccountPanel: React.FC<AccountPanelProps> = ({ user, setUser }: any
 			});
 		}
 
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	return (

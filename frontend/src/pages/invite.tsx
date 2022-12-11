@@ -13,17 +13,21 @@ export default function Invite() {
 	const [message, setMessage] = useState<boolean>(false);
 	const [response, setResponse] = useState<any>();
 	const [searchParams] = useSearchParams();
+	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 	const token = searchParams.get('token');
 
 	const submitHandler = async (event: any) => {
 		event.preventDefault();
+		setIsLoadingSubmit(true);
 		const formData = new FormData(event.currentTarget);
 		const name = formData.get('name')?.toString().toLowerCase();
 		const password = formData.get('password');
 		const rePassword = formData.get('repassword');
+		setError(' ');
 
 		if (password !== rePassword) {
 			setError('password do not matched');
+			setIsLoadingSubmit(false);
 			return;
 		}
 		const body = {
@@ -57,6 +61,9 @@ export default function Invite() {
 				theme: 'light',
 			});
 		}
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 	const active = async () => {
 		try {
@@ -150,6 +157,7 @@ export default function Invite() {
 									type="submit"
 									label="submit"
 									style="inline-block w-11/12 px-4 py-3 text-xl font-medium text-center text-white transition duration-200 bg-gray-500 rounded-lg hover:bg-gray-900 ease"
+									loading={isLoadingSubmit}
 								/>
 								{error && <p className="text-red-500 justify-items-end mt-4 ml-40 flex">{error}</p>}
 							</div>

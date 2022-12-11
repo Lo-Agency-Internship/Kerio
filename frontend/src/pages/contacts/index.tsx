@@ -36,6 +36,7 @@ export default function ContactsPage() {
 			await deleteContacts(ids);
 			setToggleCleared(!toggleCleared);
 			await fetchData(currentPage, perPage);
+			setShowDeleteModal(false);
 			toast.success(
 				selectedRows.length === 1 ? `${selectedRows[0].name} Deleted!` : `${selectedRows.length} Contacts Deleted! `,
 				{
@@ -62,8 +63,9 @@ export default function ContactsPage() {
 				theme: 'light',
 			});
 		}
-		setShowDeleteModal(false);
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 	return (
 		<>

@@ -39,7 +39,9 @@ const SignInModal: FC<IProps> = ({ setOpen, open }) => {
 			setError(err.message);
 			if (err.response) setError(err.response.data.message);
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	return (
