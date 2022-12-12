@@ -1,9 +1,9 @@
 
-POST http://localhost:3001/invites/6e15ad6dbac682303bdb1f87acf9ed60d172d2bceb55f19bc3d4cf17ac9c94c5dbdf1aab49d6bda7ba2515f101b305a8  HTTP/1.
+POST http://localhost:3001/invites/2fe62e5f5bb8a82943061811aa3807a8726b84c0c3d89f758992d0ccb68492f260110bb9390a65a748235e908ce972ef  HTTP/1.
 Content-Type: application/json
 
 
 {
-	"name": "rad mehr",
+	"name": "mani mehr",
     "password": "0000"
 }

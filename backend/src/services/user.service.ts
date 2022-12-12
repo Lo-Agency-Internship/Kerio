@@ -157,7 +157,11 @@ export class UserService {
       });
     } else if (payload.user.oldPassword && userId !== payload.id) {
       throw new UnauthorizedException('user is unathorized');
-    }
+    } 
+    // else if (userId === payload.id){
+    //   return await this.userRepository.update(payload.id, payload.user);
+    // }
+
     return await this.userRepository.update(payload.id, payload.user);
   }
 
@@ -176,5 +180,9 @@ export class UserService {
     });
 
     return user.length !== 0;
+  }
+
+  async makeUserEnabled (payload:IUpdateOneByIdPayload){
+    return this.userRepository.update(payload.id,payload.user)
   }
 }
