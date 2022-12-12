@@ -115,7 +115,9 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	const handleDelete = async () => {
@@ -124,6 +126,8 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 			await deleteNote({ id: note.id });
 			// const dataa = await getAllNotes({ id: params.id as string });
 			// setNotes(dataa.notes);
+			setOpen(false);
+			setShowDeleteModal(false);
 			toast.success(
 				<p>
 					<span className="text-rose-500">{note.title} </span>Deleted!
@@ -152,9 +156,9 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
-		setShowDeleteModal(false);
-		setOpen(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 	return (
 		<>

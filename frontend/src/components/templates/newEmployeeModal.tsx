@@ -53,7 +53,9 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 	const handleRemoveClick = (index: number) => {
 		const list = [...employees];

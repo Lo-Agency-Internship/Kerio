@@ -65,7 +65,9 @@ export default function AccountPanelUser() {
 			setError(err.message);
 			if (err.response) setError(err.response.data.message);
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 	return (
 		<>

@@ -68,7 +68,9 @@ const ChangePasswordModal: FC<IProps> = ({ setOpen, open }) => {
 				theme: 'light',
 			});
 		}
-		setIsLoadingSubmit(false);
+		setTimeout(() => {
+			setIsLoadingSubmit(false);
+		}, 500);
 	};
 
 	return (

@@ -43,17 +43,11 @@ export default function ContactPage() {
 				<>
 					<div>
 						<div className="flex justify-start mt-8 w-12/12 ">
-							{/* <div className="flex bg-white ml-8 p-2 border-solid border-2 border-gray-300  rounded-xl"> */}
 							<div className="flex -space-x-1 overflow-hidden"></div>
 						</div>
-						{/* </div> */}
 					</div>
-					<div className="flex justify-center">
-						{/* {showNoteModal && <NoteModal setOpen={setShowNoteModal} user={contact} setUser={setContact} />} */}
-					</div>
+					<div className="flex justify-center"></div>
 					<Account user={contact} setUser={setContact} />
-
-					{/* <div className="flex justify-center w-12/12 border"> */}
 					{roadMap &&
 						roadMap.map((element, index) => (
 							<Roadmap
