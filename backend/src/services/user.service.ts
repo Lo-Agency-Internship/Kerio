@@ -179,6 +179,6 @@ export class UserService {
   }
 
   async makeUserEnabled(payload: IUpdateOneByIdPayload) {
-    return this.userRepository.update(payload.id, payload.user);
+    return await this.userRepository.update(payload.id, payload.user);
   }
 }
