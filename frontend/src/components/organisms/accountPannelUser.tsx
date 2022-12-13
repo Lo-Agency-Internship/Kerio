@@ -31,7 +31,6 @@ export default function AccountPanelUser() {
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
-		// setUser(user);
 		setBackground('bg-transparent');
 		setUserName(usersName);
 		setUserEmail(usersEmail);
@@ -44,7 +43,6 @@ export default function AccountPanelUser() {
 		const name = formData.get('name')?.toString().toLowerCase();
 		const email = formData.get('email')?.toString().toLowerCase();
 		const body = { name, email };
-		console.log(body);
 		try {
 			await editUserValidation.validate(body);
 			await updateUserInfo(sub, body);
