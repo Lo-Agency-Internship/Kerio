@@ -6,6 +6,7 @@ import { InputFormControl } from '../molecules/formControls/inputFormControl';
 import { useAuthContext } from '../../context/auth';
 import ChangePasswordModal from '../templates/changePasswordModal';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function AccountPanelUser() {
 	const [inputsShow, setInputsShow] = useState(false);
@@ -19,7 +20,7 @@ export default function AccountPanelUser() {
 	const [error, setError] = useState<string | null | boolean>(null);
 	const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
 	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
-
+	const navigate = useNavigate();
 	// after ckick it we can see 2 new buttons ( yes & no)
 	const editHandler = () => {
 		setInputDisabled(false);
@@ -30,7 +31,6 @@ export default function AccountPanelUser() {
 	const cancelHandler = () => {
 		setInputDisabled(true);
 		setInputsShow(false);
-		// setUser(user);
 		setBackground('bg-transparent');
 		setUserName(usersName);
 		setUserEmail(usersEmail);
@@ -50,6 +50,8 @@ export default function AccountPanelUser() {
 			setInputDisabled(true);
 			setInputsShow(false);
 			setBackground('bg-transparent');
+			localStorage.removeItem('access_token');
+			navigate('/auth');
 
 			toast.success('Your employee information has been changed!', {
 				position: 'top-center',
@@ -101,8 +103,7 @@ export default function AccountPanelUser() {
 									inputProps={{
 										type: 'text',
 										placeholder: 'Name',
-										// disabled: inputDisabled,
-										disabled: true,
+										disabled: inputDisabled,
 										onChange: (e) => setUserName(e.target.value),
 										value: userName,
 										className: background,
