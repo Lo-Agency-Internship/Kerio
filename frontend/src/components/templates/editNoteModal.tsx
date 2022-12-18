@@ -149,7 +149,10 @@ const EditNoteModal: FC<IProps> = ({
 		setIsLoadingSubmit(true);
 		try {
 			await deleteNote({ id: note.id });
-			const newPageCount = totalNotes % sizeCount === 1 ? pageCount - 1 : pageCount;
+			let newPageCount = pageCount;
+			if (totalNotes % sizeCount === 1 && pageCount > 1) {
+				newPageCount = pageCount - 1;
+			}
 			const dataa = await getAllNotes({
 				id,
 				pagination: {
