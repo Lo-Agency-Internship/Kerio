@@ -68,6 +68,11 @@ const NotePannel: React.FC<IProps> = ({ statuses }) => {
 					setNote={setNote}
 					setNotes={setNotes}
 					statuses={statuses}
+					pageCount={pageCount}
+					sizeCount={sizeCount}
+					id={id}
+					totalNotes={totalNotes}
+					setTotalNotes={setTotalNotes}
 				/>
 			)}
 			{error}
