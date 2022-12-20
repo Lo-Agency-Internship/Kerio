@@ -28,8 +28,8 @@ const NotePannel: React.FC<IProps> = ({ statuses }) => {
 			const data = await getAllNotes({
 				id,
 				pagination: {
-					page: page,
-					size: size,
+					page,
+					size,
 					sort: 'asc',
 				},
 			});
