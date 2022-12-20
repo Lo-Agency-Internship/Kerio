@@ -177,4 +177,8 @@ export class UserService {
 
     return user.length !== 0;
   }
+
+  async makeUserEnabled(payload: IUpdateOneByIdPayload) {
+    return await this.userRepository.update(payload.id, payload.user);
+  }
 }

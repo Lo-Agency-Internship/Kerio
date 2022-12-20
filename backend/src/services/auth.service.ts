@@ -13,14 +13,18 @@ import {
   SecureUserWithOrganization,
 } from '../utils/types';
 import { JwtService } from '@nestjs/jwt';
-import { UserRegisterDto } from 'src/dtos/user.dto';
 import { genSaltSync, hashSync } from 'bcrypt';
 import { User } from 'src/entities/user.entity';
 import { OrganizationUserService } from './organizationUser.service';
 import { OrganizationService } from './organization.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IFindUserToCheckForLogin } from 'src/interfaces/auth.service.interface';
+import {
+  ICreateOrganizationByOwner,
+  IFindUserToCheckForLogin,
+  IRgisterUser,
+  IValidateUser,
+} from 'src/interfaces/auth.service.interface';
 import { kebab } from 'case';
 import { Organization } from 'src/entities/organization.entity';
 
@@ -35,13 +39,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(
-    email: string,
-    password: string,
-  ): Promise<SecureUser | null> {
-    const user = await this.userService.findOneUserByEmail({ email });
+  async validateUser(payload: IValidateUser): Promise<SecureUser | null> {
+    const user = await this.userService.findOneUserByEmail({
+      email: payload.email,
+    });
 
-    if (!user || user.password === password) return null;
+    if (!user || user.password === payload.password) return null;
 
     // eslint-disable-next-line
     const { password: ignorePass, ...rest } = user;
@@ -61,15 +64,15 @@ export class AuthService {
     };
   }
 
-  async createOrganizationByOwner(organizationSlug: string, name: string) {
-    const pipedOrgSlug = kebab(organizationSlug);
+  async createOrganizationByOwner(payload: ICreateOrganizationByOwner) {
+    const pipedOrgSlug = kebab(payload.organizationSlug);
     const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
 
     if (orgExists) {
       throw new NotAcceptableException();
     }
     const newOrg = await this.orgService.addOrganization({
-      name: `${name}'s Organization`,
+      name: `${payload.name}'s Organization`,
       address: '',
       slug: pipedOrgSlug,
     });
@@ -77,24 +80,20 @@ export class AuthService {
     return newOrg;
   }
 
-  async registerUser({
-    email,
-    name,
-    password,
-    organizationSlug,
-    role,
-  }: UserRegisterDto): Promise<SecureUserWithOrganization> {
+  async registerUser(
+    payload: IRgisterUser,
+  ): Promise<SecureUserWithOrganization> {
     let orgExists: boolean, organization: Organization;
 
-    if (role === ERole.Owner) {
-      const userExists = await this.userService.exists(email);
+    if (payload.role === ERole.Owner) {
+      const userExists = await this.userService.exists(payload.email);
 
       if (userExists) throw new UnauthorizedException();
 
-      const newOrg = await this.createOrganizationByOwner(
-        name,
-        organizationSlug,
-      );
+      const newOrg = await this.createOrganizationByOwner({
+        name: payload.name,
+        organizationSlug: payload.organizationSlug,
+      });
 
       [orgExists, organization] = await this.orgService.existsAndFindBySlug(
         newOrg.slug,
@@ -103,7 +102,7 @@ export class AuthService {
       if (!orgExists) throw new NotFoundException();
     } else {
       [orgExists, organization] = await this.orgService.existsAndFindBySlug(
-        organizationSlug,
+        payload.organizationSlug,
       );
 
       if (!orgExists) throw new NotFoundException();
@@ -111,24 +110,26 @@ export class AuthService {
 
     const salt = genSaltSync(10);
 
-    const hashedPass = hashSync(password, salt);
+    const hashedPass = hashSync(payload.password, salt);
 
     const createdUser: User = await this.userService.addUser({
       user: {
         salt,
         password: hashedPass,
-        email,
-        name,
+        email: payload.email,
+        name: payload.name,
       },
     });
 
     await this.orgUserService.assignUserToOrganization({
       user: createdUser,
       organization,
-      role,
+      role: payload.role,
     });
 
-    return await this.orgUserService.findUserWithOrganizationByUserEmail(email);
+    return await this.orgUserService.findUserWithOrganizationByUserEmail(
+      payload.email,
+    );
   }
 
   async activeAccount(email: string) {
@@ -138,7 +139,7 @@ export class AuthService {
       throw new NotFoundException();
     }
     getUser.enabled = true;
-    return await this.userService.updateOneById({
+    return await this.userService.makeUserEnabled({
       id: getUser.id,
       user: getUser,
     });

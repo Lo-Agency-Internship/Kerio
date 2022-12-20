@@ -1,12 +1,12 @@
 POST http://localhost:3001/invites HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjEsIm5hbWUiOiJnb2xpIiwicm9sZSI6eyJpZCI6MSwibmFtZSI6Ik93bmVyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0wNFQwNDo1ODoyOS42NjZaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0wNFQwNDo1ODoyOS42NjZaIn0sImlhdCI6MTY3MDM0OTc5NywiZXhwIjoxNjcyOTQxNzk3fQ.dEf9vH7GdEOlnPe_CUw6sqeJyk1wOTykRAcSF1A6jYI
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdvbGlAZC5jb20iLCJzdWIiOjEsIm5hbWUiOiJnb2xpIiwicm9sZSI6eyJpZCI6MSwibmFtZSI6Ik93bmVyIiwiY3JlYXRlZEF0IjoiMjAyMi0xMi0wNFQwNDo1ODoyOS42NjZaIiwidXBkYXRlZEF0IjoiMjAyMi0xMi0wNFQwNDo1ODoyOS42NjZaIn0sImlhdCI6MTY3MDg0MTAyMSwiZXhwIjoxNjczNDMzMDIxfQ.ZxPuPnSCC2RNz0Y_uo5Tos8sL0yUXFIavZzPcqGYges
 
 {
 	"invites": [
 		{ 
-			"name": "sina mehr",
-			"email": "radmehr123@gmail.com"
+			"name": "mani",
+			"email": "bemani@gmail.com"
 		}
 	]
 }
