@@ -123,7 +123,7 @@ export default function Layout({ children }: ILayout) {
 								<Link to="/Contacts">Contacts</Link>
 							</SidebarLink>
 							<SidebarLink
-								onClick={() => setShowEmployeeModal(true)}
+								onClick={() => setShowContactModal(true)}
 								sidebarExpanded={sidebarExpanded}
 								isGroupLink
 								className="pl-4 py-1 text-gray-300">
