@@ -31,10 +31,10 @@ const entitiesToAdd = [
 export const myDataSource = new DataSource({
   type: 'postgres',
   //host: configService.get('POSTGRES_HOST'),
-  host:'postgres',
+  host: 'localhost',
   //url: configService.get('DB_URL'),
-  //url: configService.get('DATABASE_URL'),
-  url:'postgresql://mahsa:pass123@localhost:5432/kerio_db?sslmode=disable',
+  url: configService.get('DATABASE_URL'),
+  //url: 'postgresql://mahsa:pass123@localhost:5432/kerio_db?sslmode=disable',
   entities: entitiesToAdd,
   migrations: ['./dist/migrations/*.js'],
 });

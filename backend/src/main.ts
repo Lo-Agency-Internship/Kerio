@@ -14,10 +14,10 @@ async function bootstrap() {
 
   try {
     await myDataSource.initialize();
-      await myDataSource.runMigrations();
-    } catch (error) {
-      console.log(error);
-    }
+    await myDataSource.runMigrations();
+  } catch (error) {
+    console.log(error);
+  }
 
   app.useGlobalPipes(new ValidationPipe());
   app.useLogger(SentryService.SentryServiceInstance());
