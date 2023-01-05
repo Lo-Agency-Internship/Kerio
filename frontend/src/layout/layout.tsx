@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Sidebar from '../components/organisms/sidebar/sidebar';
 import { SidebarGroup } from '../components/organisms/sidebar/sidebarGroup';
 import { SidebarLink } from '../components/organisms/sidebar/sidebarLink';
@@ -24,8 +24,6 @@ export default function Layout({ children }: ILayout) {
 		<>
 			<div className="flex h-screen overflow-hidden">
 				<Sidebar
-					sidebarOpen={sidebarOpen}
-					setSidebarOpen={setSidebarOpen}
 					logo={
 						<svg width="32" height="32" viewBox="0 0 32 32">
 							<defs>
@@ -52,11 +50,14 @@ export default function Layout({ children }: ILayout) {
 								fill="url(#logo-b)"
 							/>
 						</svg>
-					}>
-					<SidebarGroup groupTitle="Pages">
+					}
+					sidebarOpen={sidebarOpen}
+					setSidebarOpen={setSidebarOpen}
+					sidebarExpanded={sidebarExpanded}
+					setSidebarExpanded={setSidebarExpanded}>
+					<SidebarGroup groupTitle="Pages" sidebarExpanded={sidebarExpanded}>
 						<SidebarLink
-							href="/"
-							anchor="Dashbaord"
+							sidebarExpanded={sidebarExpanded}
 							icon={
 								<svg className="shrink-0 h-6 w-6 pr-1" viewBox="0 0 24 24">
 									<path
@@ -72,27 +73,14 @@ export default function Layout({ children }: ILayout) {
 										d="M12 15c-1.654 0-3-1.346-3-3 0-.462.113-.894.3-1.285L6 6l4.714 3.301A2.973 2.973 0 0112 9c1.654 0 3 1.346 3 3s-1.346 3-3 3z"
 									/>
 								</svg>
-							}
-						/>
-						<SidebarLinkGroup
-							activeCondition={pathname.includes('contact')}
-							linkGroupTitle={'Contacts'}
-							linkGroupIcon={
-								<svg className="shrink-0 h-6 w-6 pr-1" viewBox="0 0 24 24">
-									<path
-										className="fill-current text-slate-600 false"
-										d="M18.974 8H22a2 2 0 012 2v6h-2v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5h-2v-6a2 2 0 012-2h.974zM20 7a2 2 0 11-.001-3.999A2 2 0 0120 7zM2.974 8H6a2 2 0 012 2v6H6v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5H0v-6a2 2 0 012-2h.974zM4 7a2 2 0 11-.001-3.999A2 2 0 014 7z"></path>
-									<path
-										className="fill-current text-slate-400 false"
-										d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z"></path>
-								</svg>
 							}>
-							<SidebarLink href="/contacts" anchor="Contact Table" />
-							<SidebarLink onClick={() => setShowContactModal(true)} anchor="Add Contact" href={'#'} />
-						</SidebarLinkGroup>
+							<a href="/">Dashbaord</a>
+						</SidebarLink>
 						<SidebarLinkGroup
-							activeCondition={pathname.includes('Employees')}
-							linkGroupTitle={'Employees'}
+							setSidebarExpanded={setSidebarExpanded}
+							sidebarExpanded={sidebarExpanded}
+							activeCondition={false}
+							linkGroupTitle="Employees"
 							linkGroupIcon={
 								<svg className="shrink-0 h-6 w-6 pr-1" viewBox="0 0 24 24">
 									<path
@@ -105,12 +93,71 @@ export default function Layout({ children }: ILayout) {
 									/>
 								</svg>
 							}>
-							<SidebarLink href="/Employees" anchor="Employee Table" />
-							<SidebarLink onClick={() => setShowEmployeeModal(true)} anchor="Add Employee" href={'#'} />
+							<SidebarLink sidebarExpanded={sidebarExpanded} isGroupLink className="pl-4 py-1 text-gray-300">
+								<Link to="/Employees">Employees</Link>
+							</SidebarLink>
+							<SidebarLink
+								onClick={() => setShowEmployeeModal(true)}
+								sidebarExpanded={sidebarExpanded}
+								isGroupLink
+								className="pl-4 py-1 text-gray-300">
+								<Link to={`#`}>Add Employee</Link>
+							</SidebarLink>
+						</SidebarLinkGroup>
+
+						<SidebarLinkGroup
+							sidebarExpanded={sidebarExpanded}
+							activeCondition={false}
+							linkGroupTitle="Contacts"
+							linkGroupIcon={
+								<svg className="shrink-0 h-6 w-6 pr-1" viewBox="0 0 24 24">
+									<path
+										className="fill-current text-slate-600 false"
+										d="M18.974 8H22a2 2 0 012 2v6h-2v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5h-2v-6a2 2 0 012-2h.974zM20 7a2 2 0 11-.001-3.999A2 2 0 0120 7zM2.974 8H6a2 2 0 012 2v6H6v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5H0v-6a2 2 0 012-2h.974zM4 7a2 2 0 11-.001-3.999A2 2 0 014 7z"></path>
+									<path
+										className="fill-current text-slate-400 false"
+										d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z"></path>
+								</svg>
+							}>
+							<SidebarLink sidebarExpanded={sidebarExpanded} isGroupLink className="pl-4 py-1 text-gray-300">
+								<Link to="/Contacts">Contacts</Link>
+							</SidebarLink>
+							<SidebarLink
+								onClick={() => setShowContactModal(true)}
+								sidebarExpanded={sidebarExpanded}
+								isGroupLink
+								className="pl-4 py-1 text-gray-300">
+								<Link to={`#`}>Add Contact</Link>
+							</SidebarLink>
 						</SidebarLinkGroup>
 					</SidebarGroup>
-					<SidebarGroup groupTitle="Settings">
-						<SidebarLink href="/profile" anchor="Profile" />
+
+					<SidebarGroup groupTitle="Settings" sidebarExpanded={sidebarExpanded}>
+						<SidebarLinkGroup
+							setSidebarExpanded={setSidebarExpanded}
+							sidebarExpanded={sidebarExpanded}
+							activeCondition={false}
+							linkGroupTitle="Settings"
+							linkGroupIcon={
+								<svg className="shrink-0 h-6 w-6 pr-1" viewBox="0 0 24 24">
+									<path
+										className="fill-current text-slate-600"
+										d="M19.714 14.7l-7.007 7.007-1.414-1.414 7.007-7.007c-.195-.4-.298-.84-.3-1.286a3 3 0 113 3 2.969 2.969 0 01-1.286-.3z"></path>
+									<path
+										className="fill-current text-slate-400"
+										d="M10.714 18.3c.4-.195.84-.298 1.286-.3a3 3 0 11-3 3c.002-.446.105-.885.3-1.286l-6.007-6.007 1.414-1.414 6.007 6.007z"></path>
+									<path
+										className="fill-current text-slate-600"
+										d="M5.7 10.714c.195.4.298.84.3 1.286a3 3 0 11-3-3c.446.002.885.105 1.286.3l7.007-7.007 1.414 1.414L5.7 10.714z"></path>
+									<path
+										className="fill-current text-slate-400"
+										d="M19.707 9.292a3.012 3.012 0 00-1.415 1.415L13.286 5.7c-.4.195-.84.298-1.286.3a3 3 0 113-3 2.969 2.969 0 01-.3 1.286l5.007 5.006z"></path>
+								</svg>
+							}>
+							<SidebarLink sidebarExpanded={sidebarExpanded} className="pl-4 py-1 text-gray-300">
+								<Link to="/profile">Profile</Link>
+							</SidebarLink>
+						</SidebarLinkGroup>
 					</SidebarGroup>
 				</Sidebar>
 				<NewContactModal

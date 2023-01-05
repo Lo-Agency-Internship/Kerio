@@ -28,8 +28,8 @@ const NotePannel: React.FC<IProps> = ({ statuses }) => {
 			const data = await getAllNotes({
 				id,
 				pagination: {
-					page: page,
-					size: size,
+					page,
+					size,
 					sort: 'asc',
 				},
 			});
@@ -68,6 +68,11 @@ const NotePannel: React.FC<IProps> = ({ statuses }) => {
 					setNote={setNote}
 					setNotes={setNotes}
 					statuses={statuses}
+					pageCount={pageCount}
+					sizeCount={sizeCount}
+					id={id}
+					totalNotes={totalNotes}
+					setTotalNotes={setTotalNotes}
 				/>
 			)}
 			{error}

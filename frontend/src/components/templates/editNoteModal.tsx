@@ -18,11 +18,28 @@ interface IProps {
 	setOpen: (open: boolean) => void;
 	setNotes: any;
 	statuses: any;
+	sizeCount: number;
+	pageCount: number;
+	id?: string;
+	totalNotes: number;
+	setTotalNotes: any;
 }
 
 const EditNoteFormID = 'EditNoteFORMID';
 
-const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, statuses }) => {
+const EditNoteModal: FC<IProps> = ({
+	open,
+	note,
+	setOpen,
+	setNote,
+	setNotes,
+	statuses,
+	pageCount,
+	sizeCount,
+	id,
+	totalNotes,
+	setTotalNotes,
+}) => {
 	const { updateContactNoteById, deleteNote, getAllNotes } = useApiContext();
 	const params = useParams();
 	const [error, setError] = useState<string[] | null | boolean>(null);
@@ -84,7 +101,15 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 				score: body.score,
 				title: body.title,
 			});
-			setNote({ ...body, id: params.id as string });
+			const dataa = await getAllNotes({
+				id,
+				pagination: {
+					page: pageCount,
+					size: sizeCount,
+					sort: 'asc',
+				},
+			});
+			setNotes(dataa.notes);
 			setInputDisabled(true);
 			setInputsShow(false);
 			setOpen(false);
@@ -124,8 +149,20 @@ const EditNoteModal: FC<IProps> = ({ open, note, setOpen, setNote, setNotes, sta
 		setIsLoadingSubmit(true);
 		try {
 			await deleteNote({ id: note.id });
-			// const dataa = await getAllNotes({ id: params.id as string });
-			// setNotes(dataa.notes);
+			let newPageCount = pageCount;
+			if (totalNotes % sizeCount === 1 && pageCount > 1) {
+				newPageCount = pageCount - 1;
+			}
+			const dataa = await getAllNotes({
+				id,
+				pagination: {
+					page: newPageCount,
+					size: sizeCount,
+					sort: 'asc',
+				},
+			});
+			setTotalNotes(dataa.metadata.total);
+			setNotes(dataa.notes);
 			setOpen(false);
 			setShowDeleteModal(false);
 			toast.success(

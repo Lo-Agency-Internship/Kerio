@@ -1,10 +1,12 @@
 import * as React from 'react';
 
 export interface SidebarLinkGroupProps {
-	children: any;
-	activeCondition: any;
+	children: React.ReactNode;
+	activeCondition: boolean;
 	linkGroupTitle: string;
 	linkGroupIcon?: React.ReactNode;
+	sidebarExpanded: boolean;
+	setSidebarExpanded?: any;
 }
 
 export const SidebarLinkGroup: React.FC<SidebarLinkGroupProps> = ({
@@ -12,15 +14,18 @@ export const SidebarLinkGroup: React.FC<SidebarLinkGroupProps> = ({
 	activeCondition,
 	linkGroupTitle,
 	linkGroupIcon,
+	sidebarExpanded,
+	setSidebarExpanded,
 }) => {
 	const [open, setOpen] = React.useState(activeCondition);
 
 	const handleClick = () => {
 		setOpen(!open);
+		setSidebarExpanded(true);
 	};
 
 	return (
-		<li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${activeCondition && 'bg-slate-900'}`}>
+		<li className={`px-1 py-2 rounded-sm mb-0.5 last:mb-0 ${activeCondition && 'bg-slate-900'}`}>
 			<a
 				href="#0"
 				className={`block text-slate-200 hover:text-white truncate transition duration-150`}
@@ -31,10 +36,14 @@ export const SidebarLinkGroup: React.FC<SidebarLinkGroupProps> = ({
 				<div className="flex items-center justify-between">
 					<div className="flex items-center">
 						{linkGroupIcon || null}
-						<span className="text-sm font-medium ltr:ml-3 rtl:mr-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+						<span
+							className={`text-sm font-medium ltr:ml-3 rtl:mr-3 lg:opacity-0 2xl:opacity-100 duration-200 ${
+								sidebarExpanded && 'lg:opacity-100'
+							}`}>
 							{linkGroupTitle}
 						</span>
 					</div>
+
 					{/* Icon */}
 					<div className="flex shrink-0 ltr:ml-2 rtl:mr-2">
 						<svg
@@ -48,7 +57,7 @@ export const SidebarLinkGroup: React.FC<SidebarLinkGroupProps> = ({
 				</div>
 			</a>
 
-			<div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
+			<div className={`lg:hidden 2xl:block ${sidebarExpanded && 'lg:!block'}`}>
 				<ul className={`ltr:pl-9 rtl:pr-9 mt-1 ${!open && 'hidden'}`}>{children}</ul>
 			</div>
 		</li>
