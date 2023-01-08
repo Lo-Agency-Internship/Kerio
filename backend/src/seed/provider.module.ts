@@ -18,7 +18,7 @@ import { Role } from '../entities/role.entity';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
-        url: configService.get('DB_URL'),
+        url: configService.get('DATABASE_URL'),
         ssl: { rejectUnauthorized: false },
         entities: [
           Role,
