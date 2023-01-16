@@ -30,7 +30,7 @@ const entitiesToAdd = [
 
 export const myDataSource = new DataSource({
   type: 'postgres',
-  host: 'localhost',
+  host: configService.get('POSTGRES_HOST'),
   url: configService.get('DATABASE_URL'),
   entities: entitiesToAdd,
   migrations: ['./dist/migrations/*.js'],
