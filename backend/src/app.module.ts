@@ -66,7 +66,6 @@ const entitiesToAdd = [
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        //url: configService.get('DB_URL'),
         url: configService.get('DATABASE_URL'),
         ssl: { rejectUnauthorized: false },
         synchronize: false,
