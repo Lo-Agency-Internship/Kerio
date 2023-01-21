@@ -44,4 +44,17 @@ export class User {
   @OneToOne(() => OrganizationUser)
   @JoinColumn()
   organization: OrganizationUser;
+
+constructor(id: number, name: string, email: string, password: string, salt: string, createdAt: Date, updatedAt: Date, deletedAt: Date, organization: OrganizationUser) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.salt=salt;
+    this.createdAt=createdAt;
+    this.updatedAt=updatedAt;
+    this.deletedAt=deletedAt;
+    this.organization=organization;
 }
+}
+
