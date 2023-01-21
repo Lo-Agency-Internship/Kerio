@@ -28,10 +28,10 @@ const entitiesToAdd = [
   Log,
 ];
 
-export default new DataSource({
+export const myDataSource = new DataSource({
   type: 'postgres',
   host: configService.get('POSTGRES_HOST'),
-  url: configService.get('DB_URL'),
+  url: configService.get('DATABASE_URL'),
   entities: entitiesToAdd,
-  migrations: ['./src/migrations/*.ts'],
+  migrations: ['./dist/migrations/*.js'],
 });
