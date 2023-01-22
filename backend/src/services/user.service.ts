@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
 import { SecureUser, UserWithOrganization } from '../utils/types';
 
 import {
@@ -21,8 +21,8 @@ import {
   IUpdateOneByIdPayload,
   IUpdateUserByEmailPayload,
 } from 'src/interfaces/user.service.interface';
-import { OrganizationUser } from 'src/entities/organizationUser.entity';
-import { getPaginationOffset } from 'src/utils/functions';
+import { OrganizationUser } from '../entities/organizationUser.entity';
+import { getPaginationOffset } from '../utils/functions';
 import { hashSync } from 'bcrypt';
 import { RequestContextService } from './requestContext.service';
 
