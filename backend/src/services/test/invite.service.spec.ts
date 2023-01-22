@@ -11,6 +11,7 @@ import { TemplateEngineService } from '../templateEngine.service';
 import { UserService } from '../user.service';
 import { ConfigService } from '@nestjs/config';
 import { createMock } from '@golevelup/ts-jest';
+import { NotFoundException } from '@nestjs/common';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -81,6 +82,14 @@ describe('inviteService', () => {
     inviteRepository.findOneBy.mockResolvedValue(mockInvite)
     expect(await inviteService.isInviteValid(token)).toEqual(expectedResult)
 
+  });
+  it('should handle error',async ()=>{
+    const token = "uytr56677";
+    inviteRepository.findOneBy.mockReturnValue(null)
+    expect( inviteService.isInviteValid(token)).rejects.toThrow(NotFoundException)
   })
 });
+
+
+
 
