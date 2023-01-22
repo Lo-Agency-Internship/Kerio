@@ -5,14 +5,14 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Invite } from 'src/entities/invite.entity';
+import { Invite } from '../entities/invite.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { UserService } from './user.service';
 import { randomBytes } from 'crypto';
 import { MailerService } from './mail.service';
 import { ConfigService } from '@nestjs/config';
 import { TemplateEngineService } from './templateEngine.service';
-import { ICreateInvite } from 'src/interfaces/invite.service.interface';
+import { ICreateInvite } from '../interfaces/invite.service.interface';
 import { OrganizationService } from './organization.service';
 
 @Injectable()

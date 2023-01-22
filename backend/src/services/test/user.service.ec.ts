@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { OrganizationUser } from '../entities/organizationUser.entity';
-import { User } from '../entities/user.entity';
+import { OrganizationUser } from '../../entities/organizationUser.entity';
+import { User } from '../../entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
-import { UserService } from './user.service';
-import { RequestContextService } from './requestContext.service';
+import { UserService } from '../user.service';
+import { RequestContextService } from '../requestContext.service';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOneBy: jest.fn(),
 });
 
-const mockContextService = () => {
-  get: jest.fn();
-};
+// const mockContextService = () => {
+//   get: jest.fn();
+// };
 
 const userStub = () => {
   return {
@@ -26,6 +26,8 @@ const userStub = () => {
   };
 };
 
+jest.mock('../requestContext.service');
+
 describe('userService', () => {
   let service: UserService;
   let userRepository: MockRepository;
@@ -35,13 +37,15 @@ describe('userService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
+        RequestContextService,
         { provide: DataSource, useValue: {} },
         {
           provide: getRepositoryToken(OrganizationUser),
           useValue: createMockRepository(),
         },
         { provide: getRepositoryToken(User), useValue: createMockRepository() },
-        { provide: RequestContextService, useFactory: mockContextService },
+        
+        //{ provide: RequestContextService, useFactory: mockContextService },
       ],
     }).compile();
 
