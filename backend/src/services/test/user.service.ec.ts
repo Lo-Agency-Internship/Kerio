@@ -11,9 +11,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOneBy: jest.fn(),
 });
 
-// const mockContextService = () => {
-//   get: jest.fn();
-// };
+
 
 const userStub = () => {
   return {
@@ -23,6 +21,7 @@ const userStub = () => {
     password: '1234556',
     salt: 'ASE$%RHJJJJJJ',
     organization: {},
+    createdA:new Date()
   };
 };
 
@@ -45,7 +44,7 @@ describe('userService', () => {
         },
         { provide: getRepositoryToken(User), useValue: createMockRepository() },
         
-        //{ provide: RequestContextService, useFactory: mockContextService },
+    
       ],
     }).compile();
 

@@ -1,4 +1,4 @@
-//import { MailerModule } from '@nestjs-modules/mailer';
+
 import { MailerService } from '../../services/mail.service';
 
 import { Test, TestingModule } from '@nestjs/testing';
@@ -18,7 +18,6 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
 });
 
 jest.mock('../user.service');
-//jest.mock('../mail.service');
 jest.mock('../organization.service');
 jest.mock('../templateEngine.service');
 
@@ -48,10 +47,8 @@ describe('inviteService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      //imports:[MailerModule],
       providers: [
         InviteService,
-        //MailerService,
         UserService,
         OrganizationService,
         TemplateEngineService,
@@ -61,16 +58,13 @@ describe('inviteService', () => {
           useValue: createMockRepository(),
         },
         { provide: ConfigService, useFactory: mockConfigService },
-        //{ provide: MailerService, useFactory: mockMailerService },
-        //{ provide: MailerService, useValue: {} },
-        //{ provide: MailerModule, useValue: createMock<MailerService>()},
         { provide: MailerService, useValue: createMock<MailerService>()},
         
       
       
       ],
     })
-    //.useMocker(createMock)
+    
     .compile();
 
     inviteService = module.get(InviteService);
