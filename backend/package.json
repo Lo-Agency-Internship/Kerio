@@ -25,10 +25,10 @@
     "typeorm:generate-migration": "npm run typeorm -- -d ./src/config/typeOrm.config.ts migration:generate ./src/migrations/%npm_config_name%",
     "typeorm:create-migration": "npm run typeorm -- migration:create ./migrations/%npm_config_name%",
     "typeorm:revert-migration": "npm run typeorm -- -d ./src/config/typeOrm.config.ts migration:revert",
-    "typeorm:drop":"npm run typeorm schema:drop -- -d ./src/config/typeOrm.config.ts"
-  
+    "typeorm:drop": "npm run typeorm schema:drop -- -d ./src/config/typeOrm.config.ts"
   },
   "dependencies": {
+    "@golevelup/ts-jest": "^0.3.4",
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.11",

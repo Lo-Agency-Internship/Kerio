@@ -5,8 +5,8 @@ import { User } from '../entities/user.entity';
 import { OrganizationUser } from '../entities/organizationUser.entity';
 import { Organization } from '../entities/organization.entity';
 import { SecureUserWithOrganization } from '../utils/types';
-import { Role } from 'src/entities/role.entity';
-import { IassignUserToOrganization } from 'src/interfaces/organizationUser.service.interface';
+import { Role } from '../entities/role.entity';
+import { IassignUserToOrganization } from '../interfaces/organizationUser.service.interface';
 
 @Injectable()
 export class OrganizationUserService {
