@@ -41,7 +41,7 @@ describe('inviteService', () => {
   let mailerService: MailerService;
   let userService: UserService;
   let orgService: OrganizationService;
-  let configService;
+  let configService:ConfigService;
   let templateService: TemplateEngineService;
   let inviteRepository: MockRepository;
 
