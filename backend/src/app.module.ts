@@ -103,7 +103,6 @@ const entitiesToAdd = [
           requireTLS: false,
         },
       }),
-      
     }),
     PassportModule,
     TerminusModule,

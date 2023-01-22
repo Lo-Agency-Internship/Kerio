@@ -11,8 +11,6 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOneBy: jest.fn(),
 });
 
-
-
 const userStub = () => {
   return {
     id: 1,
@@ -21,7 +19,7 @@ const userStub = () => {
     password: '1234556',
     salt: 'ASE$%RHJJJJJJ',
     organization: {},
-    createdA:new Date()
+    createdA: new Date(),
   };
 };
 
@@ -43,8 +41,6 @@ describe('userService', () => {
           useValue: createMockRepository(),
         },
         { provide: getRepositoryToken(User), useValue: createMockRepository() },
-        
-    
       ],
     }).compile();
 
@@ -72,5 +68,3 @@ describe('userService', () => {
     });
   });
 });
-
-
