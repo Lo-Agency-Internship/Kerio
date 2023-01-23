@@ -28,7 +28,6 @@ jest.mock('../requestContext.service');
 describe('userService', () => {
   let service: UserService;
   let userRepository: MockRepository;
-  let orgUserRepository: MockRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -46,7 +45,6 @@ describe('userService', () => {
 
     service = module.get<UserService>(UserService);
     userRepository = module.get(getRepositoryToken(User));
-    orgUserRepository = module.get(getRepositoryToken(OrganizationUser));
   });
 
   it('should be defined', () => {
