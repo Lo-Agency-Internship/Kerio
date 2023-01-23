@@ -26,34 +26,27 @@ const mockConfigService = () => {
   get: jest.fn();
 };
 
-
-
 const inviteStub = () => {
   return {
     id: 1,
-          name: 'mahsa',
-          email: 'goli@d.com',
-          token: '12gff45hjj87yyyyyy',
-          invitedBy: {},
-          invitedOrganization: {
-            id:1,
-            name:'parsteb',
-            address:'tehran',
-            slug:'slug',
-            contacts:[],
-            orgUser:{}
-          },
-          createdA: new Date(),
-        }
+    name: 'mahsa',
+    email: 'goli@d.com',
+    token: '12gff45hjj87yyyyyy',
+    invitedBy: {},
+    invitedOrganization: {
+      id: 1,
+      name: 'parsteb',
+      address: 'tehran',
+      slug: 'slug',
+      contacts: [],
+      orgUser: {},
+    },
+    createdA: new Date(),
+  };
 };
 
 describe('inviteService', () => {
   let inviteService: InviteService;
-  let mailerService: MailerService;
-  let userService: UserService;
-  let orgService: OrganizationService;
-  let configService:ConfigService;
-  let templateService: TemplateEngineService;
   let inviteRepository: MockRepository;
 
   beforeEach(async () => {
@@ -75,17 +68,11 @@ describe('inviteService', () => {
 
     inviteService = module.get(InviteService);
     inviteRepository = module.get(getRepositoryToken(Invite));
-    userService = module.get(UserService);
-    orgService = module.get(OrganizationService);
-    mailerService = module.get(MailerService);
-    templateService = module.get(TemplateEngineService);
-    configService = module.get(ConfigService);
   });
   it('should be defined', () => {
     expect(inviteService).toBeDefined();
   });
-  describe('isInviteValid', ()=>{
-
+  describe('isInviteValid', () => {
     it('should return invite', async () => {
       const token = '12gff45hjj87yyyyyy';
       const mockInvite = inviteStub();
@@ -100,30 +87,23 @@ describe('inviteService', () => {
         NotFoundException,
       );
     });
+  });
 
-
-
-  })
-
-  
-
-  describe('getInviteByToken',()=>{
-    it('should return invite with relation with the organization', async()=>{
+  describe('getInviteByToken', () => {
+    it('should return invite with relation with the organization', async () => {
       const token = '12gff45hjj87yyyyyy';
-      const mockInvite = inviteStub()
+      const mockInvite = inviteStub();
 
       inviteRepository.findOne.mockResolvedValueOnce(mockInvite);
-      expect(await inviteService.getInviteByToken(token)).toEqual(mockInvite)
+      expect(await inviteService.getInviteByToken(token)).toEqual(mockInvite);
+    });
 
-
-    })
-  
-  it('should handle error', async () => {
-    const token = 'uytr56677';
-    inviteRepository.findOne.mockReturnValue(null);
-    expect( await inviteService.getInviteByToken(token)).rejects.toThrow(
-      NotFoundException,
-    );
+    it('should handle error', async () => {
+      const token = 'uytr56677';
+      inviteRepository.findOne.mockReturnValue(null);
+      expect(await inviteService.getInviteByToken(token)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
   });
-})
-})
+});
