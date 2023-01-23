@@ -15,6 +15,7 @@ import { NotFoundException } from '@nestjs/common';
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOneBy: jest.fn(),
+  findOne: jest.fn(),
 });
 
 jest.mock('../user.service');
@@ -30,13 +31,20 @@ const mockConfigService = () => {
 const inviteStub = () => {
   return {
     id: 1,
-    name: 'mahsa',
-    email: 'goli@d.com',
-    token: '12gff45hjj87yyyyyy',
-    invitedBy: {},
-    invitedOrganization: {},
-    createdA: new Date(),
-  };
+          name: 'mahsa',
+          email: 'goli@d.com',
+          token: '12gff45hjj87yyyyyy',
+          invitedBy: {},
+          invitedOrganization: {
+            id:1,
+            name:'parsteb',
+            address:'tehran',
+            slug:'slug',
+            contacts:[],
+            orgUser:{}
+          },
+          createdA: new Date(),
+        }
 };
 
 describe('inviteService', () => {
@@ -76,19 +84,46 @@ describe('inviteService', () => {
   it('should be defined', () => {
     expect(inviteService).toBeDefined();
   });
+  describe('isInviteValid', ()=>{
 
-  it('should return invite', async () => {
-    const token = '12gff45hjj87yyyyyy';
-    const mockInvite = inviteStub();
-    const expectedResult = { ok: true, email: mockInvite.email };
-    inviteRepository.findOneBy.mockResolvedValue(mockInvite);
-    expect(await inviteService.isInviteValid(token)).toEqual(expectedResult);
-  });
+    it('should return invite', async () => {
+      const token = '12gff45hjj87yyyyyy';
+      const mockInvite = inviteStub();
+      const expectedResult = { ok: true, email: mockInvite.email };
+      inviteRepository.findOneBy.mockResolvedValue(mockInvite);
+      expect(await inviteService.isInviteValid(token)).toEqual(expectedResult);
+    });
+    it('should handle error', async () => {
+      const token = 'uytr56677';
+      inviteRepository.findOneBy.mockReturnValue(null);
+      expect(inviteService.isInviteValid(token)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
+
+
+  })
+
+  
+
+  describe('getInviteByToken',()=>{
+    it('should return invite with relation with the organization', async()=>{
+      const token = '12gff45hjj87yyyyyy';
+      const mockInvite = inviteStub()
+
+      inviteRepository.findOne.mockResolvedValueOnce(mockInvite);
+      expect(await inviteService.getInviteByToken(token)).toEqual(mockInvite)
+
+
+    })
+  
   it('should handle error', async () => {
     const token = 'uytr56677';
-    inviteRepository.findOneBy.mockReturnValue(null);
-    expect(inviteService.isInviteValid(token)).rejects.toThrow(
+    inviteRepository.findOne.mockReturnValue(null);
+    expect( await inviteService.getInviteByToken(token)).rejects.toThrow(
       NotFoundException,
     );
   });
-});
+})
+})
