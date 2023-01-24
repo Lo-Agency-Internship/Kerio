@@ -68,28 +68,29 @@ describe('userService', () => {
       expect(await service.findOneUserById({ id })).toBe(null);
     });
   });
-  describe('findone',()=>{
-    it('should return the user object',async ()=>{
-        const userId = 1;
-        const mockedUser = userStub()  
-        const expectedUser = {
-            id: 1,
-            name:"mahsa",
-            email:"goli@d.com",
-            organization:{},
-            createdAt: new Date(),
-        } as SecureUser
+  describe('findone', () => {
+    it('should return the user object', async () => {
+      const userId = 1;
+      const mockedUser = userStub();
+      const expectedUser = {
+        id: 1,
+        name: 'mahsa',
+        email: 'goli@d.com',
+        organization: {},
+        createdAt: new Date(),
+      } as SecureUser;
 
-        userRepository.findOne.mockReturnValue(mockedUser)
-        const user = await service.readOneById({id:userId})
-        expect(user).toEqual(expectedUser)
-    })
-    it('should handle error',async ()=>{
-        const userId = 1;
-        
-        userRepository.findOne.mockReturnValue(null)
-        expect(service.readOneById({id:userId})).rejects.toThrow(NotFoundException)
-    })
+      userRepository.findOne.mockReturnValue(mockedUser);
+      const user = await service.readOneById({ id: userId });
+      expect(user).toEqual(expectedUser);
+    });
+    it('should handle error', async () => {
+      const userId = 1;
 
-})
+      userRepository.findOne.mockReturnValue(null);
+      expect(service.readOneById({ id: userId })).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+  });
 });
