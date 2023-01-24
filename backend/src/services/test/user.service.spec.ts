@@ -67,20 +67,17 @@ describe('userService', () => {
     });
   });
 
-  describe('exists function',()=>
-  {
-    it('should return true if count emails greater than zero',async ()=>
-    {
+  describe('exists function', () => {
+    it('should return true if count emails greater than zero', async () => {
       const mockedCount = 1;
       userRepository.count.mockResolvedValue(mockedCount);
-      expect(await service.exists("thohuti@gmail.com")).toEqual(true);
-    })
+      expect(await service.exists('thohuti@gmail.com')).toEqual(true);
+    });
 
-    it('should return false if count emails equal zero',async ()=>
-    {
-      const mockedCount= 0;
+    it('should return false if count emails equal zero', async () => {
+      const mockedCount = 0;
       userRepository.count.mockResolvedValue(mockedCount);
       expect(await service.exists('thohuti@gmail.com')).toEqual(false);
-    })
-  })
+    });
+  });
 });
