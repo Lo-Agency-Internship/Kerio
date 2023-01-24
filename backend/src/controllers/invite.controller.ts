@@ -94,7 +94,7 @@ export class InviteController {
       role,
     });
 
-    // TODO: send email to user to activate the account
+   
     this.inviteService.sendEmailToActiveAccount(invite.email);
 
     await this.inviteService.invalidateInviteByToken(token);

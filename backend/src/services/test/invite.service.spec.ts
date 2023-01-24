@@ -3,7 +3,7 @@ import { MailerService } from '../../services/mail.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Invite } from '../../entities/invite.entity';
-import { DataSource, Repository } from 'typeorm';
+import { Any, DataSource, DeleteResult, Repository } from 'typeorm';
 import { InviteService } from '../invite.service';
 import { OrganizationService } from '../organization.service';
 import { TemplateEngineService } from '../templateEngine.service';
@@ -16,6 +16,7 @@ type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOneBy: jest.fn(),
   findOne: jest.fn(),
+  delete: jest.fn(),
 });
 
 jest.mock('../user.service');
@@ -106,4 +107,12 @@ describe('inviteService', () => {
       );
     });
   });
+  describe('invalidateInviteByToken method',()=>{
+    it('should delete the invite if the token exists',async()=>{
+      const token = "12gy4566jhgt";
+      const mockedDeletedResult:DeleteResult = {raw: 'any',affected:1}
+      inviteRepository.delete.mockReturnValue(mockedDeletedResult)
+      expect(await inviteService.invalidateInviteByToken(token)).toEqual(mockedDeletedResult)
+    })
+  })
 });
