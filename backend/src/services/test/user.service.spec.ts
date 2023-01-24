@@ -5,10 +5,13 @@ import { User } from '../../entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
 import { UserService } from '../user.service';
 import { RequestContextService } from '../requestContext.service';
+import { SecureUser } from 'src/utils/types';
+import { NotFoundException } from '@nestjs/common';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOneBy: jest.fn(),
+  findOne: jest.fn(),
 });
 
 const userStub = () => {
@@ -19,7 +22,7 @@ const userStub = () => {
     password: '1234556',
     salt: 'ASE$%RHJJJJJJ',
     organization: {},
-    createdA: new Date(),
+    createdAt: new Date(),
   };
 };
 
@@ -65,4 +68,28 @@ describe('userService', () => {
       expect(await service.findOneUserById({ id })).toBe(null);
     });
   });
+  describe('findone',()=>{
+    it('should return the user object',async ()=>{
+        const userId = 1;
+        const mockedUser = userStub()  
+        const expectedUser = {
+            id: 1,
+            name:"mahsa",
+            email:"goli@d.com",
+            organization:{},
+            createdAt: new Date(),
+        } as SecureUser
+
+        userRepository.findOne.mockReturnValue(mockedUser)
+        const user = await service.readOneById({id:userId})
+        expect(user).toEqual(expectedUser)
+    })
+    it('should handle error',async ()=>{
+        const userId = 1;
+        
+        userRepository.findOne.mockReturnValue(null)
+        expect(service.readOneById({id:userId})).rejects.toThrow(NotFoundException)
+    })
+
+})
 });
