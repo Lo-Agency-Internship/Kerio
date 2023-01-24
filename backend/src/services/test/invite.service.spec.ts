@@ -102,7 +102,7 @@ describe('inviteService', () => {
     it('should handle error', async () => {
       const token = 'uytr56677';
       inviteRepository.findOne.mockReturnValue(null);
-      expect(await inviteService.getInviteByToken(token)).rejects.toThrow(
+      expect(inviteService.getInviteByToken(token)).rejects.toThrow(
         NotFoundException,
       );
     });
