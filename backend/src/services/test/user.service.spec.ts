@@ -8,6 +8,7 @@ import { RequestContextService } from '../requestContext.service';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
+  count: jest.fn(),
   findOneBy: jest.fn(),
 });
 
@@ -65,4 +66,21 @@ describe('userService', () => {
       expect(await service.findOneUserById({ id })).toBe(null);
     });
   });
+
+  describe('exists function',()=>
+  {
+    it('should return true if count emails greater than zero',async ()=>
+    {
+      const mockedCount = 1;
+      userRepository.count.mockResolvedValue(mockedCount);
+      expect(await service.exists("thohuti@gmail.com")).toEqual(true);
+    })
+
+    it('should return false if count emails equal zero',async ()=>
+    {
+      const mockedCount= 0;
+      userRepository.count.mockResolvedValue(mockedCount);
+      expect(await service.exists('thohuti@gmail.com')).toEqual(false);
+    })
+  })
 });
