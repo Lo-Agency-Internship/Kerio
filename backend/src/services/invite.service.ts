@@ -100,6 +100,9 @@ export class InviteService {
       },
       relations: ['invitedOrganization'],
     });
+    if(!invite){
+      throw new NotFoundException('token dies not exist')
+    }
 
     return invite;
   }
