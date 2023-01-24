@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Organization } from 'src/entities/organization.entity';
-import { IupdateOrganization } from 'src/interfaces/organizationUser.service.interface';
-import { NewOrganization } from 'src/utils/types';
+import { Organization } from '../entities/organization.entity';
+import { IupdateOrganization } from '../interfaces/organizationUser.service.interface';
+import { NewOrganization } from '../utils/types';
 import { Repository } from 'typeorm';
 
 @Injectable()
