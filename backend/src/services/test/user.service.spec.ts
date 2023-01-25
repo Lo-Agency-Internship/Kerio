@@ -5,6 +5,8 @@ import { User } from '../../entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
 import { UserService } from '../user.service';
 import { RequestContextService } from '../requestContext.service';
+import { SecureUser } from 'src/utils/types';
+import { NotFoundException } from '@nestjs/common';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -67,27 +69,52 @@ describe('userService', () => {
     });
   });
 
-  describe('exists function', () => {
-    it('should return true if count emails greater than zero', async () => {
-      const mockedCount = 1;
-      userRepository.count.mockResolvedValue(mockedCount);
-      expect(await service.exists('thohuti@gmail.com')).toEqual(true);
-    });
+  describe('findone', () => {
+    it('should return the user object', async () => {
+      const userId = 1;
+      const mockedUser = userStub();
+      const expectedUser = {
+        id: 1,
+        name: 'mahsa',
+        email: 'goli@d.com',
+        organization: {},
+        createdAt: new Date(),
+      } as SecureUser;
 
-    it('should return false if count emails equal zero', async () => {
-      const mockedCount = 0;
-      userRepository.count.mockResolvedValue(mockedCount);
-      expect(await service.exists('thohuti@gmail.com')).toEqual(false);
+      userRepository.findOne.mockReturnValue(mockedUser);
+      const user = await service.readOneById({ id: userId });
+      expect(user).toEqual(expectedUser);
     });
-  });
+    it('should handle error', async () => {
+      const userId = 1;
 
-  describe('existsAndFindByEmail', () => {
-    it('should return array which index 0 is boolean and index 1 is Object', async () => {
-      userRepository.findOne.mockResolvedValue(userStub());
-      const expectedResult = [true, userStub()];
-      expect(
-        await service.existsAndFindByEmail({ email: userStub().email }),
-      ).toEqual(expectedResult);
+      userRepository.findOne.mockReturnValue(null);
+      expect(service.readOneById({ id: userId })).rejects.toThrow(
+        NotFoundException,
+      );
+      describe('exists function', () => {
+        it('should return true if count emails greater than zero', async () => {
+          const mockedCount = 1;
+          userRepository.count.mockResolvedValue(mockedCount);
+          expect(await service.exists('thohuti@gmail.com')).toEqual(true);
+        });
+
+        it('should return false if count emails equal zero', async () => {
+          const mockedCount = 0;
+          userRepository.count.mockResolvedValue(mockedCount);
+          expect(await service.exists('thohuti@gmail.com')).toEqual(false);
+        });
+      });
+
+      describe('existsAndFindByEmail', () => {
+        it('should return array which index 0 is boolean and index 1 is Object', async () => {
+          userRepository.findOne.mockResolvedValue(userStub());
+          const expectedResult = [true, userStub()];
+          expect(
+            await service.existsAndFindByEmail({ email: userStub().email }),
+          ).toEqual(expectedResult);
+        });
+      });
     });
   });
 });
