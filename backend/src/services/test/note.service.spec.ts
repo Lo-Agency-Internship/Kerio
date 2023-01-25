@@ -11,8 +11,6 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
 });
 
 
-});
-
 const noteStub = () => {
   return [
     [
