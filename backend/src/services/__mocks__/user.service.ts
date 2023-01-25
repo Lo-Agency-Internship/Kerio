@@ -3,4 +3,6 @@ export const UserService = jest.fn().mockReturnValue({
   readOneById: jest.fn(),
   addUser: jest.fn(),
   exists: jest.fn(),
+  existsAndFindByEmail: jest.fn(),
+  findOneUserByEmail: jest.fn()
 });

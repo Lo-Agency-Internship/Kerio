@@ -10,6 +10,8 @@ type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   count: jest.fn(),
   findOneBy: jest.fn(),
+  findOne: jest.fn()
+  
 });
 
 const userStub = () => {
@@ -25,7 +27,6 @@ const userStub = () => {
 };
 
 jest.mock('../requestContext.service');
-
 describe('userService', () => {
   let service: UserService;
   let userRepository: MockRepository;
@@ -80,4 +81,14 @@ describe('userService', () => {
       expect(await service.exists('thohuti@gmail.com')).toEqual(false);
     });
   });
+
+  describe("existsAndFindByEmail",()=>
+  {
+    it("should return array which index 0 is boolean and index 1 is Object",async ()=>
+    {
+      userRepository.findOne.mockResolvedValue(userStub());
+      const expectedResult  = [true,userStub()];
+      expect(await service.existsAndFindByEmail({email: userStub().email})).toEqual(expectedResult);
+    })
+  })
 });
