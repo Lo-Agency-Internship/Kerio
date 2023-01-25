@@ -23,7 +23,7 @@ const userStub = () => {
     password: '1234556',
     salt: 'ASE$%RHJJJJJJ',
     organization: {},
-    createdA: new Date(),
+    createdAt: new Date(),
   };
 };
 
@@ -91,7 +91,7 @@ describe('userService', () => {
       userRepository.findOne.mockReturnValue(null);
       expect(service.readOneById({ id: userId })).rejects.toThrow(
         NotFoundException,
-      );
+      );})})
       describe('exists function', () => {
         it('should return true if count emails greater than zero', async () => {
           const mockedCount = 1;
@@ -116,5 +116,3 @@ describe('userService', () => {
         });
       });
     });
-  });
-});
