@@ -20,7 +20,7 @@ import {
   IReadOneById,
   IUpdateOneByIdPayload,
   IUpdateUserByEmailPayload,
-} from '../interfaces/user.service.interface';
+} from 'src/interfaces/user.service.interface';
 import { OrganizationUser } from '../entities/organizationUser.entity';
 import { getPaginationOffset } from '../utils/functions';
 import { hashSync } from 'bcrypt';
