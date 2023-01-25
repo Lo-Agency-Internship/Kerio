@@ -67,7 +67,7 @@ describe('inviteService', () => {
       ],
     }).compile();
 
-    inviteService = module.get(InviteService);
+    inviteService = module.get<InviteService>(InviteService);
     inviteRepository = module.get(getRepositoryToken(Invite));
   });
   it('should be defined', () => {

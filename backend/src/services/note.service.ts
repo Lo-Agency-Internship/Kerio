@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IPaginatedNoteResponse } from 'src/dtos/note.dto';
-import { Note } from 'src/entities/note.entity';
+import { IPaginatedNoteResponse } from '../dtos/note.dto';
+import { Note } from '../entities/note.entity';
 
 import {
   ICreatePayload,
   IDeleteByIdPayload,
   IFindByContactIdPayload,
   IUpdateOneByIdPayload,
-} from 'src/interfaces/note.service.interface';
-import { getPaginationOffset } from 'src/utils/functions';
+} from '../interfaces/note.service.interface';
+import { getPaginationOffset } from '../utils/functions';
 import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
 
 @Injectable()
