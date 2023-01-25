@@ -23,12 +23,11 @@ const userStub = () => {
     password: '1234556',
     salt: 'ASE$%RHJJJJJJ',
     organization: {},
-    createdAt: new Date(),
+    createdA: new Date(),
   };
 };
 
 jest.mock('../requestContext.service');
-
 describe('userService', () => {
   let service: UserService;
   let userRepository: MockRepository;
@@ -93,19 +92,29 @@ describe('userService', () => {
       expect(service.readOneById({ id: userId })).rejects.toThrow(
         NotFoundException,
       );
-    })})
+      describe('exists function', () => {
+        it('should return true if count emails greater than zero', async () => {
+          const mockedCount = 1;
+          userRepository.count.mockResolvedValue(mockedCount);
+          expect(await service.exists('thohuti@gmail.com')).toEqual(true);
+        });
 
-  describe('exists function', () => {
-    it('should return true if count emails greater than zero', async () => {
-      const mockedCount = 1;
-      userRepository.count.mockResolvedValue(mockedCount);
-      expect(await service.exists('thohuti@gmail.com')).toEqual(true);
-    });
+        it('should return false if count emails equal zero', async () => {
+          const mockedCount = 0;
+          userRepository.count.mockResolvedValue(mockedCount);
+          expect(await service.exists('thohuti@gmail.com')).toEqual(false);
+        });
+      });
 
-    it('should return false if count emails equal zero', async () => {
-      const mockedCount = 0;
-      userRepository.count.mockResolvedValue(mockedCount);
-      expect(await service.exists('thohuti@gmail.com')).toEqual(false);
+      describe('existsAndFindByEmail', () => {
+        it('should return array which index 0 is boolean and index 1 is Object', async () => {
+          userRepository.findOne.mockResolvedValue(userStub());
+          const expectedResult = [true, userStub()];
+          expect(
+            await service.existsAndFindByEmail({ email: userStub().email }),
+          ).toEqual(expectedResult);
+        });
+      });
     });
   })
 })

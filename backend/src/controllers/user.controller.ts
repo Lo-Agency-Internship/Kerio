@@ -18,11 +18,11 @@ import {
 import { UserService } from '../services/user.service';
 import { SecureUser } from '../utils/types';
 import { JwtGuard } from '../utils/jwt.guard';
-import { RequestContextService } from '../services/requestContext.service';
-import { Organization } from '../entities/organization.entity';
-import { UpdateUserBodyDto } from '../dtos/user.dto';
+import { RequestContextService } from 'src/services/requestContext.service';
+import { Organization } from 'src/entities/organization.entity';
+import { UpdateUserBodyDto } from 'src/dtos/user.dto';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { PaginationDto } from '../dtos';
+import { PaginationDto } from 'src/dtos';
 
 @UseGuards(JwtGuard)
 @Controller('users')

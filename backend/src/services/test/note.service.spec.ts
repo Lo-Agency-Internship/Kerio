@@ -38,7 +38,6 @@ const noteStub = () => {
   ];
 };
 
-
 describe('noteService', () => {
   let noteService: NoteService;
   let noteRepository;
