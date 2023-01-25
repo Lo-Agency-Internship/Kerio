@@ -4,5 +4,5 @@ export const UserService = jest.fn().mockReturnValue({
   addUser: jest.fn(),
   exists: jest.fn(),
   existsAndFindByEmail: jest.fn(),
-  findOneUserByEmail: jest.fn()
+  findOneUserByEmail: jest.fn(),
 });
