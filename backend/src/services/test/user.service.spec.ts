@@ -69,6 +69,7 @@ describe('userService', () => {
       expect(await service.findOneUserById({ id })).toBe(null);
     });
   });
+
   describe('findone', () => {
     it('should return the user object', async () => {
       const userId = 1;
@@ -92,6 +93,7 @@ describe('userService', () => {
       expect(service.readOneById({ id: userId })).rejects.toThrow(
         NotFoundException,
       );
+    })})
 
   describe('exists function', () => {
     it('should return true if count emails greater than zero', async () => {
@@ -105,5 +107,6 @@ describe('userService', () => {
       userRepository.count.mockResolvedValue(mockedCount);
       expect(await service.exists('thohuti@gmail.com')).toEqual(false);
     });
-  });
-});
+  })
+})
+

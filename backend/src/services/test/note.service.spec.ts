@@ -9,10 +9,6 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   findAndCount: jest.fn(),
   softDelete: jest.fn(),
 });
-
-
-});
-
 const noteStub = () => {
   return [
     [
