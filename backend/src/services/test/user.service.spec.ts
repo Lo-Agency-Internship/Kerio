@@ -132,13 +132,14 @@ describe('userService', () => {
       };
 
       userRepository.findOne.mockReturnValue(mockedUser);
-      expect(await service.findOneUserByEmail({ email: 'goli@d.com' })).toEqual(expectedUser);
+      expect(await service.findOneUserByEmail({ email: 'goli@d.com' })).toEqual(
+        expectedUser,
+      );
     });
 
-    it ('should return null if user does not exist', async () => {
+    it('should return null if user does not exist', async () => {
       userRepository.findOne.mockReturnValue(null);
       expect(service.findOneUserByEmail({ email: 'goli@d.com' }));
-      
-    })
-});
+    });
+  });
 });

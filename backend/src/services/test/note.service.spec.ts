@@ -10,7 +10,6 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   softDelete: jest.fn(),
 });
 
-
 const noteStub = () => {
   return [
     [
@@ -39,7 +38,6 @@ const noteStub = () => {
     3,
   ];
 };
-
 
 describe('noteService', () => {
   let noteService: NoteService;
