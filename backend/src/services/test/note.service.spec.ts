@@ -4,13 +4,13 @@ import { Note } from '../../entities/note.entity';
 import { DeepPartial, Repository } from 'typeorm';
 import { NoteService } from '../note.service';
 import { EContactStatus } from '../../utils/types';
-import { Contact } from '../../entities/contact/contact.entity'
+import { Contact } from '../../entities/contact/contact.entity';
 import { Status } from '../../entities/contact/status.entity';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findAndCount: jest.fn(),
-  save: jest.fn()
+  save: jest.fn(),
 });
 
 const notesStub = () => {
@@ -42,17 +42,17 @@ const notesStub = () => {
   ];
 };
 
-const oneNoteStub = ()=>{
-    return {
-        id:1,
-        title:'unit testing',
-        description:'it is automated test',
-        score:1,
-        status:{},
-        contact:{},
-        createdAt:new Date()
-    }
-}
+const oneNoteStub = () => {
+  return {
+    id: 1,
+    title: 'unit testing',
+    description: 'it is automated test',
+    score: 1,
+    status: {},
+    contact: {},
+    createdAt: new Date(),
+  };
+};
 
 describe('noteService', () => {
   let noteService: NoteService;
@@ -123,28 +123,30 @@ describe('noteService', () => {
     ).toEqual(expectedResult);
   });
 
-  describe('Create',()=>{
-    it('should insert a note in database and return the created note',async()=>{
-        const mockedNotes = oneNoteStub() as Note;
-        noteRepository.save.mockResolvedValue(mockedNotes);
-        const contact = {
-            id:1,
-            name:'john',
-            email:'goli@d.com',
-        } as Contact;
+  describe('Create', () => {
+    it('should insert a note in database and return the created note', async () => {
+      const mockedNotes = oneNoteStub() as Note;
+      noteRepository.save.mockResolvedValue(mockedNotes);
+      const contact = {
+        id: 1,
+        name: 'john',
+        email: 'goli@d.com',
+      } as Contact;
 
-        const note = {
-            title:'unit testing',
-            description:'it is automated test',
-            score:1,
-        } as DeepPartial<Note>
+      const note = {
+        title: 'unit testing',
+        description: 'it is automated test',
+        score: 1,
+      } as DeepPartial<Note>;
 
-        const status = {
-            id:1,
-            status:EContactStatus.Loyal,
-        } as Status
+      const status = {
+        id: 1,
+        status: EContactStatus.Loyal,
+      } as Status;
 
-        expect(await noteService.create({contact,note,status})).toEqual(mockedNotes)
-    })
-  })
+      expect(await noteService.create({ contact, note, status })).toEqual(
+        mockedNotes,
+      );
+    });
+  });
 });
