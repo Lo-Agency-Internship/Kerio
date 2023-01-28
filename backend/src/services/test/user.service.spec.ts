@@ -139,7 +139,9 @@ describe('userService', () => {
 
     it('should return null if user does not exist', async () => {
       userRepository.findOne.mockReturnValue(null);
-      expect(await service.findOneUserByEmail({ email: 'goli@d.com' })).toBe(null);
+      expect(await service.findOneUserByEmail({ email: 'goli@d.com' })).toBe(
+        null,
+      );
     });
   });
 });

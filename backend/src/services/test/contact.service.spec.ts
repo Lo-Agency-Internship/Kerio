@@ -18,13 +18,12 @@ const contactStub = () => {
     name: 'mahsa',
     email: 'goli@d.com',
     phone: '09166430000',
-    organization: {id:1,name:'kia'},
-    note:[],
-    contactStatus:[],
+    organization: { id: 1, name: 'kia' },
+    note: [],
+    contactStatus: [],
     createdAt: new Date(),
   };
 };
-
 
 describe('contactService', () => {
   let service: ContactService;
@@ -39,8 +38,11 @@ describe('contactService', () => {
           provide: getRepositoryToken(Contact),
           useValue: createMockRepository(),
         },
-        { provide: getRepositoryToken(ContactStatus), useValue: createMockRepository() },
-        { provide:SearchService, useValue: createMock<SearchService>() },
+        {
+          provide: getRepositoryToken(ContactStatus),
+          useValue: createMockRepository(),
+        },
+        { provide: SearchService, useValue: createMock<SearchService>() },
       ],
     }).compile();
 
@@ -57,19 +59,23 @@ describe('contactService', () => {
       const mockedContact = contactStub();
       const id = 1;
       contactRepository.findOne.mockResolvedValue(mockedContact);
-      expect(await service.findOneById({
+      expect(
+        await service.findOneById({
           id,
-          organizationId: 1
-      })).toEqual(mockedContact);
+          organizationId: 1,
+        }),
+      ).toEqual(mockedContact);
     });
 
     it('should return null if contact does not exist', async () => {
       const id = 1;
       contactRepository.findOne.mockReturnValue(null);
-      expect(await service.findOneById({
+      expect(
+        await service.findOneById({
           id,
-          organizationId: 1
-      })).toBe(null);
+          organizationId: 1,
+        }),
+      ).toBe(null);
     });
   });
 });
