@@ -1,7 +1,7 @@
 import { User } from '../entities/user.entity';
 import { Organization } from '../entities/organization.entity';
-import { Invite } from 'src/entities/invite.entity';
-import { Role } from 'src/entities/role.entity';
+import { Invite } from '../entities/invite.entity';
+import { Role } from '../entities/role.entity';
 
 export type SecureUser = Omit<User, 'password' | 'salt'>;
 export type SecureUserWithOrganization = Omit<SecureUser, 'organization'> & {
