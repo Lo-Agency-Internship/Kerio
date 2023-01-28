@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Note } from '../../entities/note.entity';
-import { DeepPartial, DeleteResult, Repository } from 'typeorm';
+import { DeepPartial, DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { NoteService } from '../note.service';
 import { EContactStatus } from '../../utils/types';
 import { Contact } from '../../entities/contact/contact.entity';
@@ -12,6 +12,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   findAndCount: jest.fn(),
   save: jest.fn(),
   softDelete: jest.fn(),
+  update: jest.fn()
 });
 
 const notesStub = () => {
@@ -160,4 +161,18 @@ describe('noteService', () => {
       );
     });
   });
+  describe('updateOneById',()=>{
+    it('should update the note and return updateresult',async()=>{
+        const mockedUpdatedResult: UpdateResult = {
+            raw: 'any', affected: 1,
+            generatedMaps: []
+        };
+        const note = {
+            title:'this updated note'
+        };
+        noteRepository.update.mockResolvedValue(mockedUpdatedResult)
+        expect(await noteService.updateOneById({id:1,note})).toEqual({raw:'any',affected:1,generatedMaps: []})
+
+    })
+  })
 });
