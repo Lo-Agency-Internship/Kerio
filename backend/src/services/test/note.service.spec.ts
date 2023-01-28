@@ -1,11 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Note } from '../../entities/note.entity';
-<<<<<<< HEAD
-import { DeepPartial, Repository } from 'typeorm';
-=======
-import { DeleteResult, Repository } from 'typeorm';
->>>>>>> 7ed1b4e71e3ff58db1afccdf708c2a9dc86eafaa
+import { DeepPartial, DeleteResult, Repository } from 'typeorm';
 import { NoteService } from '../note.service';
 import { EContactStatus } from '../../utils/types';
 import { Contact } from '../../entities/contact/contact.entity';
@@ -14,11 +10,8 @@ import { Status } from '../../entities/contact/status.entity';
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findAndCount: jest.fn(),
-<<<<<<< HEAD
   save: jest.fn(),
-=======
   softDelete: jest.fn(),
->>>>>>> 7ed1b4e71e3ff58db1afccdf708c2a9dc86eafaa
 });
 
 const notesStub = () => {
