@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { OrganizationUser } from '../../entities/organizationUser.entity';
 import { User } from '../../entities/user.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, UpdateResult } from 'typeorm';
 import { UserService } from '../user.service';
 import { RequestContextService } from '../requestContext.service';
 import { SecureUser } from 'src/utils/types';
@@ -13,6 +13,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   count: jest.fn(),
   findOneBy: jest.fn(),
   findOne: jest.fn(),
+  update: jest.fn(),
 });
 
 const userStub = () => {
@@ -140,6 +141,26 @@ describe('userService', () => {
     it('should return null if user does not exist', async () => {
       userRepository.findOne.mockReturnValue(null);
       expect(service.findOneUserByEmail({ email: 'goli@d.com' }));
+    });
+  });
+  describe('makeUserEnabled', () => {
+    it('it should return enable user ', async () => {
+      const mockedUser = {
+        enabled: true,
+      };
+      const mockedUpdatedResult: UpdateResult = {
+        raw: 'any',
+        affected: 1,
+        generatedMaps: [],
+      };
+      userRepository.update.mockResolvedValue(mockedUpdatedResult);
+      expect(
+        await service.makeUserEnabled({ id: 1, user: mockedUser }),
+      ).toEqual({
+        raw: 'any',
+        affected: 1,
+        generatedMaps: [],
+      });
     });
   });
 });
