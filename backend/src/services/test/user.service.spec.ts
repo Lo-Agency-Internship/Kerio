@@ -57,7 +57,7 @@ describe('userService', () => {
   });
 
   describe('findOneUserById', () => {
-    it('should return true if user exists', async () => {
+    it('should return user if user exists', async () => {
       const mockedUser = userStub();
       const id = 1;
       userRepository.findOneBy.mockResolvedValue(mockedUser);
@@ -140,7 +140,9 @@ describe('userService', () => {
 
     it('should return null if user does not exist', async () => {
       userRepository.findOne.mockReturnValue(null);
-      expect(service.findOneUserByEmail({ email: 'goli@d.com' }));
+      expect(await service.findOneUserByEmail({ email: 'goli@d.com' })).toBe(
+        null,
+      );
     });
   });
   describe('makeUserEnabled', () => {
