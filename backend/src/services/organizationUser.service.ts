@@ -36,7 +36,7 @@ export class OrganizationUserService {
       user: payload.user,
       role: userRole,
     });
-
+    
     await this.userRepository.update(
       {
         id: payload.user.id,
