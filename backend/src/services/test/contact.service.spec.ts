@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { DataSource, Repository, UpdateResult } from 'typeorm';
+import { DataSource, DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { ContactService } from '../contact/contact.service';
 import { SearchService } from '../search.service';
 import { Contact } from '../../entities/contact/contact.entity';
@@ -13,6 +13,7 @@ type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOne: jest.fn(),
   update: jest.fn(),
+  softDelete: jest.fn(),
 });
 
 const contactStub = () => {
@@ -108,6 +109,16 @@ describe('contactService', () => {
       });
       expect(searchService.updateDocument).toHaveBeenCalled();
       searchService.updateDocument.mockResolvedValue(mockUpdateMailiSearch);
+    });
+  });
+  describe('Delete method', () => {
+    it('should delete the contact if the id exists', async () => {
+      const mockedUptadeResult: UpdateResult = { raw: 'any', affected: 1, generatedMaps:[] };
+      contactRepository.softDelete.mockReturnValue(mockedUptadeResult);
+      expect(await service.delete({id:1})).toEqual(
+        mockedUptadeResult,
+      );
+      expect(searchService.deleteDocument).toHaveBeenCalled();
     });
   });
 });
