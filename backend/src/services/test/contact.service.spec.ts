@@ -51,7 +51,7 @@ describe('contactService', () => {
     }).compile();
 
     service = module.get<ContactService>(ContactService);
-    searchService= module.get<SearchService>(SearchService);
+    searchService = module.get<SearchService>(SearchService);
     contactRepository = module.get(getRepositoryToken(Contact));
   });
 
@@ -90,22 +90,24 @@ describe('contactService', () => {
         affected: 1,
         generatedMaps: [],
       };
-      const mockUpdateMailiSearch={
+      const mockUpdateMailiSearch = {
         taskUid: 2,
         indexUid: 'string',
         status: 'success',
         type: 'TaskTypes',
         enqueuedAt: 'string',
-      }
+      };
 
       contactRepository.update.mockResolvedValue(mockedUpdatedResult);
-      expect(await service.updateOneById( {id:1, contact:{name: 'mary'}} )).toEqual({
+      expect(
+        await service.updateOneById({ id: 1, contact: { name: 'mary' } }),
+      ).toEqual({
         raw: 'any',
         affected: 1,
         generatedMaps: [],
       });
       expect(searchService.updateDocument).toHaveBeenCalled();
-      searchService.updateDocument.mockResolvedValue(mockUpdateMailiSearch)
+      searchService.updateDocument.mockResolvedValue(mockUpdateMailiSearch);
     });
   });
 });
