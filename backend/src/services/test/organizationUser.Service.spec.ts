@@ -17,30 +17,31 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOneByOrFail: jest.fn(),
   save: jest.fn(),
   update: jest.fn(),
-  findOne: jest.fn()
+  findOne: jest.fn(),
 });
 
-const userStub = ()=> {return{
-  user: {
-    id: 1,
-    name: 'mahsa',
-    email: 'goli@d.com',
-    password: '1234556',
-    salt: 'ASE$%RHJJJJJJ',
-    organization: {},
-    createdAt: new Date(),
-  } as User,
-  org: {
-    id: 1,
-    name: 'goli',
-    slug: 'golislug',
-    createdAt: new Date(),
-    contacts: [],
-    OrgUser: {},
-  } as Organization,
-  role: { id: 1, name: ERole.Owner, createdAt: '' } as Role,
-}}
-
+const userStub = () => {
+  return {
+    user: {
+      id: 1,
+      name: 'mahsa',
+      email: 'goli@d.com',
+      password: '1234556',
+      salt: 'ASE$%RHJJJJJJ',
+      organization: {},
+      createdAt: new Date(),
+    } as User,
+    org: {
+      id: 1,
+      name: 'goli',
+      slug: 'golislug',
+      createdAt: new Date(),
+      contacts: [],
+      OrgUser: {},
+    } as Organization,
+    role: { id: 1, name: ERole.Owner, createdAt: '' } as Role,
+  };
+};
 
 describe('organizationUserService', () => {
   let service: OrganizationUserService;
@@ -96,7 +97,7 @@ describe('organizationUserService', () => {
         OrgUser: {},
       } as Organization;
 
-      const expectedResult = userStub()
+      const expectedResult = userStub();
       roleRepository.findOneByOrFail.mockResolvedValue({
         id: 1,
         name: 'Owner',
@@ -122,8 +123,8 @@ describe('organizationUserService', () => {
       ).toEqual(expectedResult);
     });
   });
-  describe('findUserWithOrganizationByUserEmail',()=>{
-    it('should return user without salt and pass and with organization Info ',async ()=>{
+  describe('findUserWithOrganizationByUserEmail', () => {
+    it('should return user without salt and pass and with organization Info ', async () => {
       const mockedUser = {
         id: 2,
         name: 'tesla',
@@ -134,11 +135,10 @@ describe('organizationUserService', () => {
         organization: {
           id: 2,
           createdAt: new Date(),
-          role:  {
+          role: {
             id: 1,
             name: 'Owner',
             createdAt: new Date(),
-            
           },
           org: {
             id: 2,
@@ -146,42 +146,39 @@ describe('organizationUserService', () => {
             address: '',
             slug: 'hi-teslas-company',
             createdAt: new Date(),
-          }
-        }
-      }
-
-
+          },
+        },
+      };
 
       const expectedResult = {
         id: 2,
-        name: "tesla",
-        email: "test@d.com",
+        name: 'tesla',
+        email: 'test@d.com',
         createdAt: new Date(),
         organization: {
           id: 2,
           name: "tesla's Organization",
-          address: "",
-          slug: "hi-teslas-company",
+          address: '',
+          slug: 'hi-teslas-company',
           createdAt: new Date(),
         },
         role: {
           id: 1,
-          name: "Owner",
+          name: 'Owner',
           createdAt: new Date(),
-          
-        }
-      }
-    
+        },
+      };
 
-      
       userRepository.findOne.mockReturnValue(mockedUser);
-      expect(await service.findUserWithOrganizationByUserEmail('goli@d.com')).toEqual(expectedResult)
-    })
+      expect(
+        await service.findUserWithOrganizationByUserEmail('goli@d.com'),
+      ).toEqual(expectedResult);
+    });
   });
-  it('should handle error if user does not exists',async()=>{
+  it('should handle error if user does not exists', async () => {
     userRepository.findOne.mockResolvedValue(null);
-    expect( service.findUserWithOrganizationByUserEmail('goli@d.com')).rejects.toThrow(
-      NotFoundException,
-    );
-  })
+    expect(
+      service.findUserWithOrganizationByUserEmail('goli@d.com'),
+    ).rejects.toThrow(NotFoundException);
+  });
 });
