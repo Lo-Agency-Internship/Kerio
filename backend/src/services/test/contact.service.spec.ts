@@ -6,7 +6,9 @@ import { SearchService } from '../search.service';
 import { Contact } from '../../entities/contact/contact.entity';
 import { ContactStatus } from '../../entities/contact/contactStatus.entity';
 import { createMock } from '@golevelup/ts-jest';
-
+// export const SearchService = jest.fn().mockReturnValue({
+//   updateDocument: jest.fn()
+// });
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOne: jest.fn(),
@@ -96,7 +98,7 @@ describe('contactService', () => {
         type: 'TaskTypes',
         enqueuedAt: 'string',
       };
-     
+
       contactRepository.update.mockResolvedValue(mockedUpdatedResult);
       expect(
         await service.updateOneById({ id: 1, contact: { name: 'mary' } }),
@@ -105,8 +107,18 @@ describe('contactService', () => {
         affected: 1,
         generatedMaps: [],
       });
-      searchService.updateDocument.mockResolvedValue(mockUpdateMailiSearch);
       expect(searchService.updateDocument).toHaveBeenCalled();
+      searchService.updateDocument.mockResolvedValue(mockUpdateMailiSearch);
+    });
+  });
+  describe('Delete method', () => {
+    it('should delete the contact if the id exists', async () => {
+      const mockedUptadeResult: UpdateResult = { raw: 'any', affected: 1, generatedMaps:[] };
+      contactRepository.softDelete.mockReturnValue(mockedUptadeResult);
+      expect(await service.delete({id:1})).toEqual(
+        mockedUptadeResult,
+      );
+      expect(searchService.deleteDocument).toHaveBeenCalled();
     });
   });
 });
