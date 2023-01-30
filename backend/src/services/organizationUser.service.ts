@@ -7,6 +7,7 @@ import { Organization } from '../entities/organization.entity';
 import { SecureUserWithOrganization } from '../utils/types';
 import { Role } from '../entities/role.entity';
 import { IassignUserToOrganization } from '../interfaces/organizationUser.service.interface';
+import { NotFoundException } from '@nestjs/common/exceptions';
 
 @Injectable()
 export class OrganizationUserService {
@@ -60,6 +61,10 @@ export class OrganizationUserService {
       loadEagerRelations: true,
       relationLoadStrategy: 'join',
     });
+
+    if (!user) {
+      throw new NotFoundException('user does not exist');
+    }
 
     delete user.password;
     delete user.salt;

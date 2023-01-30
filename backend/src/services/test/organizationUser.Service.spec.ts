@@ -175,7 +175,7 @@ describe('organizationUserService', () => {
       ).toEqual(expectedResult);
     });
   });
-  it('should handle error if user does not exists', async () => {
+  it('should handle error if user does not exist', async () => {
     userRepository.findOne.mockResolvedValue(null);
     expect(
       service.findUserWithOrganizationByUserEmail('goli@d.com'),

@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { User } from '../entities/user.entity';
-import { SecureUser, UserWithOrganization } from '../utils/types';
+import { SecureUser } from '../utils/types';
 
 import {
   IAddUserPayload,
@@ -14,7 +14,6 @@ import {
   IExistAndFindByEmailPayload,
   IFindOneUserByEmailPayload,
   IFindOneUserByIdPayload,
-  IFindUserWithOrganizationPayload,
   IPaginatedUserResponse,
   IReadAllByOrganization,
   IReadOneById,
@@ -77,28 +76,6 @@ export class UserService {
   ): Promise<[boolean, User]> {
     const user = await this.findOneUserByEmail(payload);
     return [user !== null, user];
-  }
-
-  async findUserWithOrganizationByUserEmail(
-    payload: IFindUserWithOrganizationPayload,
-  ): Promise<[boolean, UserWithOrganization]> {
-    const user = await this.userRepository.findOne({
-      where: {
-        email: payload.email,
-      },
-      relations: ['organization', 'organization.role', 'organization.org'],
-      loadEagerRelations: true,
-      relationLoadStrategy: 'join',
-    });
-
-    return [
-      user !== null,
-      {
-        ...user,
-        organization: user.organization.org,
-        role: user.organization.role,
-      },
-    ];
   }
 
   async readAllByOrganization(
