@@ -6,9 +6,7 @@ import { SearchService } from '../search.service';
 import { Contact } from '../../entities/contact/contact.entity';
 import { ContactStatus } from '../../entities/contact/contactStatus.entity';
 import { createMock } from '@golevelup/ts-jest';
-// export const SearchService = jest.fn().mockReturnValue({
-//   updateDocument: jest.fn()
-// });
+
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOne: jest.fn(),
