@@ -62,8 +62,8 @@ export class OrganizationUserService {
       relationLoadStrategy: 'join',
     });
 
-    if (!user){
-      throw new NotFoundException('user does not exist')
+    if (!user) {
+      throw new NotFoundException('user does not exist');
     }
 
     delete user.password;
