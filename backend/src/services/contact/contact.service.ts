@@ -37,17 +37,14 @@ export class ContactService {
 
       const lastStatus =
         contact.statuses[contact.statuses.length - 1].status.status;
-      
 
       const notesUsedForScoreCalculation = contact.notes.filter(
         (note) => note.score !== null && note.status.status === lastStatus,
       );
-      
+
       if (notesUsedForScoreCalculation.length === 0) {
         return { ...contact, totalScore: 0 };
       }
-
-    
 
       const sumScores = notesUsedForScoreCalculation.reduce((acc, note) => {
         return acc + note.score;
