@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { DataSource, DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { DataSource, Repository, UpdateResult } from 'typeorm';
 import { ContactService } from '../contact/contact.service';
 import { SearchService } from '../search.service';
 import { Contact } from '../../entities/contact/contact.entity';
@@ -115,11 +115,13 @@ describe('contactService', () => {
   });
   describe('Delete method', () => {
     it('should delete the contact if the id exists', async () => {
-      const mockedUptadeResult: UpdateResult = { raw: 'any', affected: 1, generatedMaps:[] };
+      const mockedUptadeResult: UpdateResult = {
+        raw: 'any',
+        affected: 1,
+        generatedMaps: [],
+      };
       contactRepository.softDelete.mockReturnValue(mockedUptadeResult);
-      expect(await service.delete({id:1})).toEqual(
-        mockedUptadeResult,
-      );
+      expect(await service.delete({ id: 1 })).toEqual(mockedUptadeResult);
       expect(searchService.deleteDocument).toHaveBeenCalled();
     });
   });
@@ -177,4 +179,264 @@ describe('contactService', () => {
 
     })
   })
+  describe('calculateContactScore Function', () => {
+    it('should return zero for totalScore if the contact has no notes', async () => {
+      const mockedContacts = [
+        {
+          id: 1,
+          name: 'mahsa',
+          email: 'goli@d.com',
+          phone: '09166430000',
+          organization: {},
+          notes: [],
+          statuses: [],
+          createdAt: new Date(),
+        } as Contact,
+      ];
+
+      const expectedResult = [
+        {
+          id: 1,
+          name: 'mahsa',
+          email: 'goli@d.com',
+          phone: '09166430000',
+          organization: {},
+          notes: [],
+          statuses: [],
+          createdAt: new Date(),
+          totalScore: 0,
+        },
+      ];
+      expect(await service.caculateContactScore(mockedContacts)).toEqual(
+        expectedResult,
+      );
+    });
+    it('should return zero for totalScore if contact has notes but his notes does not meet required condition like status', async () => {
+      const mockedContact = [
+        {
+          id: 2,
+          name: 'sam haris',
+          email: 'sam@lo.agency',
+          phone: '09123456789',
+          createdAt: new Date(),
+          statuses: [
+            {
+              id: 2,
+              contactId: 2,
+              statusId: 1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          organization: {},
+          notes: [
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 10,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Loyal',
+                createdAt: new Date(),
+              },
+            },
+          ],
+        } as unknown as Contact,
+      ];
+      const expectedResult = [
+        {
+          id: 2,
+          name: 'sam haris',
+          email: 'sam@lo.agency',
+          phone: '09123456789',
+          createdAt: new Date(),
+          statuses: [
+            {
+              id: 2,
+              contactId: 2,
+              statusId: 1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          organization: {},
+          notes: [
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 10,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Loyal',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          totalScore: 0,
+        },
+      ];
+      expect(await service.caculateContactScore(mockedContact)).toEqual(
+        expectedResult,
+      );
+    });
+
+    it('should return totalscore equal 0.5', async () => {
+      const mockedContact = [
+        {
+          id: 2,
+          name: 'sam haris',
+          email: 'sam@lo.agency',
+          phone: '09123456789',
+          createdAt: new Date(),
+          statuses: [
+            {
+              id: 2,
+              contactId: 2,
+              statusId: 1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          organization: {},
+          notes: [
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 1,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Loyal',
+                createdAt: new Date(),
+              },
+            },
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 1,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 0,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+        } as unknown as Contact,
+      ];
+
+      const expectedResult = [
+        {
+          id: 2,
+          name: 'sam haris',
+          email: 'sam@lo.agency',
+          phone: '09123456789',
+          createdAt: new Date(),
+          statuses: [
+            {
+              id: 2,
+              contactId: 2,
+              statusId: 1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          organization: {},
+          notes: [
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 1,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Loyal',
+                createdAt: new Date(),
+              },
+            },
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 1,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 0,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          totalScore: 0.5,
+        },
+      ];
+
+      expect(await service.caculateContactScore(mockedContact)).toEqual(
+        expectedResult,
+      );
+    });
+  });
 });

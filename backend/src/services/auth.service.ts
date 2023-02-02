@@ -14,7 +14,7 @@ import {
 } from '../utils/types';
 import { JwtService } from '@nestjs/jwt';
 import { genSaltSync, hashSync } from 'bcrypt';
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
 import { OrganizationUserService } from './organizationUser.service';
 import { OrganizationService } from './organization.service';
 import { Repository } from 'typeorm';
@@ -60,7 +60,7 @@ export class AuthService {
     };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: await this.jwtService.sign(payload),
     };
   }
 
