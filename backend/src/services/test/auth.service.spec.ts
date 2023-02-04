@@ -10,8 +10,10 @@ import { createMock } from '@golevelup/ts-jest';
 import { AuthService } from '../auth.service';
 import { ERole, SecureUserWithOrganization } from '../../utils/types';
 import { Role } from '../../entities/role.entity';
+import exp from 'constants';
 
 jest.mock('../user.service');
+jest.mock('../auth.service')
 jest.mock('../organization.service');
 jest.mock('../organizationUser.service');
 
@@ -62,4 +64,16 @@ describe('CreateJwt', () => {
       );
     });
   });
+
+  describe('FindUserToCheckForLogin',()=>
+  {
+    it('Should return error if does not match', async () =>
+    {
+      const mockUser ={
+        email: 'tahuti@g.com',
+        password: 'Hut123'
+      }
+      expect(service.findUserToCheckForLogin(mockUser)).toBeFalsy();
+    })
+  })
 });
