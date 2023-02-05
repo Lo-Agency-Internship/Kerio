@@ -8,12 +8,12 @@ import { OrganizationService } from '../organization.service';
 import { OrganizationUserService } from '../organizationUser.service';
 import { createMock } from '@golevelup/ts-jest';
 import { AuthService } from '../auth.service';
-import { ERole, SecureUserWithOrganization } from '../../utils/types';
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Role } from '../../entities/role.entity';
-import exp from 'constants';
+import { ERole, SecureUserWithOrganization } from '../../utils/types';
+import  * as  bcrypt from 'bcrypt'
 
 jest.mock('../user.service');
-jest.mock('../auth.service')
 jest.mock('../organization.service');
 jest.mock('../organizationUser.service');
 
@@ -22,11 +22,12 @@ jest.mock('../organizationUser.service');
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   create: jest.fn(),
-  
+  findOne: jest.fn()
 });
 describe ('auth.service',()=>{
     let service: AuthService;
     let jwtService;
+    let userRepository: MockRepository;
     beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
         providers: [
@@ -46,10 +47,15 @@ describe ('auth.service',()=>{
     
     service = module.get<AuthService>(AuthService);
     jwtService=module.get<JwtService>(JwtService);
+    userRepository=module.get(getRepositoryToken(User));
     }); 
     it('should be defined', () => {
         expect(service).toBeDefined();
     });
+    it('userRepository shoulld be defined',()=>
+    {
+      expect(userRepository).toBeDefined();
+    })
 describe('CreateJwt', () => {
     it('should return a JWT response object', async () => {
       const mockedUser = {
@@ -67,13 +73,47 @@ describe('CreateJwt', () => {
 
   describe('FindUserToCheckForLogin',()=>
   {
-    it('Should return error if does not match', async () =>
+    it('Should return error if does not exist', async () =>
     {
       const mockUser ={
         email: 'tahuti@g.com',
         password: 'Hut123'
       }
-      expect(service.findUserToCheckForLogin(mockUser)).toBeFalsy();
+      userRepository.findOne.mockResolvedValue(null);
+      expect(service.findUserToCheckForLogin(mockUser)).rejects.toThrow(
+        NotFoundException,
+      );
+    })
+
+    it("should return error if user does not enable", async ()=>
+    {
+      const mockUser ={
+        id: 1,
+        name: 'houtan',
+        email: 'tahuti@g.com',
+        password: '123456',
+        enabled: false,
+      } as User
+      userRepository.findOne.mockResolvedValue(mockUser);
+      expect(service.findUserToCheckForLogin({email: 'tahuti@g.com', password: "12345"})).rejects.toThrow(
+        UnauthorizedException,
+      );
+    })
+    it("should return error if comparing hash password does not correct",async () =>
+    {
+      const mockUser ={
+        id: 1,
+        name: 'houtan',
+        email: 'tahuti@g.com',
+        password: '123456',
+        enabled: true,
+      } as User
+
+      const {password}  = mockUser;
+      const hashedPass= bcrypt.hashSync(password,10);
+      const comparePassword= await bcrypt.compare('12345',hashedPass);
+      userRepository.findOne.mockResolvedValue(mockUser);
+      expect(comparePassword).toBeFalsy();
     })
   })
 });
