@@ -6,12 +6,15 @@ import { SearchService } from '../search.service';
 import { Contact } from '../../entities/contact/contact.entity';
 import { ContactStatus } from '../../entities/contact/contactStatus.entity';
 import { createMock } from '@golevelup/ts-jest';
+import { EContactStatus } from '../../utils/types';
+import { Status } from '../../entities/contact/status.entity';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOne: jest.fn(),
   update: jest.fn(),
   softDelete: jest.fn(),
+  save: jest.fn(),
 });
 
 const contactStub = () => {
@@ -22,7 +25,7 @@ const contactStub = () => {
     phone: '09166430000',
     organization: { id: 1, name: 'kia' },
     note: [],
-    contactStatus: [],
+    statuses: [],
     createdAt: new Date(),
   };
 };
@@ -31,7 +34,7 @@ describe('contactService', () => {
   let service: ContactService;
   let searchService;
   let contactRepository: MockRepository;
-
+  let contactStatusRepository: MockRepository;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -52,6 +55,7 @@ describe('contactService', () => {
     service = module.get<ContactService>(ContactService);
     searchService = module.get<SearchService>(SearchService);
     contactRepository = module.get(getRepositoryToken(Contact));
+    contactStatusRepository = module.get(getRepositoryToken(ContactStatus));
   });
 
   it('should be defined', () => {
@@ -122,6 +126,59 @@ describe('contactService', () => {
     });
   });
 
+  describe('updateStatus', ()=>{
+
+    it('should update contact status and return an object of type contactStatus', async ()=>{
+      const expectedResult = {
+        id: 1,
+        contactId: 1,
+        statusId: 1,
+        contact: {},
+        status: {
+          id: 1,
+          status: EContactStatus.Lead,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          contacts: [],
+          notes: [],
+        },
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+      };
+      const mockedStatus = {
+        id: 1,
+        status: EContactStatus.Lead,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        contacts: [
+          { 
+            id: 1,
+            contactId: 1,
+            statusId: 1,      
+            contact: {},     
+            status: {
+              id: 1,
+              status: EContactStatus.Lead,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              contacts: [],
+              notes: [],
+            },   
+            createdAt: new Date
+          }
+        ],  
+        notes: [],
+      } as unknown as Status;
+
+      const mockedContact = contactStub()
+      contactRepository.findOne.mockResolvedValue(mockedContact);
+      contactStatusRepository.save.mockResolvedValue(expectedResult);
+      expect(await service.updateStatus({id:1,status:mockedStatus,organizationId:1})).toEqual(expectedResult)
+      expect(searchService.updateDocument).toHaveBeenCalled();
+
+    })
+  })
   describe('calculateContactScore Function', () => {
     it('should return zero for totalScore if the contact has no notes', async () => {
       const mockedContacts = [
