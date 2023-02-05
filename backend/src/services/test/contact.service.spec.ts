@@ -382,4 +382,18 @@ describe('contactService', () => {
       );
     });
   });
+
+  describe('Delete method', () => {
+    it('should delete the contacts if the ids exists', async () => {
+      const mockedUpdateResult: UpdateResult = {
+        raw: 'any',
+        affected: 1,
+        generatedMaps: [],
+      };
+      const ids = [1,2,3]
+      contactRepository.softDelete.mockReturnValue(mockedUpdateResult);
+      expect(await service.batchDelete({ids:ids})).toEqual(mockedUpdateResult);
+      expect(searchService.deleteDocuments).toHaveBeenCalled();
+    });
+  });
 });
