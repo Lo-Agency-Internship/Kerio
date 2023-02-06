@@ -8,7 +8,7 @@ import { OrganizationService } from '../organization.service';
 import { OrganizationUserService } from '../organizationUser.service';
 import { createMock } from '@golevelup/ts-jest';
 import { AuthService } from '../auth.service';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { NotAcceptableException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Role } from '../../entities/role.entity';
 import { ERole, SecureUserWithOrganization } from '../../utils/types';
 import  * as  bcrypt from 'bcrypt'
@@ -64,7 +64,7 @@ describe('CreateJwt', () => {
         name:'Mary',
         role:{id:1 , name:ERole.Owner} as Role,
       } as SecureUserWithOrganization;
-      jwtService.sign.mockResolvedValue('generated_access_token')
+      jwtService.sign.mockResolvedValue('generated_access_token');
       expect(await service.createJwt(mockedUser)).toEqual(
         {access_token: 'generated_access_token' }
       );
@@ -104,16 +104,36 @@ describe('CreateJwt', () => {
       const mockUser ={
         id: 1,
         name: 'houtan',
-        email: 'tahuti@g.com',
-        password: '123456',
+        email: 'goli@d.com',
+        password: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADjucMlIQ3aonorw/vLFDdN5SiVP5K1cb3W',
+        salt: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADju',
         enabled: true,
-      } as User
+        organization:{
 
-      const {password}  = mockUser;
-      const hashedPass= bcrypt.hashSync(password,10);
-      const comparePassword= await bcrypt.compare('12345',hashedPass);
+        }
+      } as User
       userRepository.findOne.mockResolvedValue(mockUser);
-      expect(comparePassword).toBeFalsy();
+      expect(service.findUserToCheckForLogin({email: 'tahuti@g.com', password: "00000"})).rejects.toThrow(NotAcceptableException);
+    })
+    it("should return jwt if user find successfully",async ()=>
+    {
+      const mockUser ={
+        id: 1,
+        name: 'houtan',
+        email: 'goli@d.com',
+        password: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADjucMlIQ3aonorw/vLFDdN5SiVP5K1cb3W',
+        salt: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADju',
+        enabled: true,
+        organization:{
+
+        }
+      } as User
+      const {email} = mockUser;
+      userRepository.findOne.mockResolvedValue(mockUser);
+      jwtService.sign.mockResolvedValue('generated_access_token');
+      expect(await service.findUserToCheckForLogin({email,password: '0000'})).toEqual(
+        {access_token: 'generated_access_token' }
+      )
     })
   })
 });
