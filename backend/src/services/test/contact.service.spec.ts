@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { DataSource, Repository, UpdateResult } from 'typeorm';
+import { DataSource, DeepPartial, Repository, UpdateResult } from 'typeorm';
 import { ContactService } from '../contact/contact.service';
 import { SearchService } from '../search.service';
 import { Contact } from '../../entities/contact/contact.entity';
@@ -8,6 +8,7 @@ import { ContactStatus } from '../../entities/contact/contactStatus.entity';
 import { createMock } from '@golevelup/ts-jest';
 import { EContactStatus } from '../../utils/types';
 import { Status } from '../../entities/contact/status.entity';
+import { OrganizationUser } from 'src/entities/organizationUser.entity';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -15,6 +16,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   update: jest.fn(),
   softDelete: jest.fn(),
   save: jest.fn(),
+  create:jest.fn(),
 });
 
 const contactStub = () => {
@@ -451,6 +453,30 @@ describe('contactService', () => {
       contactRepository.softDelete.mockReturnValue(mockedUpdateResult);
       expect(await service.batchDelete({ids:ids})).toEqual(mockedUpdateResult);
       expect(searchService.deleteDocuments).toHaveBeenCalled();
+    });
+  });
+  describe('Create', () => {
+    it('should create new contact', async () => {
+      contactRepository.create.mockResolvedValue({
+        name: 'john',
+        email: 'goli@d.com',
+        phone: '12345',
+        statuses: [],
+      });
+      const contact = {
+        name: 'john',
+        email: 'goli@d.com',
+        phone: '12345',
+        statuses: [],
+      };
+      expect(await service.createNewContactObject(contact)).toEqual({
+        name: 'john',
+        email: 'goli@d.com',
+        phone: '12345',
+        statuses: [],
+      }
+       
+      );
     });
   });
 });
