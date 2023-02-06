@@ -6,12 +6,15 @@ import { SearchService } from '../search.service';
 import { Contact } from '../../entities/contact/contact.entity';
 import { ContactStatus } from '../../entities/contact/contactStatus.entity';
 import { createMock } from '@golevelup/ts-jest';
+import { Organization } from '../../entities/organization.entity';
+import { EContactStatus } from '../../utils/types';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   findOne: jest.fn(),
   update: jest.fn(),
   softDelete: jest.fn(),
+  findAndCount: jest.fn()
 });
 
 const contactStub = () => {
@@ -382,4 +385,299 @@ describe('contactService', () => {
       );
     });
   });
+
+  describe('find method',()=>{
+    it('should return all contacts with their score when there is no status in our params',async()=>{
+      const mockedContacts = [[
+        {
+          id: 2,
+          name: 'sam haris',
+          email: 'sam@lo.agency',
+          phone: '09123456789',
+          createdAt: new Date(),
+          statuses: [
+            {
+              id: 2,
+              contactId: 2,
+              statusId: 1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          organization: {},
+          notes: [
+            
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 1,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+            {
+              id: 1,
+              title: 'c2',
+              description: 'coming soon',
+              score: 0,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+        } as unknown as Contact,
+        {
+          id: 3,
+          name: 'john doe',
+          email: 'doe@lo.agency',
+          phone: '09123456789',
+          createdAt: new Date(),
+          statuses: [
+            {
+              id: 2,
+              contactId: 3,
+              statusId: 1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          organization: {},
+          notes: [
+            
+            {
+              id: 1,
+              title: 'cwwwwww2',
+              description: 'coming soon',
+              score: 1,
+              date: '2022-09-26T20:30:00.000Z',
+              createdAt: new Date(),
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+        } 
+
+      ],2];
+      const expectedResult = {
+        contacts: [
+          {
+            id: 2,
+            name: 'sam haris',
+            email: 'sam@lo.agency',
+            phone: '09123456789',
+            createdAt: new Date(),
+            statuses: undefined,
+            lastStatus:  {
+                id: 2,
+                contactId: 2,
+                statusId: 1,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                 deletedAt: null,
+                  status: {
+                    id: 1,
+                    status: "Lead",
+                    createdAt: new Date(),
+                   
+                  }},
+            organization: {},
+            notes: [
+              {
+                id: 1,
+                title: 'c2',
+                description: 'coming soon',
+                score: 1,
+                date: '2022-09-26T20:30:00.000Z',
+                createdAt: new Date(),
+                status: {
+                  id: 1,
+                  status: 'Lead',
+                  createdAt: new Date(),
+                },
+              },
+              {
+                id: 1,
+                title: 'c2',
+                description: 'coming soon',
+                score: 0,
+                date: '2022-09-26T20:30:00.000Z',
+                createdAt: new Date(),
+                status: {
+                  id: 1,
+                  status: 'Lead',
+                  createdAt: new Date(),
+                },
+              },
+              
+            ],
+            totalScore: 0.5,
+          },
+          {
+            id: 3,
+            name: 'john doe',
+            email: 'doe@lo.agency',
+            phone: '09123456789',
+            createdAt: new Date(),
+            statuses: undefined,
+            lastStatus:  {
+        id: 2,
+        contactId: 3,
+        statusId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+        status: {
+          id: 1,
+          status: "Lead",
+          createdAt: new Date(),
+        
+        }},
+            organization: {},
+            notes: [
+              
+              {
+                id: 1,
+                title: 'cwwwwww2',
+                description: 'coming soon',
+                score: 1,
+                date: '2022-09-26T20:30:00.000Z',
+                createdAt: new Date(),
+                
+                status: {
+                  id: 1,
+                  status: 'Lead',
+                  createdAt: new Date(),
+                },
+              },
+            ],
+            totalScore:1
+          } 
+        
+        ],
+        metadata: {
+          total:2,
+          size: 1,
+          page: 1,
+        },
+      }
+      contactRepository.findAndCount.mockResolvedValue(mockedContacts);
+      expect(await service.find({organization:{} as Organization,page:1,size:1})).toEqual(expectedResult)
+
+    })
+    it('should return filtered contact based on their status',async()=>{
+      const mockedContacts =  [[
+        {
+          id: 2,
+          name: 'sam haris',
+          email: 'sam@lo.agency',
+          phone: '09123456789',
+          createdAt: new Date(),
+          statuses: [
+            {
+              id: 2,
+              contactId: 2,
+              statusId: 1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+              status: {
+                id: 1,
+                status: 'Loyal',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          organization: {},
+          notes: []
+        } as unknown as Contact,
+        {
+          id: 3,
+          name: 'john doe',
+          email: 'doe@lo.agency',
+          phone: '09123456789',
+          createdAt: new Date(),
+          statuses: [
+            {
+              id: 2,
+              contactId: 3,
+              statusId: 1,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              deletedAt: null,
+              status: {
+                id: 1,
+                status: 'Lead',
+                createdAt: new Date(),
+              },
+            },
+          ],
+          organization: {},
+          notes: []
+        } 
+
+      ],2];
+      const expectedResult = {
+        contacts: [
+          {
+            id: 2,
+            name: 'sam haris',
+            email: 'sam@lo.agency',
+            phone: '09123456789',
+            createdAt: new Date(),
+            statuses: undefined,
+            lastStatus:  {
+                id: 2,
+                contactId: 2,
+                statusId: 1,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                 deletedAt: null,
+                  status: {
+                    id: 1,
+                    status: "Loyal",
+                    createdAt: new Date(),
+                   
+                  }},
+            organization: {},
+            notes: [],
+            totalScore: 0,
+          },
+         
+        
+        ],
+        metadata: {
+          total:2,
+          size: 1,
+          page: 1,
+        },
+      }
+      contactRepository.findAndCount.mockResolvedValue(mockedContacts);
+      expect(await service.find({organization:{} as Organization,status:EContactStatus.Loyal,page:1,size:1}))
+    })
+  });
+ 
 });
