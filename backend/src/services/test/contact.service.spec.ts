@@ -128,9 +128,8 @@ describe('contactService', () => {
     });
   });
 
-  describe('updateStatus', ()=>{
-
-    it('should update contact status and return an object of type contactStatus', async ()=>{
+  describe('updateStatus', () => {
+    it('should update contact status and return an object of type contactStatus', async () => {
       const expectedResult = {
         id: 1,
         contactId: 1,
@@ -154,11 +153,11 @@ describe('contactService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         contacts: [
-          { 
+          {
             id: 1,
             contactId: 1,
-            statusId: 1,      
-            contact: {},     
+            statusId: 1,
+            contact: {},
             status: {
               id: 1,
               status: EContactStatus.Lead,
@@ -166,21 +165,26 @@ describe('contactService', () => {
               updatedAt: new Date(),
               contacts: [],
               notes: [],
-            },   
-            createdAt: new Date
-          }
-        ],  
+            },
+            createdAt: new Date(),
+          },
+        ],
         notes: [],
       } as unknown as Status;
 
-      const mockedContact = contactStub()
+      const mockedContact = contactStub();
       contactRepository.findOne.mockResolvedValue(mockedContact);
       contactStatusRepository.save.mockResolvedValue(expectedResult);
-      expect(await service.updateStatus({id:1,status:mockedStatus,organizationId:1})).toEqual(expectedResult)
+      expect(
+        await service.updateStatus({
+          id: 1,
+          status: mockedStatus,
+          organizationId: 1,
+        }),
+      ).toEqual(expectedResult);
       expect(searchService.updateDocument).toHaveBeenCalled();
-
-    })
-  })
+    });
+  });
   describe('calculateContactScore Function', () => {
     it('should return zero for totalScore if the contact has no notes', async () => {
       const mockedContacts = [
@@ -449,9 +453,11 @@ describe('contactService', () => {
         affected: 1,
         generatedMaps: [],
       };
-      const ids = [1,2,3]
+      const ids = [1, 2, 3];
       contactRepository.softDelete.mockReturnValue(mockedUpdateResult);
-      expect(await service.batchDelete({ids:ids})).toEqual(mockedUpdateResult);
+      expect(await service.batchDelete({ ids: ids })).toEqual(
+        mockedUpdateResult,
+      );
       expect(searchService.deleteDocuments).toHaveBeenCalled();
     });
   });
