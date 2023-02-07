@@ -173,9 +173,8 @@ describe('auth.service', () => {
       ).toEqual({ access_token: 'generated_access_token' });
     });
   });
-  describe("activeAccount function",() => {
-    it("should return NotFoundException if email does not  exist",async ()=>
-    {
+  describe('activeAccount function', () => {
+    it('should return NotFoundException if email does not  exist', async () => {
       const mockUser = {
         id: 1,
         name: 'houtan',
@@ -186,12 +185,11 @@ describe('auth.service', () => {
         enabled: true,
         organization: {},
       } as User;
-      userService.findOneUserByEmail.mockResolvedValue(null)
-      const {email} = mockUser;
+      userService.findOneUserByEmail.mockResolvedValue(null);
+      const { email } = mockUser;
       expect(service.activeAccount(email)).rejects.toThrow(NotFoundException);
     });
-    it("should return ",async () =>
-    {
+    it('should return ', async () => {
       const mockUser = {
         id: 1,
         name: 'houtan',
@@ -202,16 +200,17 @@ describe('auth.service', () => {
         enabled: false,
         organization: {},
       } as User;
-        const mockedUpdatedResult: UpdateResult = {
+      const mockedUpdatedResult: UpdateResult = {
         raw: 'any',
         affected: 1,
         generatedMaps: [],
       };
-      
+
       userService.findOneUserByEmail.mockResolvedValue(mockUser);
       userService.makeUserEnabled.mockResolvedValue(mockedUpdatedResult);
-      expect(await service.activeAccount('Houtan@h.com')).toEqual(mockedUpdatedResult);
-      
-    })
+      expect(await service.activeAccount('Houtan@h.com')).toEqual(
+        mockedUpdatedResult,
+      );
+    });
   });
 });
