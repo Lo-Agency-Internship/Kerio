@@ -9,6 +9,7 @@ import { createMock } from '@golevelup/ts-jest';
 import { Organization } from '../../entities/organization.entity';
 import { EContactStatus } from '../../utils/types';
 import { Status } from '../../entities/contact/status.entity';
+import { OrganizationUser } from 'src/entities/organizationUser.entity';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -17,6 +18,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   softDelete: jest.fn(),
   findAndCount: jest.fn(),
   save: jest.fn(),
+  create:jest.fn(),
 });
 
 const contactStub = () => {
@@ -837,6 +839,30 @@ describe('contactService', () => {
           note: [],
         },
       ]);
+    });
+  });
+  describe('Create', () => {
+    it('should create new contact', async () => {
+      contactRepository.create.mockResolvedValue({
+        name: 'john',
+        email: 'goli@d.com',
+        phone: '12345',
+        statuses: [],
+      });
+      const contact = {
+        name: 'john',
+        email: 'goli@d.com',
+        phone: '12345',
+        statuses: [],
+      };
+      expect(await service.createNewContactObject(contact)).toEqual({
+        name: 'john',
+        email: 'goli@d.com',
+        phone: '12345',
+        statuses: [],
+      }
+       
+      );
     });
   });
 });

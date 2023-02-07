@@ -34,6 +34,7 @@ describe('auth.service', () => {
   let jwtService;
   let userService;
   let userRepository: MockRepository;
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -61,6 +62,7 @@ describe('auth.service', () => {
   it('userRepository shoulld be defined', () => {
     expect(userRepository).toBeDefined();
   });
+
   describe('CreateJwt', () => {
     it('should return a JWT response object', async () => {
       const mockedUser = {
