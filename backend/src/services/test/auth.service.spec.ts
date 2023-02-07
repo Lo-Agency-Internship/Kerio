@@ -9,12 +9,16 @@ import { OrganizationUserService } from '../organizationUser.service';
 import { createMock } from '@golevelup/ts-jest';
 import { AuthService } from '../auth.service';
 import {
+  ERole,
+  SecureUser,
+  SecureUserWithOrganization,
+} from '../../utils/types';
+import {
   NotAcceptableException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Role } from '../../entities/role.entity';
-import { ERole, SecureUserWithOrganization } from '../../utils/types';
 
 jest.mock('../user.service');
 jest.mock('../organization.service');
@@ -28,6 +32,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
 describe('auth.service', () => {
   let service: AuthService;
   let jwtService;
+  let userService;
   let userRepository: MockRepository;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -47,6 +52,7 @@ describe('auth.service', () => {
 
     service = module.get<AuthService>(AuthService);
     jwtService = module.get<JwtService>(JwtService);
+    userService = module.get<UserService>(UserService);
     userRepository = module.get(getRepositoryToken(User));
   });
   it('should be defined', () => {
@@ -67,6 +73,37 @@ describe('auth.service', () => {
       expect(await service.createJwt(mockedUser)).toEqual({
         access_token: 'generated_access_token',
       });
+    });
+  });
+
+  describe('validateUser', () => {
+    it('should return null if user not exist', async () => {
+      userService.findOneUserByEmail.mockResolvedValue(null);
+      expect(
+        await service.validateUser({
+          email: 'mahsa@loagency.com',
+          password: '123456',
+        }),
+      ).toEqual(null);
+    });
+    it('should return an object of type secureUser if user exists', async () => {
+      const mockedUser = {
+        id: 1,
+        email: 'goli@d.com',
+        name: 'feri',
+        password: '123456',
+        organization: {},
+      } as User;
+      const expectedResult = {
+        id: 1,
+        email: 'goli@d.com',
+        name: 'feri',
+        organization: {},
+      } as SecureUser;
+      userService.findOneUserByEmail.mockResolvedValue(mockedUser);
+      expect(
+        await service.validateUser({ email: 'goli@d.com', password: '123456' }),
+      ).toEqual(expectedResult);
     });
   });
 

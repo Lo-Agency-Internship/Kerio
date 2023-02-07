@@ -43,8 +43,7 @@ export class AuthService {
     const user = await this.userService.findOneUserByEmail({
       email: payload.email,
     });
-
-    if (!user || user.password === payload.password) return null;
+    if (!user || user.password !== payload.password) return null;
 
     // eslint-disable-next-line
     const { password: ignorePass, ...rest } = user;

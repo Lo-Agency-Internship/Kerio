@@ -27,6 +27,7 @@ import { RequestContextService } from './requestContext.service';
 
 @Injectable()
 export class UserService {
+  static findOneUserByEmail: any;
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
