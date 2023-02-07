@@ -781,28 +781,31 @@ describe('contactService', () => {
       });
     });
   });
-  describe('create',()=>{
-    it('should retrun create contact',async()=>{
-      const saveContactArgument ={
-        
-          contact:{
-            name: 'john', email: "goli@d.com", phone: "67544321",
-            statuses: [
-              { status:{
+  describe('create', () => {
+    it('should retrun create contact', async () => {
+      const saveContactArgument = {
+        contact: {
+          name: 'john',
+          email: 'goli@d.com',
+          phone: '67544321',
+          statuses: [
+            {
+              status: {
                 id: 2,
                 status: EContactStatus.Lead,
                 createdAt: new Date(),
                 statusId: 1,
-              } }as unknown as Status,
-            ],
-          } as unknown as DeepPartial<Contact>
-          ,organization:{} as Organization
+              },
+            } as unknown as Status,
+          ],
+        } as unknown as DeepPartial<Contact>,
+        organization: {} as Organization,
       };
       const mockedContact = {
         id: 1,
         name: 'john',
-        email: "goli@d.com",
-        phone: "67544321",
+        email: 'goli@d.com',
+        phone: '67544321',
         statuses: [
           {
             contactId: 1,
@@ -818,21 +821,22 @@ describe('contactService', () => {
             updatedAt: new Date(),
           },
         ],
-         note: [],
-        organization: {}
+        note: [],
+        organization: {},
       } as unknown as Contact;
       contactRepository.save.mockResolvedValue(mockedContact);
-      expect(await service.create(saveContactArgument)).toEqual(mockedContact)
+      expect(await service.create(saveContactArgument)).toEqual(mockedContact);
       expect(searchService.addDocument).toHaveBeenCalled();
-      expect(searchService.addDocument).toBeCalledWith([{
-        id: 1,
-        name: 'john',
-        email: "goli@d.com",
-        phone: "67544321",
-        lastStatus:EContactStatus.Lead,
-        note:[]
-      }])
-
-    })
-  })
+      expect(searchService.addDocument).toBeCalledWith([
+        {
+          id: 1,
+          name: 'john',
+          email: 'goli@d.com',
+          phone: '67544321',
+          lastStatus: EContactStatus.Lead,
+          note: [],
+        },
+      ]);
+    });
+  });
 });
