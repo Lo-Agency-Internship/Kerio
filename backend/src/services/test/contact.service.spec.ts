@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { DataSource, Repository, UpdateResult } from 'typeorm';
+import { DataSource, DeepPartial, Repository, UpdateResult } from 'typeorm';
 import { ContactService } from '../contact/contact.service';
 import { SearchService } from '../search.service';
 import { Contact } from '../../entities/contact/contact.entity';
@@ -781,4 +781,58 @@ describe('contactService', () => {
       });
     });
   });
+  describe('create',()=>{
+    it('should retrun create contact',async()=>{
+      const saveContactArgument ={
+        
+          contact:{
+            name: 'john', email: "goli@d.com", phone: "67544321",
+            statuses: [
+              { status:{
+                id: 2,
+                status: EContactStatus.Lead,
+                createdAt: new Date(),
+                statusId: 1,
+              } }as unknown as Status,
+            ],
+          } as unknown as DeepPartial<Contact>
+          ,organization:{} as Organization
+      };
+      const mockedContact = {
+        id: 1,
+        name: 'john',
+        email: "goli@d.com",
+        phone: "67544321",
+        statuses: [
+          {
+            contactId: 1,
+            createdAt: new Date(),
+            deletedAt: null,
+            id: 2,
+            status: {
+              createdAt: new Date(),
+              id: 1,
+              status: 'Loyal',
+            },
+            statusId: 1,
+            updatedAt: new Date(),
+          },
+        ],
+         note: [],
+        organization: {}
+      } as unknown as Contact;
+      contactRepository.save.mockResolvedValue(mockedContact);
+      expect(await service.create(saveContactArgument)).toEqual(mockedContact)
+      expect(searchService.addDocument).toHaveBeenCalled();
+      expect(searchService.addDocument).toBeCalledWith([{
+        id: 1,
+        name: 'john',
+        email: "goli@d.com",
+        phone: "67544321",
+        lastStatus:EContactStatus.Lead,
+        note:[]
+      }])
+
+    })
+  })
 });
