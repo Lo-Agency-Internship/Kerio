@@ -2,7 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, UpdateResult } from 'typeorm';
 import { UserService } from '../user.service';
 import { OrganizationService } from '../organization.service';
 import { OrganizationUserService } from '../organizationUser.service';
@@ -171,6 +171,46 @@ describe('auth.service', () => {
       expect(
         await service.findUserToCheckForLogin({ email, password: '0000' }),
       ).toEqual({ access_token: 'generated_access_token' });
+    });
+  });
+  describe('activeAccount function', () => {
+    it('should return NotFoundException if email does not  exist', async () => {
+      const mockUser = {
+        id: 1,
+        name: 'houtan',
+        email: 'goli@d.com',
+        password:
+          '$2b$10$ffPTwKE78Nc7Ab7ZX/ADjucMlIQ3aonorw/vLFDdN5SiVP5K1cb3W',
+        salt: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADju',
+        enabled: true,
+        organization: {},
+      } as User;
+      userService.findOneUserByEmail.mockResolvedValue(null);
+      const { email } = mockUser;
+      expect(service.activeAccount(email)).rejects.toThrow(NotFoundException);
+    });
+    it('should return ', async () => {
+      const mockUser = {
+        id: 1,
+        name: 'houtan',
+        email: 'goli@d.com',
+        password:
+          '$2b$10$ffPTwKE78Nc7Ab7ZX/ADjucMlIQ3aonorw/vLFDdN5SiVP5K1cb3W',
+        salt: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADju',
+        enabled: false,
+        organization: {},
+      } as User;
+      const mockedUpdatedResult: UpdateResult = {
+        raw: 'any',
+        affected: 1,
+        generatedMaps: [],
+      };
+
+      userService.findOneUserByEmail.mockResolvedValue(mockUser);
+      userService.makeUserEnabled.mockResolvedValue(mockedUpdatedResult);
+      expect(await service.activeAccount('Houtan@h.com')).toEqual(
+        mockedUpdatedResult,
+      );
     });
   });
 });
