@@ -96,10 +96,19 @@ export class ContactService {
       };
     }
 
-    const contacts = contactsWithScore.filter((contact) => {
+    const filteredContacts = contactsWithScore.filter((contact) => {
       const lastStatus = contact.statuses[contact.statuses.length - 1];
       return lastStatus.status.status === payload.status;
     });
+
+    const contacts = filteredContacts.map((contact) => ({
+      ...contact,
+      statuses: undefined,
+      lastStatus:
+        contact.statuses.length > 0 &&
+        contact.statuses[contact.statuses.length - 1],
+    }));
+
     return {
       contacts,
       metadata: {

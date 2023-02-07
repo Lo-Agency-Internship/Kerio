@@ -712,21 +712,20 @@ describe('contactService', () => {
               email: 'sam@lo.agency',
               phone: '09123456789',
               createdAt: new Date(),
-              statuses: [
-                {
-                  contactId: 2,
+              statuses: undefined,
+              lastStatus: {
+                id: 2,
+                contactId: 2,
+                statusId: 1,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                deletedAt: null,
+                status: {
+                  id: 1,
+                  status: 'Loyal',
                   createdAt: new Date(),
-                  deletedAt: null,
-                  id: 2,
-                  status: {
-                    createdAt: new Date(),
-                    id: 1,
-                    status: 'Loyal',
-                  },
-                  statusId: 1,
-                  updatedAt: new Date(),
                 },
-              ],
+              },
 
               organization: {},
               notes: [],
