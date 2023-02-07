@@ -444,7 +444,6 @@ describe('contactService', () => {
         expectedResult,
       );
     });
-    //});
 
     describe('find method', () => {
       it('should return all contacts with their score when there is no status in our params', async () => {
@@ -749,6 +748,21 @@ describe('contactService', () => {
             size: 1,
           }),
         ).toEqual(expectedResult);
+      });
+      describe('Delete method', () => {
+        it('should delete the contacts if the ids exists', async () => {
+          const mockedUpdateResult: UpdateResult = {
+            raw: 'any',
+            affected: 1,
+            generatedMaps: [],
+          };
+          const ids = [1, 2, 3];
+          contactRepository.softDelete.mockReturnValue(mockedUpdateResult);
+          expect(await service.batchDelete({ ids: ids })).toEqual(
+            mockedUpdateResult,
+          );
+          expect(searchService.deleteDocuments).toHaveBeenCalled();
+        });
       });
       describe('Delete method', () => {
         it('should delete the contacts if the ids exists', async () => {
