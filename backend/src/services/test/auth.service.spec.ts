@@ -136,4 +136,22 @@ describe('auth.service', () => {
       ).toEqual({ access_token: 'generated_access_token' });
     });
   });
+  describe("activeAccount function",() => {
+    it("should return NotFoundException if email does not  exist",async ()=>
+    {
+      const mockUser = {
+        id: 1,
+        name: 'houtan',
+        email: 'goli@d.com',
+        password:
+          '$2b$10$ffPTwKE78Nc7Ab7ZX/ADjucMlIQ3aonorw/vLFDdN5SiVP5K1cb3W',
+        salt: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADju',
+        enabled: true,
+        organization: {},
+      } as User;
+      const { email } = mockUser;
+      userRepository.findOne.mockResolvedValue(null);
+      expect(service.activeAccount('t@t.com')).rejects.toThrow(NotFoundException)
+    });
+  });
 });
