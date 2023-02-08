@@ -17,6 +17,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   softDelete: jest.fn(),
   findAndCount: jest.fn(),
   save: jest.fn(),
+  create: jest.fn(),
 });
 
 const contactStub = () => {
@@ -712,21 +713,20 @@ describe('contactService', () => {
               email: 'sam@lo.agency',
               phone: '09123456789',
               createdAt: new Date(),
-              statuses: [
-                {
-                  contactId: 2,
+              statuses: undefined,
+              lastStatus: {
+                id: 2,
+                contactId: 2,
+                statusId: 1,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                deletedAt: null,
+                status: {
+                  id: 1,
+                  status: 'Loyal',
                   createdAt: new Date(),
-                  deletedAt: null,
-                  id: 2,
-                  status: {
-                    createdAt: new Date(),
-                    id: 1,
-                    status: 'Loyal',
-                  },
-                  statusId: 1,
-                  updatedAt: new Date(),
                 },
-              ],
+              },
 
               organization: {},
               notes: [],
@@ -837,6 +837,28 @@ describe('contactService', () => {
           note: [],
         },
       ]);
+    });
+  });
+  describe('Create', () => {
+    it('should create new contact', async () => {
+      contactRepository.create.mockResolvedValue({
+        name: 'john',
+        email: 'goli@d.com',
+        phone: '12345',
+        statuses: [],
+      });
+      const contact = {
+        name: 'john',
+        email: 'goli@d.com',
+        phone: '12345',
+        statuses: [],
+      };
+      expect(await service.createNewContactObject(contact)).toEqual({
+        name: 'john',
+        email: 'goli@d.com',
+        phone: '12345',
+        statuses: [],
+      });
     });
   });
 });

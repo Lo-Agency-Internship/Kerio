@@ -2,7 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, UpdateResult } from 'typeorm';
 import { UserService } from '../user.service';
 import { OrganizationService } from '../organization.service';
 import { OrganizationUserService } from '../organizationUser.service';
@@ -36,6 +36,7 @@ describe('auth.service', () => {
   let userService;
   let userRepository: MockRepository;
   let orgService;
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -56,7 +57,7 @@ describe('auth.service', () => {
     jwtService = module.get<JwtService>(JwtService);
     userService = module.get<UserService>(UserService);
     userRepository = module.get(getRepositoryToken(User));
-    orgService=module.get<OrganizationService>(OrganizationService);
+    orgService = module.get<OrganizationService>(OrganizationService);
   });
   it('should be defined', () => {
     expect(service).toBeDefined();
@@ -64,6 +65,7 @@ describe('auth.service', () => {
   it('userRepository shoulld be defined', () => {
     expect(userRepository).toBeDefined();
   });
+
   describe('CreateJwt', () => {
     it('should return a JWT response object', async () => {
       const mockedUser = {
@@ -176,9 +178,10 @@ describe('auth.service', () => {
       ).toEqual({ access_token: 'generated_access_token' });
     });
   });
+
   describe('createOrganizationByOwner', () => {
     it('should return NotAcceptableException if organization exist', async () => {
-      orgService.existsAndFindBySlug.mockResolvedValue([true,{}]);
+      orgService.existsAndFindBySlug.mockResolvedValue([true, {}]);
       expect(
         service.createOrganizationByOwner({
           organizationSlug: '',
@@ -187,15 +190,60 @@ describe('auth.service', () => {
       ).rejects.toThrow(NotAcceptableException);
     });
     it('should return new organization if organization not exist', async () => {
-      orgService.existsAndFindBySlug.mockResolvedValue([false,undefined]);
-      const mockedNewOrg={ id: '1', name: 'G', address: 'TR', slug: '' } as unknown as Organization
-      orgService.addOrganization.mockResolvedValue(mockedNewOrg)
+      orgService.existsAndFindBySlug.mockResolvedValue([false, undefined]);
+      const mockedNewOrg = {
+        id: '1',
+        name: 'G',
+        address: 'TR',
+        slug: '',
+      } as unknown as Organization;
+      orgService.addOrganization.mockResolvedValue(mockedNewOrg);
       expect(
         await service.createOrganizationByOwner({
           organizationSlug: '',
           name: 'Feri',
         }),
       ).toEqual(mockedNewOrg);
+    });
+  });
+  describe('activeAccount function', () => {
+    it('should return NotFoundException if email does not  exist', async () => {
+      const mockUser = {
+        id: 1,
+        name: 'houtan',
+        email: 'goli@d.com',
+        password:
+          '$2b$10$ffPTwKE78Nc7Ab7ZX/ADjucMlIQ3aonorw/vLFDdN5SiVP5K1cb3W',
+        salt: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADju',
+        enabled: true,
+        organization: {},
+      } as User;
+      userService.findOneUserByEmail.mockResolvedValue(null);
+      const { email } = mockUser;
+      expect(service.activeAccount(email)).rejects.toThrow(NotFoundException);
+    });
+    it('should return ', async () => {
+      const mockUser = {
+        id: 1,
+        name: 'houtan',
+        email: 'goli@d.com',
+        password:
+          '$2b$10$ffPTwKE78Nc7Ab7ZX/ADjucMlIQ3aonorw/vLFDdN5SiVP5K1cb3W',
+        salt: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADju',
+        enabled: false,
+        organization: {},
+      } as User;
+      const mockedUpdatedResult: UpdateResult = {
+        raw: 'any',
+        affected: 1,
+        generatedMaps: [],
+      };
+
+      userService.findOneUserByEmail.mockResolvedValue(mockUser);
+      userService.makeUserEnabled.mockResolvedValue(mockedUpdatedResult);
+      expect(await service.activeAccount('Houtan@h.com')).toEqual(
+        mockedUpdatedResult,
+      );
     });
   });
 });
