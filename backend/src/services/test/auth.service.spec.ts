@@ -19,6 +19,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Role } from '../../entities/role.entity';
+import { Organization } from '../../entities/organization.entity';
 
 jest.mock('../user.service');
 jest.mock('../organization.service');
@@ -34,6 +35,7 @@ describe('auth.service', () => {
   let jwtService;
   let userService;
   let userRepository: MockRepository;
+  let orgService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -54,6 +56,7 @@ describe('auth.service', () => {
     jwtService = module.get<JwtService>(JwtService);
     userService = module.get<UserService>(UserService);
     userRepository = module.get(getRepositoryToken(User));
+    orgService=module.get<OrganizationService>(OrganizationService);
   });
   it('should be defined', () => {
     expect(service).toBeDefined();
@@ -171,6 +174,28 @@ describe('auth.service', () => {
       expect(
         await service.findUserToCheckForLogin({ email, password: '0000' }),
       ).toEqual({ access_token: 'generated_access_token' });
+    });
+  });
+  describe('createOrganizationByOwner', () => {
+    it('should return NotAcceptableException if organization exist', async () => {
+      orgService.existsAndFindBySlug.mockResolvedValue([true,{}]);
+      expect(
+        service.createOrganizationByOwner({
+          organizationSlug: '',
+          name: 'Feri',
+        }),
+      ).rejects.toThrow(NotAcceptableException);
+    });
+    it('should return new organization if organization not exist', async () => {
+      orgService.existsAndFindBySlug.mockResolvedValue([false,undefined]);
+      const mockedNewOrg={ id: '1', name: 'G', address: 'TR', slug: '' } as unknown as Organization
+      orgService.addOrganization.mockResolvedValue(mockedNewOrg)
+      expect(
+        await service.createOrganizationByOwner({
+          organizationSlug: '',
+          name: 'Feri',
+        }),
+      ).toEqual(mockedNewOrg);
     });
   });
 });
