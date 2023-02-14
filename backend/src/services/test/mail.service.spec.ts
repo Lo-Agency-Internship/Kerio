@@ -21,9 +21,6 @@ async function getMailerServiceForOptions(
     return service;
   }
   
-  /**
-   * Common testing code for spying on the SMTPTransport's send() implementation
-   */
   function spyOnSmtpSend(onMail: (mail: MailMessage) => void) {
     return jest
       .spyOn(SMTPTransport.prototype, 'send')
