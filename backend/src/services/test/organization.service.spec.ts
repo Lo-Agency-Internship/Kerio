@@ -3,6 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Organization } from '../../entities/organization.entity';
 import { Repository } from 'typeorm';
 import { OrganizationService } from '../organization.service';
+import { NotAcceptableException } from '@nestjs/common';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
@@ -54,6 +55,34 @@ describe('organizationservice', () => {
       organizationRepository.findOneBy.mockResolvedValue(null);
       const expectedResult = [false, null];
       expect(await service.existsAndFindBySlug('gol')).toEqual(expectedResult);
+    });
+  });
+    describe('createOrganizationByOwner', () => {
+    it('should return NotAcceptableException if organization exist', async () => {
+     organizationRepository.findOneBy.mockResolvedValue(organizationStub());
+      expect(
+        service.createOrganizationByOwner({
+          organizationSlug: 'gol',
+          name: 'homagol',
+        }),
+      ).rejects.toThrow(NotAcceptableException);
+    });
+    it('should return new organization if organization not exist', async () => {
+      organizationRepository.findOneBy.mockResolvedValue(null);
+      const mockedNewOrg = {
+        id: '1',
+        name: 'G',
+        address: 'TR',
+        slug: '',
+      } as unknown as Organization;
+
+      organizationRepository.save.mockResolvedValue(mockedNewOrg)
+      expect(
+        await service.createOrganizationByOwner({
+          organizationSlug: 'gol',
+          name: 'homagol',
+        }),
+      ).toEqual(mockedNewOrg);
     });
   });
 });
