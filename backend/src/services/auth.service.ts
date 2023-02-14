@@ -24,7 +24,6 @@ import {
   IRgisterUser,
   IValidateUser,
 } from 'src/interfaces/auth.service.interface';
-import { kebab } from 'case';
 import { Organization } from 'src/entities/organization.entity';
 
 @Injectable()

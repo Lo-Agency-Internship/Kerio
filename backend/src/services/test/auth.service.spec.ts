@@ -20,6 +20,7 @@ import {
 } from '@nestjs/common';
 import { Role } from '../../entities/role.entity';
 import { Organization } from '../../entities/organization.entity';
+import { OrganizationUser } from 'src/entities/organizationUser.entity';
 
 jest.mock('../user.service');
 jest.mock('../organization.service');
@@ -29,6 +30,8 @@ type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 const createMockRepository = <T = any>(): MockRepository<T> => ({
   create: jest.fn(),
   findOne: jest.fn(),
+  findOneBy: jest.fn(),
+  save: jest.fn(),
 });
 describe('auth.service', () => {
   let service: AuthService;
@@ -36,6 +39,8 @@ describe('auth.service', () => {
   let userService;
   let userRepository: MockRepository;
   let orgService;
+  let orgUserService;
+  let organizationRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -50,6 +55,10 @@ describe('auth.service', () => {
           useValue: createMock<JwtService>(),
         },
         { provide: getRepositoryToken(User), useValue: createMockRepository() },
+        {
+          provide: getRepositoryToken(Organization),
+          useValue: createMockRepository(),
+        },
       ],
     }).compile();
 
@@ -58,12 +67,20 @@ describe('auth.service', () => {
     userService = module.get<UserService>(UserService);
     userRepository = module.get(getRepositoryToken(User));
     orgService = module.get<OrganizationService>(OrganizationService);
+    orgUserService = module.get<OrganizationUserService>(
+      OrganizationUserService,
+    );
+    organizationRepository = module.get(getRepositoryToken(Organization));
   });
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
   it('userRepository shoulld be defined', () => {
     expect(userRepository).toBeDefined();
+  });
+  it('organizationrepo shoulld be defined', () => {
+    expect(organizationRepository).toBeDefined();
   });
 
   describe('CreateJwt', () => {
@@ -179,6 +196,33 @@ describe('auth.service', () => {
     });
   });
 
+  // describe('createOrganizationByOwner', () => {
+  //   it('should return NotAcceptableException if organization exist', async () => {
+  //     orgService.existsAndFindBySlug.mockResolvedValue([true, {}]);
+  //     expect(
+  //       service.createOrganizationByOwner({
+  //         organizationSlug: '',
+  //         name: 'Feri',
+  //       }),
+  //     ).rejects.toThrow(NotAcceptableException);
+  //   });
+  //   it('should return new organization if organization not exist', async () => {
+  //     orgService.existsAndFindBySlug.mockResolvedValue([false, undefined]);
+  //     const mockedNewOrg = {
+  //       id: '1',
+  //       name: 'G',
+  //       address: 'TR',
+  //       slug: '',
+  //     } as unknown as Organization;
+  //     orgService.addOrganization.mockResolvedValue(mockedNewOrg);
+  //     expect(
+  //       await service.createOrganizationByOwner({
+  //         organizationSlug: '',
+  //         name: 'Feri',
+  //       }),
+  //     ).toEqual(mockedNewOrg);
+  //   });
+  // });
   describe('activeAccount function', () => {
     it('should return NotFoundException if email does not  exist', async () => {
       const mockUser = {
@@ -218,5 +262,98 @@ describe('auth.service', () => {
         mockedUpdatedResult,
       );
     });
+  });
+  describe('registerUser', () => {
+    it('should return an object of type secureUserWithOrganization', async () => {
+      const mockedOrganization = {
+        id: 1,
+        name: ` homagol's Organization`,
+        address: 'string',
+        slug: 'gol',
+        createdAt: new Date(),
+        contacts: [],
+        OrgUser: {},
+      } as Organization;
+
+      userService.exists.mockResolvedValue(null);
+      orgService.createOrganizationByOwner.mockResolvedValue(
+        mockedOrganization,
+      );
+      orgService.existsAndFindBySlug.mockResolvedValue([
+        true,
+        mockedOrganization,
+      ]);
+
+      const mockedUser = {
+        id: 1,
+        name: 'houtan',
+        email: 'goli@d.com',
+        password:
+          '$2b$10$ffPTwKE78Nc7Ab7ZX/ADjucMlIQ3aonorw/vLFDdN5SiVP5K1cb3W',
+        salt: '$2b$10$ffPTwKE78Nc7Ab7ZX/ADju',
+        enabled: false,
+        organization: {},
+      } as User;
+      const mockedOrgUser = {} as OrganizationUser;
+
+      userService.addUser.mockResolvedValue(mockedUser);
+
+      orgUserService.assignUserToOrganization.mockResolvedValue(mockedOrgUser);
+
+      const mockedUserWithOrganization = {
+        id: 1,
+        name: 'houtan',
+        email: 'goli@d.com',
+        enabled: false,
+        organization: {},
+        role: {},
+      } as SecureUserWithOrganization;
+
+      orgUserService.findUserWithOrganizationByUserEmail.mockResolvedValue(
+        mockedUserWithOrganization,
+      );
+
+      expect(
+        await service.registerUser({
+          email: 'goli@d.com',
+          name: 'houtan',
+          password: '0000',
+          organizationSlug: 'gol',
+          role: ERole.Owner,
+        }),
+      ).toEqual(mockedUserWithOrganization);
+    });
+  });
+  it('should return UnauthorizedException if userExists', async () => {
+    const mockedUser = {
+      email: 'goli@d.com',
+      name: 'Feri',
+      password: '0000',
+      organizationSlug: 'Mahsa',
+      role: ERole.Owner,
+    } as unknown as User;
+    userService.exists.mockResolvedValue(mockedUser);
+    expect(
+      service.registerUser({
+        email: 'goli@d.com',
+        name: 'Feri',
+        password: '0000',
+        organizationSlug: 'gol',
+        role: ERole.Owner,
+      }),
+    ).rejects.toThrow(UnauthorizedException);
+  });
+  it('should return NotFoundException if orgExists not exist', async () => {
+    userService.exists.mockResolvedValue(null);
+    orgService.existsAndFindBySlug.mockResolvedValue([false, null]);
+    expect(
+      service.registerUser({
+        email: 'goli@d.com',
+        name: 'Feri',
+        password: '0000',
+        organizationSlug: 'Mahsa',
+        role: ERole.Owner,
+      }),
+    ).rejects.toThrow(NotFoundException);
   });
 });

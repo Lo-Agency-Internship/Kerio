@@ -1,9 +1,7 @@
 import {
   MailerOptions,
   MailerService,
-  MailerTransportFactory,
   MAILER_OPTIONS,
-  MAILER_TRANSPORT_FACTORY,
 } from '@nestjs-modules/mailer';
 import { Test, TestingModule } from '@nestjs/testing';
 import MailMessage from 'nodemailer/lib/mailer/mail-message';
