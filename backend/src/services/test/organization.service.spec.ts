@@ -56,25 +56,26 @@ describe('organizationservice', () => {
       expect(await service.existsAndFindBySlug('gol')).toEqual(expectedResult);
     });
   });
-  describe('exists method',()=>{
-    it('should return true if organization exists',async()=>{
-        organizationRepository.count.mockResolvedValue(1);
-        expect(await service.exists(1)).toBe(true)
-
+  describe('exists method', () => {
+    it('should return true if organization exists', async () => {
+      organizationRepository.count.mockResolvedValue(1);
+      expect(await service.exists(1)).toBe(true);
     });
-    it('should return false if organization does not exist',async()=>{
-        organizationRepository.count.mockResolvedValue(0);
-        expect(await service.exists(1)).toBe(false)
-
+    it('should return false if organization does not exist', async () => {
+      organizationRepository.count.mockResolvedValue(0);
+      expect(await service.exists(1)).toBe(false);
     });
-
-});
-describe('addOrganization',()=>{
-    it('should return an object of type organization',async()=>{
-        organizationRepository.save.mockResolvedValue(organizationStub())
-        expect(await service.addOrganization({name:'homagol',slug:'gol',address:'string'})).toEqual(organizationStub())
-
-    })
-
-})
+  });
+  describe('addOrganization', () => {
+    it('should return an object of type organization', async () => {
+      organizationRepository.save.mockResolvedValue(organizationStub());
+      expect(
+        await service.addOrganization({
+          name: 'homagol',
+          slug: 'gol',
+          address: 'string',
+        }),
+      ).toEqual(organizationStub());
+    });
+  });
 });
