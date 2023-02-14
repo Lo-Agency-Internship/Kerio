@@ -62,8 +62,6 @@ export class AuthService {
     };
   }
 
-  
-
   async registerUser(
     payload: IRgisterUser,
   ): Promise<SecureUserWithOrganization> {

@@ -179,7 +179,6 @@ describe('auth.service', () => {
     });
   });
 
-
   describe('activeAccount function', () => {
     it('should return NotFoundException if email does not  exist', async () => {
       const mockUser = {

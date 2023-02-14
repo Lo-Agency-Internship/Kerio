@@ -1,4 +1,4 @@
 export interface ICreateOrganizationByOwner {
-    organizationSlug: string;
-    name: string;
-  }
+  organizationSlug: string;
+  name: string;
+}

@@ -48,14 +48,16 @@ export class OrganizationService {
   }
 
   async existsAndFindBySlug(slug: string): Promise<[boolean, Organization]> {
-    const org = await this.organizationRepository.findOneBy({ slug })
+    const org = await this.organizationRepository.findOneBy({ slug });
 
     return [org !== null, org];
   }
 
   async createOrganizationByOwner(payload: ICreateOrganizationByOwner) {
     const pipedOrgSlug = kebab(payload.organizationSlug);
-    const orgExists = await  this.organizationRepository.findOneBy({ slug:pipedOrgSlug })
+    const orgExists = await this.organizationRepository.findOneBy({
+      slug: pipedOrgSlug,
+    });
     if (orgExists) {
       throw new NotAcceptableException();
     }

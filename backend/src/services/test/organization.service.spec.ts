@@ -57,9 +57,32 @@ describe('organizationservice', () => {
       expect(await service.existsAndFindBySlug('gol')).toEqual(expectedResult);
     });
   });
-    describe('createOrganizationByOwner', () => {
+  describe('exists method', () => {
+    it('should return true if organization exists', async () => {
+      organizationRepository.count.mockResolvedValue(1);
+      expect(await service.exists(1)).toBe(true);
+    });
+    it('should return false if organization does not exist', async () => {
+      organizationRepository.count.mockResolvedValue(0);
+      expect(await service.exists(1)).toBe(false);
+    });
+  });
+  describe('addOrganization', () => {
+    it('should return an object of type organization', async () => {
+      organizationRepository.save.mockResolvedValue(organizationStub());
+      expect(
+        await service.addOrganization({
+          name: 'homagol',
+          slug: 'gol',
+          address: 'string',
+        }),
+      ).toEqual(organizationStub());
+    });
+  });
+
+  describe('createOrganizationByOwner', () => {
     it('should return NotAcceptableException if organization exist', async () => {
-     organizationRepository.findOneBy.mockResolvedValue(organizationStub());
+      organizationRepository.findOneBy.mockResolvedValue(organizationStub());
       expect(
         service.createOrganizationByOwner({
           organizationSlug: 'gol',
@@ -67,22 +90,22 @@ describe('organizationservice', () => {
         }),
       ).rejects.toThrow(NotAcceptableException);
     });
-    it('should return new organization if organization not exist', async () => {
-      organizationRepository.findOneBy.mockResolvedValue(null);
-      const mockedNewOrg = {
-        id: '1',
-        name: 'G',
-        address: 'TR',
-        slug: '',
-      } as unknown as Organization;
+  });
+  it('should return new organization if organization not exist', async () => {
+    organizationRepository.findOneBy.mockResolvedValue(null);
+    const mockedNewOrg = {
+      id: '1',
+      name: 'G',
+      address: 'TR',
+      slug: '',
+    } as unknown as Organization;
 
-      organizationRepository.save.mockResolvedValue(mockedNewOrg)
-      expect(
-        await service.createOrganizationByOwner({
-          organizationSlug: 'gol',
-          name: 'homagol',
-        }),
-      ).toEqual(mockedNewOrg);
-    });
+    organizationRepository.save.mockResolvedValue(mockedNewOrg);
+    expect(
+      await service.createOrganizationByOwner({
+        organizationSlug: 'gol',
+        name: 'homagol',
+      }),
+    ).toEqual(mockedNewOrg);
   });
 });

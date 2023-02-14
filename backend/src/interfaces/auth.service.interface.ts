@@ -10,8 +10,6 @@ export interface IValidateUser {
   password: string;
 }
 
-
-
 export interface IRgisterUser {
   email: string;
   name: string;
