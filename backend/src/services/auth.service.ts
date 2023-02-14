@@ -20,7 +20,6 @@ import { OrganizationService } from './organization.service';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  ICreateOrganizationByOwner,
   IFindUserToCheckForLogin,
   IRgisterUser,
   IValidateUser,
@@ -63,22 +62,6 @@ export class AuthService {
     };
   }
 
-  async createOrganizationByOwner(payload: ICreateOrganizationByOwner) {
-    const pipedOrgSlug = kebab(payload.organizationSlug);
-    const [orgExists] = await this.orgService.existsAndFindBySlug(pipedOrgSlug);
-
-    if (orgExists) {
-      throw new NotAcceptableException();
-    }
-    const newOrg = await this.orgService.addOrganization({
-      name: `${payload.name}'s Organization`,
-      address: '',
-      slug: pipedOrgSlug,
-    });
-
-    return newOrg;
-  }
-
   async registerUser(
     payload: IRgisterUser,
   ): Promise<SecureUserWithOrganization> {
@@ -89,7 +72,7 @@ export class AuthService {
 
       if (userExists) throw new UnauthorizedException();
 
-      const newOrg = await this.createOrganizationByOwner({
+      const newOrg = await this.orgService.createOrganizationByOwner({
         name: payload.name,
         organizationSlug: payload.organizationSlug,
       });
