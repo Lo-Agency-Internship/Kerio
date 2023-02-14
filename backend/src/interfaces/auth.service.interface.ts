@@ -10,10 +10,7 @@ export interface IValidateUser {
   password: string;
 }
 
-export interface ICreateOrganizationByOwner {
-  organizationSlug: string;
-  name: string;
-}
+
 
 export interface IRgisterUser {
   email: string;

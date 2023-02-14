@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Organization } from '../entities/organization.entity';
 import { IupdateOrganization } from '../interfaces/organizationUser.service.interface';
 import { NewOrganization } from '../utils/types';
 import { Repository } from 'typeorm';
+import { kebab } from 'case';
+import { ICreateOrganizationByOwner } from 'src/interfaces/organization.service';
 
 @Injectable()
 export class OrganizationService {
@@ -46,8 +48,23 @@ export class OrganizationService {
   }
 
   async existsAndFindBySlug(slug: string): Promise<[boolean, Organization]> {
-    const org = await this.findOneOrganizationBySlug(slug);
+    const org = await this.organizationRepository.findOneBy({ slug })
 
     return [org !== null, org];
+  }
+
+  async createOrganizationByOwner(payload: ICreateOrganizationByOwner) {
+    const pipedOrgSlug = kebab(payload.organizationSlug);
+    const orgExists = await  this.organizationRepository.findOneBy({ slug:pipedOrgSlug })
+    if (orgExists) {
+      throw new NotAcceptableException();
+    }
+    const newOrg = await this.addOrganization({
+      name: `${payload.name}'s Organization`,
+      address: '',
+      slug: pipedOrgSlug,
+    });
+
+    return newOrg;
   }
 }

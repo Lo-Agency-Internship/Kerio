@@ -179,33 +179,7 @@ describe('auth.service', () => {
     });
   });
 
-  describe('createOrganizationByOwner', () => {
-    it('should return NotAcceptableException if organization exist', async () => {
-      orgService.existsAndFindBySlug.mockResolvedValue([true, {}]);
-      expect(
-        service.createOrganizationByOwner({
-          organizationSlug: '',
-          name: 'Feri',
-        }),
-      ).rejects.toThrow(NotAcceptableException);
-    });
-    it('should return new organization if organization not exist', async () => {
-      orgService.existsAndFindBySlug.mockResolvedValue([false, undefined]);
-      const mockedNewOrg = {
-        id: '1',
-        name: 'G',
-        address: 'TR',
-        slug: '',
-      } as unknown as Organization;
-      orgService.addOrganization.mockResolvedValue(mockedNewOrg);
-      expect(
-        await service.createOrganizationByOwner({
-          organizationSlug: '',
-          name: 'Feri',
-        }),
-      ).toEqual(mockedNewOrg);
-    });
-  });
+
   describe('activeAccount function', () => {
     it('should return NotFoundException if email does not  exist', async () => {
       const mockUser = {
