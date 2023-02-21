@@ -29,6 +29,7 @@ export interface IGetContacts {
 					status: string;
 				};
 			};
+			totalScore: string;
 		},
 	];
 	metadata: {
