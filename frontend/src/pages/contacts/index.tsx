@@ -23,6 +23,9 @@ export default function ContactsPage() {
 
 	const fetchData = async (page: number, size: number) => {
 		const result = await getAllContacts({ pagination: { page, size } });
+		result.contacts.forEach((contact) => {
+			contact.totalScore = parseFloat(contact.totalScore).toFixed(2);
+		});
 		setIsLoaded(true);
 		setContacts(result.contacts);
 		setTotalRows(result.metadata.total);
