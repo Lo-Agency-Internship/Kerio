@@ -45,7 +45,7 @@ it('should be defined', () => {
   });
 
   describe('findOneByTitle', () => {
-    it('should return status', async () => {
+    it('should return status by find tiltle', async () => {
       const mockedStatus = statusStub();
       statusRepository.findOneBy.mockResolvedValue(mockedStatus);
       expect(
@@ -54,7 +54,7 @@ it('should be defined', () => {
         }),
       ).toEqual(mockedStatus);
     });
-    it('should return status', async () => {
+    it('should return null', async () => {
         const mockedStatus = statusStub();
         statusRepository.findOneBy.mockResolvedValue(null);
         expect(
