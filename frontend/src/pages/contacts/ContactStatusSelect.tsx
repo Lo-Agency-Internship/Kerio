@@ -4,11 +4,12 @@ import { SelectFormControl } from '../../components/molecules/formControls/selec
 import { uri } from '../../utils';
 
 interface Props {
-	scoreDigit: any;
+	scoreDigit(results: any): void;
 }
 
 const ContactStatusSelect: React.FC<Props> = ({ scoreDigit }) => {
 	const [selectedStatus, setSelectedStatus] = useState<string>('All');
+	const [error, setError] = useState<string[] | null>(null);
 
 	const handleStatusChange = async (event: any) => {
 		const status = event.target.value;
@@ -26,9 +27,9 @@ const ContactStatusSelect: React.FC<Props> = ({ scoreDigit }) => {
 				},
 			});
 			scoreDigit(response.data);
-			console.log(response.data.contacts);
-		} catch (error) {
-			console.error(error);
+		} catch (err: any) {
+			setError(err?.response?.data?.message);
+			if (err.message) setError(err.message);
 		}
 	};
 	return (
