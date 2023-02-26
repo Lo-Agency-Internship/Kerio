@@ -7,6 +7,8 @@ import ContactTable from '../../components/organisms/contactTable';
 import { IUsers } from '../../utils/interfaces/user';
 import DeleteModal from '../../components/molecules/deleteModal';
 import { ToastContainer, toast } from 'react-toastify';
+import ContactStatusSelect from './ContactStatusSelect';
+
 export default function ContactsPage() {
 	const { getAllContacts, deleteContacts } = useApiContext();
 	const [showAddConactModal, setShowAddConactModal] = useState(false);
@@ -20,16 +22,23 @@ export default function ContactsPage() {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [error, setError] = useState(0);
 	const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
+	const scoreDigit = (result: any) => {
+		result.contacts.forEach((contact: any) => {
+			contact.totalScore = parseFloat(contact.totalScore).toFixed(2);
+		});
+		setContacts(result.contacts);
+		setTotalRows(result.contacts.length);
+	};
 
 	const fetchData = async (page: number, size: number) => {
 		const result = await getAllContacts({ pagination: { page, size } });
-		result.contacts.forEach((contact) => {
+		result.contacts.forEach((contact: any) => {
 			contact.totalScore = parseFloat(contact.totalScore).toFixed(2);
 		});
 		setIsLoaded(true);
-		setContacts(result.contacts);
-		setTotalRows(result.metadata.total);
+		scoreDigit(result);
 	};
+
 	const handleDelete = async () => {
 		setIsLoadingSubmit(true);
 		try {
@@ -86,7 +95,7 @@ export default function ContactsPage() {
 					totalRows={totalRows}
 					perPage={perPage}
 				/>
-
+				<ContactStatusSelect scoreDigit={scoreDigit} />
 				<ContactTable
 					toggleCleared={toggleCleared}
 					contact={contacts}
