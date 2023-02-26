@@ -28,8 +28,11 @@ const ContactStatusSelect: React.FC<Props> = ({ scoreDigit }) => {
 			});
 			scoreDigit(response.data);
 		} catch (err: any) {
-			setError(err?.response?.data?.message);
-			if (err.message) setError(err.message);
+			if (err?.response?.data?.message) {
+				setError(err.response.data.message);
+			} else {
+				setError(err.message);
+			}
 		}
 	};
 	return (
