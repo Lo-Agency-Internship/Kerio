@@ -12,6 +12,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   delete: jest.fn(),
   count: jest.fn(),
   save: jest.fn(),
+  find: jest.fn(),
 });
 
 const organizationStub = () =>
@@ -107,5 +108,28 @@ describe('organizationservice', () => {
         name: 'homagol',
       }),
     ).toEqual(mockedNewOrg);
+  });
+  describe('findOneOrganizationBySlug method', () => {
+    it('should return an object of type organization if organization exists', async () => {
+      organizationRepository.findOneBy.mockResolvedValue(organizationStub());
+      expect(await service.findOneOrganizationBySlug('gol')).toEqual(
+        organizationStub(),
+      );
+    });
+    it('should return an object of type organization if organization not exist', async () => {
+      organizationRepository.findOneBy.mockResolvedValue(null);
+      expect(await service.findOneOrganizationBySlug('X')).toBe(null);
+    });
+  });
+
+  describe('findAll method', () => {
+    it('should return an array of organization when the path successes', async () => {
+      organizationRepository.find.mockResolvedValue([organizationStub()]);
+      expect(await service.findAll()).toEqual([organizationStub()]);
+    });
+    it('should return an empty array when the path fails', async () => {
+      organizationRepository.find.mockResolvedValue([]);
+      expect(await service.findAll()).toEqual([]);
+    });
   });
 });
