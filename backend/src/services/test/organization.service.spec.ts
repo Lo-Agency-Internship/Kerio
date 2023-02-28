@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Organization } from '../../entities/organization.entity';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { OrganizationService } from '../organization.service';
 import { NotAcceptableException } from '@nestjs/common';
 
@@ -13,6 +13,7 @@ const createMockRepository = <T = any>(): MockRepository<T> => ({
   count: jest.fn(),
   save: jest.fn(),
   find: jest.fn(),
+  update: jest.fn(),
 });
 
 const organizationStub = () =>
@@ -108,6 +109,34 @@ describe('organizationservice', () => {
         name: 'homagol',
       }),
     ).toEqual(mockedNewOrg);
+  });
+  describe('updateOrganization method', () => {
+    it('should return an object of type updatedResult object', async () => {
+      const mockedUpdatedResult: UpdateResult = {
+        raw: 'any',
+        affected: 1,
+        generatedMaps: [],
+      };
+      organizationRepository.update.mockResolvedValue(mockedUpdatedResult);
+      expect(
+        await service.updateOrganization({
+          id: 1,
+          organization: {} as Organization,
+        }),
+      ).toEqual(mockedUpdatedResult);
+    });
+  });
+  describe('findOneOrganizationById method', () => {
+    it('should return an object of type organization when the path successes', async () => {
+      organizationRepository.findOneBy.mockResolvedValue(organizationStub());
+      expect(await service.findOneOrganizationById(1)).toEqual(
+        organizationStub(),
+      );
+    });
+    it('should return an object of type organization  when the path fails', async () => {
+      organizationRepository.findOneBy.mockResolvedValue(null);
+      expect(await service.findOneOrganizationById(1)).toBe(null);
+    });
   });
   describe('findOneOrganizationBySlug method', () => {
     it('should return an object of type organization if organization exists', async () => {
