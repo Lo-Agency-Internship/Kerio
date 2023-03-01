@@ -22,7 +22,7 @@ export const EmployeesPage = () => {
 
 	useEffect(() => {
 		getEmployees();
-	}, [employees]);
+	}, [employee]);
 	return (
 		<Page header={{}}>
 			<div className="flex h-screen overflow-hidden">
