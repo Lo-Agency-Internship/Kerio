@@ -6,14 +6,11 @@ import Loading from '../../components/molecules/loading';
 import { Page } from '../../layout/page';
 import { Button } from '../../components/atoms/button';
 import NewNoteModal from '../../components/templates/newNoteModal';
-import Roadmap from '../../components/organisms/roadMap';
-import { ITimeline } from '../../utils/interfaces/user/timeline.interface';
 import { Account } from './account';
 
 export default function ContactPage() {
 	const [contact, setContact] = useState<IUserById>();
 	const [showNoteModal, setShowNoteModal] = useState<boolean>(false);
-	const [roadMap] = useState<ITimeline[] | null>(null);
 	const { getContactsInfoById, isLoading } = useApiContext();
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -48,19 +45,6 @@ export default function ContactPage() {
 					</div>
 					<div className="flex justify-center"></div>
 					<Account user={contact} setUser={setContact} />
-					{roadMap &&
-						roadMap.map((element, index) => (
-							<Roadmap
-								records={[
-									{
-										items: [{ description: element.description, title: element.title, completed: false }],
-										createdAt: element.createdAt,
-										date: element.date,
-									},
-								]}
-								key={index}
-							/>
-						))}
 				</>
 			)}
 		</Page>
