@@ -118,7 +118,7 @@ export const ApiProvider = ({ children }: IApiProvider) => {
 
 	// we must fix it
 	const getTimelines = async (payload: IGetAllTimelines) => {
-		const { data } = await axios.get(uri(`notes/timeline/${payload.id}`), headerAuth);
+		const { data } = await axios.get(uri(`contacts/${payload.id}`), headerAuth);
 		return data;
 	};
 
