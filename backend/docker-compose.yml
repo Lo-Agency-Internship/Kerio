@@ -41,6 +41,19 @@ services:
     ports:
       - '5050:80'
 
+  meilisearch:
+    container_name: meilisearch
+    env_file:
+      - ./var/.env
+    image: getmeili/meilisearch
+    ports:
+      - '7700:7700'
+
+    volumes:
+      - ./var/meilisearch:/data
+      - ./var/meilisearch/conf/:/root/.meilisearch
+    restart: unless-stopped
+
 
 
 

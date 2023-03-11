@@ -10,7 +10,6 @@ export class SearchService {
   constructor(private readonly contextService: RequestContextService) {
     this.client = new MeiliSearch({
       host: process.env.MEILISEARCH_HOST,
-      apiKey: process.env.MEILISEARCH_APIKEY,
     });
   }
 
