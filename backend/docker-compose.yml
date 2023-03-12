@@ -50,8 +50,8 @@ services:
       - '7700:7700'
 
     volumes:
-      - ./var/meilisearch:/data
-      - ./var/meilisearch/conf/:/root/.meilisearch
+      - ./var/meilisearch:/meili_data
+      
     restart: unless-stopped
 
 

@@ -1,6 +1,8 @@
-import { Controller, Delete, Get, Query } from '@nestjs/common';
+import { Controller, Delete, Get, Query, UseGuards } from '@nestjs/common';
 import { SearchService } from 'src/services/search.service';
+import { JwtGuard } from 'src/utils/jwt.guard';
 
+@UseGuards(JwtGuard)
 @Controller('search')
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
