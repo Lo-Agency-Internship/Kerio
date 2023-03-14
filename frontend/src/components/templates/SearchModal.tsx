@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { uri } from '../../utils';
 import Transition from '../../utils/component/transition';
 import searchProps from '../../utils/interfaces/api/search.interface';
 
@@ -23,7 +24,7 @@ function SearchModal({ id, searchId, open, setOpen }: SearchModalProps) {
 		},
 	};
 	const searchData = async () => {
-		const resp = await axios.get(`http://localhost:3001/search`, { params: { search: `${text}` }, ...headerAuth });
+		const resp = await axios.get(uri(`/search`), { params: { search: `${text}` }, ...headerAuth });
 		setResults(resp.data.hits);
 	};
 	useEffect(() => {
