@@ -41,7 +41,7 @@ const NewContactModal: FC<IProps> = ({ setOpen, open, fetchData, totalRows, perP
 		try {
 			await modalContactValidation.validate(body);
 			await postContactInfo(body);
-			console.log('salam farmande');
+
 			const pageNumber = Math.ceil((totalRows + 1) / perPage);
 			if (fetchData) {
 				await fetchData(pageNumber, perPage);
