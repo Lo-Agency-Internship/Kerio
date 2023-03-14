@@ -74,7 +74,6 @@ const NewEmployeeModal: FC<IProps> = ({ setOpen, open }) => {
 			modalEmployeeValidation
 				.validate(body)
 				.then((response) => {
-					console.log(response);
 					if (!exists && response) {
 						setEmployees([...employees, body]);
 						setNameValue('');

@@ -1,20 +1,20 @@
-import { useNavigate } from 'react-router-dom';
-import { Page } from '../layout/page';
-export default function NotFoundPage() {
-	const navigate = useNavigate();
-	return (
-		<Page>
-			<main className="h-screen w-full flex flex-col justify-center items-center bg-gray-900">
-				<h1 className="text-9xl font-extrabold text-white tracking-widest">404</h1>
-				<div className="bg-[#FF6A3D] px-2 text-sm rounded rotate-12 absolute">Page Not Found</div>
-				<button
-					onClick={() => navigate(`/`)}
-					className="mt-5 relative inline-block text-sm font-medium text-[#FF6A3D] group active:text-orange-500 focus:outline-none focus:ring">
-					<span className="absolute inset-0 transition-transform translate-x-0.5 translate-y-0.5 bg-[#FF6A3D] group-hover:translate-y-0 group-hover:translate-x-0"></span>
+import { Link } from 'react-router-dom';
 
-					<span className="relative block px-8 py-3 bg-[#1A2238] border border-current">Go Home</span>
-				</button>
-			</main>
-		</Page>
+export default function NotFoundPage() {
+	return (
+		<main className="grid min-h-full place-items-center bg-white py-24 px-6 sm:py-32 lg:px-8">
+			<div className="text-center">
+				<p className="text-base font-semibold text-indigo-800">404</p>
+				<h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Page not found</h1>
+				<p className="mt-6 text-base leading-7 text-gray-600">Sorry, we couldn’t find the page you’re looking for.</p>
+				<div className="mt-10 flex items-center justify-center gap-x-6">
+					<Link
+						to="/"
+						className="rounded-md bg-indigo-800 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+						Go back home
+					</Link>
+				</div>
+			</div>
+		</main>
 	);
 }
