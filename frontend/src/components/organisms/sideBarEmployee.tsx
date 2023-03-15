@@ -10,7 +10,7 @@ export const SidebarEmployee = ({ employee, setEmployee, employees }: any) => {
 	return (
 		<div
 			id="profile-sidebar"
-			className={`absolute z-20 top-0 bottom-0 w-full md:w-auto md:static md:top-auto md:bottom-auto -mr-px md:translate-x-0 transform transition-transform duration-200 ease-in-out 
+			className={`absolute  top-0 bottom-0 w-full md:w-auto md:static md:top-auto md:bottom-auto -mr-px md:translate-x-0 transform transition-transform duration-200 ease-in-out 
 			}`}>
 			<div className="sticky top-16 bg-white overflow-x-hidden overflow-y-auto no-scrollbar shrink-0 border-r border-slate-200 md:w-72 xl:w-80 h-[calc(100vh-64px)]">
 				{/* Profile group */}

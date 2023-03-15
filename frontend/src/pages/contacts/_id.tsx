@@ -25,7 +25,7 @@ export default function ContactPage() {
 	}
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [id]);
 	return (
 		<Page
 			header={{
