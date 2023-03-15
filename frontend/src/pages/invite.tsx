@@ -20,11 +20,10 @@ export default function Invite() {
 		event.preventDefault();
 		setIsLoadingSubmit(true);
 		const formData = new FormData(event.currentTarget);
-		const name = formData.get('name')?.toString().toLowerCase();
+		const name = response.name.toString().toLowerCase();
 		const password = formData.get('password');
 		const rePassword = formData.get('repassword');
 		setError(' ');
-
 		if (password !== rePassword) {
 			setError('password do not matched');
 			setIsLoadingSubmit(false);
@@ -68,9 +67,7 @@ export default function Invite() {
 	const active = async () => {
 		try {
 			const data = await axios.get(uri(`invites/${token}`));
-			const email = data.data.email;
-
-			setResponse(email);
+			setResponse(data.data);
 			setMessage(true);
 		} catch (err: any) {
 			setError(err.response.data.message);
@@ -113,8 +110,9 @@ export default function Invite() {
 									inputProps={{
 										className:
 											'block w-11/12 px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black',
-										placeholder: 'Mark',
 										type: 'text',
+										disabled: true,
+										defaultValue: response.name,
 									}}
 								/>
 							</div>
@@ -126,7 +124,7 @@ export default function Invite() {
 											'block w-11/12 px-3 py-2 mt-2 text-base placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black',
 										disabled: true,
 										type: 'email',
-										defaultValue: response,
+										defaultValue: response.email,
 									}}
 								/>
 							</div>
